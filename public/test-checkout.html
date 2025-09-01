@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Checkout Page</title>
+</head>
+<body>
+    <h1>Test Checkout Page</h1>
+    <p>This page tests if the checkout functionality works correctly.</p>
+    
+    <button onclick="testFnbTemplate()">Test FNB Template</button>
+    <button onclick="testComputerTemplate()">Test Computer Template</button>
+    
+    <div id="result"></div>
+
+    <script>
+        function testFnbTemplate() {
+            // Simulate navigating to the checkout page with FNB template
+            window.location.href = 'http://localhost:8000/checkout/template?template=fnb';
+        }
+        
+        function testComputerTemplate() {
+            // Simulate navigating to the checkout page with computer template
+            window.location.href = 'http://localhost:8000/checkout/template?template=toko-komputer';
+        }
+    </script>
+</body>
+</html>

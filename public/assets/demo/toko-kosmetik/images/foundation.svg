@@ -1,0 +1,43 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bottleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffcc80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff8a65;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="capGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#424242;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#212121;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#fff8e1" stroke="#ffcc80" stroke-width="2"/>
+  
+  <!-- Foundation bottle -->
+  <rect x="75" y="70" width="50" height="90" rx="10" ry="10" fill="url(#bottleGradient)" stroke="#ff5722" stroke-width="1"/>
+  
+  <!-- Bottle cap -->
+  <rect x="80" y="50" width="40" height="25" rx="5" ry="5" fill="url(#capGradient)" stroke="#424242" stroke-width="1"/>
+  
+  <!-- Pump -->
+  <rect x="95" y="40" width="10" height="15" rx="2" ry="2" fill="#616161"/>
+  <circle cx="100" cy="42" r="3" fill="#757575"/>
+  
+  <!-- Label -->
+  <rect x="80" y="90" width="40" height="20" fill="#ffffff" opacity="0.8"/>
+  <text x="100" y="102" text-anchor="middle" font-family="Arial" font-size="8" fill="#333">FOUNDATION</text>
+  
+  <!-- Liquid level -->
+  <rect x="78" y="120" width="44" height="35" fill="#d7ccc8" opacity="0.6"/>
+  
+  <!-- Shine effect -->
+  <rect x="85" y="75" width="8" height="70" fill="#ffffff" opacity="0.3" rx="4"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="60" cy="50" r="3" fill="#ffab91" opacity="0.6"/>
+  <circle cx="140" cy="60" r="2" fill="#ffab91" opacity="0.6"/>
+  <circle cx="55" cy="160" r="4" fill="#ffcc80" opacity="0.5"/>
+  <circle cx="145" cy="155" r="3" fill="#ffcc80" opacity="0.5"/>
+</svg>

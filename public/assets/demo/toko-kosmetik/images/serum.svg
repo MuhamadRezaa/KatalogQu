@@ -1,0 +1,64 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="serumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff9c4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffeb3b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffc107;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bottleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#c8e6c9;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#a5d6a7;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="dropperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#37474f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#263238;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#f1f8e9" stroke="#c5e1a5" stroke-width="2"/>
+  
+  <!-- Serum bottle -->
+  <rect x="80" y="80" width="40" height="80" rx="8" ry="8" fill="url(#bottleGradient)" stroke="#4caf50" stroke-width="1"/>
+  
+  <!-- Dropper cap -->
+  <rect x="85" y="60" width="30" height="25" rx="3" ry="3" fill="url(#dropperGradient)" stroke="#263238" stroke-width="1"/>
+  
+  <!-- Dropper tube -->
+  <rect x="98" y="50" width="4" height="35" fill="#455a64"/>
+  
+  <!-- Dropper bulb -->
+  <ellipse cx="100" cy="45" rx="8" ry="10" fill="#546e7a"/>
+  
+  <!-- Serum liquid -->
+  <rect x="83" y="100" width="34" height="55" fill="url(#serumGradient)" opacity="0.8"/>
+  
+  <!-- Vitamin C crystals effect -->
+  <circle cx="90" cy="110" r="2" fill="#fff59d" opacity="0.8"/>
+  <circle cx="105" cy="125" r="1.5" fill="#fff59d" opacity="0.8"/>
+  <circle cx="95" cy="140" r="1" fill="#fff59d" opacity="0.8"/>
+  <circle cx="110" cy="135" r="1.5" fill="#fff59d" opacity="0.8"/>
+  
+  <!-- Label -->
+  <rect x="85" y="120" width="30" height="15" fill="#ffffff" opacity="0.9"/>
+  <text x="100" y="130" text-anchor="middle" font-family="Arial" font-size="7" fill="#2e7d32">VITAMIN C</text>
+  
+  <!-- Shine effect -->
+  <rect x="88" y="85" width="6" height="70" fill="#ffffff" opacity="0.4" rx="3"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="65" cy="70" r="3" fill="#aed581" opacity="0.6"/>
+  <circle cx="135" cy="75" r="2" fill="#aed581" opacity="0.6"/>
+  <circle cx="60" cy="170" r="4" fill="#c5e1a5" opacity="0.5"/>
+  <circle cx="140" cy="165" r="3" fill="#c5e1a5" opacity="0.5"/>
+  
+  <!-- Vitamin C molecule decoration -->
+  <g transform="translate(130, 120)">
+    <circle cx="0" cy="0" r="2" fill="#ffeb3b" opacity="0.7"/>
+    <circle cx="8" cy="0" r="1.5" fill="#ffc107" opacity="0.7"/>
+    <circle cx="4" cy="6" r="1" fill="#ff9800" opacity="0.7"/>
+    <line x1="0" y1="0" x2="8" y2="0" stroke="#ff6f00" stroke-width="1" opacity="0.5"/>
+    <line x1="0" y1="0" x2="4" y2="6" stroke="#ff6f00" stroke-width="1" opacity="0.5"/>
+  </g>
+</svg>

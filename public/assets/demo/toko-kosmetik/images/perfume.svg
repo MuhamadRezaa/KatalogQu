@@ -1,0 +1,68 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="perfumeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#e1bee7;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="liquidGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8eaf6;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#c5cae9;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#9fa8da;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="capGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffb300;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff8f00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#fce4ec" stroke="#f8bbd9" stroke-width="2"/>
+  
+  <!-- Perfume bottle base -->
+  <rect x="75" y="90" width="50" height="70" rx="12" ry="12" fill="url(#perfumeGradient)" stroke="#9c27b0" stroke-width="1"/>
+  
+  <!-- Bottle neck -->
+  <rect x="90" y="70" width="20" height="25" fill="url(#perfumeGradient)" stroke="#9c27b0" stroke-width="1"/>
+  
+  <!-- Perfume cap -->
+  <rect x="85" y="50" width="30" height="25" rx="5" ry="5" fill="url(#capGradient)" stroke="#e65100" stroke-width="1"/>
+  
+  <!-- Spray nozzle -->
+  <rect x="95" y="40" width="10" height="15" rx="2" ry="2" fill="#424242"/>
+  <circle cx="100" cy="42" r="2" fill="#616161"/>
+  
+  <!-- Perfume liquid -->
+  <rect x="78" y="110" width="44" height="45" fill="url(#liquidGradient)" rx="8"/>
+  
+  <!-- Bottle label -->
+  <rect x="80" y="120" width="40" height="20" fill="#ffffff" opacity="0.9" rx="3"/>
+  <text x="100" y="132" text-anchor="middle" font-family="Arial" font-size="8" fill="#4a148c">ELEGANT</text>
+  
+  <!-- Decorative pattern on bottle -->
+  <circle cx="100" cy="105" r="8" fill="none" stroke="#ba68c8" stroke-width="1" opacity="0.6"/>
+  <circle cx="100" cy="105" r="4" fill="#e1bee7" opacity="0.5"/>
+  
+  <!-- Shine effect -->
+  <rect x="85" y="95" width="8" height="60" fill="#ffffff" opacity="0.4" rx="4"/>
+  
+  <!-- Spray effect -->
+  <g transform="translate(100, 35)">
+    <circle cx="-5" cy="0" r="1" fill="#e1bee7" opacity="0.6"/>
+    <circle cx="0" cy="-3" r="0.8" fill="#e1bee7" opacity="0.5"/>
+    <circle cx="5" cy="-1" r="1.2" fill="#e1bee7" opacity="0.4"/>
+    <circle cx="-3" cy="-5" r="0.6" fill="#e1bee7" opacity="0.3"/>
+    <circle cx="3" cy="-6" r="0.9" fill="#e1bee7" opacity="0.3"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="60" cy="60" r="3" fill="#f8bbd9" opacity="0.6"/>
+  <circle cx="140" cy="65" r="2" fill="#f8bbd9" opacity="0.6"/>
+  <circle cx="55" cy="170" r="4" fill="#e1bee7" opacity="0.5"/>
+  <circle cx="145" cy="165" r="3" fill="#e1bee7" opacity="0.5"/>
+  
+  <!-- Luxury details -->
+  <rect x="88" y="55" width="24" height="3" fill="#bf360c" opacity="0.7"/>
+  <rect x="90" y="60" width="20" height="2" fill="#bf360c" opacity="0.7"/>
+</svg>

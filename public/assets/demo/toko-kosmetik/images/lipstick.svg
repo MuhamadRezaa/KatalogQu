@@ -1,0 +1,36 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lipstickGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff1744;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ad1457;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="caseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffb300;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff8f00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#fce4ec" stroke="#f8bbd9" stroke-width="2"/>
+  
+  <!-- Lipstick case -->
+  <rect x="80" y="60" width="40" height="100" rx="8" ry="8" fill="url(#caseGradient)" stroke="#e65100" stroke-width="1"/>
+  
+  <!-- Lipstick bullet -->
+  <ellipse cx="100" cy="50" rx="15" ry="20" fill="url(#lipstickGradient)"/>
+  
+  <!-- Case details -->
+  <rect x="85" y="80" width="30" height="3" fill="#bf360c"/>
+  <rect x="85" y="90" width="30" height="2" fill="#bf360c"/>
+  
+  <!-- Shine effect -->
+  <ellipse cx="95" cy="45" rx="3" ry="8" fill="#ffcdd2" opacity="0.7"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="70" cy="40" r="3" fill="#f48fb1" opacity="0.6"/>
+  <circle cx="130" cy="45" r="2" fill="#f48fb1" opacity="0.6"/>
+  <circle cx="65" cy="170" r="4" fill="#f8bbd9" opacity="0.5"/>
+  <circle cx="135" cy="165" r="3" fill="#f8bbd9" opacity="0.5"/>
+</svg>
