@@ -45,25 +45,25 @@
                             <div class="card-header">
                                 <div class="common-space">
                                     <h4 class="text-start f-w-600">Notitications</h4>
-                                    <div><span>4 New</span></div>
+                                    <div><span>0</span></div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="notitications-bar">
                                     <ul class="nav nav-pills nav-primary p-0" id="pills-tab" role="tablist">
-                                        <li class="nav-item p-0"> <a class="nav-link active" id="pills-aboutus-tab"
+                                        {{-- <li class="nav-item p-0"> <a class="nav-link active" id="pills-aboutus-tab"
                                                 data-bs-toggle="pill" href="#pills-aboutus" role="tab"
                                                 aria-controls="pills-aboutus" aria-selected="true">All(3)</a>
-                                        </li>
-                                        <li class="nav-item p-0"> <a class="nav-link" id="pills-blog-tab"
+                                        </li> --}}
+                                        {{-- <li class="nav-item p-0"> <a class="nav-link" id="pills-blog-tab"
                                                 data-bs-toggle="pill" href="#pills-blog" role="tab"
                                                 aria-controls="pills-blog" aria-selected="false">
                                                 Messages</a></li>
                                         <li class="nav-item p-0"> <a class="nav-link" id="pills-contactus-tab"
                                                 data-bs-toggle="pill" href="#pills-contactus" role="tab"
                                                 aria-controls="pills-contactus" aria-selected="false">
-                                                Cart </a></li>
-                                    </ul>
+                                                Cart </a></li> --}}
+                                        {{-- </ul>
                                     <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-aboutus" role="tabpanel"
                                             aria-labelledby="pills-aboutus-tab">
@@ -321,10 +321,10 @@
                                                         title="btn btn-primary">Check all</button></a></div>
                                         </div>
                                     </div>
+                                </div> --}}
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </li>
                 <li class="profile-nav onhover-dropdown">
                     <div class="media profile-media">

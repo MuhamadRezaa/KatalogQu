@@ -36,7 +36,8 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI', 'http://localhost:8000/auth/google/callback'),
         'guzzle' => [
-            'verify' => env('APP_ENV') === 'production' ? true : (env('CURL_SSL_VERIFYPEER', true) !== false),
+            //'verify' => env('APP_ENV') === 'production' ? true : (env('CURL_SSL_VERIFYPEER', true) !== false),
+            'verify' => false,
             'timeout' => 30,
             'connect_timeout' => 10,
         ],

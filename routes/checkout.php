@@ -13,12 +13,16 @@ use App\Http\Controllers\CheckoutController;
 */
 
 // Public checkout routes
-Route::get('/checkout/template/{slug}', [CheckoutController::class, 'showTemplate'])->name('checkout.template');
+//Route::get('/checkout/template/{slug}', [CheckoutController::class, 'showTemplate'])->name('checkout.template');
+Route::get('/checkout/template/{slug}', [CheckoutController::class, 'showTemplate'])->name('checkout.template')->middleware('auth');
 // Route::post('/checkout/template/process', [CheckoutController::class, 'processTemplate'])->name('checkout.template.process');
 
 // Public checkout routes
 Route::get('/checkout/success', [CheckoutController::class, 'showSuccess'])->name('checkout.success');
-Route::post('/checkout/callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.callback');
+
+// Payment status/receipt page
+Route::get('/checkout/status/{order_id}', [CheckoutController::class, 'showPaymentStatus'])->name('checkout.status');
+
 
 // Demo payment simulation routes (public for testing)
 Route::post('/simulate-payment', [CheckoutController::class, 'simulatePaymentSuccess'])->name('checkout.simulate.payment');

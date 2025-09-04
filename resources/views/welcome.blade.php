@@ -9,8 +9,8 @@
         content="KatalogKu adalah platform terbaik untuk membuat katalog digital yang menarik dan profesional dalam hitungan menit.">
     <meta name="keywords" content="katalog digital, e-katalog, template katalog, katalog online, bisnis digital">
     <meta name="author" content="KatalogKu">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <title>KatalogKu - Platform Katalog Digital Terbaik</title>
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/images/katalogqu_icon.png') }}">
+    <title>KatalogQu - Platform Katalog Digital Terbaik</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -30,36 +30,172 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    {{-- --- AWAL PERUBAHAN: Menambahkan Swiper JS CSS --- --}}
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    {{-- --- AKHIR PERUBAHAN --- --}}
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/public.css') }}">
+
+    <style>
+        .tutorial-section {
+            padding: 80px 0;
+            position: relative;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+
+        /* --- AWAL PERUBAHAN: CSS untuk Video Preview & Modal --- */
+        .video-preview-container {
+            position: relative;
+            cursor: pointer;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s ease;
+        }
+
+        .video-preview-container:hover {
+            transform: scale(1.03);
+        }
+
+        .video-preview-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .play-button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #478413;
+            transition: all 0.3s ease;
+        }
+
+        .video-preview-container:hover .play-button-overlay {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: white;
+        }
+
+        #tutorialModal .modal-content {
+            border: none;
+            border-radius: 15px;
+        }
+
+        #tutorialModal .modal-header {
+            background-color: #478413;
+            color: white;
+            border-bottom: 5px solid #f99a07;
+        }
+
+        #tutorialModal .modal-body {
+            padding: 0;
+        }
+
+        .video-responsive {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .tutorial-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .swiper-slide {
+            height: auto;
+            padding: 20px 10px 40px 10px;
+        }
+
+        .tutorial-icon-wrapper {
+            margin: 0 auto 20px auto;
+            width: 70px;
+            height: 70px;
+        }
+
+        .tutorial-icon {
+            font-size: 30px;
+        }
+
+        .tutorial-number {
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+        }
+
+        .tutorial-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-description {
+            font-size: 14px;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #478413;
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: #f99a07 !important;
+        }
+
+        .slider-container {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+
+        /* --- AKHIR PERUBAHAN --- */
+    </style>
 </head>
 
 <body class="landing-page">
-    <!-- Cursor -->
-    {{-- <div class="cursor">
-        <div class="cursor-move-inner">
-            <div class="cursor-inner"></div>
-        </div>
-        <div class="cursor-move-outer">
-            <div class="cursor-outer"></div>
-        </div>
-    </div> --}}
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="#home">
-
                 <img src="{{ asset('assets/images/katalogqu_logo.png') }}" alt="KatalogKu Logo"
                     style="max-height: 50px; width: auto; object-fit: contain;">
             </a>
 
-            <!-- <button class="navbar-toggler">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button> -->
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
@@ -73,15 +209,17 @@
                         <a class="nav-link" href="#features">Fitur</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#tutorial">Cara Pakai</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#applications">Aplikasi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#support">Support</a>
                     </li>
                 </ul>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 auth-buttons">
                     @auth
-                        <!-- Profile Dropdown for Authenticated Users -->
                         <div class="dropdown">
                             <button class="btn btn-outline-success dropdown-toggle d-flex align-items-center gap-2"
                                 type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -108,9 +246,8 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil Saya</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>Katalog Saya</a>
+                                <li><a class="dropdown-item" href="{{ route('profile.show') }}"><i
+                                            class="fas fa-user me-2"></i>Profil Saya</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -126,8 +263,7 @@
                             </ul>
                         </div>
                     @else
-                        <!-- Login Button for Guests -->
-                        <button class="btn btn-outline-success" onclick="showLogin()">Masuk</button>
+                        <a href="/login" class="btn btn-outline-success">Masuk</a>
                     @endauth
                 </div>
             </div>
@@ -227,9 +363,7 @@
                                 </div>
                                 <div class="demo-buttons-external">
                                     <a href="/demo/{{ $template->slug }}" class="btn-demo btn-demo-primary"
-                                        onclick="showDemo('{{ $template->name }}')">Demo</a>
-                                    <a href="javascript:void(0)" class="btn-demo btn-demo-outline"
-                                        onclick="selectTemplate('{{ $template->slug }}')">Pilih</a>
+                                        onclick="showDemo('{{ $template->name }}')">Visit</a>
                                 </div>
                             </div>
                         </div>
@@ -291,6 +425,8 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
 
             <!-- Key Features Grid -->
             <div class="row g-4">
@@ -365,19 +501,19 @@
             <div class="row g-4 mt-5">
                 <div class="col-lg-3 col-md-6">
                     <div class="stat-card">
-                        <div class="stat-number">10+</div>
+                        <div class="stat-number">{{ $templateCount }}</div>
                         <div class="stat-label">Katalog Dibuat</div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="stat-card">
-                        <div class="stat-number">9+</div>
+                        <div class="stat-number">{{ $user_stores }}</div>
                         <div class="stat-label">Bisnis Terdaftar</div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="stat-card">
-                        <div class="stat-number">10</div>
+                        <div class="stat-number">{{ $templateCount }}</div>
                         <div class="stat-label">Template Tersedia</div>
                     </div>
                 </div>
@@ -391,7 +527,30 @@
         </div>
     </section>
 
+    {{-- --- AWAL PERUBAHAN: Merombak seksi Tutorial --- --}}
+    <!-- Tutorial Section -->
+    <section id="tutorial" class="tutorial-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="section-subtitle">Panduan Cepat & Interaktif</div>
+                <h2 class="section-main-title">Lihat Cara Kerja KatalogKu</h2>
+                <p class="section-description">Klik video di bawah untuk melihat panduan lengkap, atau jelajahi setiap
+                    langkahnya dalam slider interaktif di dalamnya.</p>
+            </div>
 
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="video-preview-container" data-bs-toggle="modal" data-bs-target="#tutorialModal">
+                        <img src="{{ asset('assets/images/katalogqu_logo.png') }}" alt="Video Tutorial KatalogKu">
+                        <div class="play-button-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{-- --- AKHIR PERUBAHAN --- --}}
 
     <!-- Footer -->
     <footer class="footer">
@@ -401,7 +560,7 @@
                     <div class="footer-section">
                         <div class="footer-brand">
                             <img src="{{ asset('assets/images/katalogqu_logo.png') }}" alt="KatalogKu Logo"
-                                class="footer-logo-img" style="width: 170px; height: auto;">
+                                class="footer-logo-img" style="width: 200px; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -453,6 +612,96 @@
         </div>
     </footer>
 
+    {{-- --- AWAL PERUBAHAN: Menambahkan Modal untuk Tutorial --- --}}
+    <!-- Tutorial Modal -->
+    <div class="modal fade" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tutorialModalLabel">Panduan Cepat KatalogKu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- YouTube Video -->
+                    <div class="video-responsive">
+                        <iframe id="youtubeVideo"
+                            src="https://www.youtube.com/embed/lLnvxPIqDp8?si=yKam4Cr8TZpLHwl5&enablejsapi=1"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+
+                    <!-- Slider Container -->
+                    <div class="slider-container">
+                        <div class="swiper-container tutorial-slider-modal">
+                            <div class="swiper-wrapper">
+                                <!-- Slides -->
+                                <div class="swiper-slide">
+                                    <div class="tutorial-card">
+                                        <div class="tutorial-icon-wrapper">
+                                            <div class="tutorial-number">1</div>
+                                            <i class="fas fa-credit-card tutorial-icon"></i>
+                                        </div>
+                                        <h5 class="tutorial-title">Selesaikan Pembayaran</h5>
+                                        <p class="tutorial-description">Pilih template dan selesaikan pembayaran
+                                            melalui metode yang aman.</p>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tutorial-card">
+                                        <div class="tutorial-icon-wrapper">
+                                            <div class="tutorial-number">2</div>
+                                            <i class="fas fa-store tutorial-icon"></i>
+                                        </div>
+                                        <h5 class="tutorial-title">Setup Toko Digital</h5>
+                                        <p class="tutorial-description">Isi informasi dasar toko seperti nama,
+                                            deskripsi, dan subdomain unik.</p>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tutorial-card">
+                                        <div class="tutorial-number">3</div>
+                                        <i class="fas fa-box-open tutorial-icon"></i>
+                                    </div>
+                                    <h5 class="tutorial-title">Kelola Produk Anda</h5>
+                                    <p class="tutorial-description">Masuk ke dasbor admin untuk menambah produk,
+                                        kategori, dan lainnya.</p>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tutorial-card">
+                                        <div class="tutorial-icon-wrapper">
+                                            <div class="tutorial-number">4</div>
+                                            <i class="fas fa-qrcode tutorial-icon"></i>
+                                        </div>
+                                        <h5 class="tutorial-title">Dapatkan QR Code</h5>
+                                        <p class="tutorial-description">Unduh QR Code dalam format template menarik
+                                            untuk dicetak atau dibagikan.</p>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tutorial-card">
+                                        <div class="tutorial-number">5</div>
+                                        <i class="fas fa-share-alt tutorial-icon"></i>
+                                    </div>
+                                    <h5 class="tutorial-title">Bagikan & Jangkau Pelanggan</h5>
+                                    <p class="tutorial-description">Bagikan link atau QR Code di media sosial dan toko
+                                        fisik Anda.</p>
+                                </div>
+                            </div>
+                            <!-- Navigation buttons -->
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- --- AKHIR PERUBAHAN --- --}}
+
+
     <!-- Scroll to Top -->
     <button class="scroll-top" id="scrollTop">
         <i class="fas fa-chevron-up"></i>
@@ -461,6 +710,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
         // Navbar scroll effect
@@ -507,7 +757,6 @@
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
                 if (scrollY >= (sectionTop - 200)) {
                     current = section.getAttribute('id');
                 }
@@ -520,6 +769,55 @@
                 }
             });
         });
+
+        {{-- --- AWAL PERUBAHAN: Logika untuk Modal dan Slider di dalamnya --- --}}
+        document.addEventListener('DOMContentLoaded', function() {
+            const tutorialModal = document.getElementById('tutorialModal');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+            let tutorialSlider;
+
+            tutorialModal.addEventListener('shown.bs.modal', function() {
+                // Inisialisasi slider HANYA ketika modal terbuka
+                tutorialSlider = new Swiper('.tutorial-slider-modal', {
+                    loop: true,
+                    spaceBetween: 10,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        576: {
+                            slidesPerView: 1,
+                            spaceBetween: 10
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 20
+                        },
+                        992: {
+                            slidesPerView: 3,
+                            spaceBetween: 20
+                        },
+                        1200: {
+                            slidesPerView: 4,
+                            spaceBetween: 20
+                        },
+                    }
+                });
+            });
+
+            tutorialModal.addEventListener('hide.bs.modal', function() {
+                // Hentikan video YouTube saat modal ditutup
+                youtubeVideo.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}',
+                    '*');
+
+                // Hancurkan instance slider untuk membersihkan memori
+                if (tutorialSlider) {
+                    tutorialSlider.destroy(true, true);
+                }
+            });
+        });
+        {{-- --- AKHIR PERUBAHAN --- --}}
 
         // SweetAlert functions
         function showLogin() {
@@ -882,94 +1180,6 @@
             });
         }
     </script>
-
-    <!-- Custom CSS for Login Popup -->
-    <style>
-        .login-popup {
-            border-radius: 12px !important;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .login-popup-new {
-            border-radius: 20px !important;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
-            border: none !important;
-        }
-
-        .register-popup-new {
-            border-radius: 12px !important;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
-            border: none !important;
-            max-width: 420px !important;
-            width: 100% !important;
-        }
-
-        .register-popup-new input:focus {
-            border-color: #667eea !important;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
-            outline: none !important;
-            background: white !important;
-        }
-
-        .register-popup-new button:hover {
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25) !important;
-        }
-
-        @media (max-width: 480px) {
-            .register-popup-new {
-                width: 95% !important;
-                margin: 15px !important;
-                max-width: 350px !important;
-            }
-        }
-
-        .swal2-cancel-custom {
-            background-color: #f8f9fa !important;
-            color: #6c757d !important;
-            border: 1px solid #dee2e6 !important;
-            border-radius: 6px !important;
-            font-weight: 500 !important;
-            padding: 8px 16px !important;
-            font-size: 13px !important;
-        }
-
-        .swal2-cancel-custom:hover {
-            background-color: #e9ecef !important;
-            border-color: #adb5bd !important;
-        }
-
-        .swal2-title {
-            font-size: 20px !important;
-            font-weight: 600 !important;
-            color: #2d3748 !important;
-            margin-bottom: 10px !important;
-        }
-
-        .swal2-html-container {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Input focus effects */
-        .login-popup-new input:focus {
-            background: rgba(255, 255, 255, 1) !important;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3) !important;
-        }
-
-        /* Button hover animations */
-        .login-popup-new button:hover {
-            transform: translateY(-1px) !important;
-        }
-
-        /* Responsive design */
-        @media (max-width: 480px) {
-            .login-popup-new {
-                width: 90% !important;
-                margin: 0 5% !important;
-            }
-        }
-    </style>
 
     <!-- Initialize Lucide Icons -->
     <script>

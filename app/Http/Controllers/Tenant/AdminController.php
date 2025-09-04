@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Gemini Added
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -66,13 +67,17 @@ class AdminController extends Controller
      */
     public function updateSettings(Request $request)
     {
+        Log::info('UpdateSettings: Starting settings update process.');
+
         $tenant = tenant();
         $userStore = UserStore::where('tenant_id', $tenant->id)->first();
 
         if (!$userStore) {
+            Log::error('UpdateSettings: UserStore not found for tenant ' . $tenant->id);
             abort(404, 'Store not found for this tenant');
         }
 
+        Log::info('UpdateSettings: Validating request data.', $request->all());
         $validated = $request->validate([
             'store_name' => 'required|string|max:255',
             'store_description' => 'nullable|string|max:1000',
@@ -83,17 +88,45 @@ class AdminController extends Controller
             'store_settings' => 'nullable|array'
         ]);
 
-        // Handle logo upload
-        if ($request->hasFile('store_logo')) {
-            // Delete old logo if exists
-            if ($userStore->store_logo && Storage::disk('public')->exists($userStore->store_logo)) {
-                Storage::disk('public')->delete($userStore->store_logo);
+        try {
+            // Handle logo upload
+            if ($request->hasFile('store_logo')) {
+                Log::info('UpdateSettings: store_logo file is present.');
+                
+                // Use the central_public disk to store the logo
+                $disk = Storage::disk('central_public');
+
+                // Delete old logo if exists
+                if ($userStore->store_logo && $disk->exists($userStore->store_logo)) {
+                    Log::info('UpdateSettings: Deleting old logo: ' . $userStore->store_logo);
+                    $disk->delete($userStore->store_logo);
+                }
+
+                Log::info('UpdateSettings: Storing new logo on central_public disk...');
+                // Generate a custom filename based on store_name slug
+                $storeNameSlug = \Illuminate\Support\Str::slug($validated['store_name']);
+                $extension = $request->file('store_logo')->getClientOriginalExtension();
+                $filename = $storeNameSlug . '.' . $extension;
+
+                $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'central_public');
+                $validated['store_logo'] = $path;
+                Log::info('UpdateSettings: New logo stored at path: ' . $path);
+
+            } else {
+                Log::info('UpdateSettings: No store_logo file in request.');
             }
 
-            $validated['store_logo'] = $request->file('store_logo')->store('store-logos', 'public');
-        }
+            Log::info('UpdateSettings: Updating UserStore with validated data.', $validated);
+            $userStore->update($validated);
+            Log::info('UpdateSettings: UserStore updated successfully.');
 
-        $userStore->update($validated);
+        } catch (\Exception $e) {
+            Log::error('UpdateSettings: An error occurred during the update process.', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'An unexpected error occurred. Please check the logs.');
+        }
 
         return redirect()->route('tenant.admin.settings')
             ->with('success', 'Store settings updated successfully!');

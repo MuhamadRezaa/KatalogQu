@@ -9,6 +9,8 @@ use App\Models\Payment;
 use App\Models\TemplatePurchase;
 use App\Models\User;
 use App\Models\CatalogTemplate;
+use App\Models\Tenant; // Added this line
+use App\Models\UserStore; // Added this line
 
 class AdminController extends Controller
 {
@@ -25,9 +27,14 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
+        // Ensure the user is an admin based on their role
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
         // Get all paid catalogs with user and template information
         $paidCatalogs = TemplatePurchase::with(['user', 'catalogTemplate', 'payment'])
-            ->whereHas('payment', function($query) {
+            ->whereHas('payment', function ($query) {
                 $query->where('status', 'success');
             })
             ->orderBy('created_at', 'desc')
@@ -39,19 +46,30 @@ class AdminController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Statistics
+        // Existing Statistics
         $totalPaidOrders = $paidCatalogs->count();
-        $totalRevenue = $paidCatalogs->sum(function($purchase) {
-            return $purchase->payment ? $purchase->payment->amount : 0;
-        });
+        $totalRevenue = TemplatePurchase::where('payment_status', 'paid')->sum('final_amount');
         $pendingOrdersCount = $pendingPayments->count();
 
-        return view('pages.admin-main.paid-catalogs', compact(
-            'paidCatalogs', 
-            'pendingPayments', 
-            'totalPaidOrders', 
-            'totalRevenue', 
-            'pendingOrdersCount'
+        // New Statistics for Central Dashboard
+        $totalUsers = User::count();
+        $totalStores = UserStore::count();
+        $templatesSold = TemplatePurchase::count(); // This is already calculated as $totalPaidOrders, but keeping for clarity with Blade variable name
+
+        $recentUsers = User::latest()->take(5)->get();
+        $recentStores = UserStore::latest()->with('tenant.domains')->take(5)->get();
+
+        return view('admin-main.pages.dashboard', compact( // Changed view name from 'pages.admin-main.paid-catalogs'
+            'paidCatalogs',
+            'pendingPayments',
+            'totalPaidOrders',
+            'totalRevenue',
+            'pendingOrdersCount',
+            'totalUsers',
+            'totalStores',
+            'templatesSold',
+            'recentUsers',
+            'recentStores'
         ));
     }
 
@@ -232,7 +250,7 @@ class AdminController extends Controller
 
             // Here you would implement actual email sending logic
             // For now, we'll simulate it
-            
+
             return response()->json([
                 'success' => true,
                 'message' => "Template berhasil dikirim ke {$purchase->user->email}"

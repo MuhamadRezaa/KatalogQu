@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>E-Katalog Toko Bangunan</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-bangunan/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -633,6 +634,10 @@
             }
         });
     </script>
+    <!-- Universal Checkout Bubble -->
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'toko-bangunan',
+    ])
 </body>
 
 </html>

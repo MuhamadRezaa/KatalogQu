@@ -4,348 +4,201 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Models\TemplatePurchase;
+use App\Models\Payment;
+use Midtrans\Config;
+// use App\Models\User; // Added for potential use cases
+// use Midtrans\Notification;
 
 class MidtransController extends Controller
 {
+    /**
+     * Handles Midtrans payment notification webhook.
+     * This is the single source of truth for payment status updates.
+     */
     public function notificationHandler(Request $request)
     {
-        // Log the raw request for debugging
         Log::info('Midtrans webhook received', [
             'headers' => $request->headers->all(),
-            'body' => $request->getContent(),
-            'method' => $request->method(),
-            'url' => $request->fullUrl()
+            'body'    => $request->getContent(),
         ]);
 
+        // 1) Decode JSON
+        $raw = $request->getContent();
+        $data = json_decode($raw, true) ?? [];
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            Log::error('Invalid JSON payload', ['err' => json_last_error_msg()]);
+            return response()->json(['status' => 'ok']); // acknowledge, hindari retry
+        }
+
+        // 2) Field wajib untuk signature
+        foreach (['order_id', 'status_code', 'gross_amount', 'signature_key'] as $k) {
+            if (!array_key_exists($k, $data)) {
+                Log::error('Midtrans payload missing key', ['missing' => $k, 'payload' => $data]);
+                return response()->json(['status' => 'ok']);
+            }
+        }
+
+        $orderId   = (string) $data['order_id'];
+        $statusCode = (string) $data['status_code'];
+        $grossAmount = (string) $data['gross_amount'];          // STRING persis dari body
+        $sigMid = strtolower((string) $data['signature_key']);
+
+        $serverKey = (string) config('services.midtrans.server_key', '');
+        if ($serverKey === '') {
+            Log::error('Midtrans server key empty');
+            return response()->json(['status' => 'ok']);
+        }
+
+        // 3) Verifikasi signature
+        $sigLocal = strtolower(hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey));
+        if (!hash_equals($sigLocal, $sigMid)) {
+            Log::error('Signature mismatch', [
+                'order_id'  => $orderId,
+                'status_code' => $statusCode,
+                'gross_amount_body' => $grossAmount,
+                'sig_local' => substr($sigLocal, 0, 12) . '…',
+                'sig_mid'   => substr($sigMid, 0, 12) . '…',
+            ]);
+            return response()->json(['status' => 'ok']); // abaikan update
+        }
+
+        // 4) Status dan tipe pembayaran dari Midtrans
+        $trxStatus   = $data['transaction_status'] ?? null;
+        $fraudStatus = $data['fraud_status'] ?? null;
+        $paymentTypeRaw = $data['payment_type'] ?? null; // Ambil tipe pembayaran mentah
+
+        // --- AWAL PERUBAHAN ---
+        // Tentukan metode pembayaran yang akan disimpan
+        $paymentMethod = 'Midtrans'; // Default untuk semua pembayaran via Midtrans
+        if (strtolower((string)$paymentTypeRaw) === 'qris') {
+            $paymentMethod = 'QRIS'; // Ubah menjadi 'QRIS' jika tipenya adalah qris
+        }
+        // --- AKHIR PERUBAHAN ---
+
+        Log::info('Midtrans notification parsed', [
+            'order_id'     => $orderId,
+            'trx_status'   => $trxStatus,
+            'payment_type' => $paymentTypeRaw,
+            'final_method' => $paymentMethod, // Log metode final yang akan disimpan
+            'fraud_status' => $fraudStatus,
+            'merchant_id'  => $data['merchant_id'] ?? null,
+            'currency'     => $data['currency'] ?? null,
+        ]);
+
+        // 5) Transaksi & lock
+        DB::beginTransaction();
         try {
-            // Set Midtrans configuration
-            \Midtrans\Config::$serverKey = config('services.midtrans.server_key');
-            \Midtrans\Config::$isProduction = config('services.midtrans.is_production');
-            \Midtrans\Config::$isSanitized = config('services.midtrans.is_sanitized', true);
-            \Midtrans\Config::$is3ds = config('services.midtrans.is_3ds', true);
+            $payment = Payment::where('transaction_id', $orderId)
+                ->lockForUpdate()
+                ->first();
 
-            // SSL Configuration: Use CA certificate bundle approach
-            $caBundlePaths = [
-                '/etc/ssl/certs/ca-certificates.crt', // Debian/Ubuntu
-                '/etc/ssl/certs/ca-bundle.crt',       // CentOS/RHEL
-                '/usr/share/ssl/certs/ca-bundle.crt', // CentOS/RHEL
-                '/usr/local/share/certs/ca-root-nss.crt', // FreeBSD
-                '/etc/ssl/cert.pem',                  // macOS
-                storage_path('cacert.pem'),           // Downloaded bundle
-            ];
+            $tpl = TemplatePurchase::where('transaction_id', $orderId)
+                ->lockForUpdate()
+                ->first();
 
-            $caBundle = null;
-            foreach ($caBundlePaths as $path) {
-                if (file_exists($path) && is_readable($path)) {
-                    $caBundle = $path;
-                    break;
-                }
+            if (!$payment && !$tpl) {
+                Log::warning('No Payment & TemplatePurchase found', ['order_id' => $orderId]);
+                DB::commit();
+                return response()->json(['status' => 'ok']);
             }
 
-            if ($caBundle) {
-                // Use proper SSL verification with CA bundle
-                \Midtrans\Config::$curlOptions = [
-                    CURLOPT_SSL_VERIFYPEER => true,
-                    CURLOPT_SSL_VERIFYHOST => 2,
-                    CURLOPT_CAINFO => $caBundle,
-                    CURLOPT_TIMEOUT => 60,
-                    CURLOPT_CONNECTTIMEOUT => 30,
-                    CURLOPT_USERAGENT => 'Laravel-Katalogku/1.0'
-                ];
-            } else {
-                // Fallback for development environment only
-                if (config('app.env') !== 'production') {
-                    \Midtrans\Config::$curlOptions = [
-                        CURLOPT_SSL_VERIFYPEER => false,
-                        CURLOPT_SSL_VERIFYHOST => false,
-                        CURLOPT_CAINFO => null,
-                        CURLOPT_CAPATH => null,
-                        CURLOPT_TIMEOUT => 60,
-                        CURLOPT_CONNECTTIMEOUT => 30,
-                        CURLOPT_USERAGENT => 'Laravel-Katalogku/1.0'
-                    ];
-                } else {
-                    // Production: always use SSL verification
-                    \Midtrans\Config::$curlOptions = [
-                        CURLOPT_SSL_VERIFYPEER => true,
-                        CURLOPT_SSL_VERIFYHOST => 2,
-                        CURLOPT_TIMEOUT => 60,
-                        CURLOPT_CONNECTTIMEOUT => 30,
-                        CURLOPT_USERAGENT => 'Laravel-Katalogku/1.0'
-                    ];
-                }
-            }
-
-            // Get notification body from Midtrans
-            $notification = new \Midtrans\Notification();
-
-            Log::info('Midtrans notification parsed', [
-                'order_id' => $notification->order_id,
-                'transaction_status' => $notification->transaction_status,
-                'payment_type' => $notification->payment_type,
-                'fraud_status' => $notification->fraud_status ?? null,
-                'gross_amount' => $notification->gross_amount ?? null,
-                'transaction_time' => $notification->transaction_time ?? null,
-                'signature_key' => $notification->signature_key ?? null
-            ]);
-
-            $orderId = $notification->order_id;
-            $transactionStatus = $notification->transaction_status;
-            $fraudStatus = $notification->fraud_status ?? null;
-
-            // Find template purchase by transaction_id
-            $templatePurchase = TemplatePurchase::where('transaction_id', $orderId)->first();
-
-            if (!$templatePurchase) {
-                Log::warning('Template purchase not found for order_id: ' . $orderId, [
-                    'available_purchases' => TemplatePurchase::select('transaction_id', 'payment_status')
-                        ->orderBy('created_at', 'desc')
-                        ->limit(5)
-                        ->get()
-                        ->toArray()
-                ]);
-                return response()->json(['status' => 'ok']); // Still return ok to prevent retries
-            }
-
-            // Log current status before update
-            Log::info('Found template purchase', [
-                'purchase_id' => $templatePurchase->id,
-                'current_status' => $templatePurchase->payment_status,
-                'transaction_id' => $templatePurchase->transaction_id
-            ]);
-
-            // Update payment status based on transaction status
-            $paymentStatus = 'pending';
+            // 6) Mapping status internal + paidAt
+            $internal = 'pending';
             $paidAt = null;
 
-            switch ($transactionStatus) {
-                case 'capture':
-                    // For credit card payments
-                    if ($fraudStatus === 'challenge') {
-                        $paymentStatus = 'pending'; // Keep as pending for manual review
-                        Log::warning('Payment flagged for fraud review', [
-                            'order_id' => $orderId,
-                            'fraud_status' => $fraudStatus
-                        ]);
-                    } else {
-                        $paymentStatus = 'paid';
-                        $paidAt = now();
-                    }
-                    break;
-
-                case 'settlement':
-                    // For other payment methods (bank transfer, etc.)
-                    $paymentStatus = 'paid';
-                    $paidAt = now();
-                    break;
-
-                case 'pending':
-                    $paymentStatus = 'pending';
-                    break;
-
-                case 'deny':
-                case 'cancel':
-                case 'expire':
-                case 'failure':
-                    $paymentStatus = 'failed';
-                    break;
-
-                case 'refund':
-                case 'partial_refund':
-                    $paymentStatus = 'refunded';
-                    break;
-
-                default:
-                    Log::warning('Unknown transaction status received', [
-                        'order_id' => $orderId,
-                        'transaction_status' => $transactionStatus
-                    ]);
-                    $paymentStatus = 'pending';
-                    break;
+            if ($trxStatus === 'capture' || $trxStatus === 'settlement') {
+                if (($fraudStatus ?? 'accept') === 'accept') {
+                    $internal = 'paid';
+                    $paidAt = isset($data['settlement_time'])
+                        ? \Carbon\Carbon::parse($data['settlement_time'], 'Asia/Jakarta')
+                        ->timezone(config('app.timezone', 'UTC'))
+                        : now();
+                } elseif (($fraudStatus ?? null) === 'challenge') {
+                    $internal = 'pending';
+                    Log::warning('FDS challenge', ['order_id' => $orderId]);
+                } else {
+                    $internal = 'failed';
+                }
+            } elseif ($trxStatus === 'pending') {
+                $internal = 'pending';
+            } elseif (in_array($trxStatus, ['deny', 'cancel', 'expire', 'failure'], true)) {
+                $internal = 'failed';
+            } elseif (in_array($trxStatus, ['refund', 'partial_refund'], true)) {
+                $internal = 'refunded';
             }
 
-            // Update template purchase
-            $templatePurchase->update([
-                'payment_status' => $paymentStatus,
-                'paid_at' => $paidAt,
-                'payment_details' => json_encode(array_merge(
-                    json_decode($templatePurchase->payment_details, true) ?? [],
-                    [
-                        'midtrans_notification' => [
-                            'transaction_status' => $transactionStatus,
-                            'payment_type' => $notification->payment_type ?? null,
-                            'fraud_status' => $fraudStatus,
-                            'transaction_time' => $notification->transaction_time ?? null,
-                            'gross_amount' => $notification->gross_amount ?? null,
-                            'signature_key' => $notification->signature_key ?? null,
-                            'updated_at' => now()->toISOString(),
-                            'notification_received_at' => now()->toISOString()
-                        ]
-                    ]
-                ))
+            Log::info('Before update', [
+                'order_id'        => $orderId,
+                'payment_status'  => $payment->status ?? null,
+                'template_status' => $tpl->payment_status ?? null,
+                'internal_status' => $internal,
             ]);
 
-            Log::info('Template purchase updated successfully', [
-                'purchase_id' => $templatePurchase->id,
-                'transaction_id' => $orderId,
-                'old_status' => $templatePurchase->getOriginal('payment_status'),
-                'new_status' => $paymentStatus,
-                'paid_at' => $paidAt ? $paidAt->toISOString() : null
-            ]);
+            // 7) Update per entitas (idempoten)
+            if ($payment && $payment->status === 'pending') {
+                $payment->status = $internal;
+                $payment->paid_at = $paidAt;
+                $payment->payment_method = $paymentMethod; // Gunakan variabel yang sudah diproses
+                $payment->payment_details = array_merge(
+                    is_array($payment->payment_details) ? $payment->payment_details : (json_decode($payment->payment_details, true) ?? []),
+                    ['midtrans_notification' => $data]
+                );
+                $payment->save();
+            }
 
+            if ($tpl && strtolower((string)$tpl->payment_status) === 'pending') {
+                $tpl->payment_status = $internal;
+                $tpl->paid_at = $paidAt;
+                $tpl->payment_method = $paymentMethod; // Gunakan variabel yang sudah diproses
+                $tpl->payment_details = array_merge(
+                    is_array($tpl->payment_details) ? $tpl->payment_details : (json_decode($tpl->payment_details, true) ?? []),
+                    ['midtrans_notification' => $data]
+                );
+                $tpl->save();
+            }
+
+            DB::commit();
+            Log::info('Updated OK', ['order_id' => $orderId, 'status' => $internal]);
             return response()->json(['status' => 'ok']);
-        } catch (\Exception $e) {
-            Log::error('Midtrans notification error: ' . $e->getMessage(), [
-                'exception_class' => get_class($e),
-                'stack_trace' => $e->getTraceAsString(),
-                'request_data' => $request->all(),
-                'request_headers' => $request->headers->all()
-            ]);
-
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Process error', ['order_id' => $orderId, 'err' => $e->getMessage()]);
+            return response()->json(['status' => 'ok']); // acknowledge
         }
     }
 
-    public function test(Request $request)
-    {
-        Log::info('Midtrans test endpoint hit');
-        return response()->json(['message' => 'Test endpoint working', 'data' => $request->all()], 200);
-    }
-
     /**
-     * Manual payment status check for debugging
+     * Manual payment status check for debugging.
+     * This method remains for manual checks but should not be part of the primary flow.
      */
     public function checkPaymentStatus(Request $request)
     {
-        $request->validate([
-            'order_id' => 'required|string'
-        ]);
+        $request->validate(['order_id' => 'required|string']);
+        $orderId = $request->order_id;
 
         try {
-            $orderId = $request->order_id;
+            Config::$serverKey = config('services.midtrans.server_key');
+            Config::$isProduction = config('services.midtrans.is_production');
 
-            // Set Midtrans configuration
-            \Midtrans\Config::$serverKey = config('services.midtrans.server_key');
-            \Midtrans\Config::$isProduction = config('services.midtrans.is_production');
-
-            // Check status from Midtrans
-            $status = (object) \Midtrans\Transaction::status($orderId);
+            $status = \Midtrans\Transaction::status($orderId);
 
             Log::info('Manual payment status check', [
                 'order_id' => $orderId,
                 'midtrans_status' => $status
             ]);
 
-            // Find template purchase
-            $templatePurchase = TemplatePurchase::where('transaction_id', $orderId)->first();
-
-            if (!$templatePurchase) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Template purchase not found',
-                    'midtrans_status' => $status
-                ], 404);
-            }
-
-            // Update status if needed
-            $currentStatus = $templatePurchase->payment_status;
-            $newStatus = $this->mapMidtransStatus($status->transaction_status, $status->fraud_status ?? null);
-
-            if ($currentStatus !== $newStatus['status']) {
-                $templatePurchase->update([
-                    'payment_status' => $newStatus['status'],
-                    'paid_at' => $newStatus['paid_at'],
-                    'payment_details' => json_encode(array_merge(
-                        json_decode($templatePurchase->payment_details, true) ?? [],
-                        [
-                            'manual_status_check' => [
-                                'checked_at' => now()->toISOString(),
-                                'midtrans_response' => $status,
-                                'old_status' => $currentStatus,
-                                'new_status' => $newStatus['status']
-                            ]
-                        ]
-                    ))
-                ]);
-
-                Log::info('Payment status updated via manual check', [
-                    'order_id' => $orderId,
-                    'old_status' => $currentStatus,
-                    'new_status' => $newStatus['status']
-                ]);
-            }
-
             return response()->json([
                 'success' => true,
-                'order_id' => $orderId,
-                'current_database_status' => $templatePurchase->refresh()->payment_status,
-                'midtrans_status' => $status->transaction_status,
-                'fraud_status' => $status->fraud_status ?? null,
-                'payment_type' => $status->payment_type ?? null,
-                'gross_amount' => $status->gross_amount ?? null,
-                'transaction_time' => $status->transaction_time ?? null,
-                'was_updated' => $currentStatus !== $newStatus['status']
+                'midtrans_status' => $status
             ]);
         } catch (\Exception $e) {
-            Log::error('Manual payment status check failed: ' . $e->getMessage(), [
-                'order_id' => $request->order_id,
-                'error' => $e->getMessage()
-            ]);
-
+            Log::error('Manual payment status check failed: . ' . $e->getMessage(), ['order_id' => $orderId]);
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to check payment status: ' . $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Map Midtrans status to internal status
-     */
-    private function mapMidtransStatus($transactionStatus, $fraudStatus = null)
-    {
-        $paymentStatus = 'pending';
-        $paidAt = null;
-
-        switch ($transactionStatus) {
-            case 'capture':
-                if ($fraudStatus === 'challenge') {
-                    $paymentStatus = 'pending';
-                } else {
-                    $paymentStatus = 'paid';
-                    $paidAt = now();
-                }
-                break;
-
-            case 'settlement':
-                $paymentStatus = 'paid';
-                $paidAt = now();
-                break;
-
-            case 'pending':
-                $paymentStatus = 'pending';
-                break;
-
-            case 'deny':
-            case 'cancel':
-            case 'expire':
-            case 'failure':
-                $paymentStatus = 'failed';
-                break;
-
-            case 'refund':
-            case 'partial_refund':
-                $paymentStatus = 'refunded';
-                break;
-        }
-
-        return [
-            'status' => $paymentStatus,
-            'paid_at' => $paidAt
-        ];
     }
 }

@@ -14,8 +14,8 @@
     @auth
         <meta name="api-token" content="{{ auth()->user()->createToken('dashboard')->plainTextToken }}">
     @endauth
-    <link rel="icon" href="{{ asset('assets/riho-asset/images/favicon.png') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/riho-asset/images/favicon.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>KatalogQu - Admin</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">

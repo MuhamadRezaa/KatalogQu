@@ -14,7 +14,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = User::withTrashed()
+            ->orderBy('role', 'asc') // Urutkan berdasarkan role (admin dulu, baru pengguna)
+            ->orderBy('deleted_at', 'asc') // Urutkan berdasarkan status (aktif/null dulu, baru nonaktif)
+            ->paginate(10);
+
         return view('admin-main.pages.manajemen-pengguna.index', compact('users'));
     }
 
@@ -104,5 +108,25 @@ class UserController extends Controller
 
         $user->delete();
         return back()->with('success', 'Pengguna berhasil dihapus.');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+        return back()->with('success', 'Pengguna berhasil dipulihkan.');
+    }
+
+    /**
+     * Force delete the specified resource from storage.
+     */
+    public function forceDelete($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+        return back()->with('success', 'Pengguna berhasil dihapus secara permanen.');
     }
 }

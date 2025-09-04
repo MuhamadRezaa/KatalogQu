@@ -1,573 +1,984 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Katalog Aksesoris Mobil Premium</title>
-    <link rel="stylesheet" href="{{asset('assets/demo/aksesoris_mobil/style.css')}}">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
+    <title>AutoParts Pro - E-Katalog Aksesoris Mobil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/demo/toko-aksesoris-mobil/style.css') }}">
 </head>
+
 <body>
-    <div class="header">
-        <div class="header-content">
-            <div class="container">
-                <h1>E-Katalog Aksesoris Mobil</h1>
-                <p>Koleksi Aksesoris Mobil Premium Terlengkap di Indonesia</p>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="{{ asset('assets/demo/toko-aksesoris-mobil/images/icon.png') }}" alt="AutoParts Pro Logo">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-main">AutoParts</span>
+                    <span class="logo-sub">PREMIUM ACCESSORIES</span>
+                </div>
+            </div>
+
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Slider -->
+    <section class="hero" id="home">
+        <div class="slider">
+            <div class="slide slide1 active">
+                <div class="slide-content">
+                    <h1>Aksesoris Mobil Terbaik</h1>
+                    <p>Temukan koleksi lengkap aksesoris mobil berkualitas tinggi untuk semua jenis kendaraan Anda</p>
+                </div>
+            </div>
+
+            <div class="slide slide2">
+                <div class="slide-content">
+                    <h1>Kualitas Premium</h1>
+                    <p>Produk original dan bergaransi dengan harga terjangkau untuk kepuasan driving experience Anda</p>
+                </div>
+            </div>
+
+            <div class="slide slide3">
+                <div class="slide-content">
+                    <h1>Pengiriman Gratis</h1>
+                    <p>Nikmati layanan pengiriman gratis ke seluruh Indonesia untuk pembelian minimal Rp 500.000</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="container">
-        <div class="search-filter-container">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Cari produk aksesoris mobil..." class="search-input">
-                <button onclick="searchProducts()" class="search-btn">🔍 Cari</button>
+        <div class="slider-nav">
+            <div class="nav-dot active" onclick="currentSlide(1)"></div>
+            <div class="nav-dot" onclick="currentSlide(2)"></div>
+            <div class="nav-dot" onclick="currentSlide(3)"></div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title">Kategori Produk</h2>
+
+            <div class="category-grid">
+                <div class="category-card" onclick="filterProducts('interior')">
+                    <h3>Interior</h3>
+                    <p>Sarung jok, karpet, dashboard cover, dan aksesoris interior lainnya</p>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('exterior')">
+                    <h3>Eksterior</h3>
+                    <p>Body kit, spoiler, emblem, dan aksesoris luar mobil</p>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('electronics')">
+                    <h3>Elektronik</h3>
+                    <p>Audio system, GPS, kamera parkir, dan gadget mobil</p>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('maintenance')">
+                    <h3>Perawatan</h3>
+                    <p>Oli, filter, busi, dan produk perawatan mobil</p>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('safety')">
+                    <h3>Keamanan</h3>
+                    <p>Alarm, immobilizer, kaca film, dan perangkat keamanan</p>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('lighting')">
+                    <h3>Lampu</h3>
+                    <p>LED, HID, lampu fog, dan sistem pencahayaan</p>
+                </div>
             </div>
+        </div>
+    </section>
 
+    <!-- Featured Products -->
+    <section class="featured-products" id="products">
+        <div class="container">
+            <!-- Filter dan Search Bar -->
             <div class="filter-container">
-                <select id="categoryFilter" onchange="filterByCategory()" class="filter-select">
-                    <option value="">🏷️ Semua Kategori</option>
-                    <option value="Interior">🪑 Interior</option>
-                    <option value="Audio">🔊 Audio</option>
-                    <option value="Performance">⚡ Performance</option>
-                    <option value="Lighting">💡 Lighting</option>
-                    <option value="Protection">🛡️ Protection</option>
-                    <option value="Exterior">🎨 Exterior</option>
-                    <option value="Wheels">⭕ Wheels</option>
-                    <option value="Safety">🚨 Safety</option>
-                </select>
+                <div class="search-filter">
+                    <input type="text" id="productSearchInput" placeholder="Cari produk...">
+                    <button id="searchProductBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-options">
+                    <select id="categoryFilter">
+                        <option value="all">Semua Kategori</option>
+                        <option value="interior">Interior</option>
+                        <option value="exterior">Eksterior</option>
+                        <option value="electronics">Elektronik</option>
+                        <option value="maintenance">Perawatan</option>
+                        <option value="safety">Keamanan</option>
+                        <option value="lighting">Lampu</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="all">Semua Harga</option>
+                        <option value="0-200000">Rp 0 - 200rb</option>
+                        <option value="200000-500000">Rp 200rb - 500rb</option>
+                        <option value="500000-1000000">Rp 500rb - 1jt</option>
+                        <option value="1000000-2000000">Rp 1jt - 2jt</option>
+                        <option value="2000000+">Rp 2jt+</option>
+                    </select>
+                    <button id="resetFilterBtn"><i class="fas fa-undo"></i> Reset</button>
+                </div>
             </div>
-        </div>
 
-        <div id="noResults" class="no-results hidden">
-            <h3>😔 Tidak ada produk yang ditemukan</h3>
-            <p>Coba kata kunci lain atau pilih kategori yang berbeda.</p>
-        </div>
-    </div>
+            <h2 class="section-title">Produk Unggulan</h2>
 
-    <div class="catalog-container" id="catalogContainer">
-        <div class="product-card" data-category="Interior" data-name="sarung jok kulit premium">
-            <div class="product-image">
-                <img src="https://cf.shopee.co.id/file/f00f7d91125d97cd63a3bc84eae5e9d2" alt="Sarung Jok Kulit Premium" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Interior</span>
-                <h3 class="product-name">Sarung Jok Kulit Premium</h3>
-                <p class="product-description">Sarung jok kulit asli berkualitas tinggi dengan desain ergonomis dan jahitan presisi. Memberikan kenyamanan maksimal dan tampilan mewah.</p>
-                <ul class="product-features">
-                    <li>100% kulit asli grade A</li>
-                    <li>Tahan air dan mudah dibersihkan</li>
-                    <li>Ventilasi udara optimal</li>
-                    <li>Garansi 2 tahun</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 2.850.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="rating-text">(4.9)</span>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products dengan gambar -->
+                <div class="product-card" data-id="1" data-category="interior" data-price="1250000">
+                    <div class="product-image">
+                        <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/95/MTA-40163476/oscar_sarung_jok_mobil_ertiga_bahan_kulit_syntetic_original_full_3_baris_full01_m057pk2o.jpg"
+                            alt="Sarung Jok Kulit Premium" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Interior</div>
+                        <h4>Sarung Jok Kulit Premium</h4>
+                        <div class="product-price">Rp 1.250.000</div>
+                        <p>Sarung jok kulit synthetic premium dengan desain elegant untuk kenyamanan maksimal. Tahan
+                            lama, mudah dibersihkan, tersedia berbagai warna dengan garansi 2 tahun.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(1)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(1)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Sarung Jok Kulit Premium')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Interior" data-name="dashboard cover premium">
-            <div class="product-image">
-                <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/83/MTA-111225106/oem_oem_full01.jpg" alt="Dashboard Cover Premium" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Interior</span>
-                <h3 class="product-name">Dashboard Cover Premium</h3>
-                <p class="product-description">Cover dashboard berbahan dasar karpet berkualitas tinggi dengan lapisan anti slip. Melindungi dashboard dari sinar UV dan memberikan tampilan interior yang lebih elegan.</p>
-                <ul class="product-features">
-                    <li>Bahan karpet premium grade A</li>
-                    <li>Anti slip dan anti UV</li>
-                    <li>Custom fit untuk berbagai model</li>
-                    <li>Mudah dipasang tanpa tools</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 385.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="rating-text">(4.5)</span>
+                <div class="product-card" data-id="2" data-category="lighting" data-price="350000">
+                    <div class="product-image">
+                        <img src="https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp"
+                            alt="LED Headlight H4" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Pencahayaan</div>
+                        <h4>LED Headlight H4</h4>
+                        <div class="product-price">Rp 350.000</div>
+                        <p>Lampu LED super terang 6000 lumens dengan teknologi terbaru untuk visibilitas maksimal. Tahan
+                            air IP67, hemat energi 35W, mudah dipasang plug and play dengan heat sink aluminum.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(2)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(2)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Dashboard Cover Premium')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Audio" data-name="speaker component set">
-            <div class="product-image">
-                <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/91/MTA-4166344/jbl_jbl_cs760c_component_set_speaker_split_pintu_mobil_-6-5_inch-_full02.jpg" alt="Speaker Component Set" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Audio</span>
-                <h3 class="product-name">Speaker Component Set</h3>
-                <p class="product-description">Sistem audio komponen 3-way dengan teknologi terdepan. Menghadirkan kualitas suara hi-fi yang jernih dan bass yang menggelegar.</p>
-                <ul class="product-features">
-                    <li>Power 200W RMS</li>
-                    <li>Frekuensi 20Hz - 25kHz</li>
-                    <li>Tweeter titanium dome</li>
-                    <li>Crossover external</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 1.450.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="rating-text">(4.7)</span>
+                <div class="product-card" data-id="3" data-category="exterior" data-price="2100000">
+                    <div class="product-image">
+                        <img src="https://tiimg.tistatic.com/fp/1/573/carbon-fiber-car-spoiler-192.jpg"
+                            alt="Spoiler Carbon Fiber" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Eksterior</div>
+                        <h4>Spoiler Carbon Fiber</h4>
+                        <div class="product-price">Rp 2.100.000</div>
+                        <p>Spoiler carbon fiber 100% original untuk performa aerodinamis dan tampilan sporty.
+                            Meningkatkan downforce dan stabilitas, desain universal untuk sedan dan hatchback.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(3)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(3)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Speaker Component Set')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Audio" data-name="car audio subwoofer">
-    <div class="product-image">
-        <img src="https://www.bassheadspeakers.com/wp-content/uploads/2018/07/Pioneer-TS-SWX2505-Car-Subwoofer.jpg" alt="Car Audio Subwoofer" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Audio</span>
-        <h3 class="product-name">Car Audio Subwoofer</h3>
-        <p class="product-description">Subwoofer 15 inci dengan kekuatan bass luar biasa, dirancang untuk meningkatkan kualitas suara audio mobil Anda ke level yang lebih tinggi.</p>
-        <ul class="product-features">
-            <li>15-Inch Subwoofer</li>
-            <li>Power 1000W RMS</li>
-            <li>Deep bass dengan frekuensi rendah</li>
-            <li>Struktur kokoh dan tahan lama</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 3.850.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">(4.8)</span>
-            </div>
-        </div>
-        <button onclick="showDetail('Car Audio Subwoofer')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-        <div class="product-card" data-category="Performance" data-name="remote start system">
-            <div class="product-image">
-                <img src="https://www.tintingwausau.com/wp-content/uploads/arctic-start-2-way-flex-2-remote-starter-keyless-entry.jpg" alt="Remote Start System" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Performance</span>
-                <h3 class="product-name">Remote Start System</h3>
-                <p class="product-description">Sistem remote start untuk memulai mobil dari jarak jauh, memberikan kenyamanan saat cuaca dingin atau panas, serta meningkatkan keamanan kendaraan.</p>
-                <ul class="product-features">
-                    <li>Jarak jangkauan hingga 100 meter</li>
-                    <li>Kompatibel dengan mobil berbagai merek</li>
-                    <li>Mudah dipasang dan digunakan</li>
-                    <li>Fitur pengamanan ganda</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 2.500.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="rating-text">(4.7)</span>
+                <div class="product-card" data-id="4" data-category="electronics" data-price="1800000">
+                    <div class="product-image">
+                        <img src="https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg"
+                            alt="Audio System Pioneer" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Elektronik</div>
+                        <h4>Audio System Pioneer</h4>
+                        <div class="product-price">Rp 1.800.000</div>
+                        <p>System audio premium dengan head unit 2DIN layar 7 inci, 4 speaker, dan subwoofer 10 inci.
+                            Mendukung Bluetooth, USB, AUX, radio FM/AM dengan equalizer 7 band, garansi 3 tahun.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(4)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(4)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Remote Start System')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-
-        <div class="product-card" data-category="Performance" data-name="cold air intake system">
-            <div class="product-image">
-                <img src="https://www.autoaccessoriesgarage.com/img/group/main/49/4989_1_lg.jpg" alt="Cold Air Intake System" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Performance</span>
-                <h3 class="product-name">Cold Air Intake System</h3>
-                <p class="product-description">Sistem intake udara dingin untuk meningkatkan performa mesin. Dirancang khusus untuk memberikan aliran udara optimal dan suara mesin yang sporty.</p>
-                <ul class="product-features">
-                    <li>Filter udara high-flow</li>
-                    <li>Pipa aluminium 6061-T6</li>
-                    <li>Meningkatkan HP hingga 15%</li>
-                    <li>Easy installation</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 3.200.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="rating-text">(4.8)</span>
+                <div class="product-card" data-id="5" data-category="maintenance" data-price="285000">
+                    <div class="product-image">
+                        <img src="https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490"
+                            alt="Oli Mesin Synthetic" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Perawatan</div>
+                        <h4>Oli Mesin Synthetic</h4>
+                        <div class="product-price">Rp 285.000</div>
+                        <p>Oli mesin fully synthetic 5W-30 dengan teknologi advanced additive untuk perlindungan
+                            optimal. Interval penggantian 10.000 km, standar API SN/CF dan ACEA A3/B4 untuk mesin
+                            modern.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(5)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(5)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Cold Air Intake System')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Lighting" data-name="led headlight kit">
-            <div class="product-image">
-                <img src="https://d114hh0cykhyb0.cloudfront.net/images/uploads/led-headlight-conversion-kit-9004.jpg" alt="LED Headlight Kit" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Lighting</span>
-                <h3 class="product-name">LED Headlight Kit</h3>
-                <p class="product-description">Lampu LED ultra bright dengan teknologi COB terbaru. Memberikan pencahayaan 300% lebih terang dari lampu halogen standar.</p>
-                <ul class="product-features">
-                    <li>Brightness 12000 lumens</li>
-                    <li>Color temperature 6500K</li>
-                    <li>Waterproof IP67</li>
-                    <li>Lifetime 50.000 jam</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 950.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="rating-text">(4.6)</span>
+                <div class="product-card" data-id="6" data-category="safety" data-price="650000">
+                    <div class="product-image">
+                        <img src="https://images.squarespace-cdn.com/content/v1/661bf67da1652b3d5d587880/208af2c3-fb7d-47f4-b5ad-e34d657998f3/Pro+2WG180W.jpg"
+                            alt="Alarm System Advanced" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Keamanan</div>
+                        <h4>Alarm System Advanced</h4>
+                        <div class="product-price">Rp 650.000</div>
+                        <p>Sistem keamanan canggih dengan remote 50 meter, central lock, siren 120dB, dan shock sensor.
+                            Dilengkapi rolling code encryption, panic button, dan silent arm mode dengan instalasi
+                            mudah.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(6)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(6)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('LED Headlight Kit')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Lighting" data-name="LED Fog Light Kit">
-            <div class="product-image">
-             <img src="https://bestheadlightbulbs.com/wp-content/uploads/2017/01/OPT7-Fluxbeam-LED-Fog-Light-Kit.jpg" alt="LED Fog Light Kit" class="product-img">
-            </div>
-    <div class="product-info">
-        <span class="product-category">Lighting</span>
-        <h3 class="product-name">LED Fog Light Kit</h3>
-        <p class="product-description">Lampu kabut LED dengan desain kompak, memberikan pencahayaan ekstra yang tajam dan terang, cocok untuk pengemudi yang membutuhkan visibilitas lebih baik dalam cuaca buruk.</p>
-        <ul class="product-features">
-            <li>Brightness 6000 lumens</li>
-            <li>Color temperature 6000K</li>
-            <li>Waterproof IP68</li>
-            <li>Lifetime 30.000 jam</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 650.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★☆</span>
-                <span class="rating-text">(4.7)</span>
-            </div>
-        </div>
-        <button onclick="showDetail('LED Fog Light Kit')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-
-        <div class="product-card" data-category="Protection" data-name="paint protection film">
-            <div class="product-image">
-                <img src="https://lirp.cdn-website.com/19820020/dms3rep/multi/opt/paint+protection+film-4843b5b1-1920w.jpg" alt="Paint Protection Film" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Protection</span>
-                <h3 class="product-name">Paint Protection Film</h3>
-                <p class="product-description">Film pelindung cat transparan dengan teknologi self-healing. Melindungi cat mobil dari goresan, batu kerikil, dan kerusakan akibat cuaca.</p>
-                <ul class="product-features">
-                    <li>Teknologi self-healing</li>
-                    <li>UV protection 99%</li>
-                    <li>Transparansi tinggi</li>
-                    <li>Garansi 10 tahun</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 8.500.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="rating-text">(5.0)</span>
+                <div class="product-card" data-id="7" data-category="interior" data-price="420000">
+                    <div class="product-image">
+                        <img src="https://www.carcoverusa.com/images/carhartt/carhartt-dashboard-covers-black.webp"
+                            alt="Dashboard Cover Premium" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Interior</div>
+                        <h4>Dashboard Cover Premium</h4>
+                        <div class="product-price">Rp 420.000</div>
+                        <p>Pelindung dashboard anti UV dari material PVC premium dengan lapisan anti-slip. Desain custom
+                            fit berbagai model mobil, mudah dipasang dengan velcro adhesive tanpa bekas.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(7)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(7)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Paint Protection Film')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Protection" data-name="Ceramic Coating">
-    <div class="product-image">
-        <img src="https://m.media-amazon.com/images/I/71OfO20OlBL.jpg" alt="Ceramic Coating" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Protection</span>
-        <h3 class="product-name">Ceramic Coating</h3>
-        <p class="product-description">Pelapis keramik premium yang memberikan perlindungan maksimal pada cat mobil, menjaga keindahan dan kilau kendaraan lebih lama, serta melindungi dari kotoran dan air.</p>
-        <ul class="product-features">
-            <li>Pelindung tahan lama</li>
-            <li>Melindungi dari goresan ringan</li>
-            <li>Perlindungan UV dan tahan air</li>
-            <li>Garansi 5 tahun</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 6.750.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">(4.9)</span>
-            </div>
-        </div>
-        <button onclick="showDetail('Ceramic Coating')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-
-        <div class="product-card" data-category="Wheels" data-name="performance tires">
-            <div class="product-image">
-                <img src="https://tirecraft.com/owen-sound-tirecraft/wp-content/uploads/sites/116/2018/01/Toyo-High-Performance-Tire.jpg" alt="Performance Tires" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Wheels</span>
-                <h3 class="product-name">Performance Tires</h3>
-                <p class="product-description">Ban performa tinggi yang dirancang untuk memberikan traksi luar biasa pada jalan basah maupun kering. Ideal untuk pengemudi yang mengutamakan keamanan dan performa.</p>
-                <ul class="product-features">
-                    <li>Grip luar biasa pada berbagai kondisi jalan</li>
-                    <li>Desain untuk kecepatan tinggi</li>
-                    <li>Struktur anti-aquaplaning</li>
-                    <li>Umur pakai panjang</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 4.000.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="rating-text">(4.9)</span>
+                <div class="product-card" data-id="8" data-category="exterior" data-price="3200000">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Body Kit Sport" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Eksterior</div>
+                        <h4>Body Kit Sport</h4>
+                        <div class="product-price">Rp 3.200.000</div>
+                        <p>Body kit lengkap 4 pieces dari PU plastic fleksibel dengan finishing carbon fiber pattern.
+                            Meningkatkan tampilan sporty dan aerodinamika, instalasi mudah dengan 3M adhesive tape.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(8)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(8)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Performance Tires')" class="detail-btn">Lihat Detail</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-category="Wheels" data-name="Alloy Wheels 18 Inch">
-    <div class="product-image">
-        <img src="https://image.made-in-china.com/2f0j00OcVWYUHLgARD/Factory-18-Inch-5X114-3-Alloy-Car-Wheels-Rims-for-Toyota-Camry.jpg" alt="Alloy Wheels 18 Inch" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Wheels</span>
-        <h3 class="product-name">Alloy Wheels 18 Inch</h3>
-        <p class="product-description">Velg alloy 18 inci yang stylish dan ringan. Memberikan tampilan elegan sekaligus meningkatkan performa handling kendaraan Anda.</p>
-        <ul class="product-features">
-            <li>Material forged alloy</li>
-            <li>Desain 5-spoke modern</li>
-            <li>Berat ringan, meningkatkan performa</li>
-            <li>Universal fitment</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 6.750.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">(5.0)</span>
-            </div>
-        </div>
-        <button onclick="showDetail('Alloy Wheels 18 Inch')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-
-        <div class="product-card" data-category="Exterior" data-name="carbon fiber spoiler">
-            <div class="product-image">
-                <img src="https://static.summitracing.com/global/images/prod/xlarge/ngi-carb-a690_xl.jpg" alt="Carbon Fiber Spoiler" class="product-img">
-            </div>
-            <div class="product-info">
-                <span class="product-category">Exterior</span>
-                <h3 class="product-name">Carbon Fiber Spoiler</h3>
-                <p class="product-description">Spoiler carbon fiber asli dengan desain aerodinamis. Meningkatkan downforce dan memberikan tampilan sporty yang aggressive pada kendaraan Anda.</p>
-                <ul class="product-features">
-                    <li>100% real carbon fiber</li>
-                    <li>Desain aerodinamis</li>
-                    <li>UV resistant coating</li>
-                    <li>Universal fitment</li>
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">Rp 4.750.000</div>
-                    <div class="product-rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="rating-text">(4.5)</span>
+                <!-- Produk tambahan untuk testing filter -->
+                <div class="product-card" data-id="9" data-category="electronics" data-price="450000">
+                    <div class="product-image">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rash-m13z3bkwc4si9f"
+                            alt="Kamera Parkir HD" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Elektronik</div>
+                        <h4>Kamera Parkir HD</h4>
+                        <div class="product-price">Rp 450.000</div>
+                        <p>Kamera parkir HD 1080P dengan night vision dan wide angle 170 derajat. Dilengkapi monitor LCD
+                            4.3 inci, wireless transmitter, parking grid lines dan auto switch gear mundur.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(9)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(9)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="showDetail('Carbon Fiber Spoiler')" class="detail-btn">Lihat Detail</button>
+
+                <div class="product-card" data-id="10" data-category="lighting" data-price="150000">
+                    <div class="product-image">
+                        <img src="https://brainboxcar.com/pictures/product/534-02301-FOG-ANGEL-(4).jpg"
+                            alt="Lampu Fog LED" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Pencahayaan</div>
+                        <h4>Lampu Fog LED</h4>
+                        <div class="product-price">Rp 150.000</div>
+                        <p>Lampu fog LED 2000 lumens dengan housing aluminum die-cast untuk kondisi berkabut optimal.
+                            Konsumsi daya 15W, 3x lebih terang dari halogen, plug and play dengan bracket universal.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(10)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(10)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-id="11" data-category="maintenance" data-price="85000">
+                    <div class="product-image">
+                        <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2024/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"
+                            alt="Filter Udara Sport" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Perawatan</div>
+                        <h4>Filter Udara Sport</h4>
+                        <div class="product-price">Rp 85.000</div>
+                        <p>Filter udara sport cotton gauze untuk peningkatan performa dan efisiensi bahan bakar. Dapat
+                            dicuci dan digunakan kembali hingga 50.000 km, meningkatkan horsepower hingga 5%.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(11)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(11)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-id="12" data-category="safety" data-price="950000">
+                    <div class="product-image">
+                        <img src="https://m.media-amazon.com/images/I/81gIn+MXtyL._AC_.jpg" alt="Dashcam 4K Pro"
+                            class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Keamanan</div>
+                        <h4>Dashcam 4K Pro</h4>
+                        <div class="product-price">Rp 950.000</div>
+                        <p>Dashcam 4K Ultra HD dengan GPS, G-sensor tri-axis, dan memory card 64GB included. Fitur
+                            parking mode 24/7, LCD touchscreen 3 inci dengan WiFi connectivity untuk remote viewing.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-detail" onclick="showProductDetail(12)">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>
+                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(12)">
+                                <i class="fab fa-whatsapp"></i> Pesan
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="product-card" data-category="Exterior" data-name="LED Tail Light Kit">
-    <div class="product-image">
-        <img src="https://m.media-amazon.com/images/I/71TnNVQvWzS._AC_SL1500_.jpg" alt="LED Tail Light Kit" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Exterior</span>
-        <h3 class="product-name">LED Tail Light Kit</h3>
-        <p class="product-description">Lampu belakang LED dengan desain modern, memberikan pencahayaan lebih terang dan tampilan lebih stylish untuk mobil Anda.</p>
-        <ul class="product-features">
-            <li>Pencahayaan LED terang dan efisien</li>
-            <li>Desain tipis dan elegan</li>
-            <li>Waterproof dan tahan lama</li>
-            <li>Universal fitment untuk banyak model mobil</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 2.350.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">(4.8)</span>
+    <!-- Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-info-circle"></i> Detail Produk</h2>
+                <button class="close-modal" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="detailModalBody">
             </div>
         </div>
-        <button onclick="showDetail('LED Tail Light Kit')" class="detail-btn">Lihat Detail</button>
     </div>
-</div>
 
-        <div class="product-card" data-category="Safety" data-name="car security alarm system">
-    <div class="product-image">
-        <img src="https://cache3.pakwheels.com/ad_pictures/1134/liuhawk-car-security-alarm-system-with-immobilizer-key-113449171.webp" alt="Car Security Alarm System" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Safety</span>
-        <h3 class="product-name">Car Security Alarm System</h3>
-        <p class="product-description">Sistem alarm keamanan mobil dengan sensor gerak dan deteksi pintu yang canggih, menjaga mobil Anda tetap aman dari pencurian dan kerusakan.</p>
-        <ul class="product-features">
-            <li>Sensor gerak dengan teknologi terbaru</li>
-            <li>Pendeteksi pintu otomatis</li>
-            <li>Remote control dengan jarak jauh</li>
-            <li>Fitur pelaporan via smartphone</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 1.800.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★☆</span>
-                <span class="rating-text">(4.6)</span>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <img src="{{ asset('assets/demo/toko-aksesoris-mobil/images/icon.png') }}"
+                                alt="AutoParts Pro Logo">
+                        </div>
+                        <div class="footer-logo-text">
+                            <span class="footer-logo-main">AutoParts</span>
+                            <span class="footer-logo-sub">PREMIUM ACCESSORIES</span>
+                        </div>
+                    </div>
+                    <p>Toko online terpercaya untuk semua kebutuhan aksesoris mobil Anda. Kualitas terjamin dengan harga
+                        terbaik.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Kontak</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Jl. Cycas Raya Jl. Taman Setia Budi Indah Blok VV
+                            No.172 Kompleks, Asam Kumbang, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20133</li>
+                        <li><i class="fas fa-phone"></i> 08116584545</li>
+                        <li><i class="fas fa-envelope"></i> pteraciptadigital@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 PT. Era Cipta Digital</p>
             </div>
         </div>
-        <button onclick="showDetail('Car Security Alarm System')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-<div class="product-card" data-category="Safety" data-name="dash camera">
-    <div class="product-image">
-        <img src="https://m.media-amazon.com/images/I/71dk7bMLtEL.jpg" alt="Dash Camera" class="product-img">
-    </div>
-    <div class="product-info">
-        <span class="product-category">Safety</span>
-        <h3 class="product-name">Dash Camera (Car DVR)</h3>
-        <p class="product-description">Kamera dashboard mobil dengan kualitas rekaman HD, membantu Anda merekam perjalanan dan memberikan bukti rekaman dalam keadaan darurat atau insiden.</p>
-        <ul class="product-features">
-            <li>Resolusi HD 1080p</li>
-            <li>Fitur night vision untuk rekaman di malam hari</li>
-            <li>Perekaman otomatis saat kendaraan menyala</li>
-            <li>Sudut pandang 170 derajat</li>
-        </ul>
-        <div class="product-footer">
-            <div class="product-price">Rp 1.950.000</div>
-            <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">(5.0)</span>
-            </div>
-        </div>
-        <button onclick="showDetail('Dash Camera (Car DVR)')" class="detail-btn">Lihat Detail</button>
-    </div>
-</div>
-
-
+    </footer>
 
     <script>
-        let allProducts = [];
-        let filteredProducts = [];
+        let currentSlideIndex = 0;
+        let slideInterval;
 
-        function initializeProducts() {
-            const productCards = document.querySelectorAll('.product-card');
-            allProducts = Array.from(productCards).map(card => ({
-                element: card,
-                name: card.getAttribute('data-name').toLowerCase(),
-                category: card.getAttribute('data-category'),
-                productName: card.querySelector('.product-name').textContent,
-                description: card.querySelector('.product-description').textContent.toLowerCase()
-            }));
-            filteredProducts = [...allProducts];
+        document.addEventListener('DOMContentLoaded', function() {
+            startSlider();
+            setupEventListeners();
+            animateElements();
+            setupProductFilters();
+            setupCheckoutBubble();
+        });
+
+        function startSlider() {
+            slideInterval = setInterval(() => {
+                nextSlide();
+            }, 5000);
         }
 
-        function searchProducts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            const categoryFilter = document.getElementById('categoryFilter').value;
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
 
-            filterAndDisplay(searchTerm, categoryFilter);
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
         }
 
-        function filterByCategory() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            const categoryFilter = document.getElementById('categoryFilter').value;
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
 
-            filterAndDisplay(searchTerm, categoryFilter);
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+
+            currentSlideIndex = n - 1;
+
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+
+            startSlider();
         }
 
-        function filterAndDisplay(searchTerm, categoryFilter) {
-            filteredProducts = allProducts.filter(product => {
-                const matchesSearch = !searchTerm ||
-                    product.name.includes(searchTerm) ||
-                    product.description.includes(searchTerm) ||
-                    product.productName.toLowerCase().includes(searchTerm);
-
-                const matchesCategory = !categoryFilter || product.category === categoryFilter;
-
-                return matchesSearch && matchesCategory;
+        function filterProducts(category) {
+            document.getElementById('products').scrollIntoView({
+                behavior: 'smooth'
             });
 
-            displayProducts();
-        }
+            document.getElementById('categoryFilter').value = category;
 
-        function displayProducts() {
-            const catalogContainer = document.getElementById('catalogContainer');
-            const noResults = document.getElementById('noResults');
+            applyFilters();
 
-            allProducts.forEach(product => {
-                product.element.classList.add('hidden');
-                product.element.style.display = '';
-                product.element.style.opacity = '';
-                product.element.style.transform = '';
-                product.element.style.transition = '';
-            });
+            const sectionTitle = document.querySelector('#products .section-title');
+            const categoryNames = {
+                'interior': 'Produk Interior',
+                'exterior': 'Produk Eksterior',
+                'electronics': 'Produk Elektronik',
+                'maintenance': 'Produk Perawatan',
+                'safety': 'Produk Keamanan',
+                'lighting': 'Produk Pencahayaan'
+            };
 
-            if (filteredProducts.length === 0) {
-                noResults.classList.remove('hidden');
+            if (category !== 'all') {
+                sectionTitle.textContent = categoryNames[category] || 'Produk Unggulan';
             } else {
-                noResults.classList.add('hidden');
+                sectionTitle.textContent = 'Produk Unggulan';
+            }
+        }
 
-                filteredProducts.forEach((product, index) => {
-                    setTimeout(() => {
-                        product.element.classList.remove('hidden');
-                        product.element.style.opacity = '0';
-                        product.element.style.transform = 'translateY(20px)';
+        function resetFilter() {
+            document.getElementById('productSearchInput').value = '';
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('priceFilter').value = 'all';
 
-                        setTimeout(() => {
-                            product.element.style.transition = 'all 0.3s ease';
-                            product.element.style.opacity = '1';
-                            product.element.style.transform = 'translateY(0)';
-                        }, 10);
-                    }, index * 50);
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                card.style.display = 'flex';
+            });
+
+            const noProductsMessage = document.querySelector('.no-products-message');
+            if (noProductsMessage) {
+                noProductsMessage.remove();
+            }
+
+            document.querySelector('#products .section-title').textContent = 'Produk Unggulan';
+        }
+
+        function setupProductFilters() {
+            document.getElementById('searchProductBtn').addEventListener('click', function() {
+                applyFilters();
+            });
+
+            document.getElementById('productSearchInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    applyFilters();
+                } else {
+                    applyFilters();
+                }
+            });
+
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                applyFilters();
+            });
+
+            document.getElementById('priceFilter').addEventListener('change', function() {
+                applyFilters();
+            });
+
+            document.getElementById('resetFilterBtn').addEventListener('click', function() {
+                resetFilter();
+            });
+        }
+
+        function applyFilters() {
+            const searchInput = document.getElementById('productSearchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+
+            const productCards = Array.from(document.querySelectorAll('.product-card'));
+            let visibleCards = [];
+
+            const existingMessage = document.querySelector('.no-products-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            productCards.forEach(card => {
+                const productName = card.querySelector('h4').textContent.toLowerCase();
+                const productDesc = card.querySelector('p').textContent.toLowerCase();
+                const productCategory = card.getAttribute('data-category');
+                const productPrice = parseInt(card.getAttribute('data-price'));
+
+                const matchesSearch = searchInput === '' ||
+                    productName.includes(searchInput) ||
+                    productDesc.includes(searchInput);
+                const matchesCategory = categoryFilter === 'all' || productCategory === categoryFilter;
+                const matchesPrice = checkPriceRange(productPrice, priceFilter);
+
+                if (matchesSearch && matchesCategory && matchesPrice) {
+                    card.style.display = 'flex';
+                    visibleCards.push(card);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const sectionTitle = document.querySelector('#products .section-title');
+            if (searchInput !== '') {
+                sectionTitle.textContent = `Hasil Pencarian: "${searchInput}" (${visibleCards.length} produk)`;
+            } else if (categoryFilter !== 'all') {
+                const categoryNames = {
+                    'interior': 'Produk Interior',
+                    'exterior': 'Produk Eksterior',
+                    'electronics': 'Produk Elektronik',
+                    'maintenance': 'Produk Perawatan',
+                    'safety': 'Produk Keamanan',
+                    'lighting': 'Produk Pencahayaan'
+                };
+                sectionTitle.textContent = `${categoryNames[categoryFilter]} (${visibleCards.length} produk)`;
+            } else if (priceFilter !== 'all') {
+                const priceRangeNames = {
+                    '0-200000': 'Produk Rp 0 - 200rb',
+                    '200000-500000': 'Produk Rp 200rb - 500rb',
+                    '500000-1000000': 'Produk Rp 500rb - 1jt',
+                    '1000000-2000000': 'Produk Rp 1jt - 2jt',
+                    '2000000+': 'Produk Rp 2jt+'
+                };
+                sectionTitle.textContent = `${priceRangeNames[priceFilter]} (${visibleCards.length} produk)`;
+            } else {
+                sectionTitle.textContent = 'Produk Unggulan';
+            }
+
+            if (visibleCards.length === 0) {
+                const productsGrid = document.getElementById('productsGrid');
+                const noProductsMessage = document.createElement('div');
+                noProductsMessage.className = 'no-products-message';
+                noProductsMessage.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h3>Tidak ada produk yang ditemukan</h3>
+                    <p>Coba kata kunci lain atau reset filter</p>
+                `;
+                productsGrid.appendChild(noProductsMessage);
+            }
+        }
+
+        function checkPriceRange(price, priceFilter) {
+            if (priceFilter === 'all') return true;
+
+            switch (priceFilter) {
+                case '0-200000':
+                    return price >= 0 && price <= 200000;
+                case '200000-500000':
+                    return price > 200000 && price <= 500000;
+                case '500000-1000000':
+                    return price > 500000 && price <= 1000000;
+                case '1000000-2000000':
+                    return price > 1000000 && price <= 2000000;
+                case '2000000+':
+                    return price > 2000000;
+                default:
+                    return true;
+            }
+        }
+
+        function sortProductsByPrice(sortOrder, visibleCards) {
+            const productsGrid = document.getElementById('productsGrid');
+
+            visibleCards.sort((a, b) => {
+                const priceA = parseInt(a.getAttribute('data-price'));
+                const priceB = parseInt(b.getAttribute('data-price'));
+
+                if (sortOrder === 'low-to-high') {
+                    return priceA - priceB;
+                } else {
+                    return priceB - priceA;
+                }
+            });
+
+            visibleCards.forEach(card => {
+                productsGrid.appendChild(card);
+            });
+        }
+
+        function showProductDetail(productId) {
+            const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+            if (!productCard) return;
+
+            const modal = document.getElementById('detailModal');
+            const modalBody = document.getElementById('detailModalBody');
+            const productName = productCard.querySelector('h4').textContent;
+            const productPrice = productCard.querySelector('.product-price').textContent;
+            const productDesc = productCard.querySelector('p').textContent;
+            const productCategory = productCard.querySelector('.product-category').textContent;
+            const productImg = productCard.querySelector('.product-img');
+            const productImgSrc = productImg ? productImg.getAttribute('src') : '';
+            const categoryColors = {
+                'Interior': '#8e44ad',
+                'Pencahayaan': '#f39c12',
+                'Eksterior': '#e74c3c',
+                'Elektronik': '#3498db',
+                'Perawatan': '#27ae60',
+                'Keamanan': '#34495e'
+            };
+
+            const categoryColor = categoryColors[productCategory] || '#95a5a6';
+
+            let detailHTML = `
+                <div class="product-detail-container">
+                    <div class="product-detail-image">
+                        ${productImgSrc ? `<img src="${productImgSrc}" alt="${productName}" class="detail-product-img">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
+                    </div>
+
+                    <div class="product-basic-info">
+                        <div class="product-detail-category" style="background-color: ${categoryColor};">
+                            <i class="fas fa-tag"></i> ${productCategory}
+                        </div>
+                        <h3 class="product-detail-title">${productName}</h3>
+                        <div class="product-detail-price">${productPrice}</div>
+                    </div>
+
+                    <div class="product-detail-info">
+                        <div class="product-detail-description">
+                            <h4>Deskripsi Produk</h4>
+                            <p>${productDesc}</p>
+                        </div>
+
+                        <div class="product-features">
+                            <h4><i class="fas fa-check-circle"></i> Keunggulan Produk</h4>
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>Kualitas Premium</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-tools"></i>
+                                    <span>Mudah Dipasang</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Tahan Lama</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-award"></i>
+                                    <span>Bergaransi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-detail-action">
+                            <button class="btn btn-whatsapp btn-detail-order" onclick="orderViaWhatsApp(${productId})">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>Pesan Sekarang</span>
+                                <div class="btn-shine"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modalBody.innerHTML = detailHTML;
+            modal.classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function orderViaWhatsApp(productId) {
+            const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+            if (!productCard) return;
+
+            const productName = productCard.querySelector('h4').textContent;
+            const productPrice = productCard.querySelector('.product-price').textContent;
+
+            const phoneNumber = '6285273147673';
+            const message = `Halo AutoParts
+
+Saya tertarik untuk memesan produk:
+📦 *${productName}*
+💰 Harga: ${productPrice}
+
+Bisakah Anda berikan informasi lebih lanjut mengenai:
+- Ketersediaan stock
+- Estimasi pengiriman
+- Metode pembayaran
+
+Terima kasih!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+
+            if (type === 'error') {
+                notification.style.background = '#e74c3c';
+            }
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (mobileMenu) {
+                mobileMenu.addEventListener('click', () => {
+                    const spans = mobileMenu.querySelectorAll('span');
+                    spans.forEach((span, index) => {
+                        span.style.transform = span.style.transform ? '' :
+                            index === 0 ? 'rotate(45deg) translate(5px, 5px)' :
+                            index === 1 ? 'opacity(0)' :
+                            'rotate(-45deg) translate(7px, -6px)';
+                    });
+                });
+            }
+
+            document.getElementById('detailModal').addEventListener('click', (e) => {
+                if (e.target.id === 'detailModal') {
+                    closeDetailModal();
+                }
+            });
+        }
+
+        function animateElements() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.category-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            document.querySelectorAll('.product-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `all 0.5s ease ${index * 0.05}s`;
+                observer.observe(card);
+            });
+        }
+
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+
+            lastScrollTop = scrollTop;
+        });
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Checkout Bubble Functionality
+        function setupCheckoutBubble() {
+            const checkoutBubble = document.getElementById('checkoutBubble');
+            if (checkoutBubble) {
+                checkoutBubble.addEventListener('click', function() {
+                    // Button disabled - no action
                 });
             }
         }
 
-        function showDetail(productName) {
-            alert(`Detail produk: ${productName}\n\nFitur ini akan menampilkan informasi lengkap tentang produk, termasuk spesifikasi detail, gambar tambahan, dan opsi pembelian.`);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeProducts();
-
-            const searchInput = document.getElementById('searchInput');
-
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                const categoryFilter = document.getElementById('categoryFilter').value;
-
-                if (searchTerm.length >= 2 || searchTerm.length === 0) {
-                    filterAndDisplay(searchTerm, categoryFilter);
+        function handleCheckout() {
+            // Sample checkout data - replace with your actual product data
+            const checkoutData = {
+                transaction_details: {
+                    order_id: 'ORDER-' + Math.random().toString(36).substr(2, 9),
+                    gross_amount: 150000
+                },
+                item_details: [{
+                    id: 'template-001',
+                    price: 150000,
+                    quantity: 1,
+                    name: 'Checkout Template'
+                }],
+                customer_details: {
+                    first_name: 'Customer',
+                    last_name: 'AutoParts',
+                    email: 'customer@autoparts.com',
+                    phone: '08116584545'
                 }
-            });
+            };
 
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchProducts();
-                }
-            });
-        });
+            // Check if Midtrans Snap is loaded
+            if (typeof snap !== 'undefined') {
+                // Call Midtrans Snap
+                snap.pay(checkoutData.transaction_details.order_id, {
+                    // Replace with your actual snap token from backend
+                    onSuccess: function(result) {
+                        console.log('Payment success:', result);
+                        showNotification('Pembayaran berhasil! Terima kasih atas pembelian Anda.', 'success');
+                    },
+                    onPending: function(result) {
+                        console.log('Payment pending:', result);
+                        showNotification('Pembayaran sedang diproses. Silakan selesaikan pembayaran Anda.',
+                            'info');
+                    },
+                    onError: function(result) {
+                        console.log('Payment error:', result);
+                        showNotification('Terjadi kesalahan dalam pembayaran. Silakan coba lagi.', 'error');
+                    }
+                });
+            } else {
+                // Fallback if Midtrans is not loaded - redirect to WhatsApp
+                const message = `Halo AutoParts Pro!
 
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
+Saya ingin membeli:
+📦 *Checkout Template*
+💰 Harga: Rp 150.000
 
-        const originalFilterByCategory = filterByCategory;
-        filterByCategory = function() {
-            originalFilterByCategory();
-            if (window.scrollY > 100) {
-                setTimeout(scrollToTop, 100);
+Mohon informasi lebih lanjut untuk proses pembelian.
+
+Terima kasih!`;
+
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappURL = `https://wa.me/6285273147673?text=${encodedMessage}`;
+                window.open(whatsappURL, '_blank');
             }
-        };
+        }
     </script>
+
+    <!-- Universal Checkout Bubble -->
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'toko-aksesoris-mobil',
+    ])
 </body>
+
 </html>

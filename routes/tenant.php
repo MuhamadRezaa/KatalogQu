@@ -31,6 +31,7 @@ Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
+    'tenant.active',
 ])->group(function () {
 
     Route::get('/tenancy/assets/{path}', TenantAssetController::class)
@@ -72,8 +73,8 @@ Route::middleware([
 
     Route::prefix('admin')->name('tenant.admin.')->group(function () {
         // Admin Dashboard
-        Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard.alt');
+        Route::get('/', [AdminController::class, 'dashboard']);
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
         // Store Settings
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');

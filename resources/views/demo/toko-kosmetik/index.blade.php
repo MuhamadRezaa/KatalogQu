@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>Canu Cosmetics - E-Katalog Premium</title>
 
     <!-- Bootstrap CSS -->
@@ -369,6 +370,12 @@
 
     <!-- Custom JavaScript -->
     <script src="{{ asset('assets/demo/toko-kosmetik/script.js') }}"></script>
+
+    <!-- Universal Checkout Bubble -->
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'toko-kosmetik',
+    ])
+
 </body>
 
 </html>

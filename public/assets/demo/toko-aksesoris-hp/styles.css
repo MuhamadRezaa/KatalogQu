@@ -1,33 +1,12 @@
+.animate-fadeIn {
+    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Menggunakan font Inter untuk tampilan yang bersih dan modern */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7fafc;
-            color: #2d3748;
-        }
+#universalModal::-webkit-scrollbar {
+    width: 8px;
+}
 
-        /* Container untuk mengatur lebar konten */
-        .container {
-            max-width: 1280px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        /* Style untuk tombol kategori */
-        .category-btn.active {
-            background-color: #00bcd4;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Animasi untuk kartu produk saat hover */
-        .product-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-    
+#universalModal::-webkit-scrollbar-thumb {
+    background: #38b2ac;
+    border-radius: 8px;
+}

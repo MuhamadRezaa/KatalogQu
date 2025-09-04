@@ -14,7 +14,6 @@ use App\Models\User;
 use App\Models\CatalogTemplate;
 use Midtrans\Config;
 use Midtrans\Snap;
-use Midtrans\Notification;
 
 class CheckoutController extends Controller
 {
@@ -24,7 +23,26 @@ class CheckoutController extends Controller
     public function __construct()
     {
         // Apply auth middleware only to specific methods, allow demo checkout
-        $this->middleware('auth')->except(['showTemplate', 'processTemplate', 'showSuccess', 'simulatePaymentSuccess']);
+        $this->middleware('auth')->except(['showTemplate', 'processTemplate', 'showSuccess', 'showPaymentStatus']);
+    }
+
+    /**
+     * Menyediakan status pembayaran melalui API untuk pengecekan via JavaScript.
+     */
+    public function checkStatusApi($orderId)
+    {
+        // Gunakan TemplatePurchase untuk mengambil data
+        $purchase = \App\Models\TemplatePurchase::where('transaction_id', $orderId)->first();
+
+        if (!$purchase) {
+            return response()->json(['status' => 'error', 'message' => 'Pesanan tidak ditemukan'], 404);
+        }
+
+        // Kembalikan status pembayaran dari data yang ditemukan
+        return response()->json([
+            'status' => 'success',
+            'payment_status' => $purchase->payment_status,
+        ]);
     }
 
     /**
@@ -77,398 +95,55 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Simulate payment success for demo purposes
+     * Show the payment status/receipt page.
+     *
+     * @param string $orderId
+     * @return \Illuminate\View\View
      */
-    public function simulatePaymentSuccess(Request $request)
+    public function showPaymentStatus(string $orderId)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'full_name' => 'required|string',
-            'phone' => 'required|string',
-            'order_id' => 'required|string'
-        ]);
+        $templatePurchase = TemplatePurchase::with('catalogTemplate')
+            ->where('transaction_id', $orderId)
+            ->first();
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed: ' . $validator->errors()->first()
-            ], 400);
+        if (!$templatePurchase) {
+            // Handle case where order is not found, maybe redirect to an error page or home
+            return redirect()->route('welcome')->with('error', 'Detail pesanan tidak ditemukan.');
         }
 
-        try {
-            $orderId = $request->order_id;
-
-            // Create demo order data if not exists in session
-            $orderData = session('checkout_order');
-
-            if (!$orderData) {
-                // Create demo order data from request
-                $templateData = json_decode($request->template_data, true) ?: [
-                    'name' => 'TechZone Computer Store Template',
-                    'type' => 'Toko Komputer',
-                    'price' => 150000,
-                    'features' => ['Demo features']
-                ];
-
-                $orderData = [
-                    'order_id' => $orderId,
-                    'customer' => [
-                        'email' => $request->email,
-                        'full_name' => $request->full_name,
-                        'phone' => $request->phone
-                    ],
-                    'template' => $templateData,
-                    'payment_method' => 'demo'
-                ];
-
-                // Store in session for potential future use
-                session(['checkout_order' => $orderData]);
-            }
-
-            // For demo purposes, we'll skip the actual payment processing
-            // and just log the demo transaction
-            Log::info('Demo payment simulation', [
-                'order_id' => $orderId,
-                'customer' => $orderData['customer'],
-                'template' => $orderData['template']
-            ]);
-
-            // Clear session data
-            session()->forget('checkout_order');
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Demo payment berhasil! Mengalihkan ke dashboard admin...',
-                'redirect_url' => route('admin.dashboard.demo')
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Payment simulation failed: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Demo payment simulation failed: ' . $e->getMessage()
-            ], 500);
-        }
+        return view('payment.checkout.status', compact('templatePurchase'));
     }
 
     /**
-     * Handle successful payment
+     * Get payment status via API for AJAX requests.
+     *
+     * @param string $orderId
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function handlePaymentSuccess($orderData)
+    public function getPaymentStatusApi(string $orderId)
     {
-        try {
-            // Create or update user if not authenticated
-            $user = null;
-            if (Auth::check()) {
-                $user = Auth::user();
-            } else {
-                // For demo purposes, create a guest user or find existing user by email
-                $user = User::firstOrCreate(
-                    ['email' => $orderData['customer']['email']],
-                    [
-                        'name' => $orderData['customer']['full_name'],
-                        'phone' => $orderData['customer']['phone'],
-                        'password' => bcrypt(Str::random(12)), // Random password for guest users
-                        'email_verified_at' => now()
-                    ]
-                );
-            }
+        $templatePurchase = \App\Models\TemplatePurchase::with('catalogTemplate')
+            ->where('transaction_id', $orderId)
+            ->first();
 
-            // Find default store category or create one
-            $defaultCategory = \App\Models\StoreCategory::firstOrCreate(
-                ['slug' => 'toko-komputer'],
-                [
-                    'name' => 'Toko Komputer',
-                    'description' => 'Template untuk toko komputer dan elektronik',
-                    'is_active' => true,
-                    'sort_order' => 1
-                ]
-            );
-
-            // Find or create catalog template
-            $catalogTemplate = CatalogTemplate::firstOrCreate(
-                ['name' => $orderData['template']['name']],
-                [
-                    'categories_store_id' => $defaultCategory->id,
-                    'description' => 'Template: ' . $orderData['template']['name'],
-                    'slug' => \Illuminate\Support\Str::slug($orderData['template']['name']),
-                    'price' => $orderData['template']['price'],
-                    'demo_url' => '#',
-                    'preview_image' => 'default-template.jpg',
-                    'is_active' => true,
-                    'status' => 'active',
-                    'tags' => ['template', 'komputer', 'toko']
-                ]
-            );
-
-            // Create template purchase record
-            $purchase = TemplatePurchase::create([
-                'transaction_id' => $orderData['order_id'],
-                'user_id' => $user->id,
-                'catalog_template_id' => $catalogTemplate->id,
-                'amount' => $orderData['template']['price'],
-                'discount_amount' => 0,
-                'final_amount' => $orderData['template']['price'],
-                'payment_method' => $orderData['payment_method'],
-                'payment_status' => 'paid',
-                'payment_details' => json_encode([
-                    'customer' => $orderData['customer'],
-                    'template' => $orderData['template'],
-                    'payment_date' => now()->toISOString()
-                ]),
-                'download_token' => Str::random(32),
-                'download_count' => 0,
-                'max_downloads' => 3,
-                'expires_at' => now()->addDays(30)
-            ]);
-
-            Log::info('Payment processed successfully', [
-                'order_id' => $orderData['order_id'],
-                'user_id' => $user->id,
-                'purchase_id' => $purchase->id
-            ]);
-
-            return $purchase;
-        } catch (\Exception $e) {
-            Log::error('Failed to handle payment success: ' . $e->getMessage());
-            throw $e;
+        if (!$templatePurchase) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Order not found.'
+            ], 404);
         }
-    }
 
-    /**
-     * Handle payment pending
-     */
-    private function handlePaymentPending($orderData)
-    {
-        // Implementation for pending payment
-        Log::info('Payment pending', ['order_id' => $orderData['order_id']]);
-    }
-
-    /**
-     * Handle payment failed
-     */
-    private function handlePaymentFailed($orderData, $status)
-    {
-        // Implementation for failed payment
-        Log::info('Payment failed', [
-            'order_id' => $orderData['order_id'],
-            'status' => $status
+        return response()->json([
+            'status' => 'success',
+            'payment_status' => $templatePurchase->payment_status,
+            'order_id' => $templatePurchase->transaction_id,
+            'template_name' => $templatePurchase->catalogTemplate->name ?? 'N/A',
+            'amount' => $templatePurchase->amount,
+            // Add any other data you want to send to the frontend
         ]);
     }
 
-    /**
-     * Handle payment challenge
-     */
-    private function handlePaymentChallenge($orderData)
-    {
-        // Implementation for payment challenge
-        Log::info('Payment challenge', ['order_id' => $orderData['order_id']]);
-    }
 
-    /**
-     * Process template checkout
-     * Note: This method is no longer used as checkout now uses Midtrans Snap directly via API
-     */
-    // public function processTemplate(Request $request)
-    // {
-    //     // Validate the request
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email|max:255',
-    //         'full_name' => 'required|string|max:255',
-    //         'phone' => 'required|string|max:20',
-    //         'template_data' => 'required|json',
-    //         'payment_method' => 'required|in:midtrans,bank_transfer,e_wallet,qris'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return redirect()->back()
-    //             ->withErrors($validator)
-    //             ->withInput();
-    //     }
-
-    //     try {
-    //         // Parse template data
-    //         $templateData = json_decode($request->template_data, true);
-    //
-    //         if (!$templateData) {
-    //             throw new \Exception('Invalid template data');
-    //         }
-
-    //         // Validate template data structure
-    //         $templateValidator = Validator::make($templateData, [
-    //             'name' => 'required|string',
-    //             'type' => 'required|string',
-    //             'price' => 'required|numeric|min:0',
-    //             'features' => 'required|array'
-    //         ]);
-
-    //         if ($templateValidator->fails()) {
-    //             throw new \Exception('Invalid template data structure');
-    //         }
-
-    //         // Generate order ID
-    //         $orderId = 'TEMPLATE-' . time() . '-' . Str::random(6);
-    //         $paymentMethod = $request->payment_method;
-
-    //         // Handle different payment methods
-    //         switch ($paymentMethod) {
-    //             case 'midtrans':
-    //                 return $this->processMidtransPayment($orderId, $templateData, $request);
-    //
-    //             case 'bank_transfer':
-    //                 return $this->processBankTransferPayment($orderId, $templateData, $request);
-    //
-    //             case 'e_wallet':
-    //                 return $this->processEWalletPayment($orderId, $templateData, $request);
-    //
-    //             case 'qris':
-    //                 return $this->processQRISPayment($orderId, $templateData, $request);
-    //
-    //             default:
-    //                 throw new \Exception('Metode pembayaran tidak didukung');
-    //         }
-
-    //     } catch (\Exception $e) {
-    //         Log::error('Checkout process failed: ' . $e->getMessage());
-    //
-    //         return redirect()->back()
-    //             ->with('error', 'Terjadi kesalahan dalam proses checkout. Silakan coba lagi.')
-    //             ->withInput();
-    //     }
-    // }
-
-
-
-    /**
-     * Get Midtrans Snap Token
-     */
-    private function getMidtransSnapToken($paymentData)
-    {
-        // Set Midtrans configuration
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production');
-        Config::$isSanitized = config('services.midtrans.is_sanitized');
-        Config::$is3ds = config('services.midtrans.is_3ds');
-
-        try {
-            $snapToken = Snap::getSnapToken($paymentData);
-            return $snapToken;
-        } catch (\Exception $e) {
-            Log::error('Midtrans Snap Token Error: ' . $e->getMessage());
-            throw new \Exception('Failed to get payment token');
-        }
-    }
-
-
-
-    /**
-     * Save payment record to database
-     */
-    private function savePaymentRecord($orderData, $status)
-    {
-        DB::beginTransaction();
-
-        try {
-            $templateData = $orderData['template'];
-            $customerData = $orderData['customer'];
-            $paymentData = $orderData['payment_data'];
-
-            // Find or create user based on email
-            $user = User::where('email', $customerData['email'])->first();
-            if (!$user) {
-                // Create a guest user for this purchase
-                $user = User::create([
-                    'name' => $customerData['full_name'],
-                    'email' => $customerData['email'],
-                    'password' => bcrypt(Str::random(16)),
-                    'email_verified_at' => now()
-                ]);
-            }
-
-            // Get catalog template ID based on template name
-            $catalogTemplate = CatalogTemplate::where('name', $templateData['name'])->first();
-            if (!$catalogTemplate) {
-                // If template not found, create a basic one or use first available
-                $catalogTemplate = CatalogTemplate::first();
-                if (!$catalogTemplate) {
-                    throw new \Exception('No catalog templates available');
-                }
-            }
-            $catalogTemplateId = $catalogTemplate->id;
-
-            // Create or update payment record
-            $payment = Payment::updateOrCreate(
-                ['transaction_id' => $orderData['order_id']],
-                [
-                    'user_id' => $user->id,
-                    'catalog_template_id' => $catalogTemplateId,
-                    'store_name' => $templateData['name'] ?? 'Template Store',
-                    'amount' => $templateData['price'],
-                    'discount_amount' => 0,
-                    'final_amount' => $templateData['price'],
-                    'payment_method' => 'midtrans',
-                    'status' => $status,
-                    'payment_details' => [
-                        'template_name' => $templateData['name'],
-                        'template_type' => $templateData['type'],
-                        'features' => $templateData['features'] ?? [],
-                        'customer_name' => $customerData['full_name'],
-                        'customer_phone' => $customerData['phone'],
-                        'midtrans_data' => $paymentData
-                    ],
-                    'paid_at' => $status === 'paid' ? now() : null,
-                    'expires_at' => now()->addDays(30)
-                ]
-            );
-
-            // Create or update template purchase record
-            $templatePurchaseStatus = $status === 'paid' ? 'paid' : ($status === 'failed' ? 'failed' : 'pending');
-
-            $templatePurchase = TemplatePurchase::updateOrCreate(
-                ['transaction_id' => $orderData['order_id']],
-                [
-                    'user_id' => $user->id,
-                    'catalog_template_id' => $catalogTemplateId,
-                    'amount' => $templateData['price'],
-                    'discount_amount' => 0,
-                    'final_amount' => $templateData['price'],
-                    'payment_method' => 'midtrans',
-                    'payment_status' => $templatePurchaseStatus,
-                    'payment_details' => [
-                        'template_name' => $templateData['name'],
-                        'template_type' => $templateData['type'],
-                        'features' => $templateData['features'] ?? [],
-                        'customer_name' => $customerData['full_name'],
-                        'customer_phone' => $customerData['phone'],
-                        'purchase_date' => now()->toDateString()
-                    ],
-                    'paid_at' => $status === 'paid' ? now() : null,
-                    'download_token' => $status === 'paid' ? Str::random(32) : null,
-                    'download_count' => 0,
-                    'max_downloads' => 3,
-                    'expires_at' => now()->addDays(30)
-                ]
-            );
-
-            DB::commit();
-
-            Log::info('Payment record saved', [
-                'order_id' => $orderData['order_id'],
-                'status' => $status,
-                'user_id' => $user->id,
-                'payment_id' => $payment->id,
-                'template_purchase_id' => $templatePurchase->id
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Failed to save payment record: ' . $e->getMessage(), [
-                'order_id' => $orderData['order_id'],
-                'status' => $status,
-                'error' => $e->getMessage()
-            ]);
-            throw $e;
-        }
-    }
 
     /**
      * Process Midtrans payment

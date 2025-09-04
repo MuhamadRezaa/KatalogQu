@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Setup Your Store - KatalogKu</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,6 +21,17 @@
                 </div>
                 <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
                 <p class="text-gray-600 mb-8">Now let's set up your store</p>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="mt-6 bg-white shadow rounded-lg px-6 py-4">
+                <h3 class="text-sm font-medium text-gray-900 mb-2">Order Summary</h3>
+                <div class="text-sm text-gray-600">
+                    <p><strong>Template:</strong> {{ $payment->payment_details['template_name'] ?? 'Store Template' }}
+                    </p>
+                    <p><strong>Amount:</strong> Rp {{ number_format($payment->final_amount, 0, ',', '.') }}</p>
+                    <p><strong>Transaction ID:</strong> {{ $payment->transaction_id }}</p>
+                </div>
             </div>
 
             <div class="bg-white shadow-xl rounded-lg px-6 py-8">
@@ -151,8 +163,8 @@
                     <!-- Submit Button -->
                     <div class="mt-8">
                         <button type="submit" id="submit_btn"
-                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                            <span id="submit_text">Create My Store</span>
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#478413] hover:bg-[#34571E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <span id="submit_text">Buat Toko Saya</span>
                             <svg class="hidden animate-spin -mr-1 ml-3 h-5 w-5 text-white" id="submit_loading"
                                 fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -166,16 +178,7 @@
                 </form>
             </div>
 
-            <!-- Order Summary -->
-            <div class="mt-6 bg-white shadow rounded-lg px-6 py-4">
-                <h3 class="text-sm font-medium text-gray-900 mb-2">Order Summary</h3>
-                <div class="text-sm text-gray-600">
-                    <p><strong>Template:</strong> {{ $payment->payment_details['template_name'] ?? 'Store Template' }}
-                    </p>
-                    <p><strong>Amount:</strong> Rp {{ number_format($payment->final_amount, 0, ',', '.') }}</p>
-                    <p><strong>Transaction ID:</strong> {{ $payment->transaction_id }}</p>
-                </div>
-            </div>
+
         </div>
     </div>
 

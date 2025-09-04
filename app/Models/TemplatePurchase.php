@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne; // Added this line
 use Illuminate\Support\Str;
 use App\Models\CatalogTemplate;
 
@@ -52,6 +53,14 @@ class TemplatePurchase extends Model
     public function catalogTemplate(): BelongsTo
     {
         return $this->belongsTo(CatalogTemplate::class);
+    }
+
+    /**
+     * Get the payment associated with the template purchase.
+     */
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class, 'transaction_id', 'transaction_id');
     }
 
     /**

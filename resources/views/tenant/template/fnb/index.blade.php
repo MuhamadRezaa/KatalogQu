@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ $userStore->store_name ?? 'Kopi Seduh Pagi' }}</title>
 

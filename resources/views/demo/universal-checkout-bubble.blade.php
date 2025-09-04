@@ -1,6 +1,22 @@
 <!-- Universal Checkout Bubble -->
 <!-- This component can be used across different demo templates by setting data attributes -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="fixed top-6 left-6 z-[9999] group">
+    <a href="{{ url('/') }}"
+        class="flex items-center justify-center w-12 h-12 rounded-full text-white shadow-lg transition-transform duration-300 hover:scale-110 bg-gradient-to-r from-[#478413] to-[#34571E]"
+        aria-label="Kembali ke Halaman Utama">
+        <i data-lucide="home" class="w-5 h-5"></i>
+    </a>
+
+    <!-- Tooltip (pakai group-hover dari parent) -->
+    <span
+        class="absolute left-14 top-1/2 -translate-y-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded
+           opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+        Kembali ke Home
+    </span>
+</div>
+
 <div id="checkout-bubble" class="fixed bottom-6 right-6 z-40 hidden" data-template-slug="{{ $templateSlug ?? '' }}">
     <div id="checkout-bubble-content"
         class="text-white rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
@@ -20,6 +36,23 @@
     </div>
 </div>
 
+<script>
+    (function() {
+        function render() {
+            try {
+                window.lucide && lucide.createIcons();
+            } catch (e) {}
+        }
+        if (!window.lucide) {
+            var s = document.createElement('script');
+            s.src = 'https://unpkg.com/lucide@latest/dist/umd/lucide.js';
+            s.onload = render;
+            document.head.appendChild(s);
+        } else {
+            render();
+        }
+    })();
+</script>
 <script>
     // Universal Checkout Bubble Functionality
     document.addEventListener('DOMContentLoaded', function() {

@@ -124,6 +124,7 @@
     <script src="{{ asset('assets/riho-asset/js/slick/slick.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/header-slick.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
     <script src="{{ asset('assets/riho-asset/js/chart/apex-chart/apex-chart.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/chart/apex-chart/stock-prices.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/chart/apex-chart/moment.min.js') }}"></script>

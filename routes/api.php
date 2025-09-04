@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,9 @@ use App\Http\Controllers\MidtransController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// Rute ini harus ada untuk menangani permintaan pengecekan status
+Route::get('/checkout/status-api/{orderId}', [CheckoutController::class, 'checkStatusApi'])
+    ->name('checkout.status.api');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -276,6 +280,27 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
         $paymentData = $validated['payment_data'];
         $orderId = $paymentData['transaction_details']['order_id'];
 
+        // Server-side validation of amounts to prevent tampering
+        $base_price = (float) $templateData['price'];
+        $tax_rate = 0.11;
+        $calculated_tax = round($base_price * $tax_rate);
+        $calculated_total = $base_price + $calculated_tax;
+        $frontend_total = (float) $paymentData['transaction_details']['gross_amount'];
+
+        if ((int) $calculated_total !== (int) $frontend_total) {
+            \Illuminate\Support\Facades\Log::warning('API: Payment amount mismatch. Using server-calculated value.', [
+                'order_id' => $orderId,
+                'server_total' => $calculated_total,
+                'frontend_total' => $frontend_total
+            ]);
+            // Overwrite with server-calculated values to ensure correctness
+            $paymentData['transaction_details']['gross_amount'] = (int) $calculated_total;
+            $paymentData['item_details'] = [
+                ['id' => 'template-' . $templateData['id'], 'price' => (int) $base_price, 'quantity' => 1, 'name' => $templateData['name']],
+                ['id' => 'tax-' . $templateData['id'], 'price' => (int) $calculated_tax, 'quantity' => 1, 'name' => 'PPN 11%']
+            ];
+        }
+
         // Map template ID to catalog_template_id
         $catalogTemplateId = 1; // Default
         if (isset($templateData['id'])) {
@@ -319,22 +344,27 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
             'order_id' => $orderId,
             'user_id' => $guestUser->id,
             'catalog_template_id' => $catalogTemplateId,
-            'amount' => $templateData['price']
+            'amount' => $base_price,
+            'final_amount' => $calculated_total
         ]);
 
         $templatePurchase = \App\Models\TemplatePurchase::create([
             'transaction_id' => $orderId,
             'user_id' => $guestUser->id,
             'catalog_template_id' => $catalogTemplateId,
-            'amount' => $templateData['price'],
+            'amount' => $base_price,
             'discount_amount' => 0,
-            'final_amount' => $templateData['price'],
+            'final_amount' => $calculated_total,
             'payment_method' => 'midtrans',
             'payment_status' => 'pending',
             'payment_details' => json_encode([
                 'customer' => $customerData,
                 'template' => $templateData,
                 'payment_data' => $paymentData,
+                'tax_details' => [
+                    'rate' => $tax_rate,
+                    'amount' => $calculated_tax
+                ],
                 'created_via' => 'api_snap_token',
                 'created_at' => now()->toISOString()
             ]),

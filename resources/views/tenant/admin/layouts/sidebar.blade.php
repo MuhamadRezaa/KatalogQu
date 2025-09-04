@@ -147,7 +147,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.sub-categories.index') }}">
+                    <a class="sidebar-link sidebar-title link-nav"
+                        href="{{ route('tenant.admin.sub-categories.index') }}">
                         <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                         <span>Sub Kategori Produk</span>
                     </a>
@@ -165,7 +166,7 @@
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.products.index') }}">
                         <i class="fa fa-tags menu-icon" aria-hidden="true"></i>
-                        <span>Products</span>
+                        <span>Produk</span>
                     </a>
                 </li>
 
@@ -174,7 +175,7 @@
                     <a class="sidebar-link sidebar-title link-nav"
                         href="{{ route('tenant.admin.price-ranges.index') }}">
                         <i class="fa fa-money menu-icon" aria-hidden="true"></i>
-                        <span>Price Ranges</span>
+                        <span>Rentang Harga</span>
                     </a>
                 </li>
 
@@ -183,11 +184,19 @@
                     <a class="sidebar-link sidebar-title link-nav"
                         href="{{ route('tenant.admin.store-heroes.index') }}">
                         <i class="fa fa-image menu-icon" aria-hidden="true"></i>
-                        <span>Store Heroes</span>
+                        <span>Banner Toko</span>
                     </a>
                 </li>
 
                 <li class="sidebar-list">
+                    <i class="fa fa-thumb-tack"></i>
+                    <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.settings') }}">
+                        <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
+                        <span>Pengaturan Toko</span>
+                    </a>
+                </li>
+
+                {{-- <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title" href="#">
                         <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
@@ -197,7 +206,7 @@
                         <li><a href="{{ route('tenant.admin.settings') }}">Store Settings</a></li>
                         <li><a href="#">Profile Settings</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>

@@ -47,7 +47,6 @@ class RegisterController extends Controller
             Auth::login($user);
 
             return redirect()->route('welcome')->with('success', 'Akun berhasil didaftarkan! Selamat datang di KatalogQu.');
-
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Terjadi kesalahan saat membuat akun. Silakan coba lagi.')

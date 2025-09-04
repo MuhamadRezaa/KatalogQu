@@ -21,13 +21,6 @@ class StoreController extends Controller
         // Get current store info
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            if ($userStore && $userStore->maintenance_mode) {
-                return $this->showMaintenancePage($userStore);
-            }
-            abort(404, 'Store not found or inactive');
-        }
-
         // Get featured products
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -168,9 +161,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            abort(404, 'Store not found or inactive');
-        }
+        
 
         // Find product by slug or ID
         $product = StoreProduct::where('user_store_id', $userStore->id)
@@ -231,9 +222,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            abort(404, 'Store not found or inactive');
-        }
+        
 
         // Find category
         $category = ProductCategory::where('is_active', true)
@@ -347,9 +336,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            abort(404, 'Store not found or inactive');
-        }
+        
 
         $searchTerm = $request->get('q', '');
         $products = collect();
@@ -470,9 +457,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            return response()->json(['error' => 'Store not found'], 404);
-        }
+
 
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -534,9 +519,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            return response()->json(['error' => 'Store not found'], 404);
-        }
+
 
         $categories = ProductCategory::where('is_active', true)
             ->whereHas('products', function ($query) use ($userStore) {
@@ -561,9 +544,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            abort(404, 'Store not found or inactive');
-        }
+        
 
         // Get the catalog template based on the slug
         $catalogTemplate = $userStore->catalogTemplate;
@@ -711,9 +692,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        if (!$userStore || !$userStore->is_active) {
-            abort(404, 'Store not found or inactive');
-        }
+        
 
         // Get the catalog template slug
         $catalogTemplate = $userStore->catalogTemplate;

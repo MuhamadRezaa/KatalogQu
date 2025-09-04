@@ -178,10 +178,10 @@ galleryItems.forEach(item => {
             `;
 
             // Create image element
-            const lightboximg = document.createElement('img');
-            lightboximg.src = img.src;
-            lightboximg.alt = img.alt;
-            lightboximg.style.cssText = `
+            const lightboxImg = document.createElement('img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxImg.style.cssText = `
                 max-width: 100%;
                 max-height: 70vh;
                 object-fit: contain;
@@ -204,7 +204,7 @@ galleryItems.forEach(item => {
 
             // Add elements to lightbox
             lightboxContent.appendChild(haircutName);
-            lightboxContent.appendChild(lightboximg);
+            lightboxContent.appendChild(lightboxImg);
             lightboxContent.appendChild(closeBtn);
             lightbox.appendChild(lightboxContent);
             document.body.appendChild(lightbox);
@@ -440,6 +440,97 @@ function setActiveNavItem() {
     });
 }
 
+// Face shape recommendation data
+const hairStyles = {
+    oval: [
+        {
+            name: "Classic Cut",
+            description: "Potongan klasik yang cocok untuk wajah oval",
+            image: "assets/demo/barbershop/img/klasik.png"
+        },
+        {
+            name: "Modern Fade",
+            description: "Fade modern yang elegan",
+            image: "assets/demo/barbershop/img/modern.jpg"
+        },
+        {
+            name: "Textured Crop",
+            description: "Crop dengan tekstur yang menarik",
+            image: "assets/demo/barbershop/img/comma.JPG"
+        }
+    ],
+    round: [
+        {
+            name: "Pompadour",
+            description: "Style pompadour untuk wajah bulat",
+            image: "assets/demo/barbershop/img/comma.JPG"
+        },
+        {
+            name: "Textured Crop",
+            description: "Crop dengan tekstur yang menarik",
+            image: "assets/demo/barbershop/img/premiun.jpg"
+        },
+        {
+            name: "Side Part",
+            description: "Side part yang formal",
+            image: "assets/demo/barbershop/img/bursfade.jpg"
+        }
+    ],
+    square: [
+        {
+            name: "Side Part",
+            description: "Side part yang formal",
+            image: "assets/demo/barbershop/img/bursfade.jpg"
+        },
+        {
+            name: "Quiff",
+            description: "Quiff yang stylish",
+            image: "assets/demo/barbershop/img/kids.jpg"
+        },
+        {
+            name: "Classic Short",
+            description: "Potongan pendek klasik",
+            image: "assets/demo/barbershop/img/modern.jpg"
+        }
+    ],
+    heart: [
+        {
+            name: "Swept Back",
+            description: "Rambut disisir ke belakang",
+            image: "assets/demo/barbershop/img/hairwash.jpeg"
+        },
+        {
+            name: "Textured Fringe",
+            description: "Fringe dengan tekstur",
+            image: "assets/demo/barbershop/img/klasik.png"
+        }
+    ],
+    diamond: [
+        {
+            name: "Textured Fringe",
+            description: "Fringe dengan tekstur",
+            image: "assets/demo/barbershop/img/klasik.png"
+        },
+        {
+            name: "Classic Short",
+            description: "Potongan pendek klasik",
+            image: "assets/demo/barbershop/img/modern.jpg"
+        }
+    ],
+    triangle: [
+        {
+            name: "Classic Short",
+            description: "Potongan pendek klasik",
+            image: "img/modern.jpg"
+        },
+        {
+            name: "Textured Crop",
+            description: "Crop dengan tekstur yang menarik",
+            image: "assets/demo/barbershop/img/comma.JPG"
+        }
+    ]
+};
+
 function displayRecommendations(faceShape) {
     console.log('Displaying recommendations for:', faceShape);
 
@@ -470,7 +561,7 @@ function displayRecommendations(faceShape) {
     recommendations.forEach(style => {
         recommendationsHTML += `
             <div class="style-card" onclick="showStyleModal('${style.name}', '${style.description}', '${style.image}')">
-                <img src="${style.image}" alt="${style.name}" onerror="this.src='img/klasik.png'">
+                <img src="${style.image}" alt="${style.name}" onerror="this.src='assets/demo/barbershop/img/klasik.png'">
                 <div class="style-info">
                     <h4 class="style-name">${style.name}</h4>
                     <p class="style-description">${style.description}</p>
@@ -501,7 +592,7 @@ function showStyleModal(title, description, imageUrl) {
         styleModal.innerHTML = `
             <div class="modal-content">
                 <button class="modal-close" onclick="closeStyleModal()">&times;</button>
-                <img src="${imageUrl}" alt="${title}" onerror="this.src='img/klasik.png'">
+                <img src="${imageUrl}" alt="${title}" onerror="this.src='assets/demo/barbershop/img/klasik.png'">
                 <h3>${title}</h3>
                 <p>${description}</p>
             </div>
@@ -509,12 +600,12 @@ function showStyleModal(title, description, imageUrl) {
         document.body.appendChild(styleModal);
     } else {
         // Update existing modal
-        const modalimg = styleModal.querySelector('img');
+        const modalImg = styleModal.querySelector('img');
         const modalTitle = styleModal.querySelector('h3');
         const modalDesc = styleModal.querySelector('p');
 
-        modalimg.src = imageUrl;
-        modalimg.alt = title;
+        modalImg.src = imageUrl;
+        modalImg.alt = title;
         modalTitle.textContent = title;
         modalDesc.textContent = description;
     }

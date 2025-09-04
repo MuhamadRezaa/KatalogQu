@@ -1,6 +1,6 @@
 @extends('tenant.admin.layouts.app')
 
-@section('title', 'Store Settings')
+@section('title', 'Pengaturan Toko')
 
 @section('content')
     <form action="{{ route('tenant.admin.settings.update') }}" method="POST" enctype="multipart/form-data" id="settingsForm">
@@ -8,17 +8,17 @@
         @method('PUT')
         <div class="row">
             <div class="col-xl-8">
-                <!-- Store Information -->
+                <!-- Informasi Toko -->
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Store Information</h4>
+                            <h4>Informasi Toko</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Store Name -->
+                        <!-- Nama Toko -->
                         <div class="mb-3">
-                            <label for="store_name" class="form-label">Store Name <span class="text-danger">*</span></label>
+                            <label for="store_name" class="form-label">Nama Toko <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('store_name') is-invalid @enderror"
                                 id="store_name" name="store_name" value="{{ old('store_name', $userStore->store_name) }}"
                                 required>
@@ -27,9 +27,9 @@
                             @enderror
                         </div>
 
-                        <!-- Store Description -->
+                        <!-- Deskripsi Toko -->
                         <div class="mb-3">
-                            <label for="store_description" class="form-label">Store Description</label>
+                            <label for="store_description" class="form-label">Deskripsi Toko</label>
                             <textarea class="form-control @error('store_description') is-invalid @enderror" id="store_description"
                                 name="store_description" rows="4">{{ old('store_description', $userStore->store_description) }}</textarea>
                             @error('store_description')
@@ -37,31 +37,31 @@
                             @enderror
                         </div>
 
-                        <!-- Store Subdomain -->
+                        <!-- Subdomain Toko -->
                         <div class="mb-3">
-                            <label for="subdomain" class="form-label">Store URL</label>
+                            <label for="subdomain" class="form-label">URL Toko</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="subdomain"
                                     value="{{ $userStore->subdomain }}" readonly>
                                 <span class="input-group-text">.{{ config('app.domain', 'localhost') }}</span>
                             </div>
-                            <div class="form-text">Your store URL cannot be changed after setup</div>
+                            <div class="form-text">URL toko Anda tidak dapat diubah setelah pengaturan awal</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Information -->
+                <!-- Informasi Kontak -->
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Contact Information</h4>
+                            <h4>Informasi Kontak</h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <!-- Store Email -->
+                            <!-- Email Toko -->
                             <div class="col-md-6 mb-3">
-                                <label for="store_email" class="form-label">Store Email</label>
+                                <label for="store_email" class="form-label">Email Toko</label>
                                 <input type="email" class="form-control @error('store_email') is-invalid @enderror"
                                     id="store_email" name="store_email"
                                     value="{{ old('store_email', $userStore->store_email) }}">
@@ -70,9 +70,9 @@
                                 @enderror
                             </div>
 
-                            <!-- Store Phone -->
+                            <!-- Telepon Toko -->
                             <div class="col-md-6 mb-3">
-                                <label for="store_phone" class="form-label">Store Phone</label>
+                                <label for="store_phone" class="form-label">Telepon Toko</label>
                                 <input type="text" class="form-control @error('store_phone') is-invalid @enderror"
                                     id="store_phone" name="store_phone"
                                     value="{{ old('store_phone', $userStore->store_phone) }}">
@@ -82,9 +82,9 @@
                             </div>
                         </div>
 
-                        <!-- Store Address -->
+                        <!-- Alamat Toko -->
                         <div class="mb-3">
-                            <label for="store_address" class="form-label">Store Address</label>
+                            <label for="store_address" class="form-label">Alamat Toko</label>
                             <textarea class="form-control @error('store_address') is-invalid @enderror" id="store_address" name="store_address"
                                 rows="3">{{ old('store_address', $userStore->store_address) }}</textarea>
                             @error('store_address')
@@ -94,18 +94,18 @@
                     </div>
                 </div>
 
-                <!-- Social Media -->
+                <!-- Media Sosial -->
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Social Media</h4>
+                            <h4>Media Sosial</h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- Facebook -->
                             <div class="col-md-6 mb-3">
-                                <label for="facebook_url" class="form-label">Facebook URL</label>
+                                <label for="facebook_url" class="form-label">URL Facebook</label>
                                 <input type="url" class="form-control @error('facebook_url') is-invalid @enderror"
                                     id="facebook_url" name="facebook_url"
                                     value="{{ old('facebook_url', $userStore->facebook_url) }}">
@@ -116,7 +116,7 @@
 
                             <!-- Instagram -->
                             <div class="col-md-6 mb-3">
-                                <label for="instagram_url" class="form-label">Instagram URL</label>
+                                <label for="instagram_url" class="form-label">URL Instagram</label>
                                 <input type="url" class="form-control @error('instagram_url') is-invalid @enderror"
                                     id="instagram_url" name="instagram_url"
                                     value="{{ old('instagram_url', $userStore->instagram_url) }}">
@@ -128,20 +128,20 @@
 
                         <div class="row">
                             <!-- WhatsApp -->
-                            <div class="col-md-6 mb-3">
-                                <label for="whatsapp_number" class="form-label">WhatsApp Number</label>
+                            {{-- <div class="col-md-6 mb-3">
+                                <label for="whatsapp_number" class="form-label">Nomor WhatsApp</label>
                                 <input type="text" class="form-control @error('whatsapp_number') is-invalid @enderror"
                                     id="whatsapp_number" name="whatsapp_number"
                                     value="{{ old('whatsapp_number', $userStore->whatsapp_number) }}">
                                 @error('whatsapp_number')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <div class="form-text">Format: 628123456789 (without + sign)</div>
-                            </div>
+                                <div class="form-text">Format: 628123456789 (tanpa tanda +)</div>
+                            </div> --}}
 
                             <!-- Twitter -->
                             <div class="col-md-6 mb-3">
-                                <label for="twitter_url" class="form-label">Twitter URL</label>
+                                <label for="twitter_url" class="form-label">URL Twitter</label>
                                 <input type="url" class="form-control @error('twitter_url') is-invalid @enderror"
                                     id="twitter_url" name="twitter_url"
                                     value="{{ old('twitter_url', $userStore->twitter_url) }}">
@@ -155,53 +155,54 @@
             </div>
 
             <div class="col-xl-4">
-                <!-- Store Status -->
-                <div class="card">
+                <!-- Status Toko -->
+                {{-- <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Store Status</h4>
+                            <h4>Status Toko</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Store Status -->
+                        <!-- Status Toko -->
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
                                     value="1" {{ old('is_active', $userStore->is_active) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="is_active">
-                                    Store is Active
+                                    Toko Aktif
                                 </label>
                             </div>
-                            <div class="form-text">When inactive, your store will not be accessible to customers</div>
+                            <div class="form-text">Saat tidak aktif, toko Anda tidak akan dapat diakses oleh pelanggan
+                            </div>
                         </div>
 
-                        <!-- Maintenance Mode -->
+                        <!-- Mode Pemeliharaan -->
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="maintenance_mode"
                                     name="maintenance_mode" value="1"
                                     {{ old('maintenance_mode', $userStore->maintenance_mode) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="maintenance_mode">
-                                    Maintenance Mode
+                                    Mode Pemeliharaan
                                 </label>
                             </div>
-                            <div class="form-text">Show maintenance page to visitors</div>
+                            <div class="form-text">Tampilkan halaman pemeliharaan kepada pengunjung</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <!-- Store Logo -->
+                <!-- Logo Toko -->
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Store Logo</h4>
+                            <h4>Logo Toko</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Current Logo -->
+                        <!-- Logo Saat Ini -->
                         @if ($userStore->store_logo)
                             <div class="mb-3">
-                                <label class="form-label">Current Logo</label>
+                                <label class="form-label">Logo Saat Ini</label>
                                 <div class="text-center">
                                     <img src="{{ asset('storage/' . $userStore->store_logo) }}"
                                         alt="{{ $userStore->store_name }}" class="img-fluid rounded"
@@ -212,65 +213,65 @@
 
                         <div class="mb-3">
                             <label for="store_logo" class="form-label">
-                                {{ $userStore->store_logo ? 'Replace Logo' : 'Upload Logo' }}
+                                {{ $userStore->store_logo ? 'Ganti Logo' : 'Unggah Logo' }}
                             </label>
                             <input type="file" class="form-control @error('store_logo') is-invalid @enderror"
                                 id="store_logo" name="store_logo" accept="image/*">
                             @error('store_logo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Recommended size: 200x200px. Max file size: 2MB</div>
+                            <div class="form-text">Ukuran yang disarankan: 200x200px. Ukuran file maksimal: 2MB</div>
                         </div>
 
-                        <!-- Logo Preview -->
+                        <!-- Pratinjau Logo Baru -->
                         <div id="logoPreview" style="display: none;">
-                            <label class="form-label">New Logo Preview</label>
+                            <label class="form-label">Pratinjau Logo Baru</label>
                             <div class="text-center">
-                                <img id="previewImg" src="" alt="Preview" class="img-fluid rounded"
+                                <img id="previewImg" src="" alt="Pratinjau" class="img-fluid rounded"
                                     style="max-height: 150px;">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Store Information -->
+                <!-- Info Toko -->
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h4>Store Info</h4>
+                            <h4>Info Toko</h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="f-light">
                             <div class="mb-2">
-                                <strong>Setup Date:</strong><br>
-                                {{ $userStore->setup_completed_at ? $userStore->setup_completed_at->format('M d, Y H:i') : 'N/A' }}
+                                <strong>Tanggal Pengaturan:</strong><br>
+                                {{ $userStore->setup_completed_at ? $userStore->setup_completed_at->format('d F Y H:i') : 'N/A' }}
                             </div>
                             <div class="mb-2">
-                                <strong>Last Updated:</strong><br>
-                                {{ $userStore->updated_at->format('M d, Y H:i') }}
+                                <strong>Terakhir Diperbarui:</strong><br>
+                                {{ $userStore->updated_at->format('d F Y H:i') }}
                             </div>
-                            <div class="mb-2">
-                                <strong>Store ID:</strong><br>
+                            {{-- <div class="mb-2">
+                                <strong>ID Toko:</strong><br>
                                 {{ $userStore->id }}
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
+                <!-- Tombol Aksi -->
                 <div class="card">
                     <div class="card-body">
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-check"></i> Save Changes
+                                <i class="fa fa-check"></i> Simpan Perubahan
                             </button>
                             <a href="{{ route('tenant.admin.dashboard') }}" class="btn btn-secondary">
-                                <i class="icofont icofont-arrow-left"></i> Back to Dashboard
+                                <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
                             </a>
                             <a href="http://{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}"
                                 target="_blank" class="btn btn-info">
-                                <i class="icofont icofont-external-link"></i> Preview Store
+                                <i class="fa fa-external-link"></i> Pratinjau Toko
                             </a>
                         </div>
                     </div>
@@ -297,11 +298,11 @@
             }
         });
 
-        // Form validation
+        // Validasi Form
         $('#settingsForm').on('submit', function(e) {
             let isValid = true;
 
-            // Check required fields
+            // Periksa kolom yang wajib diisi
             if (!$('#store_name').val().trim()) {
                 $('#store_name').addClass('is-invalid');
                 isValid = false;
@@ -309,7 +310,7 @@
                 $('#store_name').removeClass('is-invalid');
             }
 
-            // Validate email format if provided
+            // Validasi format email jika disediakan
             const email = $('#store_email').val();
             if (email && !isValidEmail(email)) {
                 $('#store_email').addClass('is-invalid');
@@ -318,7 +319,7 @@
                 $('#store_email').removeClass('is-invalid');
             }
 
-            // Validate URLs if provided
+            // Validasi URL jika disediakan
             const urls = ['facebook_url', 'instagram_url', 'twitter_url'];
             urls.forEach(function(fieldId) {
                 const url = $('#' + fieldId).val();
@@ -330,11 +331,11 @@
                 }
             });
 
-            // Validate WhatsApp number format
+            // Validasi format nomor WhatsApp
             const whatsapp = $('#whatsapp_number').val();
             if (whatsapp && !isValidWhatsApp(whatsapp)) {
                 $('#whatsapp_number').addClass('is-invalid');
-                alert('WhatsApp number must be in format: 628123456789 (without + sign)');
+                alert('Nomor WhatsApp harus dalam format: 628123456789 (tanpa tanda +)');
                 isValid = false;
             } else {
                 $('#whatsapp_number').removeClass('is-invalid');
@@ -345,9 +346,9 @@
             }
         });
 
-        // Validation helper functions
+        // Fungsi pembantu validasi
         function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailRegex = /^[^\]+@[^\]+\.[^\]+$/;
             return emailRegex.test(email);
         }
 
@@ -365,23 +366,23 @@
             return whatsappRegex.test(number);
         }
 
-        // Auto-format WhatsApp number
+        // Format otomatis nomor WhatsApp
         $('#whatsapp_number').on('input', function() {
-            let value = $(this).val().replace(/\D/g, ''); // Remove non-digits
+            let value = $(this).val().replace(/\D/g, ''); // Hapus non-digit
             if (value.startsWith('0')) {
-                value = '62' + value.substring(1); // Replace leading 0 with 62
+                value = '62' + value.substring(1); // Ganti 0 di awal dengan 62
             } else if (!value.startsWith('62')) {
-                value = '62' + value; // Add 62 prefix
+                value = '62' + value; // Tambahkan awalan 62
             }
             $(this).val(value);
         });
 
-        // Show confirmation when changing store status
+        // Tampilkan konfirmasi saat mengubah status toko
         $('#is_active').on('change', function() {
             if (!this.checked) {
                 if (!confirm(
-                        'Are you sure you want to deactivate your store? Customers will not be able to access it.'
-                        )) {
+                        'Apakah Anda yakin ingin menonaktifkan toko Anda? Pelanggan tidak akan dapat mengaksesnya.'
+                    )) {
                     this.checked = true;
                 }
             }
@@ -390,8 +391,8 @@
         $('#maintenance_mode').on('change', function() {
             if (this.checked) {
                 if (!confirm(
-                        'Are you sure you want to enable maintenance mode? Visitors will see a maintenance page.'
-                        )) {
+                        'Apakah Anda yakin ingin mengaktifkan mode pemeliharaan? Pengunjung akan melihat halaman pemeliharaan.'
+                    )) {
                     this.checked = false;
                 }
             }

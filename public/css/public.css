@@ -15,11 +15,19 @@
     box-sizing: border-box;
 }
 
+/* GANTI ATURAN BODY LAMA ANDA DENGAN YANG INI */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Cabin', sans-serif;
-    line-height: 1.6;
+    line-height: 1.8;
     color: #333;
-    overflow-x: hidden;
 }
 
 .landing-page {
@@ -124,6 +132,7 @@ body {
     display: flex;
     align-items: center;
     overflow: hidden;
+    width: 100%;
 }
 
 .hero-pattern {
@@ -647,9 +656,12 @@ body {
 
 .image-wrapper {
     position: relative;
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    width: 800px;
+    height: 500px;
+    background-image: url('../assets/images/gambar2.jpg'); /* <-- Tambahkan/Ganti dengan ini */
+    background-size: cover;                               /* <-- Tambahkan ini */
+    background-position: center;                          /* <-- Tambahkan ini */
+    background-repeat: no-repeat;                         /* <-- Tambahkan ini */
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -932,7 +944,7 @@ body {
     color: #333;
     padding: 80px 0 10px;
     border-top: 1px solid #e9ecef;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .footer-brand {
@@ -940,7 +952,7 @@ body {
 }
 
 .footer-logo-img {
-    width: 80px;
+    width: 50px;
     height: auto;
     object-fit: contain;
 }
@@ -950,7 +962,7 @@ body {
 }
 
 .footer-section h5 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     color: #333;
@@ -980,6 +992,7 @@ body {
     margin-bottom: 1rem;
     color: #666;
     line-height: 1.6;
+    font-size: 0.9rem;
 }
 
 .contact-info a {
@@ -999,7 +1012,7 @@ body {
 
 .footer-social a {
     color: #666;
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
 }
 
@@ -1151,3 +1164,199 @@ body {
   color: #000000;           /* opsional: warna hijau brand saat hover */
   text-decoration: none; /* opsional: underline saat hover */
 }
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: white;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 1rem;
+    }
+
+    .auth-buttons {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-hero {
+        width: 80%;
+        justify-content: center;
+    }
+
+    .section-main-title {
+        font-size: 2rem;
+    }
+
+    .support-title {
+        font-size: 2rem;
+    }
+
+    .footer-section {
+        text-align: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Sudah ada di kode Anda, ini hanya untuk referensi */
+}
+
+/* ===== Hero layout ===== */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Backdrop carousel layer */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-bg .carousel,
+.hero-bg .carousel-inner,
+.hero-bg .carousel-item,
+.hero-bg .carousel-item img {
+    height: 100%;
+    width: 100%;
+}
+
+/* ===== PERBAIKAN RESPONSIVE HERO MOBILE (SESUAI GAMBAR) ===== */
+
+/* Memastikan gambar hero menutupi seluruh area */
+.hero-bg .carousel-item img {
+  object-position: center; /* Memusatkan gambar agar bagian penting terlihat */
+}
+
+/* Menyesuaikan layout hero untuk layar tablet ke bawah */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;   /* Ukuran judul disesuaikan */
+        line-height: 1.25;
+        margin-bottom: 1rem; /* Jarak bawah judul dikurangi */
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;  /* Ukuran subjudul disesuaikan */
+        padding: 0 20px;
+        margin-bottom: 1.5rem; /* Jarak bawah subjudul dikurangi */
+    }
+
+    .hero-buttons {
+        flex-direction: row;     /* MEMBUAT TOMBOL KEMBALI HORIZONTAL */
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;             /* Jarak antar tombol */
+    }
+
+    .btn-hero {
+        width: auto;             /* Hapus lebar 80%, biarkan otomatis */
+        padding: 10px 22px;      /* Padding tombol diperkecil */
+        font-size: 0.875rem;     /* Font di dalam tombol diperkecil */
+    }
+}
+
+/* Penyesuaian untuk layar HP yang sangat kecil (di bawah 380px) */
+@media (max-width: 380px) {
+    .hero-buttons {
+        flex-direction: column;  /* Jika layar terlalu sempit, tombol akan tersusun ke bawah */
+        align-items: center;
+    }
+
+    .btn-hero {
+        width: 80%;              /* Lebar tombol di layar sangat sempit */
+        justify-content: center;
+    }
+}
+
+/* Overlay hijau agar teks kebaca */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(42, 66, 20, 0.82);
+    z-index: 1;
+}
+
+/* Pastikan dekorasi & konten di atas overlay */
+.hero-pattern,
+.floating-element {
+    position: absolute;
+    z-index: 2;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 3;
+}
+
+/* Spasi dan ukuran teks (opsional, sesuaikan desainmu) */
+.hero-content {
+    max-width: 980px;
+}
+
+.hero-title {
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 1.125rem;
+    margin-top: .75rem;
+}
+
+@media (min-width: 992px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+}
+
+/* hilangkan bintik hanya di hero */
+.hero-section .hero-pattern {
+    background-image: none !important;
+}
+
+/* khusus link di footer */
+.footer .click a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer .click a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+

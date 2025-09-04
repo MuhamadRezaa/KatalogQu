@@ -4,14 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>Low Barber - Barbershop Premium</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/barbershop/styles.css') }}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
-    <!-- Midtrans Snap CDN (Sandbox for Demo) -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 </head>
 
 <body>
@@ -67,7 +65,7 @@
             </div>
             <div class="hero-buttons">
                 <a href="#gallery" class="btn btn-secondary btn-large">
-                    <i class="fas fa-img"></i>
+                    <i class="fas fa-images"></i>
                     Lihat Portfolio
                 </a>
             </div>
@@ -181,7 +179,7 @@
                         <h3 class="service-name">Classic Cut</h3>
                         <div class="service-price">Rp 75,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Classic Cut', 'Classic Cut adalah potongan rambut klasik yang cocok untuk semua usia.', 'img/klasik.png')">
+                            onclick="showModal('Classic Cut', 'Classic Cut adalah potongan rambut klasik yang cocok untuk semua usia.', '{{ asset('assets/demo/barbershop/img/klasik.png') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -221,7 +219,7 @@
                         <h3 class="service-name">Beard Trim</h3>
                         <div class="service-price">Rp 45,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Beard Trim', 'Perapian jenggot agar tampak rapi, bersih, dan sesuai bentuk wajah untuk tampilan yang maskulin.', 'img/beardtrim.jpg')">
+                            onclick="showModal('Beard Trim', 'Perapian jenggot agar tampak rapi, bersih, dan sesuai bentuk wajah untuk tampilan yang maskulin.', '{{ asset('assets/demo/barbershop/img/beardtrim.jpg') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -241,7 +239,7 @@
                         <h3 class="service-name">Premium Package</h3>
                         <div class="service-price">Rp 150,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Premium Package', 'Paket perawatan lengkap mulai dari potong rambut, perapian jenggot, hingga styling premium untuk tampilan maksimal.', 'img/premiun.jpg')">
+                            onclick="showModal('Premium Package', 'Paket perawatan lengkap mulai dari potong rambut, perapian jenggot, hingga styling premium untuk tampilan maksimal.', '{{ asset('assets/demo/barbershop/img/premiun.jpg') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -261,7 +259,7 @@
                         <h3 class="service-name">Hair Wash & Style</h3>
                         <div class="service-price">Rp 35,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Hair Wash & Style', 'Cuci rambut menyegarkan dilanjutkan dengan penataan stylish untuk tampilan rapi dan percaya diri sepanjang hari.', 'img/hairwash.jpeg')">
+                            onclick="showModal('Hair Wash & Style', 'Cuci rambut menyegarkan dilanjutkan dengan penataan stylish untuk tampilan rapi dan percaya diri sepanjang hari.', '{{ asset('assets/demo/barbershop/img/hairwash.jpeg') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -281,7 +279,7 @@
                         <h3 class="service-name">Kids Cut</h3>
                         <div class="service-price">Rp 50,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Kids Cut', 'Potongan rambut rapi dan nyaman untuk anak-anak, dengan gaya yang lucu dan mudah diatur.', 'img/kids.jpg')">
+                            onclick="showModal('Kids Cut', 'Potongan rambut rapi dan nyaman untuk anak-anak, dengan gaya yang lucu dan mudah diatur.', '{{ asset('assets/demo/barbershop/img/kids.jpg') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -348,95 +346,53 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Hubungi Kami</h2>
-                <p class="section-subtitle">
-                    Siap untuk mendapatkan potongan rambut terbaik? Hubungi
-                    kami sekarang!
-                </p>
-            </div>
-
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="contact-title">Lokasi</h3>
-                    <p class="contact-text">
-                        Jl. Perjuangan No. 13<br />Kota Medan, 10220
-                    </p>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h3 class="contact-title">Telepon</h3>
-                    <p class="contact-text">
-                        +62 813-8549-7404<br />+62 21-1234-5678
-                    </p>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3 class="contact-title">Jam Buka</h3>
-                    <p class="contact-text">
-                        Sen - Sab: 09:00 - 21:00<br />Minggu: 10:00 - 18:00
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <div class="footer-social">
-                        <a href="#" class="social-link">
+                    <div class="hero-icon"
+                        style="
+                                background: none !important;
+                                border: none !important;
+                                box-shadow: none !important;
+                            ">
+                        <i class="fas fa-cut"
+                            style="
+                                    background: none !important;
+                                    padding: 0 !important;
+                                    margin: 0 !important;
+                                    width: auto !important;
+                                    height: auto !important;
+                                "></i>
+                    </div>
+                    <h1>LowBarber</h1>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-title">Kontak Kami</h3>
+                    <ul class="footer-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i> Jl.
+                            Perjuangan No. 13, Medan 10220
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i> +62 813-8549-7404
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i> info@barber.com
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i> Sen-Sab: 09:00 -
+                            21:00 | Minggu: 10:00 - 18:00
+                        </li>
+                    </ul>
+                    <div class="footer-social" style="margin-top: 15px">
+                        <a href="#" class="social-link" aria-label="Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook"></i>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
                         </a>
-                    </div>
-                </div>
-                <div class="footer-grid-container">
-                    <div class="footer-links">
-                        <h3 class="footer-title">Layanan</h3>
-                        <ul class="footer-list">
-                            <li>
-                                <a href="#services" class="footer-link">Classic Cut</a>
-                            </li>
-                            <li>
-                                <a href="#services" class="footer-link">Modern Fade</a>
-                            </li>
-                            <li>
-                                <a href="#services" class="footer-link">Beard Trim</a>
-                            </li>
-                            <li>
-                                <a href="#services" class="footer-link">Premium Package</a>
-                            </li>
-                            <li>
-                                <a href="#services" class="footer-link">Hair Wash & Style</a>
-                            </li>
-                            <li>
-                                <a href="#services" class="footer-link">Kids Cut</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer-contact">
-                        <h3 class="footer-title">Kontak</h3>
-                        <ul class="footer-list">
-                            <li>Jl. Perjuangan No. 13</li>
-                            <li>Kota Medan 10220</li>
-                            <li>+62 813-8549-7404</li>
-                            <li>info@barber.com</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -446,98 +402,8 @@
         </div>
     </footer>
 
-    <!-- Universal Checkout Bubble -->
-    @include('demo.universal-checkout-bubble', [
-        'templateSlug' => 'barbershop',
-    ])
-
     <script src="{{ asset('assets/demo/barbershop/script.js') }}"></script>
     <script>
-        // Face shape recommendation data
-        const hairStyles = {
-            oval: [{
-                    name: "Classic Cut",
-                    description: "Potongan klasik yang cocok untuk wajah oval",
-                    image: "{{ asset('assets/demo/barbershop/img/klasik.png') }}",
-                },
-                {
-                    name: "Modern Fade",
-                    description: "Fade modern yang elegan",
-                    image: "{{ asset('assets/demo/barbershop/img/modern.jpg') }}",
-                },
-                {
-                    name: "Textured Crop",
-                    description: "Crop dengan tekstur yang menarik",
-                    image: "{{ asset('assets/demo/barbershop/img/comma.JPG') }}",
-                },
-            ],
-            round: [{
-                    name: "Pompadour",
-                    description: "Style pompadour untuk wajah bulat",
-                    image: "{{ asset('assets/demo/barbershop/img/comma.JPG') }}",
-                },
-                {
-                    name: "Textured Crop",
-                    description: "Crop dengan tekstur yang menarik",
-                    image: "{{ asset('assets/demo/barbershop/img/premiun.jpg') }}",
-                },
-                {
-                    name: "Side Part",
-                    description: "Side part yang formal",
-                    image: "{{ asset('assets/demo/barbershop/img/bursfade.jpg') }}",
-                },
-            ],
-            square: [{
-                    name: "Side Part",
-                    description: "Side part yang formal",
-                    image: "{{ asset('assets/demo/barbershop/img/bursfade.jpg') }}",
-                },
-                {
-                    name: "Quiff",
-                    description: "Quiff yang stylish",
-                    image: "{{ asset('assets/demo/barbershop/img/kids.jpg') }}",
-                },
-                {
-                    name: "Classic Short",
-                    description: "Potongan pendek klasik",
-                    image: "{{ asset('assets/demo/barbershop/img/modern.jpg') }}",
-                },
-            ],
-            heart: [{
-                    name: "Swept Back",
-                    description: "Rambut disisir ke belakang",
-                    image: "{{ asset('assets/demo/barbershop/img/hairwash.jpeg') }}",
-                },
-                {
-                    name: "Textured Fringe",
-                    description: "Fringe dengan tekstur",
-                    image: "{{ asset('assets/demo/barbershop/img/klasik.png') }}",
-                },
-            ],
-            diamond: [{
-                    name: "Textured Fringe",
-                    description: "Fringe dengan tekstur",
-                    image: "{{ asset('assets/demo/barbershop/img/klasik.png') }}",
-                },
-                {
-                    name: "Classic Short",
-                    description: "Potongan pendek klasik",
-                    image: "{{ asset('assets/demo/barbershop/img/modern.jpg') }}",
-                },
-            ],
-            triangle: [{
-                    name: "Classic Short",
-                    description: "Potongan pendek klasik",
-                    image: "{{ asset('assets/demo/barbershop/img/modern.jpg') }}",
-                },
-                {
-                    name: "Textured Crop",
-                    description: "Crop dengan tekstur yang menarik",
-                    image: "{{ asset('assets/demo/barbershop/img/comma.JPG') }}",
-                },
-            ],
-        };
-
         function toggleDetail(btn) {
             const detail = btn.nextElementSibling;
             if (
@@ -552,7 +418,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>

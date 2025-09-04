@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tenant; // Added this line
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserStore extends Model
 {
@@ -66,6 +68,14 @@ class UserStore extends Model
     public function payment()
     {
         return $this->belongsTo(Payment::class, 'payment_transaction_id', 'transaction_id');
+    }
+
+    /**
+     * Get the tenant associated with the user store.
+     */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 
     /**

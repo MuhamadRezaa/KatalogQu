@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>E-Katalog ATK</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-atk/styles.css') }}">
     <!-- Font Awesome untuk icons -->
@@ -1097,7 +1098,7 @@
 </script>
 
 <!-- Universal Checkout Bubble -->
-@include('layouts.demo.universal-checkout-bubble', [
+@include('demo.universal-checkout-bubble', [
     'templateSlug' => 'toko-atk',
 ])
 </body>

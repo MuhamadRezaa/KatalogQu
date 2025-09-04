@@ -12,80 +12,89 @@
             </div>
         </div>
         <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <strong>Whoops! Ada beberapa masalah dengan input Anda.</strong><br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            
+            <div class="tab-content" id="userTabsContent">
+                <div class="tab-pane fade show active" role="tabpanel">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Whoops! Ada beberapa masalah dengan input Anda.</strong><br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
-            <div class="table-responsive custom-scrollbar">
-                <table class="display" id="table-1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Tanggal Bergabung</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($users as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->email }}</td>
-                                <td><span
-                                        class="badge {{ $item->role == 'admin' ? 'badge-danger' : 'badge-primary' }}">{{ ucfirst($item->role) }}</span>
-                                </td>
-                                <td>{{ $item->created_at->format('d M Y') }}</td>
-                                <td>
-                                    <ul class="action">
-                                        <li class="edit">
-                                            <a href="#" class="btn-edit" data-id="{{ $item->id }}"
-                                                data-bs-toggle="modal" data-bs-target="#editModal">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                        <li class="delete">
-                                            <form action="{{ route('users.destroy', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    style="background:none; border:none; padding:0; margin:0; cursor:pointer;">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Data tidak ditemukan.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                    <div class="table-responsive custom-scrollbar mt-2">
+                        <table class="display" id="table-1">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>{{ request('status') == 'trashed' ? 'Tanggal Dihapus' : 'Tanggal Bergabung' }}</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($users as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td><span
+                                                class="badge {{ $item->role == 'admin' ? 'badge-danger' : 'badge-primary' }}">{{ ucfirst($item->role) }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($item->trashed())
+                                                {{ $item->deleted_at->format('d M Y') }}
+                                            @else
+                                                {{ $item->created_at->format('d M Y') }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($item->role !== 'admin')
+                                                @if ($item->trashed())
+                                                    {{-- Tombol untuk Restore (mengaktifkan) --}}
+                                                    <form action="{{ route('users.restore', $item->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
+                                                    </form>
+                                                @else
+                                                    {{-- Tombol untuk Soft Delete (menonaktifkan) --}}
+                                                    <form action="{{ route('users.destroy', $item->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Nonaktifkan</button>
+                                                    </form>
+                                                @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Data tidak ditemukan.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

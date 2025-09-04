@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>Kopi Seduh Pagi</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,9 +14,6 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Midtrans Snap CDN (Sandbox for Demo) -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fnb/style.css') }}">
 
@@ -33,6 +30,7 @@
         class="fixed top-0 w-full z-50 bg-white border-b border-[#f3e7e8] px-4 sm:px-6 md:px-8 py-4 header-transition">
         <div class="max-w-6xl mx-auto flex justify-between items-center relative">
             <div class="flex items-center gap-4">
+                <!-- Logo -->
                 <div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
                     <img src="{{ asset('assets/demo/fnb/images/capuccino.jpg') }}" alt="Kopi Seduh Pagi"
                         class="w-full h-full object-cover">

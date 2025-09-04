@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Checkout Template - KatalogKu</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,14 +14,12 @@
 </head>
 
 <body class="bg-gray-50">
-    <!-- Bubble Button untuk kembali ke home -->
     <div class="fixed top-6 left-6 z-50">
         <a href="{{ url('/') }}"
             class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#478413] to-[#34571E] text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
             title="Kembali ke Halaman Utama">
             <i data-lucide="home" class="w-5 h-5"></i>
         </a>
-        <!-- Tooltip -->
         <div
             class="absolute left-14 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
             Kembali ke Home
@@ -29,22 +28,19 @@
 
     <div class="min-h-screen py-8">
         <div class="max-w-4xl mx-auto px-4">
-            <!-- Header -->
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Checkout Template</h1>
                 <p class="text-gray-600">Selesaikan pembelian template Anda</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Template Information -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold mb-4">Detail Template</h2>
 
-                    <!-- Template Preview -->
                     <div class="mb-6">
                         <img id="template-preview" src="" alt="Template Preview"
                             class="w-full h-48 object-cover rounded-lg border"
-                            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgNzVIMjI1VjEyNUgxNzVWNzVaIiBmaWxsPSIjOUI5QkEwIi8+CjxwYXRoIGQ9Ik0xOTAgOTBIMjEwVjExMEgxOTBWOTBaIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOUI5QkEwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPlRlbXBsYXRlIFByZXZpZXc8L3RleHQ+Cjwvc3ZnPg=='">
+                            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgNzVIMjI1VjEyNUgxNzVWNzVaIiBmaWxsPSIjOUI5QkEwIi8+CjxwYXRoIGQ9Ik0xOTAgOTBIMjEwVjExMEgxOTBWOTBaIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOUI5QkEwIiBmb250LWZhbWlyeT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPlRlbXBsYXRlIFByZXZpZXc8L3RleHQ+Cjwvc3ZnPg=='">
                     </div>
 
                     <div class="space-y-3">
@@ -65,12 +61,10 @@
                     <div class="mt-6 pt-4 border-t">
                         <h3 class="font-medium mb-3">Fitur Template:</h3>
                         <ul id="template-features" class="list-disc list-inside text-sm text-gray-600 space-y-1">
-                            <!-- Features will be populated by JavaScript -->
                         </ul>
                     </div>
                 </div>
 
-                <!-- Checkout Form -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold mb-4">Informasi Pembeli</h2>
 
@@ -110,7 +104,6 @@
                         </div>
                     </form>
 
-                    <!-- Order Summary -->
                     <div class="mt-6 pt-4 border-t">
                         <h3 class="font-medium mb-3">Ringkasan Pesanan</h3>
                         <div class="space-y-2">
@@ -119,8 +112,8 @@
                                 <span id="subtotal" class="font-medium"></span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Pajak (0%):</span>
-                                <span class="font-medium">Rp 0</span>
+                                <span class="text-gray-600">Pajak (11%):</span>
+                                <span id="tax-amount" class="font-medium"></span>
                             </div>
                             <div class="flex justify-between text-lg font-semibold pt-2 border-t">
                                 <span>Total:</span>
@@ -129,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Payment Button -->
                     <div class="mt-6">
                         <button id="process-payment-btn" type="button"
                             class="w-full bg-gradient-to-r from-[#478413] to-[#34571E] text-white py-3 px-4 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -145,7 +137,6 @@
                 </div>
             </div>
 
-            <!-- Back Button -->
             <div class="text-center mt-8">
                 <a href="#" id="back-to-demo"
                     class="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors">
@@ -156,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
     <div id="loading-overlay"
         class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white rounded-lg p-6 text-center">
@@ -214,18 +204,21 @@
                         throw new Error(template.error);
                     }
 
+                    const price = parseFloat(template.price);
+                    const tax = price * 0.11;
+                    const total = Math.round(price + tax);
+
                     // Update UI with template data
                     document.getElementById('template-name').textContent = template.name;
                     document.getElementById('template-category').textContent = template.category ? template.category
                         .name : 'General';
-                    document.getElementById('template-price').textContent = 'Rp ' + parseFloat(template.price)
-                        .toLocaleString('id-ID');
-                    document.getElementById('subtotal').textContent = 'Rp ' + parseFloat(template.price).toLocaleString(
-                        'id-ID');
-                    document.getElementById('total').textContent = 'Rp ' + parseFloat(template.price).toLocaleString(
-                        'id-ID');
-                    document.getElementById('payment-amount').textContent = 'Rp ' + parseFloat(template.price)
-                        .toLocaleString('id-ID');
+                    document.getElementById('template-price').textContent = 'Rp ' + price.toLocaleString('id-ID');
+
+                    document.getElementById('subtotal').textContent = 'Rp ' + price.toLocaleString('id-ID');
+                    document.getElementById('tax-amount').textContent = 'Rp ' + Math.round(tax).toLocaleString('id-ID');
+                    document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+                    document.getElementById('payment-amount').textContent = 'Rp ' + total.toLocaleString('id-ID');
+
 
                     // Set preview image if available
                     if (template.preview_image) {
@@ -289,12 +282,17 @@
                 .catch(error => {
                     console.error('Error fetching template data:', error);
                     // Show default data if fetch fails
+                    const price = 150000;
+                    const tax = price * 0.11;
+                    const total = Math.round(price + tax);
+
                     document.getElementById('template-name').textContent = 'TechZone - Computer Store Template';
                     document.getElementById('template-category').textContent = 'Toko Komputer';
-                    document.getElementById('template-price').textContent = 'Rp 150.000';
-                    document.getElementById('subtotal').textContent = 'Rp 150.000';
-                    document.getElementById('total').textContent = 'Rp 150.000';
-                    document.getElementById('payment-amount').textContent = 'Rp 150.000';
+                    document.getElementById('template-price').textContent = 'Rp ' + price.toLocaleString('id-ID');
+                    document.getElementById('subtotal').textContent = 'Rp ' + price.toLocaleString('id-ID');
+                    document.getElementById('tax-amount').textContent = 'Rp ' + Math.round(tax).toLocaleString('id-ID');
+                    document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+                    document.getElementById('payment-amount').textContent = 'Rp ' + total.toLocaleString('id-ID');
                     document.getElementById('back-to-demo').href = '/demo/toko-komputer';
                     hideLoading();
                 });
@@ -346,12 +344,19 @@
                         throw new Error(template.error);
                     }
 
+                    const price = parseFloat(template.price);
+                    const tax = price * 0.11;
+                    const roundedTax = Math.round(tax);
+                    const total = price + roundedTax;
+
                     // Prepare template data
                     const templateData = {
                         id: template.slug,
                         name: template.name,
                         type: template.category ? template.category.name : 'General',
-                        price: parseFloat(template.price),
+                        price: price,
+                        tax: roundedTax,
+                        total: total,
                         timestamp: new Date().toISOString(),
                         customer: {
                             first_name: customerName.split(' ')[0] || 'Guest',
@@ -393,7 +398,7 @@
             const paymentData = {
                 transaction_details: {
                     order_id: orderId,
-                    gross_amount: templateData.price
+                    gross_amount: templateData.total
                 },
                 customer_details: {
                     first_name: templateData.customer.first_name,
@@ -402,11 +407,18 @@
                     phone: templateData.customer.phone
                 },
                 item_details: [{
-                    id: 'template-' + templateData.id,
-                    price: templateData.price,
-                    quantity: 1,
-                    name: templateData.name
-                }]
+                        id: 'template-' + templateData.id,
+                        price: templateData.price,
+                        quantity: 1,
+                        name: templateData.name
+                    },
+                    {
+                        id: 'tax-' + templateData.id,
+                        price: templateData.tax,
+                        quantity: 1,
+                        name: 'PPN 11%'
+                    }
+                ]
             };
 
             // Call backend to get Snap token
@@ -458,19 +470,29 @@
                         // Open Midtrans Snap popup
                         window.snap.pay(data.snap_token, {
                             onSuccess: function(result) {
+                                // HANYA jika pembayaran SUKSES, arahkan ke setup toko
                                 console.log('Payment success:', result);
                                 handlePaymentSuccess(result, templateData);
                             },
                             onPending: function(result) {
+                                // Jika PENDING, beri tahu pengguna untuk menyelesaikan pembayaran
                                 console.log('Payment pending:', result);
-                                handlePaymentPending(result, templateData);
+                                alert(
+                                    'Pembayaran Anda sedang diproses. Mohon selesaikan pembayaran sesuai instruksi.'
+                                );
+                                // Jangan redirect, biarkan pengguna di halaman checkout
                             },
                             onError: function(result) {
+                                // Jika ERROR, beri tahu pengguna pembayaran gagal
                                 console.log('Payment error:', result);
-                                handlePaymentError(result);
+                                alert(
+                                    'Pembayaran gagal. Silakan coba lagi atau gunakan metode pembayaran lain.'
+                                );
                             },
                             onClose: function() {
-                                console.log('Payment popup closed');
+                                // Jika popup ditutup (dibatalkan), beri tahu pengguna
+                                console.log('Payment popup closed by user');
+                                alert('Anda membatalkan pembayaran. Pesanan belum diproses.');
                             }
                         });
                     } else {
@@ -521,9 +543,9 @@
                 completed_at: new Date().toISOString()
             }));
 
-            alert('Pembayaran berhasil! Silakan lengkapi setup toko Anda.');
+            alert('Pembayaran berhasil! Anda akan diarahkan ke halaman status pemesanan.');
             // Redirect to store setup form with order_id
-            window.location.href = '/store-setup?order_id=' + result.order_id;
+            window.location.href = '/checkout/status/' + result.order_id;
         }
 
         function handlePaymentPending(result, templateData) {

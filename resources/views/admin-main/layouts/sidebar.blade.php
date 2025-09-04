@@ -33,7 +33,7 @@
 
 <div class="sidebar-wrapper" data-layout="stroke-svg">
     <div class="logo-wrapper">
-        <a href="index.html">
+        <a href="/admin">
             <img class="img-fluid" src="{{ asset('assets/images/katalogqu_logo.png') }}" alt="KatalogQu" width="150px">
         </a>
         <div class="back-btn"><i class="fa fa-angle-left"></i></div>
@@ -71,7 +71,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="#">
+                    <a class="sidebar-link sidebar-title link-nav" href="/admin">
                         <i class="fa fa-home menu-icon" aria-hidden="true"></i>
                         <span>Dashboard</span>
                     </a>
@@ -109,7 +109,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/stores">
+                    <a class="sidebar-link sidebar-title link-nav" href="/admin/toko">
                         <i class="fa fa-building menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Toko</span>
                     </a>
@@ -117,21 +117,21 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/payments">
+                    <a class="sidebar-link sidebar-title link-nav" href="/admin/pembayaran">
                         <i class="fa fa-credit-card menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Pembayaran</span>
                     </a>
                 </li>
 
-                <li class="sidebar-list">
+                {{-- <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title link-nav" href="/admin/settings">
                         <i class="fa fa-cogs menu-icon" aria-hidden="true"></i>
                         <span>Pengaturan Sistem</span>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="sidebar-list">
+                {{-- <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title" href="#">
                         <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
@@ -141,7 +141,7 @@
                         <li><a href="general-widget.html">General</a></li>
                         <li><a href="chart-widget.html">Chart</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>

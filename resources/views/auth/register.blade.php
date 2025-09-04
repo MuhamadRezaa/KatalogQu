@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/images/katalogqu_icon.png') }}">
     <title>Register - KatalogQu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #478413 0%, #34571E 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,6 +27,7 @@
             position: relative;
             overflow-x: hidden;
         }
+
         body::before {
             content: '';
             position: absolute;
@@ -34,6 +39,7 @@
             background-size: cover;
             pointer-events: none;
         }
+
         .register-container {
             position: relative;
             z-index: 1;
@@ -41,6 +47,7 @@
             max-width: 450px;
             margin: 20px;
         }
+
         .register-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -50,20 +57,24 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: slideUp 0.8s ease-out;
         }
+
         @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         .logo {
             text-align: center;
             margin-bottom: 40px;
         }
+
         .logo h2 {
             color: #667eea;
             font-weight: 700;
@@ -71,15 +82,18 @@
             font-size: 2.2rem;
             text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
         }
+
         .logo p {
             color: #6c757d;
             font-weight: 400;
             margin-top: 8px;
             font-size: 1rem;
         }
+
         .form-floating {
             margin-bottom: 20px;
         }
+
         .form-control {
             border-radius: 15px;
             border: 2px solid #e9ecef;
@@ -89,19 +103,22 @@
             font-weight: 400;
             height: 58px;
         }
+
         .form-control:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
             background: rgba(255, 255, 255, 1);
             transform: translateY(-2px);
         }
-        .form-floating > label {
+
+        .form-floating>label {
             color: #6c757d;
             font-weight: 500;
             padding-left: 20px;
         }
+
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #F99A07;
             border: none;
             border-radius: 15px;
             padding: 15px 25px;
@@ -113,6 +130,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -120,20 +138,26 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
+
         .btn-primary:hover::before {
             left: 100%;
         }
+
         .btn-primary:hover {
+            background: #fff;
+            border: 2px solid #F99A07;
+            color: #F99A07;
             transform: translateY(-3px);
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
+
         .btn-google {
             background: #fff;
-            border: 2px solid #e9ecef;
-            color: #333;
+            border: 2px solid #478413;
+            color: #478413;
             border-radius: 15px;
             padding: 15px 25px;
             font-weight: 600;
@@ -146,6 +170,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .btn-google::before {
             content: '';
             position: absolute;
@@ -156,24 +181,29 @@
             background: linear-gradient(90deg, transparent, rgba(219, 68, 55, 0.1), transparent);
             transition: left 0.5s;
         }
+
         .btn-google:hover::before {
             left: 100%;
         }
+
         .btn-google:hover {
-            border-color: #db4437;
-            color: #db4437;
+            background: #478413;
+            border-color: #478413;
+            color: white;
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(219, 68, 55, 0.25);
-            background: #fff;
+            box-shadow: 0 10px 20px rgba(71, 132, 19, 0.3);
         }
+
         .btn-google i {
             font-size: 1.2rem;
         }
+
         .divider {
             text-align: center;
             margin: 20px 0;
             position: relative;
         }
+
         .divider::before {
             content: '';
             position: absolute;
@@ -183,39 +213,44 @@
             height: 1px;
             background: #e9ecef;
         }
+
         .divider span {
             background: rgba(255, 255, 255, 0.95);
             padding: 0 15px;
             color: #6c757d;
             font-size: 14px;
         }
+
         .text-link {
-            color: #667eea;
+            color: #478413;
             text-decoration: none;
             font-weight: 500;
         }
+
         .text-link:hover {
-            color: #764ba2;
+            color: #F99A07;
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="register-container">
         <div class="register-card">
             <div class="logo">
-                <a href="{{ route('home') }}"><img src="{{asset('assets/images/katalogqu_logo.png')}}" alt="KatalogQu" width="300px" height="auto"></a>
-                <p class="text-muted mb-0">Bergabunglah dengan ribuan pebisnis sukses</p>
+                <a href="{{ route('home') }}"><img src="{{ asset('assets/images/katalogqu_logo.png') }}" alt="KatalogQu"
+                        width="300px" height="auto"></a><br>
+                <i class="text-muted mb-0">Klik logo untuk ke halaman KatalogQu</i>
             </div>
 
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-triangle me-2"></i>{{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
-            @if(session('info'))
+            @if (session('info'))
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <i class="fas fa-info-circle me-2"></i>{{ session('info') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -229,19 +264,23 @@
             <form method="POST" action="{{ route('register.post') }}">
                 @csrf
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Nama Lengkap" value="{{ session('google_user.name', old('name')) }}" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nama Lengkap"
+                        value="{{ session('google_user.name', old('name')) }}" required>
                     <label for="name"><i class="fas fa-user me-2"></i>Nama Lengkap</label>
                 </div>
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ session('google_user.email', old('email')) }}" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                        value="{{ session('google_user.email', old('email')) }}" required>
                     <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        required>
                     <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password" required>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                        placeholder="Konfirmasi Password" required>
                     <label for="password_confirmation"><i class="fas fa-lock me-2"></i>Konfirmasi Password</label>
                 </div>
                 <div class="mb-4 form-check">
@@ -256,7 +295,7 @@
             </form>
 
             <!-- Google Register Button -->
-            @if(session('google_user'))
+            @if (session('google_user'))
                 <!-- Form untuk registrasi dengan Google -->
                 <form action="{{ route('google.register') }}" method="POST">
                     @csrf
@@ -271,7 +310,8 @@
                 </form>
                 <div class="alert alert-info mb-4">
                     <i class="fas fa-info-circle me-2"></i>
-                    <strong>Akun Google terdeteksi!</strong> Klik "Daftarkan Akun dengan Google" untuk membuat akun baru menggunakan data Google Anda.
+                    <strong>Akun Google terdeteksi!</strong> Klik "Daftarkan Akun dengan Google" untuk membuat akun baru
+                    menggunakan data Google Anda.
                 </div>
             @else
                 <!-- Normal Google OAuth flow -->
@@ -294,4 +334,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

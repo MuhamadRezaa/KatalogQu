@@ -13,6 +13,8 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\StoreSetupController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,9 @@ foreach (config('tenancy.central_domains') as $domain) {
         // ========================================
 
         Route::get('/', [LandingPageController::class, 'index'])->name('home');
+        Route::get('/dashboard', function () {
+            return redirect()->route('home');
+        });
         Route::get('/welcome', [LandingPageController::class, 'index'])->name('welcome');
 
         // ========================================
@@ -110,8 +115,12 @@ foreach (config('tenancy.central_domains') as $domain) {
         // Google OAuth routes
         Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
         Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
-        Route::post('/auth/google/register', [GoogleController::class, 'handleGoogleRegister'])->name('google.register');
 
+        // Route baru untuk menampilkan halaman konfirmasi registrasi Google
+        Route::get('/auth/google/register', [GoogleController::class, 'showGoogleRegisterView'])->name('google.register.view');
+
+        // Route yang ada untuk memproses pendaftaran
+        Route::post('/auth/google/register', [GoogleController::class, 'handleGoogleRegister'])->name('google.register');
 
 
         // ========================================
@@ -119,6 +128,11 @@ foreach (config('tenancy.central_domains') as $domain) {
         // ========================================
 
         Route::middleware(['auth'])->group(function () {
+
+            // Profile Routes
+            Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
+            Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+            Route::get('/profile/invoice/{transactionId}', [UserProfileController::class, 'showInvoice'])->name('profile.invoice.show');
 
             // ========================================
             // PAYMENT ROUTES
@@ -165,19 +179,27 @@ foreach (config('tenancy.central_domains') as $domain) {
         // ADMIN ROUTES
         // ========================================
 
+        //Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::prefix('admin')->middleware(['auth'])->group(function () {
-
-            // Admin Main Dashboard
             Route::get('/', function () {
-                return view('admin-main.pages.dashboard');
-            })->name('admin-main.dashboard');
-            Route::get('/dashboard', function () {
-                return view('admin-main.pages.dashboard');
-            })->name('admin-main.dashboard');
+                return redirect()->route('admin-main.index');
+            });
+
+            Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-main.index');
 
             Route::resource('/kategori-toko', StoreCategoryController::class)->names('kategori-toko');
             Route::resource('/template-katalog', CatalogTemplateController::class)->names('template');
+
             Route::resource('/users', UserController::class);
+            Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+            Route::delete('/users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
+
+            // Payment History
+            Route::get('/pembayaran', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payments.index');
+
+            // Store Management
+            Route::get('/toko', [\App\Http\Controllers\ManajemenTokoController::class, 'index'])->name('toko.index');
+            Route::post('/toko/{userStore}/toggle-status', [\App\Http\Controllers\ManajemenTokoController::class, 'toggleStatus'])->name('toko.toggle-status');
         });
 
         // ========================================
