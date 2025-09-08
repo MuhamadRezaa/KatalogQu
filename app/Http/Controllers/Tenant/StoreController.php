@@ -10,6 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Models\StoreHero; // Added
 use App\Models\PriceRange; // Added
 use Illuminate\Support\Facades\Cache;
+// Add ProductSubCategory model
+use App\Models\ProductSubCategory;
+
 
 class StoreController extends Controller
 {
@@ -25,7 +28,7 @@ class StoreController extends Controller
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with('category')
+            ->with(['category', 'subCategory', 'brand'])
             ->take(8)
             ->get();
 
@@ -33,7 +36,7 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with('category')
+            ->with(['category', 'subCategory', 'brand'])
             ->take(8)
             ->get();
 
@@ -42,7 +45,7 @@ class StoreController extends Controller
             ->where('is_active', true)
             ->where('is_promo', true)
             ->where('old_price', '>', 'price')
-            ->with('category')
+            ->with(['category', 'subCategory', 'brand'])
             ->take(8)
             ->get();
 
@@ -54,6 +57,11 @@ class StoreController extends Controller
         // Apply filters
         if ($request->has('category') && $request->category) {
             $query->where('product_category_id', $request->category);
+        }
+
+        // Add sub category filter
+        if ($request->has('subcategory') && $request->subcategory) {
+            $query->where('sub_category_id', $request->subcategory);
         }
 
         if ($request->has('search') && $request->search) {
@@ -73,6 +81,14 @@ class StoreController extends Controller
             $query->where('price', '<=', $request->price_max);
         }
 
+        if ($request->filled('brand_ids')) {
+            $ids = collect(explode(',', $request->brand_ids))
+                ->filter()->map('intval')->all();
+            if (!empty($ids)) {
+                $query->whereIn('brand_id', $ids);
+            }
+        }
+
         // Sort products
         $sortBy = $request->get('sort', 'newest');
         switch ($sortBy) {
@@ -84,6 +100,9 @@ class StoreController extends Controller
                 break;
             case 'name':
                 $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
                 break;
             case 'oldest':
                 $query->orderBy('created_at', 'asc');
@@ -106,6 +125,22 @@ class StoreController extends Controller
                 $q->where('is_active', true)
                     ->where('user_store_id', $userStore->id);
             }])
+            ->orderBy('name')
+            ->get();
+
+        // Get sub-categories with product counts
+        $subCategories = ProductSubCategory::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->whereHas('products', function ($q) use ($userStore) {
+                $q->where('user_store_id', $userStore->id)
+                    ->where('is_active', true);
+            })
+            ->withCount(['products as products_count' => function ($q) use ($userStore) {
+                $q->where('is_active', true)
+                    ->where('user_store_id', $userStore->id);
+            }])
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -148,6 +183,7 @@ class StoreController extends Controller
             'newProducts',
             'promoProducts',
             'categories',
+            'subCategories', // Add this
             'brands',
             'priceRanges',
             'banners'
@@ -161,7 +197,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        
+
 
         // Find product by slug or ID
         $product = StoreProduct::where('user_store_id', $userStore->id)
@@ -170,16 +206,26 @@ class StoreController extends Controller
                 $query->where('slug', $productSlug)
                     ->orWhere('id', $productSlug);
             })
-            ->with('category')
+            ->with(['category', 'subCategory']) // Add subCategory
             ->firstOrFail();
 
-        // Get related products (same category)
+        // Get related products (same category, maybe same sub-category is better)
         $relatedProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->where('product_category_id', $product->product_category_id)
+            ->where('sub_category_id', $product->sub_category_id) // Change to sub-category
             ->where('id', '!=', $product->id)
             ->take(4)
             ->get();
+
+        // If no related products in sub-category, fallback to category
+        if ($relatedProducts->isEmpty()) {
+            $relatedProducts = StoreProduct::where('user_store_id', $userStore->id)
+                ->where('is_active', true)
+                ->where('product_category_id', $product->product_category_id)
+                ->where('id', '!=', $product->id)
+                ->take(4)
+                ->get();
+        }
 
         // Get brands
         $brands = \App\Models\StoreBrand::where('user_store_id', $userStore->id)
@@ -222,7 +268,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        
+
 
         // Find category
         $category = ProductCategory::where('is_active', true)
@@ -255,6 +301,11 @@ class StoreController extends Controller
             $query->where('price', '<=', $request->price_max);
         }
 
+        // Add subcategory filter
+        if ($request->has('subcategory') && $request->subcategory) {
+            $query->where('sub_category_id', $request->subcategory);
+        }
+
         // Sort products
         $sortBy = $request->get('sort', 'newest');
         switch ($sortBy) {
@@ -266,6 +317,9 @@ class StoreController extends Controller
                 break;
             case 'name':
                 $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc': // Added this case
+                $query->orderBy('name', 'desc');
                 break;
             case 'oldest':
                 $query->orderBy('created_at', 'asc');
@@ -285,6 +339,24 @@ class StoreController extends Controller
             ->withCount(['products' => function ($query) {
                 $query->where('is_active', true);
             }])
+            ->orderBy('name')
+            ->get();
+
+        // Get sub-categories for this category
+        $subCategories = ProductSubCategory::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->whereHas('products', function ($q) use ($userStore, $category) {
+                $q->where('user_store_id', $userStore->id)
+                    ->where('is_active', true)
+                    ->where('product_category_id', $category->id);
+            })
+            ->withCount(['products as products_count' => function ($q) use ($userStore, $category) {
+                $q->where('is_active', true)
+                    ->where('user_store_id', $userStore->id)
+                    ->where('product_category_id', $category->id);
+            }])
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -324,8 +396,144 @@ class StoreController extends Controller
             'category',
             'products',
             'categories',
+            'subCategories', // Add this
             'brands',
-            'banners'
+            'banners',
+            'priceRanges'
+        ));
+    }
+
+    /**
+     * Display products by sub-category
+     */
+    public function showSubCategory(Request $request, $subCategorySlug)
+    {
+        $userStore = $this->getCurrentStore();
+
+        // Find sub-category
+        $subCategory = ProductSubCategory::where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->where(function ($query) use ($subCategorySlug) {
+                $query->where('slug', $subCategorySlug)
+                    ->orWhere('id', $subCategorySlug);
+            })
+            ->firstOrFail();
+
+        // Get products in this sub-category
+        $query = StoreProduct::where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->where('sub_category_id', $subCategory->id)
+            ->with('category');
+
+        // Apply additional filters
+        if ($request->has('search') && $request->search) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                    ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        if ($request->has('price_min') && $request->price_min) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max') && $request->price_max) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        // Sort products
+        $sortBy = $request->get('sort', 'newest');
+        switch ($sortBy) {
+            case 'price_low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            default: // newest
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $products = $query->paginate(12);
+
+        // Get all categories for navigation
+        $categories = ProductCategory::where('is_active', true)
+            ->whereHas('products', function ($query) use ($userStore) {
+                $query->where('user_store_id', $userStore->id)->where('is_active', true);
+            })
+            ->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->orderBy('name')
+            ->get();
+
+        // Get all sub-categories for navigation
+        $subCategories = ProductSubCategory::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->whereHas('products', function ($q) use ($userStore) {
+                $q->where('user_store_id', $userStore->id)
+                    ->where('is_active', true);
+            })
+            ->withCount(['products as products_count' => function ($q) use ($userStore) {
+                $q->where('is_active', true)
+                    ->where('user_store_id', $userStore->id);
+            }])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        // Get brands
+        $brands = \App\Models\StoreBrand::where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->get();
+
+        // Get price ranges
+        $priceRanges = PriceRange::active()
+            ->forStore($userStore->id)
+            ->orderBy('min')
+            ->get();
+
+        // Load banners from database
+        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+
+        // Try to load template-specific view based on catalog template
+        $catalogTemplate = $userStore->catalogTemplate;
+        $templateView = 'tenant.store.sub-category'; // default fallback
+
+        if ($catalogTemplate) {
+            $potentialView = 'tenant.template.' . $catalogTemplate->slug . '.sub-category';
+            if (view()->exists($potentialView)) {
+                $templateView = $potentialView;
+            } else {
+                // Try default template
+                $defaultView = 'tenant.template.default.sub-category';
+                if (view()->exists($defaultView)) {
+                    $templateView = $defaultView;
+                }
+            }
+        }
+
+        return view($templateView, compact(
+            'userStore',
+            'subCategory',
+            'products',
+            'categories',
+            'subCategories',
+            'brands',
+            'banners',
+            'priceRanges'
         ));
     }
 
@@ -336,7 +544,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        
+
 
         $searchTerm = $request->get('q', '');
         $products = collect();
@@ -361,6 +569,22 @@ class StoreController extends Controller
             ->withCount(['products' => function ($query) {
                 $query->where('is_active', true);
             }])
+            ->orderBy('name')
+            ->get();
+
+        // Get sub-categories for filter
+        $subCategories = ProductSubCategory::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->whereHas('products', function ($q) use ($userStore) {
+                $q->where('user_store_id', $userStore->id)
+                    ->where('is_active', true);
+            })
+            ->withCount(['products as products_count' => function ($q) use ($userStore) {
+                $q->where('is_active', true)
+                    ->where('user_store_id', $userStore->id);
+            }])
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -399,9 +623,11 @@ class StoreController extends Controller
             'userStore',
             'products',
             'categories',
+            'subCategories', // Add this
             'searchTerm',
             'brands',
-            'banners'
+            'banners',
+            'priceRanges'
         ));
     }
 
@@ -466,6 +692,11 @@ class StoreController extends Controller
         // Apply filters
         if ($request->has('category') && $request->category) {
             $query->where('product_category_id', $request->category);
+        }
+
+        // Add subcategory filter
+        if ($request->has('subcategory') && $request->subcategory) {
+            $query->where('sub_category_id', $request->subcategory);
         }
 
         if ($request->has('search') && $request->search) {
@@ -538,13 +769,46 @@ class StoreController extends Controller
     }
 
     /**
+     * Get sub-categories (for AJAX)
+     */
+    public function getSubCategories(Request $request)
+    {
+        $userStore = $this->getCurrentStore();
+
+        $query = ProductSubCategory::where('is_active', true)
+            ->where('user_store_id', $userStore->id)
+            ->whereHas('products', function ($query) use ($userStore) {
+                $query->where('user_store_id', $userStore->id)->where('is_active', true);
+            });
+
+        // if a category is passed, filter subcategories by it
+        if ($request->has('category_id') && $request->category_id) {
+            $query->whereHas('products', function ($q) use ($request) {
+                $q->where('product_category_id', $request->category_id);
+            });
+        }
+
+        $subCategories = $query->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'subCategories' => $subCategories
+        ]);
+    }
+
+    /**
      * Display template-specific page
      */
     public function showTemplate(Request $request, $slug)
     {
         $userStore = $this->getCurrentStore();
 
-        
+
 
         // Get the catalog template based on the slug
         $catalogTemplate = $userStore->catalogTemplate;
@@ -600,6 +864,11 @@ class StoreController extends Controller
             $query->where('product_category_id', $request->category);
         }
 
+        // Add subcategory filter
+        if ($request->has('subcategory') && $request->subcategory) {
+            $query->where('sub_category_id', $request->subcategory);
+        }
+
         if ($request->has('search') && $request->search) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
@@ -629,6 +898,9 @@ class StoreController extends Controller
             case 'name':
                 $query->orderBy('name', 'asc');
                 break;
+            case 'name_desc': // Added this case
+                $query->orderBy('name', 'desc');
+                break;
             case 'oldest':
                 $query->orderBy('created_at', 'asc');
                 break;
@@ -647,6 +919,22 @@ class StoreController extends Controller
             ->withCount(['products' => function ($query) {
                 $query->where('is_active', true);
             }])
+            ->orderBy('name')
+            ->get();
+
+        // Get sub-categories with product counts
+        $subCategories = ProductSubCategory::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->whereHas('products', function ($q) use ($userStore) {
+                $q->where('user_store_id', $userStore->id)
+                    ->where('is_active', true);
+            })
+            ->withCount(['products as products_count' => function ($q) use ($userStore) {
+                $q->where('is_active', true)
+                    ->where('user_store_id', $userStore->id);
+            }])
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -680,6 +968,7 @@ class StoreController extends Controller
             'newProducts',
             'promoProducts',
             'categories',
+            'subCategories', // Add this
             'brands',
             'banners'
         ));
@@ -692,7 +981,7 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-        
+
 
         // Get the catalog template slug
         $catalogTemplate = $userStore->catalogTemplate;

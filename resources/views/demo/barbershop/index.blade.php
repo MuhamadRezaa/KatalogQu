@@ -63,12 +63,12 @@
                     <span>Hasil Memuaskan</span>
                 </div>
             </div>
-            <div class="hero-buttons">
+            {{-- <div class="hero-buttons">
                 <a href="#gallery" class="btn btn-secondary btn-large">
                     <i class="fas fa-images"></i>
                     Lihat Portfolio
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Slider Navigation -->
@@ -199,7 +199,7 @@
                         <h3 class="service-name">Modern Fade</h3>
                         <div class="service-price">Rp 85,000</div>
                         <button class="service-btn"
-                            onclick="showModal('Modern Fade', 'Potongan rambut stylish dengan gradasi rapi dari tipis ke tebal, memberi tampilan modern dan segar.', 'img/moderncut.jpg')">
+                            onclick="showModal('Modern Fade', 'Potongan rambut stylish dengan gradasi rapi dari tipis ke tebal, memberi tampilan modern dan segar.', '{{ asset('assets/demo/barbershop/img/moderncut.jpg') }}')">
                             Detail Layanan
                         </button>
                     </div>
@@ -289,7 +289,7 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="gallery">
+    {{-- <section id="gallery" class="gallery">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Portfolio Karya</h2>
@@ -344,7 +344,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Footer -->
     <footer class="footer">
@@ -402,6 +402,13 @@
         </div>
     </footer>
 
+    <script>
+        // contoh: https://domainmu.com/
+        window.ASSET_BASE = "{{ asset('') }}";
+        window.assetUrl = function(p) {
+            return (window.ASSET_BASE.replace(/\/$/, '') + '/' + String(p).replace(/^\//, ''));
+        };
+    </script>
     <script src="{{ asset('assets/demo/barbershop/script.js') }}"></script>
     <script>
         function toggleDetail(btn) {
@@ -418,6 +425,11 @@
             }
         }
     </script>
+
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'barbershop',
+    ])
+
 </body>
 
 </html>

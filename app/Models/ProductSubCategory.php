@@ -39,4 +39,12 @@ class ProductSubCategory extends Model
     {
         return $query->where('is_active', true);
     }
+
+    /**
+     * Get the products for the sub-category.
+     */
+    public function products()
+    {
+        return $this->hasMany(\App\Models\StoreProduct::class, 'sub_category_id');
+    }
 }

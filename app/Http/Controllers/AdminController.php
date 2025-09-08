@@ -27,10 +27,6 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        // Ensure the user is an admin based on their role
-        if (!Auth::user() || Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
-        }
 
         // Get all paid catalogs with user and template information
         $paidCatalogs = TemplatePurchase::with(['user', 'catalogTemplate', 'payment'])

@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="card-body">
-            
+
             <div class="tab-content" id="userTabsContent">
                 <div class="tab-pane fade show active" role="tabpanel">
                     @if ($errors->any())
@@ -61,9 +61,9 @@
                                         </td>
                                         <td>
                                             @if ($item->trashed())
-                                                {{ $item->deleted_at->format('d M Y') }}
+                                                {{ $item->deleted_at ? $item->deleted_at->format('d M Y') : 'N/A' }}
                                             @else
-                                                {{ $item->created_at->format('d M Y') }}
+                                                {{ $item->created_at ? $item->created_at->format('d M Y') : 'N/A' }}
                                             @endif
                                         </td>
                                         <td>
@@ -73,14 +73,16 @@
                                                     <form action="{{ route('users.restore', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('POST')
-                                                        <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
+                                                        <button type="submit"
+                                                            class="btn btn-sm btn-success">Aktifkan</button>
                                                     </form>
                                                 @else
                                                     {{-- Tombol untuk Soft Delete (menonaktifkan) --}}
                                                     <form action="{{ route('users.destroy', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger">Nonaktifkan</button>
+                                                        <button type="submit"
+                                                            class="btn btn-sm btn-danger">Nonaktifkan</button>
                                                     </form>
                                                 @endif
                                             @endif

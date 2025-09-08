@@ -106,7 +106,7 @@
                 </div>
             </div>
             <div class="view-all-container">
-                <button class="view-all-button" onclick="filterByCategory('all')">Lihat Semua Kategori</button>
+                <button class="view-all-button" onclick="filterByCategory('all')">Lihat Semua Produk</button>
             </div>
         </div>
     </div>
@@ -121,12 +121,20 @@
                 <div class="filter-container">
                     <input type="text" class="search-box" placeholder="Cari produk..." id="searchBox">
                     <select id="priceRangeFilter" class="search-box" style="min-width: 200px;">
-                        <option value="">Semua Harga</option>
+                        <option value="">Rentang Harga Produk</option>
                         <option value="0-100000">Di bawah Rp 100.000</option>
                         <option value="100000-200000">Rp 100.000 - Rp 200.000</option>
                         <option value="200000-300000">Rp 200.000 - Rp 300.000</option>
                         <option value="300000-500000">Rp 300.000 - Rp 500.000</option>
                         <option value="500000-999999999">Di atas Rp 500.000</option>
+                    </select>
+                    <select id="sortBy" class="search-box" style="min-width: 200px;">
+                        <option value="">Urutkan</option>
+                        <option value="newest">Terbaru</option>
+                        <option value="price-asc">Harga: Termurah</option>
+                        <option value="price-desc">Harga: Termahal</option>
+                        <option value="name-asc">Nama: A–Z</option>
+                        <option value="name-desc">Nama: Z–A</option>
                     </select>
                 </div>
             </div>

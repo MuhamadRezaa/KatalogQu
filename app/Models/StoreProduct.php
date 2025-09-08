@@ -29,6 +29,7 @@ class StoreProduct extends Model
         'is_featured',
         'is_available',
         'sub_category_id',
+        'product_unit_id',
         'estimasi_waktu',
         'sku',
         'sort_order'
@@ -72,9 +73,14 @@ class StoreProduct extends Model
     /**
      * Get the subcategory that owns the product
      */
-    public function subCategory(): BelongsTo
+    public function subCategory()
     {
-        return $this->belongsTo(StoreSubCategory::class, 'sub_category_id');
+        return $this->belongsTo(ProductSubCategory::class, 'sub_category_id');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(ProductUnit::class, 'product_unit_id');
     }
 
     /**

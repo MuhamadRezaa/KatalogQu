@@ -170,7 +170,7 @@
             gap: 30px;
             margin-bottom: 20px;
         }
-        
+
         .category-item {
             background: white;
             padding: 30px 20px;
@@ -215,13 +215,13 @@
             line-height: 1.5;
             margin: 0;
         }
-        
+
         .view-all-container {
             display: flex;
             justify-content: center;
             margin-top: 30px;
         }
-        
+
         .view-all-button {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
@@ -234,7 +234,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
-        
+
         .view-all-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
@@ -246,18 +246,18 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
+
             /* Category icon responsive styles removed */
-            
+
             .category-item h3 {
                 font-size: 1.1rem;
             }
-            
+
             .category-item p {
                 font-size: 0.9rem;
             }
         }
-        
+
         @media (max-width: 1024px) and (min-width: 769px) {
             .category-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -347,7 +347,7 @@
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
-        
+
         .new-badge {
             position: absolute;
             top: 10px;
@@ -495,17 +495,17 @@
                 bottom: 20px;
                 right: 20px;
             }
-            
+
             .bubble-btn {
                 min-width: 120px;
                 padding: 8px 12px;
                 font-size: 11px;
             }
-            
+
             .bubble-text {
                 display: none;
             }
-            
+
             .bubble-btn {
                 border-radius: 50%;
                 width: 45px;
@@ -745,34 +745,34 @@
         .footer-contact i {
             width: 20px;
         }
-        
+
         .address-container {
             display: flex;
             align-items: flex-start;
             gap: 10px;
             margin-bottom: 10px;
         }
-        
+
         .address-container i {
             width: 20px;
             margin-top: 2px;
             flex-shrink: 0;
         }
-        
+
         .address-text {
             line-height: 1.4;
         }
-        
+
         .address-text div {
             margin-bottom: 2px;
         }
-        
+
         .social-media {
             display: flex;
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .social-icon {
             display: flex;
             align-items: center;
@@ -785,12 +785,12 @@
             text-decoration: none;
             transition: all 0.3s ease;
         }
-        
+
         .social-icon:hover {
             background-color: #3498db;
             transform: translateY(-3px);
         }
-        
+
         .social-icon i {
             font-size: 20px;
         }
@@ -849,45 +849,45 @@
                 gap: 25px;
                 padding: 0 15px;
             }
-            
+
             .product-card {
                 min-height: 380px;
             }
-            
+
             .product-image {
                 height: 200px;
             }
-            
+
             .product-content {
                 padding: 18px;
             }
-            
+
             .product-name {
                 font-size: 1.2em;
                 margin-bottom: 8px;
             }
-            
+
             .product-price {
                 font-size: 1.3em;
                 margin-bottom: 10px;
             }
-            
+
             .product-description {
                 font-size: 0.9em;
                 height: 90px;
                 -webkit-line-clamp: 3;
             }
-            
+
             .button-group {
                 gap: 10px;
             }
-            
+
             .detail-btn, .chat-btn {
                 padding: 10px 16px;
                 font-size: 0.9rem;
             }
         }
-        
+
         /* Tablet */
         @media (max-width: 991px) {
             .header-top {
@@ -969,25 +969,25 @@
                 font-size: 1.1rem;
                 text-align: center;
             }
-            
+
             .address-container {
                 flex-direction: row;
                 align-items: flex-start;
                 text-align: left;
                 gap: 10px;
             }
-            
+
             .address-container i {
                 margin-top: 2px;
                 flex-shrink: 0;
             }
-            
+
             .address-text {
                 font-size: 0.9rem;
                 line-height: 1.3;
                 text-align: left;
             }
-            
+
             .address-text div {
                 margin-bottom: 3px;
             }
@@ -1011,47 +1011,47 @@
                 gap: 18px;
                 padding: 0 10px;
             }
-            
+
             .product-card {
                 min-height: 360px;
             }
-            
+
             .product-image {
                 height: 160px;
             }
-            
+
             .product-content {
                 padding: 15px;
             }
-            
+
             .product-name {
                 font-size: 1.1em;
                 margin-bottom: 8px;
                 line-height: 1.2;
             }
-            
+
             .product-price {
                 font-size: 1.2em;
                 margin-bottom: 8px;
             }
-            
+
             .product-description {
                 font-size: 0.85em;
                 height: 75px;
                 -webkit-line-clamp: 3;
                 margin-bottom: 12px;
             }
-            
+
             .button-group {
                 gap: 8px;
             }
-            
+
             .detail-btn, .chat-btn {
                 padding: 8px 12px;
                 font-size: 0.85rem;
             }
         }
-        
+
         /* Mobile Large */
         @media (max-width: 576px) {
             .main-content {
@@ -1062,16 +1062,16 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
-            
+
             .category-item {
                 padding: 15px 10px;
             }
-            
+
             .category-item h3 {
                 font-size: 1rem;
                 margin-bottom: 5px;
             }
-            
+
             .category-item p {
                 font-size: 0.85rem;
             }
@@ -1085,47 +1085,47 @@
             .product-card {
                 min-height: 340px;
             }
-            
+
             .product-image {
                 height: 150px;
             }
-            
+
             .product-content {
                 padding: 12px;
             }
-            
+
             .product-name {
                 font-size: 1rem;
                 margin-bottom: 6px;
                 line-height: 1.2;
             }
-            
+
             .product-price {
                 font-size: 1.1em;
                 margin-bottom: 6px;
             }
-            
+
             .product-description {
                 font-size: 0.8em;
                 height: 65px;
                 -webkit-line-clamp: 3;
                 margin-bottom: 10px;
             }
-            
+
             .button-group {
                 gap: 6px;
             }
-            
+
             .detail-btn, .chat-btn {
                 padding: 8px 10px;
                 font-size: 0.8rem;
             }
-            
+
             .bubble-button {
                 bottom: 15px;
                 right: 15px;
             }
-            
+
             .bubble-btn {
                 min-width: 130px;
                 padding: 8px 12px;
@@ -1133,22 +1133,22 @@
                 border-radius: 22px;
                 gap: 5px;
             }
-            
+
             .bubble-text {
                 font-size: 10px;
                 display: block;
             }
-            
+
             .bubble-price {
                 font-size: 9px;
                 padding: 3px 7px;
             }
-            
+
             .bubble-btn i {
                  font-size: 13px;
              }
          }
-         
+
          /* iPhone 12, Samsung S8+ dan sejenisnya (390px-414px) */
          @media (max-width: 414px) {
              .products-grid {
@@ -1156,45 +1156,45 @@
                  gap: 8px;
                  padding: 0 6px;
              }
-             
+
              .product-card {
                  min-height: 310px;
              }
-             
+
              .product-image {
                  height: 135px;
              }
-             
+
              .product-content {
                  padding: 8px;
              }
-             
+
              .product-name {
                  font-size: 0.9rem;
                  margin-bottom: 5px;
                  line-height: 1.1;
              }
-             
+
              .product-price {
                  font-size: 1rem;
                  margin-bottom: 5px;
              }
-             
+
              .product-description {
                  font-size: 0.8rem;
                  margin-bottom: 6px;
              }
-             
+
              .button-group {
                  gap: 6px;
              }
-             
+
              .detail-btn, .chat-btn {
                  padding: 8px 10px;
                  font-size: 0.8rem;
              }
          }
-         
+
          /* Samsung S8 dan perangkat serupa (360px) */
          @media (max-width: 375px) {
              .products-grid {
@@ -1202,39 +1202,39 @@
                  gap: 6px;
                  padding: 0 4px;
              }
-             
+
              .product-card {
                  min-height: 300px;
              }
-             
+
              .product-image {
                  height: 130px;
              }
-             
+
              .product-content {
                  padding: 12px;
              }
-             
+
              .product-name {
                  font-size: 1rem;
                  margin-bottom: 8px;
                  line-height: 1.2;
              }
-             
+
              .product-price {
                  font-size: 1.1em;
                  margin-bottom: 8px;
              }
-            
+
              .product-description {
                   font-size: 0.8rem;
                   margin-bottom: 6px;
               }
-              
+
               .button-group {
                   gap: 5px;
               }
-              
+
               .detail-btn, .chat-btn {
                   padding: 7px 8px;
                   font-size: 0.75rem;

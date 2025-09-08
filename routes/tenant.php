@@ -13,6 +13,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\Tenant\Admin\StoreHeroController;
 use App\Http\Controllers\Tenant\ProductCategoryController;
 use App\Http\Controllers\Tenant\ProductSubCategoryController;
+use App\Http\Controllers\Tenant\ProductUnitController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
@@ -97,5 +98,8 @@ Route::middleware([
 
         // Store Heroes Management
         Route::resource('store-heroes', StoreHeroController::class)->names('store-heroes');
+
+        // Product Units Management
+        Route::resource('product-units', ProductUnitController::class)->names('product-units');
     });
 });

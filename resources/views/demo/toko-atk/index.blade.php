@@ -100,7 +100,7 @@
         <!-- Search and Filter Section -->
         <div class="search-filter-section">
             <div class="section-header">
-                <h3>🔍 Cari & Filter Produk</h3>
+                <h3>Cari & Filter Produk</h3>
                 <p>Temukan produk alat tulis yang Anda butuhkan dengan mudah</p>
             </div>
 
@@ -114,25 +114,25 @@
 
             <div class="filter-container">
                 <div class="filter-group">
-                    <label for="sort-filter">📊 Urutkan Berdasarkan:</label>
+                    <label for="sort-filter">Urutkan Berdasarkan:</label>
                     <select id="sort-filter" onchange="sortProducts()">
-                        <option value="default">🏠 Default</option>
-                        <option value="name-asc">🔤 Nama A-Z</option>
-                        <option value="name-desc">🔤 Nama Z-A</option>
-                        <option value="price-asc">💰 Harga Terendah</option>
-                        <option value="price-desc">💰 Harga Tertinggi</option>
+                        <option value="default">Default</option>
+                        <option value="name-asc">Nama A-Z</option>
+                        <option value="name-desc">Nama Z-A</option>
+                        <option value="price-asc">Harga Terendah</option>
+                        <option value="price-desc">Harga Tertinggi</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
-                    <label for="price-filter">💸 Filter Rentang Harga:</label>
+                    <label for="price-filter">Filter Rentang Harga:</label>
                     <select id="price-filter" onchange="filterByPrice()">
-                        <option value="all">💎 Semua Harga</option>
-                        <option value="0-5000">🟢 Di bawah Rp 5.000</option>
-                        <option value="5000-10000">🟡 Rp 5.000 - Rp 10.000</option>
-                        <option value="10000-25000">🟠 Rp 10.000 - Rp 25.000</option>
-                        <option value="25000-50000">🔴 Rp 25.000 - Rp 50.000</option>
-                        <option value="50000-up">🟣 Di atas Rp 50.000</option>
+                        <option value="all">Semua Harga</option>
+                        <option value="0-5000">Di bawah Rp 5.000</option>
+                        <option value="5000-10000">Rp 5.000 - Rp 10.000</option>
+                        <option value="10000-25000">Rp 10.000 - Rp 25.000</option>
+                        <option value="25000-50000">Rp 25.000 - Rp 50.000</option>
+                        <option value="50000-up">Di atas Rp 50.000</option>
                     </select>
                 </div>
             </div>

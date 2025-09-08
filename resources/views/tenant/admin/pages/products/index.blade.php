@@ -40,6 +40,7 @@
                             <tbody>
                                 @forelse ($products as $product)
                                     <tr>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($product->image)
                                                 <img src="{{ route('tenant.asset', ['path' => $product->image]) }}"
@@ -80,7 +81,7 @@
                                             @else
                                                 <span class="badge badge-light-secondary">Nonaktif</span>
                                             @endif
-                                            @if ($product->is_promo)
+                                            {{-- @if ($product->is_promo)
                                                 <span class="badge badge-light-warning">Promo</span>
                                             @endif
                                             @if ($product->is_new)
@@ -88,16 +89,19 @@
                                             @endif
                                             @if ($product->is_featured)
                                                 <span class="badge badge-light-primary">Featured</span>
-                                            @endif
+                                            @endif --}}
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="editProduct({{ $product->id }})" title="Edit">
+                                                <button type="button" class="btn btn-sm btn-primary" title="Edit"
+                                                    data-show-url="{{ route('tenant.admin.products.show', $product->id) }}"
+                                                    data-update-url="{{ route('tenant.admin.products.update', $product->id) }}"
+                                                    onclick="editProduct(this)">
                                                     <i class="fa fa-pencil"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="deleteProduct({{ $product->id }})" title="Hapus">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Hapus"
+                                                    data-destroy-url="{{ route('tenant.admin.products.destroy', $product->id) }}"
+                                                    onclick="deleteProduct(this)">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -203,6 +207,15 @@
                                         <option value="">Pilih Brand</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="add_product_unit_id" class="form-label">Unit Produk</label>
+                                    <select class="form-select" id="add_product_unit_id" name="product_unit_id">
+                                        <option value="">Pilih Unit</option>
+                                        @foreach ($productUnits as $unit)
+                                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -378,6 +391,15 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="edit_product_unit_id" class="form-label">Unit Produk</label>
+                                    <select class="form-select" id="edit_product_unit_id" name="product_unit_id">
+                                        <option value="">Pilih Unit</option>
+                                        @foreach ($productUnits as $unit)
+                                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label class="form-label">Spesifikasi</label>
                                     <div id="edit_specification_fields">
                                         <!-- Existing specifications will be loaded here by JS -->
@@ -461,10 +483,6 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.products.show', ['product' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.products.update', ['product' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.products.destroy', ['product' => ':id']) }}';
-
         function addSpecField(containerId, index, key = '', value = '') {
             const container = document.getElementById(containerId);
             const div = document.createElement('div');
@@ -538,151 +556,135 @@
             }
         });
 
-        function editProduct(productId) {
-            const fetchUrl = showUrlTemplate.replace(':id', productId);
+        function editProduct(btn) {
+            const fetchUrl = btn.dataset.showUrl; // URL lengkap dari Blade
+            const updateUrl = btn.dataset.updateUrl; // URL lengkap update
 
-            fetch(fetchUrl)
+            fetch(fetchUrl, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
                 .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
                 })
                 .then(data => {
-                    if (data.success) {
-                        const product = data.product;
-                        const form = document.getElementById('editProductForm');
+                    if (!data.success) throw new Error(data.message || 'Unknown error');
+                    const product = data.product;
 
-                        form.action = updateUrlTemplate.replace(':id', productId);
-                        form.querySelector('#edit_name').value = product.name;
-                        form.querySelector('#edit_description').value = product.description;
-                        form.querySelector('#edit_image').value = ''; // Clear file input
-                        form.querySelector('#edit_price').value = product.price;
-                        form.querySelector('#edit_old_price').value = product.old_price;
-                        form.querySelector('#edit_stock').value = product.stock;
-                        form.querySelector('#edit_sku').value = product.sku;
-                        form.querySelector('#edit_product_category_id').value = product.product_category_id || '';
-                        form.querySelector('#edit_sub_category_id').value = product.sub_category_id || '';
-                        form.querySelector('#edit_brand_id').value = product.brand_id || '';
-                        form.querySelector('#edit_estimasi_waktu').value = product.estimasi_waktu;
-                        form.querySelector('#edit_sort_order').value = product.sort_order;
-                        form.querySelector('#edit_is_active').checked = product.is_active;
-                        form.querySelector('#edit_is_promo').checked = product.is_promo;
-                        form.querySelector('#edit_is_new').checked = product.is_new;
-                        form.querySelector('#edit_is_featured').checked = product.is_featured;
-                        form.querySelector('#edit_is_available').checked = product.is_available;
+                    const form = document.getElementById('editProductForm');
+                    form.action = updateUrl;
 
-                        // Main image preview
-                        const assetBaseUrl = "{{ url('tenancy/assets') }}/";
-                        const currentImagePreview = document.getElementById('currentImagePreview');
-                        const currentImage = document.getElementById('current_image');
-                        if (product.image) {
-                            currentImage.src = assetBaseUrl + product.image;
-                            currentImagePreview.style.display = 'block';
-                        } else {
-                            currentImagePreview.style.display = 'none';
-                        }
-                        document.getElementById('edit_image_preview_container').innerHTML =
-                            ''; // Clear new image preview
-                        document.getElementById('edit_image_preview_container').style.display = 'none';
+                    form.querySelector('#edit_name').value = product.name || '';
+                    form.querySelector('#edit_description').value = product.description || '';
+                    form.querySelector('#edit_image').value = '';
+                    form.querySelector('#edit_price').value = product.price ?? '';
+                    form.querySelector('#edit_old_price').value = product.old_price ?? '';
+                    form.querySelector('#edit_stock').value = product.stock ?? '';
+                    form.querySelector('#edit_sku').value = product.sku ?? '';
+                    form.querySelector('#edit_product_category_id').value = product.product_category_id || '';
+                    form.querySelector('#edit_sub_category_id').value = product.sub_category_id || '';
+                    form.querySelector('#edit_brand_id').value = product.brand_id || '';
+                    form.querySelector('#edit_estimasi_waktu').value = product.estimasi_waktu ?? '';
+                    form.querySelector('#edit_sort_order').value = product.sort_order ?? '';
+                    form.querySelector('#edit_is_active').checked = !!product.is_active;
+                    form.querySelector('#edit_is_promo').checked = !!product.is_promo;
+                    form.querySelector('#edit_is_new').checked = !!product.is_new;
+                    form.querySelector('#edit_is_featured').checked = !!product.is_featured;
+                    form.querySelector('#edit_is_available').checked = !!product.is_available;
 
-                        // Additional images
-                        const existingAdditionalImagesContainer = document.getElementById(
-                            'edit_additional_images_fields_existing');
-                        existingAdditionalImagesContainer.innerHTML = ''; // Clear previous existing images
-                        if (product.images && product.images.length > 0) {
-                            product.images.forEach(img => {
-                                const imgDiv = document.createElement('div');
-                                imgDiv.className = 'mb-2'; // Outer div for spacing
-
-                                // Gunakan encodeURIComponent untuk nama file/path agar aman
-                                const assetBaseUrl = "{{ url('tenancy/assets') }}/";
-                                const safeUrl = assetBaseUrl + encodeURIComponent(img.image_url);
-
-                                imgDiv.innerHTML = `
-                                <div class="input-group align-items-center">
-                                    <img src="${safeUrl}"
-                                        alt="Gambar ${img.id}"
-                                        class="img-fluid rounded me-2"
-                                        style="max-width: 80px; max-height: 80px;">
-                                    <input type="hidden" name="existing_images_ids[]" value="${img.id}">
-                                    <button type="button"
-                                            class="btn btn-outline-danger remove-existing-image"
-                                            data-id="${img.id}">
-                                    <i class="fa fa-times"></i> Hapus
-                                    </button>
-                                </div>
-                                `;
-                                existingAdditionalImagesContainer.appendChild(imgDiv);
-
-                                imgDiv.querySelector('.remove-existing-image').addEventListener('click',
-                                    function() {
-                                        imgDiv.remove();
-                                    });
-                            });
-                        }
-                        document.getElementById('edit_additional_images_fields_new').innerHTML =
-                            ''; // Clear new additional image inputs
-                        let editAdditionalImageIndex = 0;
-                        document.getElementById('edit_add_additional_image_btn').onclick = function() {
-                            if ((product.images ? product.images.length : 0) + editAdditionalImageIndex < 3) {
-                                const container = document.getElementById('edit_additional_images_fields_new');
-                                const div = document.createElement('div');
-                                div.className = 'mb-2'; // Outer div for spacing
-                                div.innerHTML = `
-                                    <div class="input-group">
-                                        <input type="file" class="form-control additional-image-input" name="additional_images[]" accept="image/jpeg,image/png,image/webp">
-                                        <button type="button" class="btn btn-outline-danger remove-additional-image"><i class="fa fa-times"></i></button>
-                                    </div>
-                                    <div class="additional-image-preview mt-2"></div>
-                                `;
-                                container.appendChild(div);
-
-                                setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
-                                    '.additional-image-preview'));
-                                div.querySelector('.remove-additional-image').addEventListener('click', function() {
-                                    div.remove();
-                                });
-                                editAdditionalImageIndex++;
-                            } else {
-                                alert('Maksimal 3 gambar tambahan.');
-                            }
-                        };
-
-                        // Specifications
-                        const specFieldsContainer = document.getElementById('edit_specification_fields');
-                        specFieldsContainer.innerHTML = ''; // Clear previous fields
-                        let editSpecIndex = 0;
-                        if (product.specification && product.specification.length > 0) {
-                            product.specification.forEach(spec => {
-                                addSpecField('edit_specification_fields', editSpecIndex++, spec.key, spec
-                                    .value);
-                            });
-                        } else {
-                            addSpecField('edit_specification_fields',
-                                editSpecIndex++); // Add one empty field if no specs
-                        }
-
-                        new bootstrap.Modal(document.getElementById('editProductModal')).show();
+                    // Preview gambar utama
+                    const currentImagePreview = document.getElementById('currentImagePreview');
+                    const currentImage = document.getElementById('current_image');
+                    if (product.image) {
+                        // Pastikan backend kirim URL penuh (disarankan)
+                        currentImage.src = product.image_url_full || ("{{ url('tenancy/assets') }}/" + product.image);
+                        currentImagePreview.style.display = 'block';
                     } else {
-                        alert('Error: ' + data.message);
+                        currentImagePreview.style.display = 'none';
                     }
+                    document.getElementById('edit_image_preview_container').innerHTML = '';
+                    document.getElementById('edit_image_preview_container').style.display = 'none';
+
+                    // Gambar tambahan
+                    const existingContainer = document.getElementById('edit_additional_images_fields_existing');
+                    existingContainer.innerHTML = '';
+                    if (product.images && product.images.length > 0) {
+                        product.images.forEach(img => {
+                            const div = document.createElement('div');
+                            div.className = 'mb-2';
+                            const url = img.url_full || ("{{ url('tenancy/assets') }}/" + img.image_url);
+                            div.innerHTML = `
+          <div class="input-group align-items-center">
+            <img src="${url}" class="img-fluid rounded me-2" style="max-width:80px;max-height:80px;">
+            <input type="hidden" name="existing_images_ids[]" value="${img.id}">
+            <button type="button" class="btn btn-outline-danger remove-existing-image" data-id="${img.id}">
+              <i class="fa fa-times"></i> Hapus
+            </button>
+          </div>`;
+                            existingContainer.appendChild(div);
+                            div.querySelector('.remove-existing-image').addEventListener('click', () => div
+                                .remove());
+                        });
+                    }
+
+                    document.getElementById('edit_additional_images_fields_new').innerHTML = '';
+                    let editAdditionalImageIndex = 0;
+                    document.getElementById('edit_add_additional_image_btn').onclick = function() {
+                        const currCount = (product.images ? product.images.length : 0) + editAdditionalImageIndex;
+                        if (currCount < 3) {
+                            const container = document.getElementById('edit_additional_images_fields_new');
+                            const div = document.createElement('div');
+                            div.className = 'mb-2';
+                            div.innerHTML = `
+          <div class="input-group">
+            <input type="file" class="form-control additional-image-input" name="additional_images[]" accept="image/jpeg,image/png,image/webp">
+            <button type="button" class="btn btn-outline-danger remove-additional-image"><i class="fa fa-times"></i></button>
+          </div>
+          <div class="additional-image-preview mt-2"></div>`;
+                            container.appendChild(div);
+                            setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
+                                '.additional-image-preview'));
+                            div.querySelector('.remove-additional-image').addEventListener('click', () => div
+                                .remove());
+                            editAdditionalImageIndex++;
+                        } else {
+                            alert('Maksimal 3 gambar tambahan.');
+                        }
+                    };
+
+                    // Spesifikasi
+                    const specContainer = document.getElementById('edit_specification_fields');
+                    specContainer.innerHTML = '';
+                    let editSpecIndex = 0;
+                    if (product.specification && product.specification.length > 0) {
+                        product.specification.forEach(spec => addSpecField('edit_specification_fields', editSpecIndex++,
+                            spec.key, spec.value));
+                    } else {
+                        addSpecField('edit_specification_fields', editSpecIndex++);
+                    }
+
+                    new bootstrap.Modal(document.getElementById('editProductModal')).show();
                 })
-                .catch(error => {
-                    console.error('Error fetching product data:', error);
+                .catch(err => {
+                    console.error('Error fetching product data:', err);
                     alert('Gagal memuat data produk. Silakan coba lagi.');
                 });
         }
 
         document.getElementById('edit_add_spec_field_btn').addEventListener('click', function() {
-            addSpecField('edit_specification_fields', document.getElementById('edit_specification_fields').children
-                .length);
+            const container = document.getElementById('edit_specification_fields');
+            addSpecField('edit_specification_fields', container.children.length);
         });
 
-        function deleteProduct(productId) {
-            if (confirm('Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', productId);
-                form.submit();
-            }
+        function deleteProduct(btn) {
+            if (!confirm('Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.')) return;
+            const form = document.getElementById('deleteForm');
+            form.action = btn.dataset.destroyUrl; // URL langsung dari Blade
+            form.submit();
         }
 
         document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
@@ -698,14 +700,22 @@
 
         document.getElementById('editProductModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('editProductForm').reset();
-            document.getElementById('edit_specification_fields').innerHTML = ''; // Clear spec fields
-            document.getElementById('edit_additional_images_fields_existing').innerHTML =
-                ''; // Clear existing additional images
-            document.getElementById('edit_additional_images_fields_new').innerHTML =
-                ''; // Clear new additional images
-            document.getElementById('currentImagePreview').innerHTML = ''; // Clear current main image preview
-            document.getElementById('currentImagePreview').style.display = 'none';
-            document.getElementById('edit_image_preview_container').innerHTML = ''; // Clear new main image preview
+
+            // Spesifikasi
+            document.getElementById('edit_specification_fields').innerHTML = '';
+
+            // Gambar tambahan
+            document.getElementById('edit_additional_images_fields_existing').innerHTML = '';
+            document.getElementById('edit_additional_images_fields_new').innerHTML = '';
+
+            // Preview gambar utama – JANGAN kosongkan innerHTML karena menghapus <img id="current_image">
+            const currentImagePreview = document.getElementById('currentImagePreview');
+            const currentImg = document.getElementById('current_image');
+            if (currentImg) currentImg.src = '';
+            currentImagePreview.style.display = 'none';
+
+            // Preview gambar baru
+            document.getElementById('edit_image_preview_container').innerHTML = '';
             document.getElementById('edit_image_preview_container').style.display = 'none';
         });
 

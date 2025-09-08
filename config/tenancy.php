@@ -123,7 +123,7 @@ return [
         'suffix_base' => 'tenant',
         'disks' => [
             'local',
-            // 'public', // Removed 'public' to prevent it from being tenant-scoped
+            'public',
             // 's3',
         ],
 

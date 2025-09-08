@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Models\UserStore;
+use App\Models\StoreBrand;
+use App\Models\ProductUnit;
+use App\Models\ProductImage;
 use App\Models\StoreProduct;
+use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
-use App\Models\StoreBrand;
-use App\Models\ProductImage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,8 +31,9 @@ class StoreProductController extends Controller
         $categories = ProductCategory::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
         $subCategories = ProductSubCategory::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
         $brands = StoreBrand::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
+        $productUnits = ProductUnit::where('user_store_id', $userStore->id)->orderBy('unit_name')->get();
 
-        return view('tenant.admin.pages.products.index', compact('userStore', 'products', 'categories', 'subCategories', 'brands'));
+        return view('tenant.admin.pages.products.index', compact('userStore', 'products', 'categories', 'subCategories', 'brands', 'productUnits'));
     }
 
     /**
@@ -49,6 +51,7 @@ class StoreProductController extends Controller
             'product_category_id' => 'nullable|exists:product_categories,id,user_store_id,' . $userStore->id . ',is_active,1',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
+            'product_unit_id' => 'nullable|exists:product_units,id',
             'specification' => 'nullable|array',
             'specification.*.key' => 'nullable|string|max:255',
             'specification.*.value' => 'nullable|string|max:1000',
@@ -92,7 +95,7 @@ class StoreProductController extends Controller
                 }
             }
         }
-        $validated['specification'] = json_encode($specifications);
+        $validated['specification'] = $specifications;
 
         $product = StoreProduct::create($validated);
 
@@ -129,12 +132,10 @@ class StoreProductController extends Controller
 
         // Decode specification for display
         $specifications = [];
-        if ($product->specification) {
-            $decodedSpec = json_decode($product->specification, true);
-            if (is_array($decodedSpec)) {
-                foreach ($decodedSpec as $key => $value) {
-                    $specifications[] = ['key' => $key, 'value' => $value];
-                }
+        // Because of the 'array' cast on the model, $product->specification is already an array.
+        if (is_array($product->specification)) {
+            foreach ($product->specification as $key => $value) {
+                $specifications[] = ['key' => $key, 'value' => $value];
             }
         }
         $product->specification = $specifications; // Pass as array of objects for form
@@ -160,6 +161,7 @@ class StoreProductController extends Controller
             'product_category_id' => 'nullable|exists:product_categories,id',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
+            'product_unit_id' => 'nullable|exists:product_units,id',
             'specification' => 'nullable|array', // Changed to array
             'specification.*.key' => 'nullable|string|max:255', // Validation for key-value pairs
             'specification.*.value' => 'nullable|string|max:1000', // Validation for key-value pairs
@@ -207,7 +209,7 @@ class StoreProductController extends Controller
                 }
             }
         }
-        $validated['specification'] = json_encode($specifications);
+        $validated['specification'] = $specifications;
 
         $product->update($validated);
 

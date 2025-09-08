@@ -164,6 +164,15 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
+                    <a class="sidebar-link sidebar-title link-nav"
+                        href="{{ route('tenant.admin.product-units.index') }}">
+                        <i class="fa fa-th menu-icon" aria-hidden="true"></i>
+                        <span>Unit Produk</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-list">
+                    <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.products.index') }}">
                         <i class="fa fa-tags menu-icon" aria-hidden="true"></i>
                         <span>Produk</span>

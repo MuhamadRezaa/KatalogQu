@@ -4,52 +4,41 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\UserStore; // Import UserStore model
-use App\Models\StoreAdmin; // Import StoreAdmin model
-use Stancl\Tenancy\Facades\Tenancy; // Import Tenancy facade
+use App\Models\StoreAdmin; // Pastikan model StoreAdmin di-import
 
 class CheckTenantAdmin
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        // Ensure tenancy is initialized (should be by this point for tenant routes)
-        if (!Tenancy::initialized()) {
-            // If not initialized, it's likely a central domain request trying to access tenant admin
-            // or an issue with tenancy setup. Redirect to central login or 404.
-            return redirect()->route('login'); // Or abort(404)
-        }
-
-        // 1. Check if user is authenticated
-        if (!Auth::check()) {
-            return redirect()->route('login'); // Redirect to central login if not logged in
-        }
-
+        // Dapatkan pengguna yang sedang login dan tenant yang aktif
         $user = Auth::user();
-        $tenant = tenant(); // Get the current tenant instance
+        $tenant = tenant();
 
-        // 2. Find the UserStore associated with this tenant
-        $userStore = UserStore::where('tenant_id', $tenant->id)->first();
-
-        // 3. Check if the authenticated user is an admin for this UserStore
-        $storeAdmin = StoreAdmin::where('user_id', $user->id)
-            ->where('store_id', $userStore->id)
-            ->where('role', 'owner') // Check only for owner role
-            ->first();
-
-        if (!$storeAdmin) {
-            // User is not an admin for this store
-            Auth::logout(); // Log out the user
-            return redirect()->route('profile.show')->withErrors(['auth' => 'You do not have administrative access to this store.']);
+        // Jika karena suatu hal tidak ada user atau tenant, tolak akses.
+        if (!$user || !$tenant) {
+            abort(403, 'ACCESS DENIED');
         }
 
-        // If all checks pass, allow the request to proceed
+        // Cek apakah ada data di tabel 'store_admins' yang cocok
+        // dengan user_id dari pengguna yang login DAN tenant_id dari toko yang aktif.
+        $isAdmin = StoreAdmin::where('user_id', $user->id)
+            ->where('tenant_id', $tenant->id)
+            ->exists();
+
+        // Jika tidak ditemukan sebagai admin, tolak akses.
+        if (!$isAdmin) {
+            abort(403, 'You do not have permission to access this page.');
+        }
+
+        // Jika ditemukan, izinkan permintaan untuk melanjutkan.
         return $next($request);
     }
 }

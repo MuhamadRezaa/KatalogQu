@@ -301,19 +301,18 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
             ];
         }
 
-        // Map template ID to catalog_template_id
-        $catalogTemplateId = 1; // Default
-        if (isset($templateData['id'])) {
-            switch ($templateData['id']) {
-                case 'toko_komputer':
-                    $catalogTemplateId = 1;
-                    break;
-                case 'fnb':
-                    $catalogTemplateId = 2;
-                    break;
-                default:
-                    $catalogTemplateId = 1;
-            }
+        // Find CatalogTemplate by slug to get the correct ID
+        $catalogTemplate = \App\Models\CatalogTemplate::where('slug', $templateData['id'])->first();
+
+        if ($catalogTemplate) {
+            $catalogTemplateId = $catalogTemplate->id;
+        } else {
+            // Fallback to a default if the slug is not found, and log a warning
+            $catalogTemplateId = 1; // Default to 'toko-komputer'
+            \Illuminate\Support\Facades\Log::warning('API: CatalogTemplate slug not found, falling back to default.', [
+                'slug' => $templateData['id'],
+                'fallback_id' => $catalogTemplateId,
+            ]);
         }
 
         // Get or create a guest user

@@ -18,21 +18,14 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('slug')->unique();
             $table->string('preview_image')->nullable();
-            // $table->json('demo_images')->nullable(); // Array of demo images
             $table->decimal('price', 10, 2);
-            // $table->decimal('old_price', 10, 2)->nullable();
-            // $table->decimal('discount_price', 10, 2)->nullable();
-            //$table->text('features')->nullable(); // JSON or text list of features
             $table->string('demo_url')->nullable();
-            //$table->string('download_url')->nullable();
-            //$table->integer('downloads_count')->default(0);
-            //$table->decimal('rating', 2, 1)->default(0); // Rating 0.0 - 5.0
-            //$table->integer('reviews_count')->default(0);
             $table->boolean('is_active')->default(true);
-            //$table->boolean('is_featured')->default(false);
-            $table->string('status')->default('active'); // active, inactive, pending
-            $table->json('tags')->nullable(); // Array of tags
+            $table->string('status')->default('active');
+            $table->json('tags')->nullable();
             $table->timestamps();
+
+            $table->index('categories_store_id');
         });
     }
 

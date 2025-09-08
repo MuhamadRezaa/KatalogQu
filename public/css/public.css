@@ -419,6 +419,9 @@ body {
     font-weight: 600;
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    font-family: "Comic Neue", cursive, sans-serif;
+
+
 }
 
 .section-main-title {
@@ -658,7 +661,7 @@ body {
     position: relative;
     width: 800px;
     height: 500px;
-    background-image: url('../assets/images/gambar2.jpg'); /* <-- Tambahkan/Ganti dengan ini */
+    background-image: url('https://aici-umg.com/wp-content/uploads/2024/09/Perkembangan-AI-Inovasi-Terbaru-dan-Ke-Depan.webp'); /* <-- Tambahkan/Ganti dengan ini */
     background-size: cover;                               /* <-- Tambahkan ini */
     background-position: center;                          /* <-- Tambahkan ini */
     background-repeat: no-repeat;                         /* <-- Tambahkan ini */
@@ -1043,7 +1046,8 @@ body {
     }
 
     .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        font-family: "Comic Neue", cursive, sans-serif;
     }
 
     .hero-buttons {
@@ -1360,3 +1364,138 @@ body {
     text-decoration: none;
 }
 
+/* --- CSS untuk Tombol WhatsApp Mengambang (Dipercantik) --- */
+.fab-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1050;
+    /* Pastikan lebih tinggi dari elemen lain */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.fab-button {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #25D366, #128C7E);
+    /* Gradien WhatsApp */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 26px;
+    /* Ukuran ikon lebih besar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    /* Bayangan lebih lembut */
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Animasi pegas */
+    outline: none;
+    /* Hilangkan outline saat fokus */
+}
+
+.fab-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    /* Efek hover lebih menonjol */
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.5);
+}
+
+.fab-button.active {
+    transform: rotate(45deg);
+    /* Putar saat aktif */
+    background: linear-gradient(45deg, #128C7E, #25D366);
+    /* Balik gradien */
+}
+
+.fab-dropdown {
+    position: absolute;
+    bottom: 75px;
+    /* Jarak dari tombol utama */
+    right: 0;
+    background-color: white;
+    border-radius: 12px;
+    /* Sudut lebih membulat */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* Bayangan lebih halus */
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Animasi pegas */
+    width: 240px;
+    /* Lebar menu dropdown lebih luas */
+}
+
+.fab-dropdown.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.fab-dropdown a {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    /* Padding lebih besar */
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    /* Font lebih tebal */
+    font-size: 1.05rem;
+    /* Ukuran font sedikit lebih besar */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.fab-dropdown a:hover {
+    background-color: #e9f6ef;
+    /* Warna hover lebih lembut */
+    color: #128C7E;
+    /* Warna teks saat hover */
+}
+
+.fab-dropdown a .whatsapp-icon {
+    font-size: 1.8rem;
+    /* Ukuran ikon WhatsApp lebih besar */
+    margin-right: 15px;
+    color: #25D366;
+    /* Warna ikon WhatsApp asli */
+    transition: transform 0.2s ease;
+}
+
+.fab-dropdown a:hover .whatsapp-icon {
+    transform: scale(1.1);
+    /* Efek zoom pada ikon saat hover */
+}
+
+/* Responsif untuk perangkat seluler */
+@media (max-width: 768px) {
+    .fab-container {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .fab-button {
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+    .fab-dropdown {
+        bottom: 70px;
+        width: 220px;
+    }
+
+    .fab-dropdown a {
+        padding: 15px 18px;
+        font-size: 1rem;
+    }
+
+    .fab-dropdown a .whatsapp-icon {
+        font-size: 1.6rem;
+    }
+}

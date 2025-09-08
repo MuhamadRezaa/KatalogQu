@@ -34,6 +34,7 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_available')->default(true);
             $table->foreignId('sub_category_id')->nullable()->constrained('product_sub_categories')->nullOnDelete();
+            $table->foreignId('product_unit_id')->nullable()->constrained('product_units')->nullOnDelete();
             $table->integer('estimasi_waktu')->nullable(); // dalam menit
 
             // Additional fields for flexibility
@@ -55,7 +56,7 @@ return new class extends Migration
             $table->index(['sort_order']);
             $table->index(['sku']); // For product code searches
             $table->index(['is_active', 'is_available']); // Common filter combination
-            $table->unique(['user_store_id', 'slug']);
+            $table->unique(['user_store_id']);
         });
     }
 

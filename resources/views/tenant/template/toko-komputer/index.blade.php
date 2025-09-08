@@ -92,7 +92,7 @@
                                     {{ $category->name }}</h3>
                                 <p
                                     class="category-count text-sm text-gray-500 group-hover:text-cyan-500 transition-colors">
-                                    {{ $category->products_count ?? 0 }} Products</p>
+                                    {{ $category->products_count ?? 0 }} Produk</p>
                             </div>
                         </div>
                     @endforeach
@@ -143,7 +143,8 @@
                         <option value="">Semua Harga</option>
                         @if (isset($priceRanges) && $priceRanges->isNotEmpty())
                             @foreach ($priceRanges as $range)
-                                <option data-min="{{ $range->min ?? 0 }}" data-max="{{ $range->max ?? '' }}">
+                                <option value="{{ $range->name }}" data-min="{{ $range->min ?? 0 }}"
+                                    data-max="{{ $range->max ?? '' }}">
                                     {{ $range->name }}
                                 </option>
                             @endforeach
@@ -169,8 +170,8 @@
                         <div id="brand-options" class="py-2">
                             @if (isset($brands) && $brands->isNotEmpty())
                                 @foreach ($brands as $brand)
-                                    <div
-                                        class="brand-option px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between">
+                                    <div class="brand-option px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between"
+                                        data-id="{{ $brand->id }}" data-name="{{ $brand->name }}">
                                         <span class="brand-name text-sm">{{ $brand->name }}</span>
                                         <i data-lucide="check" class="brand-check h-4 w-4 text-green-500 hidden"></i>
                                     </div>
@@ -210,12 +211,12 @@
                 <label for="sort-select" class="text-sm text-gray-600">Urutkan:</label>
                 <select id="sort-select"
                     class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500">
-                    <option value="relevance">Paling Relevan</option>
-                    <option value="price-asc">Harga: Terendah</option>
-                    <option value="price-desc">Harga: Tertinggi</option>
-                    <option value="name-asc">Nama: A-Z</option>
-                    <option value="name-desc">Nama: Z-A</option>
                     <option value="newest">Terbaru</option>
+                    <option value="price_low">Harga: Terendah</option>
+                    <option value="price_high">Harga: Tertinggi</option>
+                    <option value="name">Nama: A-Z</option>
+                    <option value="name_desc">Nama: Z-A</option>
+                    <option value="oldest">Terlama</option>
                 </select>
             </div>
         </div>
@@ -975,7 +976,10 @@
             const currentUrl = new URL(window.location.href);
 
             // --- State Management ---
-            let selectedBrands = new Set(currentUrl.searchParams.get('brands')?.split(',').filter(Boolean) || []);
+            let selectedBrandIds = new Set(
+                (currentUrl.searchParams.get('brand_ids') || '')
+                .split(',').filter(Boolean)
+            );
 
             // --- Initialization from URL ---
             function initializeFilters() {
@@ -998,7 +1002,7 @@
                 }
 
                 // Sort
-                sortSelect.value = currentUrl.searchParams.get('sort') || 'relevance';
+                sortSelect.value = currentUrl.searchParams.get('sort') || 'newest';
 
                 // Brands
                 updateBrandSelectionUI();
@@ -1032,12 +1036,12 @@
                 }
 
                 // Set brands
-                if (selectedBrands.size > 0) {
-                    params.set('brands', Array.from(selectedBrands).join(','));
+                if (selectedBrandIds.size > 0) {
+                    params.set('brand_ids', Array.from(selectedBrandIds).join(','));
                 }
 
                 // Set sort
-                if (sortSelect.value && sortSelect.value !== 'relevance') {
+                if (sortSelect.value) {
                     params.set('sort', sortSelect.value);
                 }
 
@@ -1065,26 +1069,24 @@
             // --- Brand Filter Logic (No immediate apply) ---
             function updateBrandSelectionUI() {
                 brandOptions.forEach(option => {
-                    const brandName = option.querySelector('.brand-name').textContent.trim();
+                    const id = option.dataset.id;
                     const check = option.querySelector('.brand-check');
-                    if (selectedBrands.has(brandName)) {
-                        check.classList.remove('hidden');
-                    } else {
-                        check.classList.add('hidden');
-                    }
+                    if (selectedBrandIds.has(id)) check.classList.remove('hidden');
+                    else check.classList.add('hidden');
                 });
 
                 selectedBrandsContainer.innerHTML = '';
-                if (selectedBrands.size > 0) {
+                if (selectedBrandIds.size > 0) {
                     selectedBrandsContainer.classList.remove('hidden');
-                    selectedBrands.forEach(brandName => {
+                    selectedBrandIds.forEach(id => {
+                        const option = brandOptions.find(el => el.dataset.id === id);
+                        const name = option ? option.dataset.name : id;
                         const pill = document.createElement('div');
                         pill.className =
                             'flex items-center bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-1 rounded-full';
-                        pill.innerHTML = `
-                            <span>${brandName}</span>
-                            <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800" data-brand="${brandName}">&times;</button>
-                        `;
+                        pill.innerHTML =
+                            `<span>${name}</span>
+        <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800" data-id="${id}">&times;</button>`;
                         selectedBrandsContainer.appendChild(pill);
                     });
                 } else {
@@ -1118,25 +1120,17 @@
             brandOptionsContainer.addEventListener('click', (e) => {
                 const option = e.target.closest('.brand-option');
                 if (!option) return;
-
-                const brandName = option.querySelector('.brand-name').textContent.trim();
-                if (selectedBrands.has(brandName)) {
-                    selectedBrands.delete(brandName);
-                } else {
-                    selectedBrands.add(brandName);
-                }
-                updateBrandSelectionUI(); // Just update UI
+                const id = option.dataset.id;
+                if (selectedBrandIds.has(id)) selectedBrandIds.delete(id);
+                else selectedBrandIds.add(id);
+                applyFilters(); // langsung terapkan
             });
 
             selectedBrandsContainer.addEventListener('click', (e) => {
-                const button = e.target.closest('button');
-                if (button && button.dataset.brand) {
-                    const brandName = button.dataset.brand;
-                    if (selectedBrands.has(brandName)) {
-                        selectedBrands.delete(brandName);
-                        updateBrandSelectionUI(); // Just update UI
-                    }
-                }
+                const btn = e.target.closest('button[data-id]');
+                if (!btn) return;
+                selectedBrandIds.delete(btn.dataset.id);
+                applyFilters();
             });
 
             // --- Category Cards Click ---

@@ -353,8 +353,8 @@
             let productStatus = 'all';
             let maxPrice = 50000;
             let productStock = 'all';
-            // let minPriceRange = 0;
-            // let maxPriceRange = Infinity; // Menggunakan Infinity sebagai nilai awal untuk mempermudah logika
+            let minPriceRange = 0;
+            let maxPriceRange = Infinity; // Menggunakan Infinity sebagai nilai awal untuk mempermudah logika
             const itemsPerPage = 10; // Jumlah item per halaman
             // const minPriceInput = document.getElementById('min-price-input');
             // const maxPriceInput = document.getElementById('max-price-input');
@@ -565,9 +565,9 @@
                 itemsToRender = itemsToRender.filter(item => item.price <= maxPrice);
 
                 // 6. Tambahkan filter berdasarkan rentang harga (dari input Min-Max atau dropdown)
-                // itemsToRender = itemsToRender.filter(item => {
-                //     return item.price >= minPriceRange && item.price <= maxPriceRange;
-                // });
+                itemsToRender = itemsToRender.filter(item => {
+                    return item.price >= minPriceRange && item.price <= maxPriceRange;
+                });
 
                 // 7. Lanjutkan dengan pengurutan seperti biasa
                 let sortedItems = [...itemsToRender];
@@ -789,6 +789,8 @@
 
                 // ** Tambahan Skrip untuk Dropdown Rentang Harga **
                 const priceRangeDropdown = document.getElementById('price-range-dropdown');
+                const minPriceFilterInput = document.getElementById('min-price-filter');
+                const maxPriceFilterInput = document.getElementById('max-price-filter');
                 if (priceRangeDropdown) {
                     priceRangeDropdown.addEventListener('change', (e) => {
                         const selectedOption = e.target.options[e.target.selectedIndex];
@@ -797,6 +799,9 @@
 
                         minPriceRange = min ? parseInt(min) : 0;
                         maxPriceRange = max ? parseInt(max) : Infinity;
+
+                        minPriceFilterInput.value = minPriceRange;
+                        maxPriceFilterInput.value = maxPriceRange === Infinity ? '' : maxPriceRange;
 
                         currentPage = 1;
                         sortAndRender();
@@ -813,25 +818,34 @@
                         currentPage = 1;
                         searchTerm = '';
                         productStatus = 'all';
-                        maxPrice = 100000;
                         productStock = 'all';
+
+                        // **Penting: Reset kedua variabel harga
                         minPriceRange = 0;
                         maxPriceRange = Infinity;
+                        maxPrice = 100000; // Kembalikan ke nilai default slider
 
                         // Reset elemen DOM
-                        document.getElementById('search-product').value = '';
-                        document.getElementById('status-all').checked = true;
-                        document.getElementById('stock-all').checked = true;
+                        const searchInput = document.getElementById('search-product');
+                        if (searchInput) searchInput.value = '';
+
+                        const statusRadioAll = document.getElementById('status-all');
+                        if (statusRadioAll) statusRadioAll.checked = true;
+
+                        const stockRadioAll = document.getElementById('stock-all');
+                        if (stockRadioAll) stockRadioAll.checked = true;
 
                         const priceRangeSlider = document.getElementById('price-range');
                         const priceValueDisplay = document.getElementById('price-value');
-                        priceRangeSlider.value = maxPrice;
-                        priceValueDisplay.textContent = `Rp${formatRupiah(maxPrice)}`;
+                        if (priceRangeSlider) {
+                            priceRangeSlider.value = maxPrice;
+                            if (priceValueDisplay) {
+                                priceValueDisplay.textContent = `Rp${formatRupiah(maxPrice)}`;
+                            }
+                        }
 
-                        // document.getElementById('min-price-input').value = '';
-                        // document.getElementById('max-price-input').value = '';
-
-                        document.getElementById('price-range-dropdown').value = '';
+                        const priceRangeDropdown = document.getElementById('price-range-dropdown');
+                        if (priceRangeDropdown) priceRangeDropdown.value = '';
 
                         const sortLabel = document.getElementById('sort-label');
                         if (sortLabel) sortLabel.innerText = "Terbaru";
@@ -842,14 +856,15 @@
                         const viewListBtn = document.getElementById('view-list');
                         const viewGridBtn = document.getElementById('view-grid');
                         if (viewListBtn && viewGridBtn) {
-                            viewListBtn.classList.remove('bg-white', 'border-gray-300', 'hover:bg-gray-50');
+                            // Logika ini untuk visual, pastikan kelas yang dihapus/ditambahkan benar
                             viewListBtn.classList.add('bg-gray-200');
+                            viewListBtn.classList.remove('bg-white', 'border-gray-300', 'hover:bg-gray-50');
                             viewGridBtn.classList.remove('bg-gray-200');
                             viewGridBtn.classList.add('bg-white', 'border', 'border-gray-300',
                                 'hover:bg-gray-50');
                         }
 
-                        // Panggil fungsi utama untuk me-render ulang dengan filter yang telah direset
+                        // Panggil fungsi utama untuk me-render ulang
                         sortAndRender();
                     });
                 }

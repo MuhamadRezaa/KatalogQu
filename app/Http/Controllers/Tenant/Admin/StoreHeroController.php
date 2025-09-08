@@ -54,7 +54,11 @@ class StoreHeroController extends Controller
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Hero created successfully.']);
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Hero created successfully.']);
+        }
+
+        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero created successfully.');
     }
 
     /**
@@ -101,7 +105,11 @@ class StoreHeroController extends Controller
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Hero updated successfully.']);
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Hero updated successfully.']);
+        }
+
+        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero updated successfully.');
     }
 
     /**
@@ -116,7 +124,7 @@ class StoreHeroController extends Controller
         }
         $storeHero->delete();
 
-        return response()->json(['success' => true, 'message' => 'Hero deleted successfully.']);
+        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero deleted successfully.');
     }
 
     /**

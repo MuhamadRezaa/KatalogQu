@@ -446,87 +446,87 @@ const hairStyles = {
         {
             name: "Classic Cut",
             description: "Potongan klasik yang cocok untuk wajah oval",
-            image: "assets/demo/barbershop/img/klasik.png"
+            image: assetUrl("assets/demo/barbershop/img/klasik.png")
         },
         {
             name: "Modern Fade",
             description: "Fade modern yang elegan",
-            image: "assets/demo/barbershop/img/modern.jpg"
+            image: assetUrl("assets/demo/barbershop/img/modern.jpg")
         },
         {
             name: "Textured Crop",
             description: "Crop dengan tekstur yang menarik",
-            image: "assets/demo/barbershop/img/comma.JPG"
+            image: assetUrl("assets/demo/barbershop/img/comma.JPG")
         }
     ],
     round: [
         {
             name: "Pompadour",
             description: "Style pompadour untuk wajah bulat",
-            image: "assets/demo/barbershop/img/comma.JPG"
+            image: assetUrl("assets/demo/barbershop/img/comma.JPG")
         },
         {
             name: "Textured Crop",
             description: "Crop dengan tekstur yang menarik",
-            image: "assets/demo/barbershop/img/premiun.jpg"
+            image: assetUrl("assets/demo/barbershop/img/premiun.jpg")
         },
         {
             name: "Side Part",
             description: "Side part yang formal",
-            image: "assets/demo/barbershop/img/bursfade.jpg"
+            image: assetUrl("assets/demo/barbershop/img/bursfade.jpg")
         }
     ],
     square: [
         {
             name: "Side Part",
             description: "Side part yang formal",
-            image: "assets/demo/barbershop/img/bursfade.jpg"
+            image: assetUrl("assets/demo/barbershop/img/bursfade.jpg")
         },
         {
             name: "Quiff",
             description: "Quiff yang stylish",
-            image: "assets/demo/barbershop/img/kids.jpg"
+            image: assetUrl("assets/demo/barbershop/img/kids.jpg")
         },
         {
             name: "Classic Short",
             description: "Potongan pendek klasik",
-            image: "assets/demo/barbershop/img/modern.jpg"
+            image: assetUrl("assets/demo/barbershop/img/modern.jpg")
         }
     ],
     heart: [
         {
             name: "Swept Back",
             description: "Rambut disisir ke belakang",
-            image: "assets/demo/barbershop/img/hairwash.jpeg"
+            image: assetUrl("assets/demo/barbershop/img/hairwash.jpeg")
         },
         {
             name: "Textured Fringe",
             description: "Fringe dengan tekstur",
-            image: "assets/demo/barbershop/img/klasik.png"
+            image: assetUrl("assets/demo/barbershop/img/klasik.png")
         }
     ],
     diamond: [
         {
             name: "Textured Fringe",
             description: "Fringe dengan tekstur",
-            image: "assets/demo/barbershop/img/klasik.png"
+            image: assetUrl("assets/demo/barbershop/img/klasik.png")
         },
         {
             name: "Classic Short",
             description: "Potongan pendek klasik",
-            image: "assets/demo/barbershop/img/modern.jpg"
+            image: assetUrl("assets/demo/barbershop/img/modern.jpg")
         }
     ],
     triangle: [
         {
             name: "Classic Short",
             description: "Potongan pendek klasik",
-            image: "img/modern.jpg"
+            image: assetUrl("assets/demo/barbershop/img/modern.jpg")
         },
         {
             name: "Textured Crop",
             description: "Crop dengan tekstur yang menarik",
-            image: "assets/demo/barbershop/img/comma.JPG"
+            image: assetUrl("assets/demo/barbershop/img/comma.JPG")
         }
     ]
 };
