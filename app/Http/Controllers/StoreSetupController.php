@@ -95,18 +95,16 @@ class StoreSetupController extends Controller
             ], 422);
         }
 
+        $logoPath = null;
+        if ($request->hasFile('store_logo')) {
+            $logoPath = $request->file('store_logo')->store('store-logos', 'public');
+        }
+
         try {
             DB::beginTransaction();
 
             $payment = Payment::findOrFail($request->payment_id);
 
-            // Handle logo upload
-            $logoPath = null;
-            if ($request->hasFile('store_logo')) {
-                $logoPath = $request->file('store_logo')->store('store-logos', 'public');
-            }
-
-            // Create or update user store
             $userStore = UserStore::updateOrCreate(
                 ['payment_transaction_id' => $payment->transaction_id],
                 [
@@ -119,28 +117,24 @@ class StoreSetupController extends Controller
                     'store_phone' => $request->store_phone,
                     'store_email' => $request->store_email,
                     'store_address' => $request->store_address,
-                    'setup_status' => 'completed',
+                    'setup_status' => 'pending_validation', // status baru
                     'setup_completed_at' => now(),
-                    'is_active' => true,
-                    'activated_at' => now()
+                    'is_active' => false, // Toko belum aktif
                 ]
             );
 
-            // Create tenant
+            // Create tenant but don't activate it yet
             $tenant = $this->createTenant($userStore);
 
-            // Update user store with tenant ID (using the actual tenant ID, not subdomain)
             $userStore->update([
                 'tenant_id' => $tenant->id,
                 'tenant_created' => true
             ]);
 
-            // Update user's tenant_id to establish proper tenant relationship
             User::where('id', $payment->user_id)->update([
                 'tenant_id' => $tenant->id
             ]);
 
-            // Create owner admin record for this store
             StoreAdmin::create([
                 'user_id' => $payment->user_id,
                 'store_id' => $userStore->id,
@@ -155,16 +149,14 @@ class StoreSetupController extends Controller
 
             DB::commit();
 
-            // Use subdomain for redirect instead of tenant ID
             return response()->json([
                 'success' => true,
-                'message' => 'Store setup completed successfully!',
-                'redirect_url' => 'http://' . $request->subdomain . '.' . config('app.domain', 'localhost') . '/admin'
+                'message' => 'Store setup completed! Your subdomain is now under review.',
+                'redirect_url' => route('store.setup.pending', ['store_id' => $userStore->id])
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            // Delete uploaded logo if transaction failed
             if ($logoPath && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
             }
@@ -175,6 +167,18 @@ class StoreSetupController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Tampilkan halaman validasi pending.
+     */
+    public function showPendingValidation(Request $request)
+    {
+        $store_id = $request->query('store_id');
+        $userStore = UserStore::where('id', $store_id)->where('user_id', Auth::id())->firstOrFail();
+
+        return view('payment.store-setup.pending-validation', compact('userStore'));
+    }
+
 
     /**
      * Create tenant for the store
@@ -213,12 +217,10 @@ class StoreSetupController extends Controller
             return response()->json(['available' => false, 'message' => 'Subdomain is required']);
         }
 
-        // Check if subdomain is valid format
         if (!preg_match('/^[a-zA-Z0-9-]+$/', $subdomain)) {
             return response()->json(['available' => false, 'message' => 'Subdomain can only contain letters, numbers, and hyphens']);
         }
 
-        // Check if subdomain is available
         $existsInStores = UserStore::where('subdomain', $subdomain)->exists();
         $existsInDomains = Domain::where('domain', $subdomain . '.' . config('app.domain', 'localhost'))->exists();
 

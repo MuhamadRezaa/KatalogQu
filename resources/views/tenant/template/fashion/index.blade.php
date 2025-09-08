@@ -5,77 +5,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
-    <title>{{ $userStore->store_name ?? 'E-Katalog Fashion' }}</title>
+    <title>{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</title>
 
-    <meta name="description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
+    <meta name="description"
+        content="{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}">
     <meta name="keywords" content="fashion, clothing, style, trends, catalog, online shopping, apparel, accessories">
-    <meta name="author" content="Fashion E-Catalog Demo">
+    <meta name="author" content="{{ $userStore->store_name ?? 'Fashion E-Catalog' }}">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="Fashion E-Catalog Demo">
-    <meta property="og:description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
+    <meta property="og:title" content="{{ $userStore->store_name ?? 'Fashion E-Catalog' }}">
+    <meta property="og:description"
+        content="{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="images/og-image.jpg">
+    <meta property="og:image" content="{{ asset('storage/' . $userStore->store_logo) }}">
 
-    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fashion/style.css') }}">
 </head>
 
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="nav-brand">
                 <div class="brand-icon">
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="{{ $userStore->store_name }}">
+                    <div class="icon-inner"></div>
                 </div>
-                <span class="brand-text">{{ $userStore->store_name }}</span>
+                <span class="brand-text">{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</span>
             </a>
             <div class="nav-actions">
+                <!-- Navigation actions can be added here -->
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
+        <!-- Slider Container -->
         <div class="slider-container" id="slider-container">
             <div class="slider-wrapper" id="slider-wrapper">
-                <div class="slide"
-                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                </div>
-                <div class="slide"
-                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                </div>
-                <div class="slide"
-                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                </div>
+                @forelse ($banners as $index => $banner)
+                    <div class="slide"
+                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('{{ route('tenant.asset', ['path' => $banner->image_url]) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    </div>
+                @empty
+                    <div class="slide"
+                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    </div>
+                    <div class="slide"
+                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    </div>
+                    <div class="slide"
+                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    </div>
+                @endforelse
             </div>
         </div>
 
-        <button class="slider-nav prev">
+        <!-- Slider Navigation Buttons -->
+        <button class="slider-nav prev" onclick="previousSlide()">
             <svg viewBox="0 0 24 24">
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
             </svg>
         </button>
-        <button class="slider-nav next">
+        <button class="slider-nav next" onclick="nextSlide()">
             <svg viewBox="0 0 24 24">
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg>
         </button>
 
+        <!-- Slider Indicators -->
         <div class="slider-indicators" id="slider-indicators">
-            <div class="slider-indicator active"></div>
-            <div class="slider-indicator"></div>
-            <div class="slider-indicator"></div>
+            @if (count($banners) > 0)
+                @foreach ($banners as $index => $banner)
+                    <div class="slider-indicator {{ $index == 0 ? 'active' : '' }}"
+                        onclick="goToSlide({{ $index }})"></div>
+                @endforeach
+            @else
+                <div class="slider-indicator active" onclick="goToSlide(0)"></div>
+                <div class="slider-indicator" onclick="goToSlide(1)"></div>
+                <div class="slider-indicator" onclick="goToSlide(2)"></div>
+            @endif
         </div>
 
         <div class="hero-content">
-            <h1 class="hero-title">Katalog Fashion</h1>
-            <p class="hero-subtitle">Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti</p>
+            <div class="hero-tagline">Temukan Gaya Anda</div>
+            <h1 class="hero-title">{{ $userStore->store_name ?? 'Katalog Fashion' }}</h1>
+            <p class="hero-subtitle">
+                {{ $userStore->store_description ?? 'Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti' }}
+            </p>
         </div>
     </section>
 
+    <!-- Main Content -->
     <main class="container">
+        <!-- Categories Section -->
         <section class="section">
             <div class="section-title">
                 <h2>Kategori</h2>
@@ -83,38 +108,39 @@
             </div>
 
             <div class="category-grid" id="categoryGrid">
-                <div class="category-card active" data-category-id="all">
+                <div class="category-card active" onclick="filterProducts('all', event)" data-category-id="all">
                     <div class="category-name">Semua Produk</div>
                     <div class="category-description">Lihat semua produk yang tersedia</div>
                 </div>
-                @foreach ($categories as $category)
-                    <div class="category-card" data-category-id="{{ $category->id }}"> {{-- Use category ID --}}
-                        <div class="category-name">{{ $category->name }}</div>
-                        <div class="category-description">{{ $category->description }}</div>
-                    </div>
-                @endforeach
+                <div class="category-card" onclick="filterProducts('new', event)" data-category-id="new">
+                    <div class="category-name">New Item</div>
+                    <div class="category-description">Produk terbaru dalam koleksi kami</div>
+                </div>
+                <!-- Categories will be loaded dynamically -->
             </div>
 
+            <!-- Subcategory Section -->
             <div class="subcategory-section" id="subcategorySection" style="display: none;">
                 <div class="section-title">
                     <h3>Sub Kategori</h3>
                     <p>Pilih sub kategori untuk filter lebih spesifik</p>
                 </div>
                 <div class="subcategory-grid" id="subcategoryGrid">
-                    {{-- Subcategories will be loaded here by JavaScript --}}
+                    <!-- Subcategories will be loaded dynamically -->
                 </div>
             </div>
 
+            <!-- Search and Filters Section -->
             <div id="searchContainer" class="search-container">
                 <div class="search-and-filters-wrapper">
                     <div class="search-wrapper">
-                        <input type="text" id="searchInput" placeholder="Cari produk...">
+                        <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="searchProducts()">
                     </div>
 
                     <div class="filters-section">
                         <div class="filter-group">
                             <label for="sortPrice">Urutkan Harga:</label>
-                            <select id="sortPrice">
+                            <select id="sortPrice" onchange="sortProducts(this.value)">
                                 <option value="">-- Pilih --</option>
                                 <option value="low-high">Harga Terendah</option>
                                 <option value="high-low">Harga Tertinggi</option>
@@ -123,7 +149,7 @@
 
                         <div class="filter-group">
                             <label for="sortName">Urutkan Nama:</label>
-                            <select id="sortName">
+                            <select id="sortName" onchange="sortProducts(this.value)">
                                 <option value="">-- Pilih --</option>
                                 <option value="a-z">A - Z</option>
                                 <option value="z-a">Z - A</option>
@@ -132,7 +158,7 @@
 
                         <div class="filter-group">
                             <label for="sortDate">Urutkan Tanggal:</label>
-                            <select id="sortDate">
+                            <select id="sortDate" onchange="sortProducts(this.value)">
                                 <option value="">-- Pilih --</option>
                                 <option value="newest">Terbaru</option>
                                 <option value="oldest">Terlama</option>
@@ -143,506 +169,535 @@
             </div>
         </section>
 
+        <!-- Products Section -->
         <section class="section">
             <div class="section-title">
                 <h2>Semua Produk</h2>
                 <p>Jelajahi koleksi lengkap kami</p>
             </div>
 
-            <div class="products-grid" id="productsGrid">
+            <div class="products-grid">
+                @forelse ($products as $product)
+                    @php $src = $product->primary_image_src; @endphp
+                    <div class="product-card" data-product-id="{{ $product->id }}"
+                        onclick="openProductModal('{{ $product->name }}', '{{ addslashes($product->description ?? '') }}', '{{ $src ? route('tenant.asset', ['path' => $src]) : '' }}', '{{ $product->price_idr }}', '{{ $product->category->name ?? 'Uncategorized' }}')">
+                        <div class="product-image-container">
+                            @if ($src)
+                                <img class="product-image" src="{{ route('tenant.asset', ['path' => $src]) }}"
+                                    alt="{{ $product->name }}" loading="lazy" />
+                            @else
+                                <div class="no-image-placeholder">
+                                    <span>No Image</span>
+                                </div>
+                            @endif
+                            @if ($product->discount_percentage)
+                                <div class="discount-badge">-{{ $product->discount_percentage }}%</div>
+                            @endif
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{ $product->name }}</h3>
+                            <p class="product-category">{{ $product->category->name ?? 'Uncategorized' }}</p>
+                            <div class="product-pricing">
+                                <span class="product-price">{{ $product->price_idr }}</span>
+                                @if ($product->old_price_idr)
+                                    <span class="product-old-price">{{ $product->old_price_idr }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="no-products">
+                        <p>No products found.</p>
+                    </div>
+                @endforelse
             </div>
 
             <div id="noResults" class="no-results" style="display: none;">
                 <h3>Produk yang Anda cari tidak ditemukan</h3>
                 <p>Coba gunakan kata kunci yang berbeda atau lihat semua produk kami.</p>
             </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                {{ $products->links() }}
+            </div>
         </section>
 
     </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-left-content">
-                <div class="footer-logo-section">
-                    <div class="footer-brand-icon">
-                        <img src="{{ asset('storage/' . $userStore->store_logo) }}"
-                            alt="{{ $userStore->store_name }}">
+    {{-- Product Modal --}}
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+                <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <div class="grid md:grid-cols-2 gap-6 p-6">
+                    <div class="space-y-4">
+                        <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden">
+                            <img id="modal-image" class="w-full h-full object-contain" src=""
+                                alt="">
+                        </div>
+                        <div id="modal-thumbnails" class="flex gap-2 overflow-x-auto"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h2 id="modal-title" class="text-2xl font-bold text-gray-900"></h2>
+                            <p id="modal-category" class="text-gray-600"></p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="modal-price" class="text-3xl font-bold text-gray-900"></span>
+                            <span id="modal-old-price" class="text-xl text-gray-500 line-through hidden"></span>
+                            <span id="modal-discount"
+                                class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded hidden"></span>
+                        </div>
+                        <div id="modal-description" class="text-gray-700"></div>
+                        <div id="modal-specifications" class="space-y-2"></div>
+                        <div class="flex gap-3 pt-4">
+                            <button
+                                class="flex-1 bg-pink-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-pink-700 transition-colors">
+                                Add to Cart
+                            </button>
+                            <button
+                                class="px-6 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="footer-section footer-text-content">
-                    <h3>{{ $userStore->store_name }}</h3>
-                    <p>{{ $userStore->store_description }}</p>
-                </div>
             </div>
-            <div class="footer-middle-space">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</h3>
+                <p>{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}
+                </p>
             </div>
-            <div class="footer-section footer-contact">
-                <h3>Informasi Kontak</h3>
-                <div class="contact-item">
-                    <i class="contact-icon">📞</i>
-                    <span>{{ $userStore->store_phone }}</span>
-                </div>
-                <div class="contact-item">
-                    <i class="contact-icon">✉️</i>
-                    <span>{{ $userStore->store_phone }}</span>
-                </div>
-                <div class="contact-item">
-                    <i class="contact-icon">📍</i>
-                    <span>{{ $userStore->store_address }}</span>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Categories</h4>
+                <ul>
+                    @foreach ($categories->take(5) as $category)
+                        <li><a href="#">{{ $category->name }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <div class="contact-info">
+                    @if ($userStore->phone)
+                        <p>Phone: {{ $userStore->phone }}</p>
+                    @endif
+                    @if ($userStore->email)
+                        <p>Email: {{ $userStore->email }}</p>
+                    @endif
+                    @if ($userStore->address)
+                        <p>Address: {{ $userStore->address }}</p>
+                    @endif
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Powered by PT. Era Cipta Digital</p>
+            <p>&copy; {{ date('Y') }} {{ $userStore->store_name ?? 'Fashion E-Catalog' }}. All rights reserved.
+            </p>
         </div>
     </footer>
 
-    <div id="productModal" class="product-modal">
+    <!-- Product Modal -->
+    <div id="product-modal" class="product-modal" style="display: none;">
         <div class="modal-container">
-            <span class="modal-close">&times;</span>
-            <div id="modalContent"></div>
+            <span onclick="closeModal()" class="modal-close">&times;</span>
+            <div class="modal-content">
+                <div class="modal-image-section">
+                    <img id="modal-image" src="" alt="" class="modal-image">
+                    <div id="modal-discount" class="modal-discount-badge hidden"></div>
+                </div>
+                <div class="modal-info-section">
+                    <h2 id="modal-title" class="modal-title"></h2>
+                    <p id="modal-category" class="modal-category"></p>
+                    <div class="modal-price-section">
+                        <span id="modal-price" class="modal-current-price"></span>
+                        <span id="modal-old-price" class="modal-old-price hidden"></span>
+                    </div>
+                    <div class="modal-description">
+                        <h4>Deskripsi Produk</h4>
+                        <p id="modal-description"></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-primary" onclick="closeModal()">Tutup</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="loadingOverlay" class="loading-overlay">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loading-spinner"></div>
         <p>Memuat data...</p>
     </div>
 
     <script>
-        const allCategories = @json($categories);
-        const allSubcategories = @json($subCategories);
-        const initialProducts = @json($products->items()); // Assuming $products is paginated
-        let allProducts = initialProducts;
+        // Define a global asset URL for the external script
+        const ASSET_URL = "{{ asset('assets/demo/fashion') }}";
+    </script>
+    <script src="{{ asset('assets/demo/fashion/script.js') }}"></script>
 
-        const ASSET_URL = "{{ asset('storage/') }}";
+    <script>
+        // Global variables
+        let currentSlide = 0;
+        let totalSlides = 0;
+        let allProducts = @json($products->items() ?? []);
+        let filteredProducts = [...allProducts];
+        let categories = @json($categories ?? []);
+        let subcategories = @json($subcategories ?? []);
+        let currentCategory = 'all';
+        let currentSubcategory = '';
+        let currentSort = '';
+        let searchQuery = '';
 
+        // Initialize slider
+        function initSlider() {
+            const sliderWrapper = document.getElementById('slider-wrapper');
+            const indicators = document.getElementById('slider-indicators');
 
-        const categoryCards = document.querySelectorAll('.category-card');
-        const subcategorySection = document.getElementById('subcategorySection');
-        const subcategoryGrid = document.getElementById('subcategoryGrid');
+            if (sliderWrapper) {
+                totalSlides = sliderWrapper.children.length;
 
-        let currentCategory = 'all'; // Default to all products
-        let currentSubcategory = null; // Default to no subcategory filter
+                // Auto-slide every 5 seconds
+                setInterval(() => {
+                    nextSlide();
+                }, 5000);
+            }
+        }
 
-        // Function to update active category card
-        function updateActiveCategoryCard(element) {
+        // Slider functions
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const sliderWrapper = document.getElementById('slider-wrapper');
+            const indicators = document.querySelectorAll('.slider-indicator');
+
+            if (sliderWrapper) {
+                sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // Load categories
+        function loadCategories() {
+            const categoryGrid = document.getElementById('categoryGrid');
+            if (!categoryGrid) return;
+
+            categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.setAttribute('data-category-id', category.id);
+                categoryCard.onclick = (e) => filterProducts(category.id, e);
+                categoryCard.innerHTML = `
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-description">${category.description || 'Lihat produk dalam kategori ini'}</div>
+                `;
+                categoryGrid.appendChild(categoryCard);
+            });
+        }
+
+        // Filter products
+        function filterProducts(categoryId, event) {
+            // Update active category
             document.querySelectorAll('.category-card').forEach(card => {
                 card.classList.remove('active');
             });
-            element.classList.add('active');
-        }
 
-        // Function to show subcategories based on selected category
-        function showSubcategoriesForCategory(categoryId) {
-            subcategoryGrid.innerHTML = ''; // Clear previous subcategories
-
-            // Add "All" subcategory card
-            const allSubcategoryCard = document.createElement('div');
-            allSubcategoryCard.className = 'subcategory-card active';
-            allSubcategoryCard.innerHTML = `<div class="subcategory-name">Semua Sub Kategori</div>`;
-            allSubcategoryCard.onclick = () => filterBySubcategory(null, allSubcategoryCard);
-            subcategoryGrid.appendChild(allSubcategoryCard);
-
-            let relevantSubcategories = [];
-            if (categoryId === 'all') {
-                relevantSubcategories = allSubcategories;
-            } else {
-                relevantSubcategories = allSubcategories.filter(sub => sub.category_id == categoryId);
+            if (event) {
+                event.currentTarget.classList.add('active');
             }
 
-            relevantSubcategories.forEach(subcategory => {
+            currentCategory = categoryId;
+            currentSubcategory = '';
+
+            // Show/hide subcategory section
+            const subcategorySection = document.getElementById('subcategorySection');
+            if (categoryId !== 'all' && categoryId !== 'new') {
+                loadSubcategories(categoryId);
+                subcategorySection.style.display = 'block';
+            } else {
+                subcategorySection.style.display = 'none';
+            }
+
+            applyFilters();
+        }
+
+        // Load subcategories
+        function loadSubcategories(categoryId) {
+            const subcategoryGrid = document.getElementById('subcategoryGrid');
+            if (!subcategoryGrid) return;
+
+            subcategoryGrid.innerHTML = '';
+
+            // Add "All" subcategory option
+            const allSubcategoryCard = document.createElement('div');
+            allSubcategoryCard.className = 'subcategory-card active';
+            allSubcategoryCard.setAttribute('data-subcategory-id', '');
+            allSubcategoryCard.onclick = (e) => filterBySubcategory('', e);
+            allSubcategoryCard.innerHTML = `
+                <div class="subcategory-name">Semua</div>
+            `;
+            subcategoryGrid.appendChild(allSubcategoryCard);
+
+            // Add actual subcategories
+            const categorySubcategories = subcategories.filter(sub => sub.category_id == categoryId);
+            categorySubcategories.forEach(subcategory => {
                 const subcategoryCard = document.createElement('div');
                 subcategoryCard.className = 'subcategory-card';
-                subcategoryCard.onclick = () => filterBySubcategory(subcategory.id, subcategoryCard);
-
+                subcategoryCard.setAttribute('data-subcategory-id', subcategory.id);
+                subcategoryCard.onclick = (e) => filterBySubcategory(subcategory.id, e);
                 subcategoryCard.innerHTML = `
                     <div class="subcategory-name">${subcategory.name}</div>
-                    <div class="subcategory-description">${subcategory.description || ''}</div>
                 `;
                 subcategoryGrid.appendChild(subcategoryCard);
             });
-
-            subcategorySection.style.display = 'block';
         }
 
-        // Hide subcategories
-        function hideSubcategories() {
-            subcategorySection.style.display = 'none';
-        }
-
-        // Event listeners for category cards
-        categoryCards.forEach(card => {
-            card.addEventListener('click', function() {
-                updateActiveCategoryCard(this);
-                const categoryId = this.dataset.categoryId;
-                currentCategory = categoryId;
-
-                // Reset subcategory filter when category changes
-                currentSubcategory = null;
-
-                if (categoryId === 'all') {
-                    hideSubcategories(); // Hide subcategories if "All Products" is selected
-                } else {
-                    showSubcategoriesForCategory(categoryId);
-                }
-
-                // Trigger product filtering based on selected category and reset subcategory
-                filterProducts();
-            });
-        });
-
-        // Initial load: hide subcategories section
-        hideSubcategories();
-
-        // Modify filterBySubcategory to use subcategory ID
-        function filterBySubcategory(subcategoryId, element) {
+        // Filter by subcategory
+        function filterBySubcategory(subcategoryId, event) {
             document.querySelectorAll('.subcategory-card').forEach(card => {
                 card.classList.remove('active');
             });
-            element.classList.add('active');
+
+            if (event) {
+                event.currentTarget.classList.add('active');
+            }
 
             currentSubcategory = subcategoryId;
-            filterProducts(); // Re-filter products
+            applyFilters();
         }
 
-        // Modify filterProducts to include subcategory filter
-        function filterProducts() {
-            let filteredProducts = initialProducts; // Start with all initial products
+        // Search products
+        function searchProducts() {
+            const searchInput = document.getElementById('searchInput');
+            searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
+            applyFilters();
+        }
 
-            // Apply category filter
-            if (currentCategory !== 'all') {
-                filteredProducts = filteredProducts.filter(product =>
-                    product.product_category_id == currentCategory
-                );
-            }
-
-            // Apply subcategory filter
-            if (currentSubcategory !== null) {
-                filteredProducts = filteredProducts.filter(product =>
-                    product.sub_category_id == currentSubcategory
-                );
-            }
-
-            // Apply search filter
+        // Filter products by search and filters (legacy function for compatibility)
+        function filterProductsDirectly() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            if (searchTerm) {
-                filteredProducts = filteredProducts.filter(product =>
-                    product.name.toLowerCase().includes(searchTerm) ||
-                    product.description.toLowerCase().includes(searchTerm) ||
-                    product.sku.toLowerCase().includes(searchTerm)
-                );
-            }
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
 
-            // Apply price sorting
-            const sortPrice = document.getElementById('sortPrice').value;
-            if (sortPrice === 'low-high') {
-                filteredProducts.sort((a, b) => a.price - b.price);
-            } else if (sortPrice === 'high-low') {
-                filteredProducts.sort((a, b) => b.price - a.price);
-            }
+            const productCards = document.querySelectorAll('.product-card');
+            let visibleCount = 0;
 
-            // Apply name sorting
-            const sortName = document.getElementById('sortName').value;
-            if (sortName === 'a-z') {
-                filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
-            } else if (sortName === 'z-a') {
-                filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
-            }
+            productCards.forEach(card => {
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+                const productCategory = card.querySelector('.product-category').textContent;
+                const priceText = card.querySelector('.product-price').textContent.replace(/[^0-9]/g, '');
+                const productPrice = parseFloat(priceText) || 0;
 
-            // Apply date sorting
-            const sortDate = document.getElementById('sortDate').value;
-            if (sortDate === 'newest') {
-                filteredProducts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            } else if (sortDate === 'oldest') {
-                filteredProducts.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-            }
+                const matchesSearch = productName.includes(searchTerm);
+                const matchesCategory = !selectedCategory || productCategory === selectedCategory;
+                const matchesPrice = productPrice >= minPrice && productPrice <= maxPrice;
 
-            renderProducts(filteredProducts);
+                if (matchesSearch && matchesCategory && matchesPrice) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noResults = document.getElementById('noResults');
+            if (noResults) {
+                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            }
         }
 
-        // Event listeners for sorting and search
-        document.getElementById('searchInput').addEventListener('keyup', filterProducts);
-        document.getElementById('sortPrice').addEventListener('change', filterProducts);
-        document.getElementById('sortName').addEventListener('change', filterProducts);
-        document.getElementById('sortDate').addEventListener('change', filterProducts);
+        // Sort products
+        function sortProducts(sortType) {
+            // Clear other sort selects
+            const sortSelects = ['sortPrice', 'sortName', 'sortDate'];
+            sortSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select && select.id !== event.target.id) {
+                    select.value = '';
+                }
+            });
 
-        // Initial render of products
-        filterProducts();
+            currentSort = sortType;
+            applyFilters();
+        }
 
-        // Placeholder for renderProducts and loading functions (if not already defined)
-        function renderProducts(products) {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = '';
-            if (products.length === 0) {
-                document.getElementById('noResults').style.display = 'block';
-                return;
-            }
-            document.getElementById('noResults').style.display = 'none';
-
-            products.forEach(product => {
-                console.log('ASSET_URL:', ASSET_URL);
-                console.log('Rendered Image URL:', ASSET_URL + '/' + product.primary_image_src);
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                // productCard.setAttribute('data-category', product.category.toLowerCase()); // Removed as not directly used for filtering
-                productCard.setAttribute('data-product-id', product.id);
-                productCard.onclick = () => showProductDetails(product.id);
-
-                // Format price
-                const formattedPrice = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0
-                }).format(product.price);
-
-                // Generate tags HTML (assuming colors are from specification)
-                let tagsHTML = '';
-                const colors = product.specification && product.specification.colors ? product.specification
-                    .colors : [];
-                if (colors.length > 0) {
-                    const displayColors = colors.slice(0, 3);
-                    tagsHTML = `
-                <div class="product-tags">
-                    ${displayColors.map(color => `<span class="tag">${color}</span>`).join('')}
-                    ${colors.length > 3 ? `<span class="tag">+${colors.length - 3}</span>` : ''}
-                </div>
-            `;
+        // Apply all filters
+        function applyFilters() {
+            filteredProducts = allProducts.filter(product => {
+                // Search filter
+                if (searchQuery && !product.name.toLowerCase().includes(searchQuery)) {
+                    return false;
                 }
 
-                productCard.innerHTML = `
-            <div class="product-image">
-                <img src="${ASSET_URL}/${product.primary_image_src}"
-                     alt="${product.name}"
-                     loading="lazy"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                     onload="this.style.opacity='1';"
-                     style="opacity: 0; transition: opacity 0.3s ease;">
-                <div class="no-image" style="display: none;">📷 Image Not Available</div>
-            </div>
-            <div class="product-info">
-                <div class="product-category">${product.category ? product.category.name : ''}${product.sub_category ? ' - ' + product.sub_category.name : ''}</div>
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">${formattedPrice}</div>
-                ${tagsHTML}
-            </div>
-        `;
+                // Category filter
+                if (currentCategory === 'new') {
+                    // Show products created in last 30 days
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    const productDate = new Date(product.created_at);
+                    return productDate >= thirtyDaysAgo;
+                } else if (currentCategory !== 'all') {
+                    if (product.category_id != currentCategory) {
+                        return false;
+                    }
+                }
 
-                productsGrid.appendChild(productCard);
+                // Subcategory filter
+                if (currentSubcategory && product.subcategory_id != currentSubcategory) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Apply sorting
+            if (currentSort) {
+                filteredProducts.sort((a, b) => {
+                    switch (currentSort) {
+                        case 'low-high':
+                            return parseFloat(a.price) - parseFloat(b.price);
+                        case 'high-low':
+                            return parseFloat(b.price) - parseFloat(a.price);
+                        case 'a-z':
+                            return a.name.localeCompare(b.name);
+                        case 'z-a':
+                            return b.name.localeCompare(a.name);
+                        case 'oldest':
+                            return new Date(a.created_at) - new Date(b.created_at);
+                        case 'newest':
+                            return new Date(b.created_at) - new Date(a.created_at);
+                        default:
+                            return 0;
+                    }
+                });
+            }
+
+            renderProducts();
+        }
+
+        // Render products
+        function renderProducts() {
+            const productGrid = document.querySelector('.products-grid');
+            const noResults = document.getElementById('noResults');
+
+            if (!productGrid) return;
+
+            // Get all product cards
+            const allCards = productGrid.querySelectorAll('.product-card');
+
+            if (filteredProducts.length === 0) {
+                allCards.forEach(card => card.style.display = 'none');
+                if (noResults) noResults.style.display = 'block';
+                return;
+            }
+
+            if (noResults) noResults.style.display = 'none';
+
+            allCards.forEach(card => {
+                const productId = card.getAttribute('data-product-id');
+                const shouldShow = filteredProducts.some(product => product.id == productId);
+                card.style.display = shouldShow ? 'block' : 'none';
             });
         }
 
-        function showLoading() {
-            document.getElementById('loadingOverlay').style.display = 'flex';
-        }
+        // Open product modal
+        function openProductModal(name, description, imageSrc, price, category) {
+            const modal = document.getElementById('product-modal');
+            if (!modal) return;
 
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
-    </script>
+            // Update modal content
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-price').textContent = price;
+            document.getElementById('modal-description').textContent = description || 'No description available.';
 
-    <script>
-        // Show product details in modal
-        function showProductDetails(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-
-            console.log('ASSET_URL:', ASSET_URL);
-            console.log('Modal Image URL:', `${ASSET_URL}/${product.primary_image_src}`);
-
-            // Format price
-            const formattedPrice = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(product.price);
-
-            // Accessing specification properties
-            const material = product.specification && product.specification.material ? product.specification.material : '';
-            const sizes = product.specification && product.specification.sizes ? product.specification.sizes : [];
-            const colors = product.specification && product.specification.colors ? product.specification.colors : [];
-
-            // Generate sizes HTML
-            let sizesHTML = '';
-            if (sizes.length > 0) {
-                sizesHTML = `
-            <div class="modal-section">
-                <h4>Ukuran Tersedia:</h4>
-                <div class="sizes-list">
-                    ${sizes.map(size => `<span class="size-tag">${size}</span>`).join('')}
-                </div>
-            </div>
-        `;
+            if (imageSrc) {
+                document.getElementById('modal-image').src = imageSrc;
+                document.getElementById('modal-image').alt = name;
             }
 
-            // Generate colors HTML
-            let colorsHTML = '';
-            if (colors.length > 0) {
-                colorsHTML = `
-            <div class="modal-section">
-                <h4>Warna Tersedia:</h4>
-                <div class="colors-list">
-                    ${colors.map(color => `<span class="color-tag">${color}</span>`).join('')}
-                </div>
-            </div>
-        `;
-            }
-
-            // Use primary_image_src
-            const imageUrl = `${ASSET_URL}/${product.primary_image_src}`;
-
-            modalContent.innerHTML = `
-        <div class="modal-product-details">
-            <div class="modal-product-image">
-                <img src="${imageUrl}"
-                     alt="${product.name}"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                     style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px;">
-                <div class="no-image" style="display: none; height: 400px; background: #f0f0f0; border-radius: 12px; align-items: center; justify-content: center; font-size: 1.2rem; color: #999;">📷 Image Not Available</div>
-            </div>
-            <div class="modal-product-info">
-                <div class="modal-product-category">${product.category ? product.category.name : ''}${product.sub_category ? ' - ' + product.sub_category.name : ''}</div>
-                <h2 class="modal-product-name">${product.name}</h2>
-                <div class="modal-product-price">${formattedPrice}</div>
-                <div class="modal-product-description">
-                    <h4>Deskripsi:</h4>
-                    <p>${product.description}</p>
-                </div>
-                ${material ? `
-                                                                <div class="modal-section">
-                                                                    <h4>Material:</h4>
-                                                                    <p>${material}</p>
-                                                                </div>
-                                                            ` : ''}
-                ${product.brand ? `
-                                                                <div class="modal-section">
-                                                                    <h4>Brand:</h4>
-                                                                    <p>${product.brand.name}</p>
-                                                                </div>
-                                                            ` : ''}
-                ${sizesHTML}
-                ${colorsHTML}
-            </div>
-        </div>
-    `;
-
-            productModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            modal.style.display = 'block';
         }
 
         // Close modal
         function closeModal() {
-            productModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            const modal = document.getElementById('product-modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         }
 
-        // Close modal when clicking outside
-        productModal.addEventListener('click', function(event) {
-            if (event.target === productModal) {
-                closeModal();
-            }
-        });
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initSlider();
+            loadCategories();
+            renderProducts();
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && productModal.style.display === 'block') {
-                closeModal();
+            // Close modal when clicking close button or outside modal
+            const closeModalBtn = document.getElementById('close-modal');
+            const modal = document.getElementById('product-modal');
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
             }
         });
     </script>
 
-    <style>
-        .modal-product-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .modal-product-category {
-            font-size: 0.9rem;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-product-name {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .modal-product-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #999;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-section h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-section p {
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .sizes-list,
-        .colors-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .size-tag,
-        .color-tag {
-            background: #f0f0f0;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border: 1px solid #ddd;
-        }
-
-        .stock-info.in-stock {
-            color: #28a745;
-        }
-
-        .stock-info.low-stock {
-            color: #ffc107;
-        }
-
-        .stock-info.out-of-stock {
-            color: #dc3545;
-        }
-
-        @media (max-width: 768px) {
-            .modal-product-details {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .modal-product-name {
-                font-size: 1.5rem;
-            }
-
-            .modal-product-price {
-                font-size: 1.4rem;
-            }
-        }
-    </style>
+    <!-- Universal Checkout Bubble -->
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'fashion',
+    ])
 </body>
 
 </html>

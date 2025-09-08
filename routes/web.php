@@ -173,6 +173,8 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::get('/store-setup', [StoreSetupController::class, 'showForm'])->name('store.setup.form');
             Route::post('/store-setup/process', [StoreSetupController::class, 'processForm'])->name('store.setup.process');
             Route::get('/api/store-setup/check-subdomain', [StoreSetupController::class, 'checkSubdomain'])->name('store.setup.check-subdomain');
+            // HALAMAN BARU: Tampilkan halaman validasi pending
+            Route::get('/store-setup/pending', [StoreSetupController::class, 'showPendingValidation'])->name('store.setup.pending');
         });
 
         // ========================================

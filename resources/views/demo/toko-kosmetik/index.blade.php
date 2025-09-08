@@ -131,25 +131,6 @@
         </div>
     </section>
 
-    <!-- Our Collection Section -->
-    <section class="our-collection-section py-5 bg-light">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="section-title">Our Collection</h2>
-                    <p class="section-subtitle">Produk unggulan pilihan terbaik untuk Anda</p>
-                </div>
-            </div>
-            <div class="row g-4" id="featuredProducts">
-                <!-- Featured products will be populated by JavaScript -->
-            </div>
-            <div class="text-center mt-4">
-                <button class="btn btn-primary btn-lg" onclick="scrollToSection('products')">Lihat Semua
-                    Produk</button>
-            </div>
-        </div>
-    </section>
-
     <section class="category-section py-5">
         <div class="text-center">
             <h2 class="section-title">Kategori Produk</h2>

@@ -13,11 +13,27 @@
 </head>
 
 <body>
-    <!-- Hero Section -->
+    <style>
+        .hairstyles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .hairstyle-card {
+            flex: 0 0 250px;
+            min-width: 250px;
+        }
+
+        @media (max-width: 768px) {
+            .hairstyles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
     <section id="home" class="hero">
         <div class="hero-overlay"></div>
-
-        <!-- Background Slider Container -->
         <div class="hero-background-slider">
             <div class="bg-slide active" data-slide="0">
                 <div class="bg-image"
@@ -32,8 +48,6 @@
                     style="background-image: url('{{ asset('assets/demo/barbershop/img/bg.jpeg') }}')"></div>
             </div>
         </div>
-
-        <!-- Static Hero Content -->
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="badge-text">✨ Barbershop Premium</span>
@@ -63,15 +77,7 @@
                     <span>Hasil Memuaskan</span>
                 </div>
             </div>
-            {{-- <div class="hero-buttons">
-                <a href="#gallery" class="btn btn-secondary btn-large">
-                    <i class="fas fa-images"></i>
-                    Lihat Portfolio
-                </a>
-            </div> --}}
         </div>
-
-        <!-- Slider Navigation -->
         <div class="slider-nav">
             <button class="slider-btn prev" aria-label="Slide sebelumnya">
                 <i class="fas fa-chevron-left"></i>
@@ -80,8 +86,6 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
-
-        <!-- Slider Dots -->
         <div class="slider-dots">
             <button class="dot active" data-slide="0" aria-label="Slide 1"></button>
             <button class="dot" data-slide="1" aria-label="Slide 2"></button>
@@ -89,204 +93,82 @@
         </div>
     </section>
 
-    <!-- Style Recommendation Section -->
     <section id="style-recommendation" class="style-recommendation">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Rekomendasi Style</h2>
-                <p class="section-subtitle">
-                    Pilih bentuk wajah Anda untuk mendapatkan rekomendasi
-                    style pangkas yang paling cocok
-                </p>
+                <p class="section-subtitle">Pilih bentuk wajah Anda untuk mendapatkan rekomendasi style pangkas yang
+                    paling cocok</p>
             </div>
 
             <div class="face-shape-container">
                 <div class="face-shape-buttons">
-                    <button class="face-shape-btn" data-shape="oval">
-                        <i class="fas fa-circle"></i>
-                        <span>Oval</span>
-                    </button>
-                    <button class="face-shape-btn" data-shape="round">
-                        <i class="fas fa-circle"></i>
-                        <span>Round</span>
-                    </button>
-                    <button class="face-shape-btn" data-shape="square">
-                        <i class="fas fa-square"></i>
-                        <span>Square</span>
-                    </button>
-                    <button class="face-shape-btn" data-shape="heart">
-                        <i class="fas fa-heart"></i>
-                        <span>Heart</span>
-                    </button>
-                    <button class="face-shape-btn" data-shape="diamond">
-                        <i class="fas fa-gem"></i>
-                        <span>Diamond</span>
-                    </button>
-                    <button class="face-shape-btn" data-shape="triangle">
-                        <i class="fas fa-play"></i>
-                        <span>Triangle</span>
-                    </button>
+                    <button class="face-shape-btn active" data-category="semua">Semua</button>
+                    @foreach ($categories as $category)
+                        <button class="face-shape-btn" data-category="{{ strtolower($category->name) }}">
+                            {{ $category->name }}
+                        </button>
+                    @endforeach
                 </div>
 
                 <div class="recommendation-result" id="recommendationResult">
-                    <div class="result-placeholder">
+                    <div class="result-placeholder" id="placeholder">
                         <i class="fas fa-hand-pointer"></i>
-                        <p>
-                            Pilih bentuk wajah Anda di atas untuk melihat
-                            rekomendasi
-                        </p>
+                        <p>Pilih bentuk wajah Anda di atas untuk melihat rekomendasi</p>
+                    </div>
+
+                    <div id="recommendationContent" style="display: none;">
+                        <div class="recommendation-header">
+                            <h3 class="recommendation-title">Rekomendasi untuk Wajah <span
+                                    id="selectedCategoryTitle"></span></h3>
+                            <p class="recommendation-subtitle">Berikut adalah style yang cocok untuk bentuk wajah Anda
+                            </p>
+                        </div>
+
+                        <div class="hairstyles-grid" id="hairstylesGrid">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <!-- Modal -->
-        <div id="serviceModal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeModal()">
-                    &times;
-                </button>
-                <img id="modalImage" src="" alt="Service Image" />
-                <h3 id="modalTitle"></h3>
-                <p id="modalDescription"></p>
-            </div>
+    <div id="productModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">×</button>
+            <img id="modalImage" src="" alt="Hairstyle Image" />
+            <h3 id="modalTitle"></h3>
+            <p id="modalDescription"></p>
         </div>
+    </div>
 
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Service</h2>
-                <p class="section-subtitle">
-                    Dapatkan pelayanan terbaik dengan standar internasional
-                    dan teknik modern
-                </p>
-            </div>
-
-            <div class="services-grid">
-                @forelse ($products as $product)
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ $product->image ? route('tenant.asset', ['path' => $product->image]) : asset('assets/demo/barbershop/img/klasik.png') }}"
-                                alt="{{ $product->name }}" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>{{ $product->duration ?? '30 min' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">{{ $product->name }}</h3>
-                            <div class="service-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                            <button class="service-btn"
-                                onclick="showModal('{{ $product->name }}', '{{ $product->description ?? 'Layanan barbershop profesional dengan kualitas terbaik.' }}', '{{ $product->image ? route('tenant.asset', ['path' => $product->image]) : asset('assets/demo/barbershop/img/klasik.png') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                @empty
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/klasik.png') }}" alt="No Services" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>-</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Belum Ada Layanan</h3>
-                            <div class="service-price">-</div>
-                            <button class="service-btn" disabled>
-                                Layanan Segera Tersedia
-                            </button>
-                        </div>
-                    </div>
-                @endforelse
-            </div>
+    <div class="container mt-6">
+        <div class="section-header">
+            <h2 class="section-title mt-6">Our Hairstyle</h2>
+            <p class="section-subtitle">
+                Temukan gaya rambut yang sempurna untuk Anda. Dari potongan modern hingga klasik.
+            </p>
         </div>
-    </section>
+    </div>
 
-    <!-- Gallery Section -->
-    {{-- <section id="gallery" class="gallery">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Portfolio Karya</h2>
-                <p class="section-subtitle">
-                    Lihat hasil kerja terbaik kami dan dapatkan inspirasi
-                    untuk gaya rambut Anda
-                </p>
-            </div>
-
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/mohawk.jpg') }}" alt="Mohawk" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Mohawk Style</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/buzzcut.jpg') }}" alt="Buzzcut" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Buzz Cut</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/mullet.jpg') }}" alt="Mullet" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Mullet Modern</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/comma.JPG') }}" alt="Comma Hair" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Comma Hair</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/undercut.jpg') }}" alt="Undercut Modern" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Undercut Modern</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/kids.jpg') }}" alt="Kids Cuts" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Kids Style</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="hero-icon"
                         style="
-                                background: none !important;
-                                border: none !important;
-                                box-shadow: none !important;
-                            ">
+                            background: none !important;
+                            border: none !important;
+                            box-shadow: none !important;
+                        ">
                         <i class="fas fa-cut"
                             style="
-                                    background: none !important;
-                                    padding: 0 !important;
-                                    margin: 0 !important;
-                                    width: auto !important;
-                                    height: auto !important;
-                                "></i>
+                                background: none !important;
+                                padding: 0 !important;
+                                margin: 0 !important;
+                                width: auto !important;
+                                height: auto !important;
+                            "></i>
                     </div>
                     <h1>{{ $userStore->store_name }}</h1>
                 </div>
@@ -332,29 +214,147 @@
     </footer>
 
     <script>
-        // contoh: https://domainmu.com/
-        window.ASSET_BASE = "{{ asset('') }}";
-        window.assetUrl = function(p) {
-            return (window.ASSET_BASE.replace(/\/$/, '') + '/' + String(p).replace(/^\//, ''));
-        };
-    </script>
-    <script src="{{ asset('assets/demo/barbershop/script.js') }}"></script>
-    <script>
-        function toggleDetail(btn) {
-            const detail = btn.nextElementSibling;
-            if (
-                detail.style.display === "none" ||
-                detail.style.display === ""
-            ) {
-                detail.style.display = "block";
-                btn.textContent = "Tutup Detail";
-            } else {
-                detail.style.display = "none";
-                btn.textContent = "Detail Layanan";
-            }
-        }
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allProducts = [
+                @foreach ($products as $product)
+                    {
+                        name: "{{ addslashes($product->name ?? 'Tidak Ada Nama') }}",
+                        description: "{{ addslashes($product->description ?? '') }}",
+                        image: "{{ addslashes($product->image ?? '') }}",
+                        price: {{ $product->price ?? 0 }},
+                        duration: "{{ $product->duration ?? '30 min' }}",
+                        category: "{{ strtolower($product->category->name ?? 'Lainnya') }}",
+                    },
+                @endforeach
+            ];
 
+            window.ASSET_BASE = "{{ asset('') }}";
+            window.assetUrl = function(p) {
+                return (window.ASSET_BASE.replace(/\/$/, '') + '/' + String(p).replace(/^\//, ''));
+            };
+
+            window.openProductModal = function(title, description, imageUrl) {
+                const modal = document.getElementById('productModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalDescription = document.getElementById('modalDescription');
+
+                if (modal && modalImage && modalTitle && modalDescription) {
+                    modalImage.src = imageUrl;
+                    modalTitle.textContent = title;
+                    modalDescription.textContent = description;
+
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+
+            window.closeProductModal = function() {
+                const modal = document.getElementById('productModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            };
+
+            window.addEventListener('click', (event) => {
+                const modal = document.getElementById('productModal');
+                if (event.target === modal) {
+                    window.closeProductModal();
+                }
+            });
+
+            window.toggleDetail = function(btn) {
+                const detail = btn.nextElementSibling;
+                if (detail.style.display === "none" || detail.style.display === "") {
+                    detail.style.display = "block";
+                    btn.textContent = "Tutup Detail";
+                } else {
+                    detail.style.display = "none";
+                    btn.textContent = "Detail Layanan";
+                }
+            };
+
+            const faceShapeButtons = document.querySelectorAll('.face-shape-btn');
+            const placeholder = document.getElementById('placeholder');
+            const recommendationContent = document.getElementById('recommendationContent');
+            const selectedCategoryTitle = document.getElementById('selectedCategoryTitle');
+            const hairstylesGrid = document.getElementById('hairstylesGrid');
+
+            function renderProducts(products) {
+                hairstylesGrid.innerHTML = '';
+                if (products.length === 0) {
+                    hairstylesGrid.innerHTML =
+                        '<p class="text-center text-gray-500">Tidak ada gaya rambut yang cocok untuk kategori ini.</p>';
+                } else {
+                    products.forEach(product => {
+                        let imageUrl;
+                        // Jika ada gambar produk, gunakan URL-nya
+                        if (product.image) {
+                            imageUrl = window.assetUrl('storage/' + product.image);
+                        } else {
+                            // Jika tidak ada, gunakan gambar default
+                            imageUrl = window.assetUrl('assets/demo/barbershop/img/klasik.png');
+                        }
+
+                        const sanitizedDescription = product.description.replace(/'/g, "\\'").replace(/"/g,
+                            '\\"');
+                        const productHtml = `
+            <div class="hairstyle-card">
+                <div class="hairstyle-image">
+                    <img src="${imageUrl}" alt="${product.name}" />
+                    <div class="hairstyle-overlay">
+                        <div class="hairstyle-duration"><i class="fas fa-clock"></i><span>${product.duration ?? '30 min'}</span></div>
+                    </div>
+                </div>
+                <div class="hairstyle-content">
+                    <h3 class="hairstyle-name">${product.name}</h3>
+                    <div class="hairstyle-price">Rp ${new Intl.NumberFormat('id-ID').format(product.price)}</div>
+                    <button class="hairstyle-btn" onclick="openProductModal('${product.name}', '${sanitizedDescription}', '${imageUrl}')">
+                        Detail Gaya Rambut
+                    </button>
+                </div>
+            </div>
+            `;
+                        hairstylesGrid.innerHTML += productHtml;
+                    });
+                }
+            }
+
+            faceShapeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    faceShapeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const selectedCategory = button.getAttribute('data-category');
+                    const titleText = selectedCategory.charAt(0).toUpperCase() + selectedCategory
+                        .slice(1);
+                    selectedCategoryTitle.textContent = titleText;
+
+                    placeholder.style.display = 'none';
+                    recommendationContent.style.display = 'block';
+
+                    let filteredProducts;
+                    if (selectedCategory === 'semua') {
+                        filteredProducts = allProducts;
+                    } else {
+                        filteredProducts = allProducts.filter(product => {
+                            return product.category.toLowerCase() === selectedCategory;
+                        });
+                    }
+
+                    renderProducts(filteredProducts);
+                });
+            });
+
+            const allButton = document.querySelector('.face-shape-btn[data-category="semua"]');
+            if (allButton) {
+                allButton.click();
+            } else {
+                renderProducts(allProducts);
+            }
+        });
+    </script>
 
 
 </body>

@@ -398,9 +398,15 @@
                                     <circle cx="12" cy="12" r="3" fill="currentColor" />
                                 </svg>
                             </span>
-                            <img src="{{ $product->primary_image_src ? route('tenant.asset', ['path' => $product->primary_image_src]) : '' }}"
-                                alt="{{ $product->name }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            {{-- Cek jika ada gambar utama --}}
+                            @if ($product->primary_image_src)
+                                <img src="{{ $product->primary_image_src }}" alt="{{ $product->name }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />>
+                            @else
+                                {{-- Tampilkan placeholder jika tidak ada gambar --}}
+                                <img src="{{ asset('assets/images/no-image-icon.png') }}" alt="No Image"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            @endif
                             <div class="hairstyle-overlay">
                                 <div class="text-white">
                                     <h3 class="text-xl font-bold">{{ $product->name }}</h3>
@@ -485,7 +491,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Inisialisasi Swiper untuk bagian banner
             const swiper = new Swiper('.swiper-container', {
-                loop: true,
+                loop: false,
                 autoplay: {
                     delay: 5000,
                     disableOnInteraction: false,
