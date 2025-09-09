@@ -24,7 +24,6 @@ class StoreController extends Controller
         // Get current store info
         $userStore = $this->getCurrentStore();
 
-        // Get featured products
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
@@ -36,15 +35,6 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with(['category', 'subCategory', 'brand'])
-            ->take(8)
-            ->get();
-
-        // Get promo products
-        $promoProducts = StoreProduct::where('user_store_id', $userStore->id)
-            ->where('is_active', true)
-            ->where('is_promo', true)
-            ->where('old_price', '>', 'price')
             ->with(['category', 'subCategory', 'brand'])
             ->take(8)
             ->get();
@@ -181,7 +171,6 @@ class StoreController extends Controller
             'products',
             'featuredProducts',
             'newProducts',
-            'promoProducts',
             'categories',
             'subCategories', // Add this
             'brands',
@@ -789,8 +778,8 @@ class StoreController extends Controller
         }
 
         $subCategories = $query->withCount(['products' => function ($query) {
-                $query->where('is_active', true);
-            }])
+            $query->where('is_active', true);
+        }])
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
@@ -831,7 +820,6 @@ class StoreController extends Controller
             }
         }
 
-        // Get data for the template
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
@@ -839,17 +827,10 @@ class StoreController extends Controller
             ->take(8)
             ->get();
 
+        // Get data for the template
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with('category')
-            ->take(8)
-            ->get();
-
-        $promoProducts = StoreProduct::where('user_store_id', $userStore->id)
-            ->where('is_active', true)
-            ->where('is_promo', true)
-            ->where('old_price', '>', 'price')
             ->with('category')
             ->take(8)
             ->get();

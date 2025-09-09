@@ -21,26 +21,20 @@ class StoreProduct extends Model
         'brand_id',
         'slug',
         'specification',
-        'stock',
         'old_price',
         'is_active',
-        'is_promo',
         'is_new',
-        'is_featured',
         'is_available',
         'sub_category_id',
         'product_unit_id',
         'estimasi_waktu',
         'sku',
-        'sort_order'
     ];
 
     protected $casts = [
         'specification' => 'array',
         'is_active' => 'boolean',
-        'is_promo' => 'boolean',
         'is_new' => 'boolean',
-        'is_featured' => 'boolean',
         'is_available' => 'boolean',
         'price' => 'decimal:2',
         'old_price' => 'decimal:2'
@@ -97,14 +91,6 @@ class StoreProduct extends Model
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
-    }
-
-    /**
-     * Scope a query to only include promo products
-     */
-    public function scopePromo($query)
-    {
-        return $query->where('is_promo', true);
     }
 
     /**

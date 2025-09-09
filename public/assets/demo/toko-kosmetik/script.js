@@ -31,7 +31,7 @@ const products = [
         rating: 4.5,
         reviews: 203,
         tags: ["moisturizing", "lightweight", "ceramide"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 35
     },
     {
@@ -46,7 +46,7 @@ const products = [
         rating: 4.8,
         reviews: 289,
         tags: ["spf-50", "lightweight", "no-white-cast"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 45
     },
     {
@@ -61,7 +61,7 @@ const products = [
         rating: 4.8,
         reviews: 267,
         tags: ["gentle", "effective", "makeup-remover"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 31
     },
     {
@@ -106,7 +106,7 @@ const products = [
         rating: 4.8,
         reviews: 189,
         tags: ["hyaluronic-acid", "hydrating", "plumping"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 33
     },
     {
@@ -138,7 +138,7 @@ const products = [
         rating: 4.8,
         reviews: 245,
         tags: ["matte", "long-lasting", "waterproof"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 25
     },
     {
@@ -168,7 +168,7 @@ const products = [
         rating: 4.6,
         reviews: 156,
         tags: ["pigmented", "blendable", "versatile"],
-        badge: "limited",
+        badge: "",
         stock: 8
     },
     {
@@ -213,7 +213,7 @@ const products = [
         rating: 4.6,
         reviews: 198,
         tags: ["non-sticky", "moisturizing", "glossy"],
-        badge: "limited",
+        badge: "",
         stock: 12
     },
     {
@@ -258,7 +258,7 @@ const products = [
         rating: 4.6,
         reviews: 123,
         tags: ["full-coverage", "concealer", "long-lasting"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 32
     },
     {
@@ -320,7 +320,7 @@ const products = [
         rating: 4.8,
         reviews: 156,
         tags: ["floral", "elegant", "long-lasting"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 15
     },
     {
@@ -367,7 +367,7 @@ const products = [
         rating: 4.5,
         reviews: 178,
         tags: ["keratin", "repair", "sulfate-free"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 44
     },
     {
@@ -429,7 +429,7 @@ const products = [
         rating: 4.5,
         reviews: 189,
         tags: ["vanilla", "moisturizing", "soothing"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 42
     },
     {
@@ -476,7 +476,7 @@ const products = [
         rating: 4.7,
         reviews: 156,
         tags: ["professional", "brush-set", "complete"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 18
     },
     {
@@ -523,7 +523,7 @@ const products = [
         rating: 4.4,
         reviews: 189,
         tags: ["classic-red", "long-lasting", "quick-dry"],
-        badge: "bestseller",
+        badge: "  ",
         stock: 62
     },
     {
@@ -725,10 +725,7 @@ function renderProducts() {
                     <div class="product-info">
                         <div class="product-brand">${product.brand}</div>
                         <h3>${product.name}</h3>
-                        <div class="product-rating">
-                            ${stars}
-                            <span>(${product.reviews})</span>
-                        </div>
+
                         <div class="product-price">
                             <span class="current-price">Rp ${formatPrice(product.price)}</span>
                             ${product.originalPrice > product.price ?
@@ -783,10 +780,8 @@ function generateStars(rating, size = 'normal') {
 
 function getBadgeText(badge) {
     const badges = {
-        'bestseller': 'Terlaris',
         'new': 'Baru',
-        'sale': 'Diskon',
-        'limited': 'Terbatas'
+        'sale': 'Promo',
     };
     return badges[badge] || badge;
 }

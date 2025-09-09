@@ -31,7 +31,6 @@
                                     <th scope="col">Gambar</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Deskripsi</th>
-                                    <th scope="col">Urutan</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
@@ -60,9 +59,6 @@
                                         </td>
                                         <td>
                                             <p class="f-light">{{ Str::limit($category->description, 100) }}</p>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-light-dark">{{ $category->sort_order }}</span>
                                         </td>
                                         <td>
                                             @if ($category->is_active)
@@ -128,11 +124,6 @@
                                 accept="image/jpeg,image/png,image/webp">
                         </div>
                         <div class="mb-3">
-                            <label for="add_sort_order" class="form-label">Urutan Tampilan</label>
-                            <input type="number" class="form-control" id="add_sort_order" name="sort_order"
-                                value="0" min="0">
-                        </div>
-                        <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="add_is_active" name="is_active"
                                     value="1" checked>
@@ -181,11 +172,6 @@
                             <label class="form-label">Gambar Saat Ini</label>
                             <div><img id="current_image" src="" class="img-fluid rounded"
                                     style="max-height: 100px;"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_sort_order" class="form-label">Urutan Tampilan</label>
-                            <input type="number" class="form-control" id="edit_sort_order" name="sort_order"
-                                value="0" min="0">
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch">
@@ -243,7 +229,6 @@
                         form.action = updateUrlTemplate.replace(':id', categoryId);
                         form.querySelector('#edit_name').value = category.name;
                         form.querySelector('#edit_description').value = category.description;
-                        form.querySelector('#edit_sort_order').value = category.sort_order;
                         form.querySelector('#edit_is_active').checked = category.is_active;
 
                         const assetBaseUrl = "{{ url('tenancy/assets') }}/";

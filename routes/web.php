@@ -15,6 +15,8 @@ use App\Http\Controllers\StoreSetupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MenuController; // New import
+use App\Http\Controllers\StoreCategoryMenuController; // New import
 
 /*
 |--------------------------------------------------------------------------
@@ -181,7 +183,6 @@ foreach (config('tenancy.central_domains') as $domain) {
         // ADMIN ROUTES
         // ========================================
 
-        //Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::prefix('admin')->middleware(['auth'])->group(function () {
             Route::get('/', function () {
                 return redirect()->route('admin-main.index');
@@ -191,6 +192,12 @@ foreach (config('tenancy.central_domains') as $domain) {
 
             Route::resource('/kategori-toko', StoreCategoryController::class)->names('kategori-toko');
             Route::resource('/template-katalog', CatalogTemplateController::class)->names('template');
+
+            // New route for Menu management
+            Route::resource('/menus', MenuController::class)->names('menu');
+
+            // New route for Store Category Menu management
+            Route::resource('/store-category-menus', StoreCategoryMenuController::class)->only(['index', 'update'])->names('store-category-menus');
 
             Route::resource('/users', UserController::class);
             Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -202,6 +209,9 @@ foreach (config('tenancy.central_domains') as $domain) {
             // Store Management
             Route::get('/toko', [\App\Http\Controllers\ManajemenTokoController::class, 'index'])->name('toko.index');
             Route::post('/toko/{userStore}/toggle-status', [\App\Http\Controllers\ManajemenTokoController::class, 'toggleStatus'])->name('toko.toggle-status');
+
+            // ## BARIS BARU UNTUK APPROVE TOKO ##: Route untuk admin menyetujui (approve) toko yang pending
+            Route::post('/toko/{userStore}/approve', [\App\Http\Controllers\ManajemenTokoController::class, 'approve'])->name('toko.approve');
         });
 
         // ========================================

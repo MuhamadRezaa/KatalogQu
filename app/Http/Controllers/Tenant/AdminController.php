@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; // Gemini Added
 use Illuminate\Support\Facades\Storage;
+use App\Models\StoreCategory; // Add this import
+use App\Models\Menu; // Add this import
 
 class AdminController extends Controller
 {
@@ -29,6 +31,22 @@ class AdminController extends Controller
             abort(404, 'Store not found for this tenant');
         }
 
+        // --- Start of new logic for dynamic menus ---
+        $menus = []; // Initialize as empty array
+
+        // Get the store category ID for the current user's store
+        $currentStoreCategoryId = $userStore->catalogTemplate->categories_store_id;
+
+        // Fetch the StoreCategory model with its associated menus
+        $storeCategory = StoreCategory::find($currentStoreCategoryId);
+
+        if ($storeCategory) {
+            // Pluck the 'code' from the associated menus and convert to an array
+            $menus = $storeCategory->menus->pluck('code')->toArray();
+        }
+        // --- End of new logic for dynamic menus ---
+
+
         // Get store statistics
         $stats = [
             'total_products' => StoreProduct::where('user_store_id', $userStore->id)->count(),
@@ -44,7 +62,7 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        return view('tenant.admin.pages.dashboard', compact('userStore', 'stats', 'recentProducts'));
+        return view('tenant.admin.pages.dashboard', compact('userStore', 'stats', 'recentProducts', 'menus')); // Pass 'menus' to the view
     }
 
     /**
@@ -92,7 +110,7 @@ class AdminController extends Controller
             // Handle logo upload
             if ($request->hasFile('store_logo')) {
                 Log::info('UpdateSettings: store_logo file is present.');
-                
+
                 // Use the central_public disk to store the logo
                 $disk = Storage::disk('central_public');
 
@@ -111,7 +129,6 @@ class AdminController extends Controller
                 $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'central_public');
                 $validated['store_logo'] = $path;
                 Log::info('UpdateSettings: New logo stored at path: ' . $path);
-
             } else {
                 Log::info('UpdateSettings: No store_logo file in request.');
             }
@@ -119,7 +136,6 @@ class AdminController extends Controller
             Log::info('UpdateSettings: Updating UserStore with validated data.', $validated);
             $userStore->update($validated);
             Log::info('UpdateSettings: UserStore updated successfully.');
-
         } catch (\Exception $e) {
             Log::error('UpdateSettings: An error occurred during the update process.', [
                 'message' => $e->getMessage(),
@@ -192,7 +208,6 @@ class AdminController extends Controller
             'sku' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_active' => 'boolean',
-            'is_promo' => 'boolean',
             'is_new' => 'boolean',
             'specification' => 'nullable|array'
         ]);
@@ -209,6 +224,4 @@ class AdminController extends Controller
         return redirect()->route('tenant.admin.products')
             ->with('success', 'Product created successfully!');
     }
-
-    
 }

@@ -37,7 +37,6 @@
                                     <th scope="col">Subtitle</th>
                                     <th scope="col">Link</th>
                                     <th scope="col">Button Text</th>
-                                    <th scope="col">Order</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -60,13 +59,11 @@
                                         <td>
                                             <div class="user-info">
                                                 <h6>{{ $hero->title ?? '-' }}</h6>
-                                                <p class="f-light">Order: {{ $hero->order }}</p>
                                             </div>
                                         </td>
                                         <td>{{ $hero->subtitle ?? '-' }}</td>
                                         <td>{{ $hero->link ?? '-' }}</td>
                                         <td>{{ $hero->button_text ?? '-' }}</td>
-                                        <td>{{ $hero->order }}</td>
                                         <td>
                                             @if ($hero->is_active)
                                                 <span class="badge badge-light-success">Aktif</span>
@@ -136,10 +133,6 @@
                             <input type="text" class="form-control" id="add_button_text" name="button_text">
                         </div>
                         <div class="mb-3">
-                            <label for="add_order" class="form-label">Order</label>
-                            <input type="number" class="form-control" id="add_order" name="order" value="0">
-                        </div>
-                        <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="add_is_active" name="is_active"
                                     value="1" checked>
@@ -195,10 +188,6 @@
                         <div class="mb-3">
                             <label for="edit_button_text" class="form-label">Button Text</label>
                             <input type="text" class="form-control" id="edit_button_text" name="button_text">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_order" class="form-label">Order</label>
-                            <input type="number" class="form-control" id="edit_order" name="order">
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch">
@@ -258,7 +247,6 @@
                         form.querySelector('#edit_subtitle').value = hero.subtitle;
                         form.querySelector('#edit_link').value = hero.link;
                         form.querySelector('#edit_button_text').value = hero.button_text; // Added
-                        form.querySelector('#edit_order').value = hero.order;
                         form.querySelector('#edit_is_active').checked = hero.is_active;
 
                         const assetBaseUrl = "{{ url('tenancy/assets') }}/";

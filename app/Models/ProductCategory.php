@@ -21,7 +21,6 @@ class ProductCategory extends Model
         'color',
         'is_active',
         'is_featured',
-        'sort_order',
         'parent_id',
         'meta_data'
     ];

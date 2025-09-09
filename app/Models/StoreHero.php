@@ -19,7 +19,6 @@ class StoreHero extends Model
         'subtitle',
         'link',
         'button_text', // Added
-        'order',
         'is_active',
     ];
 

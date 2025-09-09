@@ -12,6 +12,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <div class="table-responsive custom-scrollbar">
                 <table class="display" id="table-1">
@@ -38,7 +43,10 @@
                                 <td>{{ $item->store_name }}</td>
                                 <td>{{ $item->user->name ?? 'N/A' }}</td>
                                 <td>
-                                    @if ($item->is_active)
+                                    {{-- Logika Status yang Sudah Benar --}}
+                                    @if ($item->setup_status === 'pending_validation')
+                                        <span class="badge badge-light-warning">Menunggu Persetujuan</span>
+                                    @elseif ($item->is_active)
                                         <span class="badge badge-light-success">Aktif</span>
                                     @else
                                         <span class="badge badge-light-danger">Nonaktif</span>
@@ -46,15 +54,24 @@
                                 </td>
                                 <td>{{ $item->created_at->format('d M Y') }}</td>
                                 <td>
-                                    <form action="{{ route('toko.toggle-status', $item->id) }}" method="POST">
-                                        @csrf
-                                        @method('POST')
-                                        @if ($item->is_active)
-                                            <button type="submit" class="btn btn-sm btn-danger">Nonaktifkan</button>
-                                        @else
-                                            <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
-                                        @endif
-                                    </form>
+                                    {{-- Logika Tombol Aksi yang Sudah Benar --}}
+                                    @if ($item->setup_status === 'pending_validation')
+                                        {{-- Tombol untuk MENYETUJUI (Langkah 1) --}}
+                                        <form action="{{ route('toko.approve', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-info">Approve</button>
+                                        </form>
+                                    @else
+                                        {{-- Tombol untuk AKTIFKAN / NONAKTIFKAN (Langkah 2) --}}
+                                        <form action="{{ route('toko.toggle-status', $item->id) }}" method="POST">
+                                            @csrf
+                                            @if ($item->is_active)
+                                                <button type="submit" class="btn btn-sm btn-danger">Nonaktifkan</button>
+                                            @else
+                                                <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
+                                            @endif
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

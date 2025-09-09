@@ -13,12 +13,16 @@ class StoreCategory extends Model
         'name',
         'description',
         'is_active',
-        'sort_order',
         'slug',
     ];
 
     public function templates()
     {
         return $this->hasMany(CatalogTemplate::class, 'categories_store_id');
+    }
+
+    public function menus()
+    {
+        return $this->belongsToMany(Menu::class, 'store_category_menus', 'kategori_toko_id', 'menu_id');
     }
 }

@@ -131,6 +131,18 @@
                     </a>
                 </li> --}}
 
+                <li class="sidebar-list">
+                    <i class="fa fa-thumb-tack"></i>
+                    <a class="sidebar-link sidebar-title" href="#">
+                        <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
+                        <span>Manajemen Menu Admin Toko</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li><a href="/admin/menus">Menu</a></li>
+                        <li><a href="/admin/store-category-menus">Setelan Menu Toko</a></li>
+                    </ul>
+                </li>
+
                 {{-- <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title" href="#">

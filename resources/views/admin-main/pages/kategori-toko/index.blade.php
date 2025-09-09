@@ -38,7 +38,6 @@
                             <th>Slug</th>
                             <th>Deskripsi</th>
                             <th>Status</th>
-                            <th>Urutan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -56,7 +55,6 @@
                                         <span class="badge badge-danger">Nonaktif</span>
                                     @endif
                                 </td>
-                                <td>{{ $item->sort_order }}</td>
                                 <td>
                                     <ul class="action">
                                         <li class="edit">

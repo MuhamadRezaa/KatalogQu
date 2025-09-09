@@ -1,53 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="30">
     <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Subdomain Anda Sedang Ditinjau - KatalogKu</title>
+    <title>Toko Sedang Ditinjau - KatalogKu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 
 <body class="bg-gray-50">
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 text-center">
+        <div class="max-w-md w-full space-y-8 text-center bg-white p-10 rounded-xl shadow-lg">
             <div>
                 <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-yellow-100 mb-6">
-                    <i data-lucide="hourglass" class="h-10 w-10 text-yellow-600"></i>
+                    <i data-lucide="shield-check" class="h-10 w-10 text-yellow-600"></i>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Terima Kasih!</h2>
-                <p class="text-gray-600 mb-8">Pengaturan toko Anda telah kami terima dan pembayaran Anda berhasil.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Toko Anda Sedang Ditinjau</h2>
+                <p class="text-gray-600 mb-8">
+                    Terima kasih telah melakukan pendaftaran. Toko Anda dengan nama <strong
+                        class="text-gray-800">{{ $userStore->store_name }}</strong> sedang dalam proses validasi oleh
+                    tim kami.
+                </p>
+                <div class="bg-gray-100 rounded-lg p-4 text-left">
+                    <p class="text-sm text-gray-700"><strong>Subdomain:</strong> <a href="#"
+                            class="text-indigo-600 pointer-events-none">{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}</a>
+                    </p>
+                    <p class="text-sm text-gray-700"><strong>Status:</strong> <span
+                            class="font-semibold text-yellow-700">Menunggu Persetujuan</span></p>
+                </div>
+                <p class="mt-6 text-sm text-gray-500">
+                    Proses ini biasanya memakan waktu beberapa jam. Anda akan menerima notifikasi email setelah toko
+                    Anda aktif. Halaman ini akan otomatis diperbarui.
+                </p>
             </div>
-
-            <div class="bg-white shadow-xl rounded-lg px-6 py-8">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Subdomain Sedang Ditinjau</h3>
-                <p class="text-sm text-gray-600 mb-4">
-                    Untuk memastikan keamanan dan kualitas layanan, subdomain yang Anda daftarkan:
-                    <br>
-                    <strong
-                        class="text-indigo-600">{{ $userStore->subdomain ?? 'subdomain' }}.{{ config('app.domain', 'localhost') }}</strong>
-                    <br>
-                    akan divalidasi secara manual oleh tim kami.
-                </p>
-                <p class="text-sm text-gray-600">
-                    Proses ini biasanya memakan waktu maksimal 1x24 jam. Kami akan memberitahu Anda melalui email jika
-                    subdomain Anda telah aktif dan siap digunakan.
-                </p>
-                <div class="mt-6">
-                    <a href="{{ route('profile.show') }}"
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Kembali ke Profil Saya
-                    </a>
-                </div>
+            <div class="mt-6">
+                <a href="{{ route('home') }}" class="text-indigo-600 hover:text-indigo-500 font-medium">
+                    Kembali ke Halaman Utama
+                </a>
             </div>
         </div>
     </div>
-
     <script>
-        // Initialize Lucide icons
         lucide.createIcons();
     </script>
 </body>

@@ -63,12 +63,6 @@
                     <span>Hasil Memuaskan</span>
                 </div>
             </div>
-            {{-- <div class="hero-buttons">
-                <a href="#gallery" class="btn btn-secondary btn-large">
-                    <i class="fas fa-images"></i>
-                    Lihat Portfolio
-                </a>
-            </div> --}}
         </div>
 
         <!-- Slider Navigation -->
@@ -288,63 +282,7 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    {{-- <section id="gallery" class="gallery">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Portfolio Karya</h2>
-                <p class="section-subtitle">
-                    Lihat hasil kerja terbaik kami dan dapatkan inspirasi
-                    untuk gaya rambut Anda
-                </p>
-            </div>
 
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/mohawk.jpg') }}" alt="Mohawk" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Mohawk Style</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/buzzcut.jpg') }}" alt="Buzzcut" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Buzz Cut</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/mullet.jpg') }}" alt="Mullet" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Mullet Modern</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/comma.JPG') }}" alt="Comma Hair" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Comma Hair</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/undercut.jpg') }}" alt="Undercut Modern" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Undercut Modern</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets/demo/barbershop/img/kids.jpg') }}" alt="Kids Cuts" />
-                    <div class="gallery-overlay">
-                        <h3 class="gallery-title">Kids Style</h3>
-                        <button class="gallery-btn">Lihat Detail</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
     <!-- Footer -->
     <footer class="footer">
@@ -498,7 +436,7 @@
 
         // Animate elements on scroll
         const animateElements = document.querySelectorAll(
-            '.service-card, .gallery-item, .stat-item, .contact-item, .capster-card');
+            '.service-card, .stat-item, .contact-item, .capster-card');
 
         animateElements.forEach(el => {
             el.style.opacity = '0';
@@ -561,116 +499,6 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0) scale(1)';
             });
-        });
-
-        // Gallery lightbox effect
-        const galleryItems = document.querySelectorAll('.gallery-item');
-
-        galleryItems.forEach(item => {
-            const img = item.querySelector('img');
-            const btn = item.querySelector('.gallery-btn');
-
-            if (btn && img) {
-                btn.addEventListener('click', () => {
-                    // Create lightbox overlay
-                    const lightbox = document.createElement('div');
-                    lightbox.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                cursor: pointer;
-            `;
-
-                    // Create lightbox content container
-                    const lightboxContent = document.createElement('div');
-                    lightboxContent.style.cssText = `
-                position: relative;
-                background: #1f2937;
-                border-radius: 12px;
-                padding: 24px;
-                max-width: 90%;
-                max-height: 90%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 16px;
-            `;
-
-                    // Create haircut name element
-                    const haircutName = document.createElement('h3');
-                    haircutName.textContent = img.alt;
-                    haircutName.style.cssText = `
-                color: #fbbf24;
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin: 0;
-                text-align: center;
-            `;
-
-                    // Create image element
-                    const lightboxImg = document.createElement('img');
-                    lightboxImg.src = img.src;
-                    lightboxImg.alt = img.alt;
-                    lightboxImg.style.cssText = `
-                max-width: 100%;
-                max-height: 70vh;
-                object-fit: contain;
-                border-radius: 8px;
-            `;
-
-                    // Create close button
-                    const closeBtn = document.createElement('button');
-                    closeBtn.textContent = 'Tutup';
-                    closeBtn.style.cssText = `
-                background: #fbbf24;
-                color: #000000;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 8px;
-                font-weight: 600;
-                cursor: pointer;
-                margin-top: 16px;
-            `;
-
-                    // Add elements to lightbox
-                    lightboxContent.appendChild(haircutName);
-                    lightboxContent.appendChild(lightboxImg);
-                    lightboxContent.appendChild(closeBtn);
-                    lightbox.appendChild(lightboxContent);
-                    document.body.appendChild(lightbox);
-
-                    // Close lightbox on click outside or close button
-                    const closeLightbox = () => {
-                        document.body.removeChild(lightbox);
-                    };
-
-                    lightbox.addEventListener('click', (e) => {
-                        if (e.target === lightbox) {
-                            closeLightbox();
-                        }
-                    });
-
-                    closeBtn.addEventListener('click', closeLightbox);
-
-                    // Close with ESC key
-                    const handleEscKey = (e) => {
-                        if (e.key === 'Escape') {
-                            closeLightbox();
-                        }
-                    };
-                    document.addEventListener('keydown', handleEscKey);
-
-                    // Store handler for cleanup
-                    lightbox._escHandler = handleEscKey;
-                });
-            }
         });
 
         // Hero Background Slider Functionality

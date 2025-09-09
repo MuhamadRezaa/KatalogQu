@@ -26,7 +26,6 @@ class StoreCategoryController extends Controller
             'description' => $request->description,
             'slug' => Str::slug($request->name),
             'is_active' => true,
-            'sort_order' => 0,
         ]);
 
         return redirect()->route('kategori-toko.index')->with('success', 'Kategori toko berhasil ditambahkan.');

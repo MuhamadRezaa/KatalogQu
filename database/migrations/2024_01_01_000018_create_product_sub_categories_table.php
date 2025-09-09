@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->integer('sort_order')->default(0);
             $table->timestamps();
 
             // Foreign key constraint
@@ -28,8 +27,6 @@ return new class extends Migration
             $table->index('user_store_id');
             $table->index(['slug']);
             $table->index(['is_active']);
-            $table->index(['sort_order']);
-            $table->index(['is_active', 'sort_order']); // Composite index
 
             // Add a unique constraint to prevent duplicate subcategory names for the same store
             $table->unique(['user_store_id', 'name'], 'unique_store_subcategory_name');

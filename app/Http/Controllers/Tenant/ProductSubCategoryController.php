@@ -18,7 +18,6 @@ class ProductSubCategoryController extends Controller
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $subCategories = ProductSubCategory::where('user_store_id', $userStore->id)
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -36,7 +35,6 @@ class ProductSubCategoryController extends Controller
             'name' => 'required|string|max:255|unique:product_sub_categories,name,NULL,id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -80,7 +78,6 @@ class ProductSubCategoryController extends Controller
             'name' => 'required|string|max:255|unique:product_sub_categories,name,' . $subCategory->id . ',id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 

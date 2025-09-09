@@ -32,7 +32,6 @@
                                     <th scope="col">Kategori</th>
                                     <th scope="col">Brand</th>
                                     <th scope="col">Harga</th>
-                                    <th scope="col">Stok</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
@@ -73,9 +72,6 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $product->stock ?? 'N/A' }}
-                                        </td>
-                                        <td>
                                             @if ($product->is_active)
                                                 <span class="badge badge-light-success">Aktif</span>
                                             @else
@@ -83,13 +79,13 @@
                                             @endif
                                             {{-- @if ($product->is_promo)
                                                 <span class="badge badge-light-warning">Promo</span>
-                                            @endif
-                                            @if ($product->is_new)
+                                            @endif --}}
+                                            {{-- @if ($product->is_new)
                                                 <span class="badge badge-light-info">Baru</span>
-                                            @endif
+                                            @endif --}}
                                             @if ($product->is_featured)
                                                 <span class="badge badge-light-primary">Featured</span>
-                                            @endif --}}
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
@@ -173,11 +169,6 @@
                                         min="0" step="0.01">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="add_stock" class="form-label">Stok</label>
-                                    <input type="number" class="form-control" id="add_stock" name="stock"
-                                        min="0">
-                                </div>
-                                <div class="mb-3">
                                     <label for="add_sku" class="form-label">SKU</label>
                                     <input type="text" class="form-control" id="add_sku" name="sku" readonly>
                                 </div>
@@ -192,70 +183,74 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="add_sub_category_id" class="form-label">Sub Kategori Produk</label>
-                                    <select class="form-select" id="add_sub_category_id" name="sub_category_id">
-                                        <option value="">Pilih Sub Kategori</option>
-                                        @foreach ($subCategories as $subCat)
-                                            <option value="{{ $subCat->id }}">{{ $subCat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="add_brand_id" class="form-label">Brand Produk</label>
-                                    <select class="form-select" id="add_brand_id" name="brand_id">
-                                        <option value="">Pilih Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="add_product_unit_id" class="form-label">Unit Produk</label>
-                                    <select class="form-select" id="add_product_unit_id" name="product_unit_id">
-                                        <option value="">Pilih Unit</option>
-                                        @foreach ($productUnits as $unit)
-                                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Spesifikasi</label>
-                                    <div id="add_specification_fields">
-                                        <div class="input-group mb-2">
-                                            {{-- <input type="text" class="form-control" name="specification[0][key]"
+
+                                @if (in_array('subkategoriproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="add_sub_category_id" class="form-label">Sub Kategori Produk</label>
+                                        <select class="form-select" id="add_sub_category_id" name="sub_category_id">
+                                            <option value="">Pilih Sub Kategori</option>
+                                            @foreach ($subCategories as $subCat)
+                                                <option value="{{ $subCat->id }}">{{ $subCat->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                @if (in_array('brandproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="add_brand_id" class="form-label">Brand Produk</label>
+                                        <select class="form-select" id="add_brand_id" name="brand_id">
+                                            <option value="">Pilih Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                @if (in_array('unitproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="add_product_unit_id" class="form-label">Unit Produk</label>
+                                        <select class="form-select" id="add_product_unit_id" name="product_unit_id">
+                                            <option value="">Pilih Unit</option>
+                                            @foreach ($productUnits as $unit)
+                                                <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                @if (in_array('spesifikasi', $menus))
+                                    <div class="mb-3">
+                                        <label class="form-label">Spesifikasi</label>
+                                        <div id="add_specification_fields">
+                                            <div class="input-group mb-2">
+                                                {{-- <input type="text" class="form-control" name="specification[0][key]"
                                                 placeholder="Key (e.g., CPU)">
                                             <input type="text" class="form-control" name="specification[0][value]"
                                                 placeholder="Value (e.g., i5-12500h)"> --}}
-                                            {{-- <button type="button" class="btn btn-outline-danger remove-spec-field"><i
+                                                {{-- <button type="button" class="btn btn-outline-danger remove-spec-field"><i
                                                     class="fa fa-times"></i></button> --}}
+                                            </div>
                                         </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            id="add_spec_field_btn"><i class="fa fa-plus"></i> Tambah Spesifikasi</button>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
-                                        id="add_spec_field_btn"><i class="fa fa-plus"></i> Tambah Spesifikasi</button>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="add_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
-                                    <input type="number" class="form-control" id="add_estimasi_waktu"
-                                        name="estimasi_waktu" min="0">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="add_sort_order" class="form-label">Urutan Tampilan</label>
-                                    <input type="number" class="form-control" id="add_sort_order" name="sort_order"
-                                        min="0">
-                                </div>
+                                @endif
+
+                                @if (in_array('estimasiwaktu', $menus))
+                                    <div class="mb-3">
+                                        <label for="add_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
+                                        <input type="number" class="form-control" id="add_estimasi_waktu"
+                                            name="estimasi_waktu" min="0">
+                                    </div>
+                                @endif
+
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="add_is_active"
                                             name="is_active" value="1" checked>
                                         <label class="form-check-label" for="add_is_active">Aktif</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="add_is_promo"
-                                            name="is_promo" value="1">
-                                        <label class="form-check-label" for="add_is_promo">Promo</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -267,16 +262,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="add_is_featured"
-                                            name="is_featured" value="1">
-                                        <label class="form-check-label" for="add_is_featured">Featured</label>
+                                        <input class="form-check-input" type="checkbox" id="add_is_available"
+                                            name="is_available" value="1" checked>
+                                        <label class="form-check-label" for="add_is_available">Tersedia</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="add_is_available"
-                                            name="is_available" value="1" checked>
-                                        <label class="form-check-label" for="add_is_available">Tersedia</label>
+                                        <input class="form-check-input" type="checkbox" id="add_is_featured"
+                                            name="is_featured" value="1">
+                                        <label class="form-check-label" for="add_is_featured">Featured</label>
                                     </div>
                                 </div>
                             </div>
@@ -353,11 +348,6 @@
                                         min="0" step="0.01">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="edit_stock" class="form-label">Stok</label>
-                                    <input type="number" class="form-control" id="edit_stock" name="stock"
-                                        min="0">
-                                </div>
-                                <div class="mb-3">
                                     <label for="edit_sku" class="form-label">SKU</label>
                                     <input type="text" class="form-control" id="edit_sku" name="sku">
                                 </div>
@@ -414,22 +404,10 @@
                                         name="estimasi_waktu" min="0">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="edit_sort_order" class="form-label">Urutan Tampilan</label>
-                                    <input type="number" class="form-control" id="edit_sort_order" name="sort_order"
-                                        min="0">
-                                </div>
-                                <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="edit_is_active"
                                             name="is_active" value="1">
                                         <label class="form-check-label" for="edit_is_active">Aktif</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="edit_is_promo"
-                                            name="is_promo" value="1">
-                                        <label class="form-check-label" for="edit_is_promo">Promo</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -441,16 +419,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="edit_is_featured"
-                                            name="is_featured" value="1">
-                                        <label class="form-check-label" for="edit_is_featured">Featured</label>
+                                        <input class="form-check-input" type="checkbox" id="edit_is_available"
+                                            name="is_available" value="1">
+                                        <label class="form-check-label" for="edit_is_available">Tersedia</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="edit_is_available"
-                                            name="is_available" value="1">
-                                        <label class="form-check-label" for="edit_is_available">Tersedia</label>
+                                        <input class="form-check-input" type="checkbox" id="edit_is_featured"
+                                            name="is_featured" value="1">
+                                        <label class="form-check-label" for="edit_is_featured">Featured</label>
                                     </div>
                                 </div>
                             </div>
@@ -583,18 +561,15 @@
                     form.querySelector('#edit_image').value = '';
                     form.querySelector('#edit_price').value = product.price ?? '';
                     form.querySelector('#edit_old_price').value = product.old_price ?? '';
-                    form.querySelector('#edit_stock').value = product.stock ?? '';
                     form.querySelector('#edit_sku').value = product.sku ?? '';
                     form.querySelector('#edit_product_category_id').value = product.product_category_id || '';
                     form.querySelector('#edit_sub_category_id').value = product.sub_category_id || '';
                     form.querySelector('#edit_brand_id').value = product.brand_id || '';
                     form.querySelector('#edit_estimasi_waktu').value = product.estimasi_waktu ?? '';
-                    form.querySelector('#edit_sort_order').value = product.sort_order ?? '';
                     form.querySelector('#edit_is_active').checked = !!product.is_active;
-                    form.querySelector('#edit_is_promo').checked = !!product.is_promo;
                     form.querySelector('#edit_is_new').checked = !!product.is_new;
-                    form.querySelector('#edit_is_featured').checked = !!product.is_featured;
                     form.querySelector('#edit_is_available').checked = !!product.is_available;
+                    form.querySelector('#edit_is_featured').checked = !!product.is_featured; // Add this line
 
                     // Preview gambar utama
                     const currentImagePreview = document.getElementById('currentImagePreview');
@@ -696,6 +671,7 @@
             document.getElementById('add_additional_images_fields').innerHTML =
                 ''; // Clear additional images fields
             addAdditionalImageIndex = 0; // Reset index
+            document.getElementById('add_is_featured').checked = false; // Add this line
         });
 
         document.getElementById('editProductModal').addEventListener('hidden.bs.modal', function() {
@@ -717,6 +693,7 @@
             // Preview gambar baru
             document.getElementById('edit_image_preview_container').innerHTML = '';
             document.getElementById('edit_image_preview_container').style.display = 'none';
+            document.getElementById('edit_is_featured').checked = false; // Add this line
         });
 
         // Initial add spec field for add modal

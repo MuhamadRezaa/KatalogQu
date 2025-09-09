@@ -26,20 +26,17 @@ return new class extends Migration
             $table->foreignId('brand_id')->nullable()->constrained('product_brands')->nullOnDelete();
             $table->string('slug')->nullable();
             $table->json('specification')->nullable(); // spesification
-            $table->integer('stock')->nullable();
             $table->decimal('old_price', 15, 2)->nullable();
             $table->boolean('is_active')->default(true);
-            $table->boolean('is_promo')->default(false);
             $table->boolean('is_new')->default(false);
-            $table->boolean('is_featured')->default(false);
             $table->boolean('is_available')->default(true);
+            $table->boolean('is_featured')->default(false); // Add this line
             $table->foreignId('sub_category_id')->nullable()->constrained('product_sub_categories')->nullOnDelete();
             $table->foreignId('product_unit_id')->nullable()->constrained('product_units')->nullOnDelete();
             $table->integer('estimasi_waktu')->nullable(); // dalam menit
 
             // Additional fields for flexibility
             $table->string('sku')->nullable();
-            $table->integer('sort_order')->default(0);
 
             $table->index(['user_store_id', 'is_active']);
             $table->index(['store_category_id']);
@@ -47,13 +44,10 @@ return new class extends Migration
             $table->index(['brand_id']);
             $table->index(['sub_category_id']);
             $table->index(['slug']);
-            $table->index(['is_promo']);
             $table->index(['is_new']);
-            $table->index(['is_featured']);
+            $table->index(['is_featured']); // Add this line
             $table->index(['price']); // For price sorting and filtering
-            $table->index(['stock', 'is_available']);
             $table->index(['estimasi_waktu']);
-            $table->index(['sort_order']);
             $table->index(['sku']); // For product code searches
             $table->index(['is_active', 'is_available']); // Common filter combination
             $table->unique(['user_store_id']);

@@ -5,102 +5,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
-    <title>{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</title>
+    <title>{{ $userStore->store_name ?? 'E-Katalog Fashion' }}</title>
 
-    <meta name="description"
-        content="{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}">
+    <meta name="description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
     <meta name="keywords" content="fashion, clothing, style, trends, catalog, online shopping, apparel, accessories">
-    <meta name="author" content="{{ $userStore->store_name ?? 'Fashion E-Catalog' }}">
+    <meta name="author" content="Fashion E-Catalog Demo">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="{{ $userStore->store_name ?? 'Fashion E-Catalog' }}">
-    <meta property="og:description"
-        content="{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}">
+    <meta property="og:title" content="Fashion E-Catalog Demo">
+    <meta property="og:description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ asset('storage/' . $userStore->store_logo) }}">
+    <meta property="og:image" content="images/og-image.jpg">
 
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fashion/style.css') }}">
 </head>
 
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-brand">
+            <a href="{{ url('/') }}" class="nav-brand">
                 <div class="brand-icon">
-                    <div class="icon-inner"></div>
+                    @if ($userStore && $userStore->store_logo)
+                        <img class="brand-logo" src="{{ asset('storage/' . $userStore->store_logo) }}"
+                            alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
+                    @else
+                        <img class="brand-logo" src="{{ asset('assets/demo/fashion/img/temp/logo-fashion.png') }}"
+                            alt="{{ $userStore->store_name ?? 'Fashion Store Logo' }}" loading="lazy" decoding="async">
+                    @endif
                 </div>
-                <span class="brand-text">{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</span>
+                <span class="brand-text">{{ $userStore->store_name ?? 'Fashion Store' }}</span>
             </a>
             <div class="nav-actions">
-                <!-- Navigation actions can be added here -->
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <style>
+        .brand-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        @media (min-width: 640px) {
+            .brand-logo {
+                height: 50px;
+                width: 50px;
+            }
+        }
+    </style>
+
     <section class="hero">
-        <!-- Slider Container -->
         <div class="slider-container" id="slider-container">
             <div class="slider-wrapper" id="slider-wrapper">
-                @forelse ($banners as $index => $banner)
-                    <div class="slide"
-                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('{{ route('tenant.asset', ['path' => $banner->image_url]) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    </div>
-                @empty
-                    <div class="slide"
-                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    </div>
-                    <div class="slide"
-                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    </div>
-                    <div class="slide"
-                        style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    </div>
-                @endforelse
+                <div class="slide"
+                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                </div>
+                <div class="slide"
+                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                </div>
+                <div class="slide"
+                    style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                </div>
             </div>
         </div>
 
-        <!-- Slider Navigation Buttons -->
-        <button class="slider-nav prev" onclick="previousSlide()">
+        <button class="slider-nav prev">
             <svg viewBox="0 0 24 24">
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
             </svg>
         </button>
-        <button class="slider-nav next" onclick="nextSlide()">
+        <button class="slider-nav next">
             <svg viewBox="0 0 24 24">
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg>
         </button>
 
-        <!-- Slider Indicators -->
         <div class="slider-indicators" id="slider-indicators">
-            @if (count($banners) > 0)
-                @foreach ($banners as $index => $banner)
-                    <div class="slider-indicator {{ $index == 0 ? 'active' : '' }}"
-                        onclick="goToSlide({{ $index }})"></div>
-                @endforeach
-            @else
-                <div class="slider-indicator active" onclick="goToSlide(0)"></div>
-                <div class="slider-indicator" onclick="goToSlide(1)"></div>
-                <div class="slider-indicator" onclick="goToSlide(2)"></div>
-            @endif
+            <div class="slider-indicator active"></div>
+            <div class="slider-indicator"></div>
+            <div class="slider-indicator"></div>
         </div>
 
         <div class="hero-content">
-            <div class="hero-tagline">Temukan Gaya Anda</div>
-            <h1 class="hero-title">{{ $userStore->store_name ?? 'Katalog Fashion' }}</h1>
-            <p class="hero-subtitle">
-                {{ $userStore->store_description ?? 'Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti' }}
-            </p>
+            <h1 class="hero-title">Katalog Fashion</h1>
+            <p class="hero-subtitle">Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti</p>
         </div>
     </section>
 
-    <!-- Main Content -->
     <main class="container">
-        <!-- Categories Section -->
         <section class="section">
             <div class="section-title">
                 <h2>Kategori</h2>
@@ -108,39 +104,39 @@
             </div>
 
             <div class="category-grid" id="categoryGrid">
-                <div class="category-card active" onclick="filterProducts('all', event)" data-category-id="all">
+                <div class="category-card active" data-category-id="all">
                     <div class="category-name">Semua Produk</div>
                     <div class="category-description">Lihat semua produk yang tersedia</div>
                 </div>
-                <div class="category-card" onclick="filterProducts('new', event)" data-category-id="new">
-                    <div class="category-name">New Item</div>
-                    <div class="category-description">Produk terbaru dalam koleksi kami</div>
-                </div>
-                <!-- Categories will be loaded dynamically -->
+                @foreach ($categories as $category)
+                    <div class="category-card" data-category-id="{{ $category->id }}">
+                        <div class="category-name">{{ $category->name }}</div>
+                        <div class="category-description">{{ $category->description }}</div>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Subcategory Section -->
+            {{-- PERBAIKAN: Bagian Sub Kategori dikosongkan, akan diisi oleh JavaScript --}}
             <div class="subcategory-section" id="subcategorySection" style="display: none;">
                 <div class="section-title">
                     <h3>Sub Kategori</h3>
                     <p>Pilih sub kategori untuk filter lebih spesifik</p>
                 </div>
                 <div class="subcategory-grid" id="subcategoryGrid">
-                    <!-- Subcategories will be loaded dynamically -->
+                    {{-- Subkategori akan dimuat di sini oleh JavaScript --}}
                 </div>
             </div>
 
-            <!-- Search and Filters Section -->
             <div id="searchContainer" class="search-container">
                 <div class="search-and-filters-wrapper">
                     <div class="search-wrapper">
-                        <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="searchProducts()">
+                        <input type="text" id="searchInput" placeholder="Cari produk...">
                     </div>
 
                     <div class="filters-section">
                         <div class="filter-group">
                             <label for="sortPrice">Urutkan Harga:</label>
-                            <select id="sortPrice" onchange="sortProducts(this.value)">
+                            <select id="sortPrice">
                                 <option value="">-- Pilih --</option>
                                 <option value="low-high">Harga Terendah</option>
                                 <option value="high-low">Harga Tertinggi</option>
@@ -149,7 +145,7 @@
 
                         <div class="filter-group">
                             <label for="sortName">Urutkan Nama:</label>
-                            <select id="sortName" onchange="sortProducts(this.value)">
+                            <select id="sortName">
                                 <option value="">-- Pilih --</option>
                                 <option value="a-z">A - Z</option>
                                 <option value="z-a">Z - A</option>
@@ -158,7 +154,7 @@
 
                         <div class="filter-group">
                             <label for="sortDate">Urutkan Tanggal:</label>
-                            <select id="sortDate" onchange="sortProducts(this.value)">
+                            <select id="sortDate">
                                 <option value="">-- Pilih --</option>
                                 <option value="newest">Terbaru</option>
                                 <option value="oldest">Terlama</option>
@@ -169,535 +165,388 @@
             </div>
         </section>
 
-        <!-- Products Section -->
         <section class="section">
             <div class="section-title">
                 <h2>Semua Produk</h2>
                 <p>Jelajahi koleksi lengkap kami</p>
             </div>
 
-            <div class="products-grid">
-                @forelse ($products as $product)
-                    @php $src = $product->primary_image_src; @endphp
-                    <div class="product-card" data-product-id="{{ $product->id }}"
-                        onclick="openProductModal('{{ $product->name }}', '{{ addslashes($product->description ?? '') }}', '{{ $src ? route('tenant.asset', ['path' => $src]) : '' }}', '{{ $product->price_idr }}', '{{ $product->category->name ?? 'Uncategorized' }}')">
-                        <div class="product-image-container">
-                            @if ($src)
-                                <img class="product-image" src="{{ route('tenant.asset', ['path' => $src]) }}"
-                                    alt="{{ $product->name }}" loading="lazy" />
-                            @else
-                                <div class="no-image-placeholder">
-                                    <span>No Image</span>
-                                </div>
-                            @endif
-                            @if ($product->discount_percentage)
-                                <div class="discount-badge">-{{ $product->discount_percentage }}%</div>
-                            @endif
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">{{ $product->name }}</h3>
-                            <p class="product-category">{{ $product->category->name ?? 'Uncategorized' }}</p>
-                            <div class="product-pricing">
-                                <span class="product-price">{{ $product->price_idr }}</span>
-                                @if ($product->old_price_idr)
-                                    <span class="product-old-price">{{ $product->old_price_idr }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="no-products">
-                        <p>No products found.</p>
-                    </div>
-                @endforelse
+            <div class="products-grid" id="productsGrid">
             </div>
 
             <div id="noResults" class="no-results" style="display: none;">
                 <h3>Produk yang Anda cari tidak ditemukan</h3>
                 <p>Coba gunakan kata kunci yang berbeda atau lihat semua produk kami.</p>
             </div>
-
-            <!-- Pagination -->
-            <div class="pagination-container">
-                {{ $products->links() }}
-            </div>
         </section>
 
     </main>
 
-    {{-- Product Modal --}}
-    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
-                <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-                <div class="grid md:grid-cols-2 gap-6 p-6">
-                    <div class="space-y-4">
-                        <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden">
-                            <img id="modal-image" class="w-full h-full object-contain" src=""
-                                alt="">
-                        </div>
-                        <div id="modal-thumbnails" class="flex gap-2 overflow-x-auto"></div>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <h2 id="modal-title" class="text-2xl font-bold text-gray-900"></h2>
-                            <p id="modal-category" class="text-gray-600"></p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span id="modal-price" class="text-3xl font-bold text-gray-900"></span>
-                            <span id="modal-old-price" class="text-xl text-gray-500 line-through hidden"></span>
-                            <span id="modal-discount"
-                                class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded hidden"></span>
-                        </div>
-                        <div id="modal-description" class="text-gray-700"></div>
-                        <div id="modal-specifications" class="space-y-2"></div>
-                        <div class="flex gap-3 pt-4">
-                            <button
-                                class="flex-1 bg-pink-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-pink-700 transition-colors">
-                                Add to Cart
-                            </button>
-                            <button
-                                class="px-6 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>{{ $userStore->store_name ?? 'Fashion E-Catalog' }}</h3>
-                <p>{{ $userStore->store_description ?? 'Katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini' }}
-                </p>
+            <div class="footer-left-content">
+                <div class="footer-logo-section">
+                    <div class="footer-brand-container">
+                        @if ($userStore && $userStore->store_logo)
+                            <img class="footer-logo" src="{{ asset('storage/' . $userStore->store_logo) }}"
+                                alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
+                        @else
+                            <img class="footer-logo"
+                                src="{{ asset('assets/demo/fashion/img/temp/logo-fashion.png') }}"
+                                alt="{{ $userStore->store_name ?? 'Fashion Store Logo' }}" loading="lazy"
+                                decoding="async">
+                        @endif
+                    </div>
+                </div>
+                <div class="footer-section footer-text-content">
+                    <h3>{{ $userStore->store_name ?? 'Fashion Store' }}</h3>
+                    <p>{{ $userStore->store_description ?? 'A place to find your best fashion.' }}</p>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
+            <div class="footer-middle-space">
             </div>
-            <div class="footer-section">
-                <h4>Categories</h4>
-                <ul>
-                    @foreach ($categories->take(5) as $category)
-                        <li><a href="#">{{ $category->name }}</a></li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact Info</h4>
-                <div class="contact-info">
-                    @if ($userStore->phone)
-                        <p>Phone: {{ $userStore->phone }}</p>
-                    @endif
-                    @if ($userStore->email)
-                        <p>Email: {{ $userStore->email }}</p>
-                    @endif
-                    @if ($userStore->address)
-                        <p>Address: {{ $userStore->address }}</p>
-                    @endif
+            <div class="footer-section footer-contact">
+                <h3>Informasi Kontak</h3>
+                <div class="contact-item">
+                    <i class="contact-icon">📞</i>
+                    <span>{{ $userStore->store_phone ?? 'Nomor Telepon Tidak Tersedia' }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="contact-icon">✉️</i>
+                    <span>{{ $userStore->store_email ?? 'Alamat Email Tidak Tersedia' }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="contact-icon">📍</i>
+                    <span>{{ $userStore->store_address ?? 'Alamat Tidak Tersedia' }}</span>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} {{ $userStore->store_name ?? 'Fashion E-Catalog' }}. All rights reserved.
-            </p>
+            <p>© 2024 Powered by PT. Era Cipta Digital</p>
         </div>
     </footer>
 
-    <!-- Product Modal -->
-    <div id="product-modal" class="product-modal" style="display: none;">
+    <style>
+        .footer-brand-container {
+            height: 50px;
+            width: 50px;
+        }
+
+        .footer-logo {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+    </style>
+
+    <div id="productModal" class="product-modal">
         <div class="modal-container">
-            <span onclick="closeModal()" class="modal-close">&times;</span>
-            <div class="modal-content">
-                <div class="modal-image-section">
-                    <img id="modal-image" src="" alt="" class="modal-image">
-                    <div id="modal-discount" class="modal-discount-badge hidden"></div>
-                </div>
-                <div class="modal-info-section">
-                    <h2 id="modal-title" class="modal-title"></h2>
-                    <p id="modal-category" class="modal-category"></p>
-                    <div class="modal-price-section">
-                        <span id="modal-price" class="modal-current-price"></span>
-                        <span id="modal-old-price" class="modal-old-price hidden"></span>
-                    </div>
-                    <div class="modal-description">
-                        <h4>Deskripsi Produk</h4>
-                        <p id="modal-description"></p>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="modal-btn modal-btn-primary" onclick="closeModal()">Tutup</button>
-                    </div>
-                </div>
-            </div>
+            <span class="modal-close">&times;</span>
+            <div id="modalContent"></div>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+    <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <p>Memuat data...</p>
     </div>
 
     <script>
-        // Define a global asset URL for the external script
-        const ASSET_URL = "{{ asset('assets/demo/fashion') }}";
-    </script>
-    <script src="{{ asset('assets/demo/fashion/script.js') }}"></script>
+        // Data dari Blade disiapkan untuk JavaScript
+        const allCategories = @json($categories);
+        const allSubcategories = @json($subCategories);
+        const initialProducts = @json($products->items());
+        const ASSET_URL = "{{ asset('storage/') }}";
 
-    <script>
-        // Global variables
-        let currentSlide = 0;
-        let totalSlides = 0;
-        let allProducts = @json($products->items() ?? []);
-        let filteredProducts = [...allProducts];
-        let categories = @json($categories ?? []);
-        let subcategories = @json($subcategories ?? []);
-        let currentCategory = 'all';
-        let currentSubcategory = '';
-        let currentSort = '';
-        let searchQuery = '';
+        document.addEventListener('DOMContentLoaded', () => {
+            // State (status) saat ini untuk filter
+            let currentCategory = 'all';
+            let currentSubcategory = null;
 
-        // Initialize slider
-        function initSlider() {
-            const sliderWrapper = document.getElementById('slider-wrapper');
-            const indicators = document.getElementById('slider-indicators');
-
-            if (sliderWrapper) {
-                totalSlides = sliderWrapper.children.length;
-
-                // Auto-slide every 5 seconds
-                setInterval(() => {
-                    nextSlide();
-                }, 5000);
-            }
-        }
-
-        // Slider functions
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateSlider();
-        }
-
-        function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateSlider();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlider();
-        }
-
-        function updateSlider() {
-            const sliderWrapper = document.getElementById('slider-wrapper');
-            const indicators = document.querySelectorAll('.slider-indicator');
-
-            if (sliderWrapper) {
-                sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
-
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentSlide);
-            });
-        }
-
-        // Load categories
-        function loadCategories() {
-            const categoryGrid = document.getElementById('categoryGrid');
-            if (!categoryGrid) return;
-
-            categories.forEach(category => {
-                const categoryCard = document.createElement('div');
-                categoryCard.className = 'category-card';
-                categoryCard.setAttribute('data-category-id', category.id);
-                categoryCard.onclick = (e) => filterProducts(category.id, e);
-                categoryCard.innerHTML = `
-                    <div class="category-name">${category.name}</div>
-                    <div class="category-description">${category.description || 'Lihat produk dalam kategori ini'}</div>
-                `;
-                categoryGrid.appendChild(categoryCard);
-            });
-        }
-
-        // Filter products
-        function filterProducts(categoryId, event) {
-            // Update active category
-            document.querySelectorAll('.category-card').forEach(card => {
-                card.classList.remove('active');
-            });
-
-            if (event) {
-                event.currentTarget.classList.add('active');
-            }
-
-            currentCategory = categoryId;
-            currentSubcategory = '';
-
-            // Show/hide subcategory section
+            // Elemen-elemen penting
+            const categoryCards = document.querySelectorAll('.category-card');
             const subcategorySection = document.getElementById('subcategorySection');
-            if (categoryId !== 'all' && categoryId !== 'new') {
-                loadSubcategories(categoryId);
-                subcategorySection.style.display = 'block';
-            } else {
+            const subcategoryGrid = document.getElementById('subcategoryGrid');
+            const productsGrid = document.getElementById('productsGrid');
+            const noResultsDiv = document.getElementById('noResults');
+
+            // --- FUNGSI-FUNGSI UTAMA ---
+
+            // Fungsi untuk menampilkan subkategori yang relevan
+            function showSubcategoriesForCategory(categoryId) {
+                subcategoryGrid.innerHTML = ''; // Selalu kosongkan dulu
+
+                let relevantSubcategories = [];
+                if (categoryId === 'all') {
+                    // Jika pilih "Semua Produk", tampilkan SEMUA subkategori
+                    relevantSubcategories = allSubcategories;
+                } else {
+                    // Jika pilih kategori spesifik, filter subkategori berdasarkan product_category_id
+                    relevantSubcategories = allSubcategories.filter(sub => sub.product_category_id == categoryId);
+                }
+
+                // Jika tidak ada subkategori yang relevan, sembunyikan bagian ini
+                if (relevantSubcategories.length === 0) {
+                    hideSubcategories();
+                    return;
+                }
+
+                // Buat kartu "Semua Sub Kategori"
+                const allSubCard = document.createElement('div');
+                allSubCard.className = 'subcategory-card active';
+                allSubCard.innerHTML = `<div class="subcategory-name">Semua Sub Kategori</div>`;
+                allSubCard.onclick = () => selectSubcategory(null, allSubCard);
+                subcategoryGrid.appendChild(allSubCard);
+
+                // Buat kartu untuk setiap subkategori yang relevan
+                relevantSubcategories.forEach(sub => {
+                    const subCard = document.createElement('div');
+                    subCard.className = 'subcategory-card';
+                    subCard.dataset.subcategoryId = sub.id;
+                    subCard.innerHTML = `
+                        <div class="subcategory-name">${sub.name}</div>
+                        <div class="subcategory-description">${sub.description || ''}</div>
+                    `;
+                    subCard.onclick = () => selectSubcategory(sub.id, subCard);
+                    subcategoryGrid.appendChild(subCard);
+                });
+
+                subcategorySection.style.display = 'block'; // Tampilkan bagian subkategori
+            }
+
+            // Fungsi untuk menyembunyikan bagian subkategori
+            function hideSubcategories() {
                 subcategorySection.style.display = 'none';
             }
 
-            applyFilters();
-        }
-
-        // Load subcategories
-        function loadSubcategories(categoryId) {
-            const subcategoryGrid = document.getElementById('subcategoryGrid');
-            if (!subcategoryGrid) return;
-
-            subcategoryGrid.innerHTML = '';
-
-            // Add "All" subcategory option
-            const allSubcategoryCard = document.createElement('div');
-            allSubcategoryCard.className = 'subcategory-card active';
-            allSubcategoryCard.setAttribute('data-subcategory-id', '');
-            allSubcategoryCard.onclick = (e) => filterBySubcategory('', e);
-            allSubcategoryCard.innerHTML = `
-                <div class="subcategory-name">Semua</div>
-            `;
-            subcategoryGrid.appendChild(allSubcategoryCard);
-
-            // Add actual subcategories
-            const categorySubcategories = subcategories.filter(sub => sub.category_id == categoryId);
-            categorySubcategories.forEach(subcategory => {
-                const subcategoryCard = document.createElement('div');
-                subcategoryCard.className = 'subcategory-card';
-                subcategoryCard.setAttribute('data-subcategory-id', subcategory.id);
-                subcategoryCard.onclick = (e) => filterBySubcategory(subcategory.id, e);
-                subcategoryCard.innerHTML = `
-                    <div class="subcategory-name">${subcategory.name}</div>
-                `;
-                subcategoryGrid.appendChild(subcategoryCard);
-            });
-        }
-
-        // Filter by subcategory
-        function filterBySubcategory(subcategoryId, event) {
-            document.querySelectorAll('.subcategory-card').forEach(card => {
-                card.classList.remove('active');
-            });
-
-            if (event) {
-                event.currentTarget.classList.add('active');
+            // Fungsi yang dijalankan saat subkategori dipilih
+            function selectSubcategory(subcategoryId, element) {
+                currentSubcategory = subcategoryId;
+                document.querySelectorAll('.subcategory-card').forEach(card => card.classList.remove('active'));
+                element.classList.add('active');
+                filterAndRenderProducts(); // Filter ulang produk
             }
 
-            currentSubcategory = subcategoryId;
-            applyFilters();
-        }
+            // Fungsi utama untuk filter dan render produk
+            function filterAndRenderProducts() {
+                let filtered = initialProducts;
 
-        // Search products
-        function searchProducts() {
-            const searchInput = document.getElementById('searchInput');
-            searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
-            applyFilters();
-        }
-
-        // Filter products by search and filters (legacy function for compatibility)
-        function filterProductsDirectly() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedCategory = document.getElementById('categoryFilter').value;
-            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
-            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
-
-            const productCards = document.querySelectorAll('.product-card');
-            let visibleCount = 0;
-
-            productCards.forEach(card => {
-                const productName = card.querySelector('.product-name').textContent.toLowerCase();
-                const productCategory = card.querySelector('.product-category').textContent;
-                const priceText = card.querySelector('.product-price').textContent.replace(/[^0-9]/g, '');
-                const productPrice = parseFloat(priceText) || 0;
-
-                const matchesSearch = productName.includes(searchTerm);
-                const matchesCategory = !selectedCategory || productCategory === selectedCategory;
-                const matchesPrice = productPrice >= minPrice && productPrice <= maxPrice;
-
-                if (matchesSearch && matchesCategory && matchesPrice) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
+                // 1. Filter berdasarkan Kategori Utama
+                if (currentCategory !== 'all') {
+                    filtered = filtered.filter(p => p.product_category_id == currentCategory);
                 }
-            });
 
-            const noResults = document.getElementById('noResults');
-            if (noResults) {
-                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+                // 2. Filter berdasarkan Sub Kategori
+                if (currentSubcategory !== null) {
+                    filtered = filtered.filter(p => p.sub_category_id == currentSubcategory);
+                }
+
+                // 3. Filter berdasarkan Pencarian
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(searchTerm) ||
+                        (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                        (p.sku && p.sku.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                // 4. Urutkan Harga
+                const sortPrice = document.getElementById('sortPrice').value;
+                if (sortPrice === 'low-high') {
+                    filtered.sort((a, b) => a.price - b.price);
+                } else if (sortPrice === 'high-low') {
+                    filtered.sort((a, b) => b.price - a.price);
+                }
+
+                // 5. Urutkan Nama
+                const sortName = document.getElementById('sortName').value;
+                if (sortName === 'a-z') {
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sortName === 'z-a') {
+                    filtered.sort((a, b) => b.name.localeCompare(a.name));
+                }
+
+                // 6. Urutkan Tanggal
+                const sortDate = document.getElementById('sortDate').value;
+                if (sortDate === 'newest') {
+                    filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                } else if (sortDate === 'oldest') {
+                    filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                }
+
+                renderProducts(filtered);
             }
-        }
 
-        // Sort products
-        function sortProducts(sortType) {
-            // Clear other sort selects
-            const sortSelects = ['sortPrice', 'sortName', 'sortDate'];
-            sortSelects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select && select.id !== event.target.id) {
-                    select.value = '';
-                }
-            });
+            // Fungsi untuk render kartu produk ke HTML
+            function renderProducts(products) {
+                productsGrid.innerHTML = '';
+                noResultsDiv.style.display = products.length === 0 ? 'block' : 'none';
 
-            currentSort = sortType;
-            applyFilters();
-        }
+                products.forEach(product => {
+                    const imageUrl = product.image ? `${ASSET_URL}/${product.image}` :
+                        'https://via.placeholder.com/200?text=No+Image';
+                    const formattedPrice = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(product.price);
 
-        // Apply all filters
-        function applyFilters() {
-            filteredProducts = allProducts.filter(product => {
-                // Search filter
-                if (searchQuery && !product.name.toLowerCase().includes(searchQuery)) {
-                    return false;
-                }
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.dataset.productId = product.id;
+                    productCard.onclick = () => showProductDetails(product.id);
 
-                // Category filter
-                if (currentCategory === 'new') {
-                    // Show products created in last 30 days
-                    const thirtyDaysAgo = new Date();
-                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                    const productDate = new Date(product.created_at);
-                    return productDate >= thirtyDaysAgo;
-                } else if (currentCategory !== 'all') {
-                    if (product.category_id != currentCategory) {
-                        return false;
-                    }
-                }
-
-                // Subcategory filter
-                if (currentSubcategory && product.subcategory_id != currentSubcategory) {
-                    return false;
-                }
-
-                return true;
-            });
-
-            // Apply sorting
-            if (currentSort) {
-                filteredProducts.sort((a, b) => {
-                    switch (currentSort) {
-                        case 'low-high':
-                            return parseFloat(a.price) - parseFloat(b.price);
-                        case 'high-low':
-                            return parseFloat(b.price) - parseFloat(a.price);
-                        case 'a-z':
-                            return a.name.localeCompare(b.name);
-                        case 'z-a':
-                            return b.name.localeCompare(a.name);
-                        case 'oldest':
-                            return new Date(a.created_at) - new Date(b.created_at);
-                        case 'newest':
-                            return new Date(b.created_at) - new Date(a.created_at);
-                        default:
-                            return 0;
-                    }
+                    productCard.innerHTML = `
+                        <div class="product-image">
+                            <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${product.category ? product.category.name : ''}</div>
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-price">${formattedPrice}</div>
+                        </div>
+                    `;
+                    productsGrid.appendChild(productCard);
                 });
             }
 
-            renderProducts();
-        }
+            // --- EVENT LISTENERS ---
 
-        // Render products
-        function renderProducts() {
-            const productGrid = document.querySelector('.products-grid');
-            const noResults = document.getElementById('noResults');
+            // Klik pada kartu kategori utama
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove(
+                        'active'));
+                    this.classList.add('active');
 
-            if (!productGrid) return;
+                    currentCategory = this.dataset.categoryId;
+                    currentSubcategory = null; // Reset subkategori
 
-            // Get all product cards
-            const allCards = productGrid.querySelectorAll('.product-card');
-
-            if (filteredProducts.length === 0) {
-                allCards.forEach(card => card.style.display = 'none');
-                if (noResults) noResults.style.display = 'block';
-                return;
-            }
-
-            if (noResults) noResults.style.display = 'none';
-
-            allCards.forEach(card => {
-                const productId = card.getAttribute('data-product-id');
-                const shouldShow = filteredProducts.some(product => product.id == productId);
-                card.style.display = shouldShow ? 'block' : 'none';
-            });
-        }
-
-        // Open product modal
-        function openProductModal(name, description, imageSrc, price, category) {
-            const modal = document.getElementById('product-modal');
-            if (!modal) return;
-
-            // Update modal content
-            document.getElementById('modal-title').textContent = name;
-            document.getElementById('modal-category').textContent = category;
-            document.getElementById('modal-price').textContent = price;
-            document.getElementById('modal-description').textContent = description || 'No description available.';
-
-            if (imageSrc) {
-                document.getElementById('modal-image').src = imageSrc;
-                document.getElementById('modal-image').alt = name;
-            }
-
-            modal.style.display = 'block';
-        }
-
-        // Close modal
-        function closeModal() {
-            const modal = document.getElementById('product-modal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            initSlider();
-            loadCategories();
-            renderProducts();
-
-            // Close modal when clicking close button or outside modal
-            const closeModalBtn = document.getElementById('close-modal');
-            const modal = document.getElementById('product-modal');
-
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', closeModal);
-            }
-
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        closeModal();
-                    }
+                    showSubcategoriesForCategory(currentCategory);
+                    filterAndRenderProducts();
                 });
-            }
+            });
+
+            // Input pada filter
+            document.getElementById('searchInput').addEventListener('input', filterAndRenderProducts);
+            document.getElementById('sortPrice').addEventListener('change', filterAndRenderProducts);
+            document.getElementById('sortName').addEventListener('change', filterAndRenderProducts);
+            document.getElementById('sortDate').addEventListener('change', filterAndRenderProducts);
+
+            // --- INISIALISASI ---
+            hideSubcategories();
+            filterAndRenderProducts(); // Render produk awal saat halaman dimuat
         });
     </script>
 
-    <!-- Universal Checkout Bubble -->
-    @include('demo.universal-checkout-bubble', [
-        'templateSlug' => 'fashion',
-    ])
+    {{-- Sisanya adalah script untuk slider dan modal --}}
+    <script>
+        const productModal = document.getElementById('productModal');
+        const modalContent = document.getElementById('modalContent');
+
+        function showProductDetails(productId) {
+            const product = initialProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            const imageUrl = product.image ? `${ASSET_URL}/${product.image}` :
+                'https://via.placeholder.com/200?text=No+Image';
+            const formattedPrice = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(product.price);
+
+            const material = product.specification?.material || '';
+            const sizes = product.specification?.sizes || [];
+            const colors = product.specification?.colors || [];
+
+            modalContent.innerHTML = `
+                <div class="modal-product-details">
+                    <div class="modal-product-image">
+                        <img src="${imageUrl}" alt="${product.name}">
+                    </div>
+                    <div class="modal-product-info">
+                        <h2 class="modal-product-name">${product.name}</h2>
+                        <div class="modal-product-price">${formattedPrice}</div>
+                        <div class="modal-product-description">
+                            <h4>Deskripsi:</h4>
+                            <p>${product.description || 'Tidak ada deskripsi.'}</p>
+                        </div>
+                        ${material ? `<div class="modal-section"><h4>Material:</h4><p>${material}</p></div>` : ''}
+                        ${sizes.length > 0 ? `<div class="modal-section"><h4>Ukuran:</h4><div class="sizes-list">${sizes.map(s => `<span class="size-tag">${s}</span>`).join('')}</div></div>` : ''}
+                        ${colors.length > 0 ? `<div class="modal-section"><h4>Warna:</h4><div class="colors-list">${colors.map(c => `<span class="color-tag">${c}</span>`).join('')}</div></div>` : ''}
+                    </div>
+                </div>
+            `;
+
+            productModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.querySelector('.modal-close').addEventListener('click', () => {
+            productModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == productModal) {
+                productModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Hero Slider Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const sliderWrapper = document.getElementById('slider-wrapper');
+            const prevBtn = document.querySelector('.slider-nav.prev');
+            const nextBtn = document.querySelector('.slider-nav.next');
+            const indicatorsContainer = document.getElementById('slider-indicators');
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentIndex = 0;
+            let slideInterval;
+
+            function updateSlider() {
+                const offset = -currentIndex * 100;
+                sliderWrapper.style.transform = `translateX(${offset}%)`;
+
+                const indicators = document.querySelectorAll('.slider-indicator');
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function goToNextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateSlider();
+            }
+
+            function startAutoplay() {
+                slideInterval = setInterval(goToNextSlide, 5000);
+            }
+
+            function stopAutoplay() {
+                clearInterval(slideInterval);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                stopAutoplay();
+                goToNextSlide();
+                startAutoplay();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                stopAutoplay();
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateSlider();
+                startAutoplay();
+            });
+
+            startAutoplay();
+        });
+    </script>
+
 </body>
 
 </html>

@@ -145,31 +145,37 @@
                     </a>
                 </li>
 
-                <li class="sidebar-list">
-                    <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
-                        href="{{ route('tenant.admin.sub-categories.index') }}">
-                        <i class="fa fa-th menu-icon" aria-hidden="true"></i>
-                        <span>Sub Kategori Produk</span>
-                    </a>
-                </li>
+                @if (in_array('subkategoriproduk', $menus))
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('tenant.admin.sub-categories.index') }}">
+                            <i class="fa fa-th menu-icon" aria-hidden="true"></i>
+                            <span>Sub Kategori Produk</span>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-list">
-                    <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.brands.index') }}">
-                        <i class="fa fa-th menu-icon" aria-hidden="true"></i>
-                        <span>Brand Produk</span>
-                    </a>
-                </li>
+                @if (in_array('brandproduk', $menus))
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('tenant.admin.brands.index') }}">
+                            <i class="fa fa-th menu-icon" aria-hidden="true"></i>
+                            <span>Brand Produk</span>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-list">
-                    <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
-                        href="{{ route('tenant.admin.product-units.index') }}">
-                        <i class="fa fa-th menu-icon" aria-hidden="true"></i>
-                        <span>Unit Produk</span>
-                    </a>
-                </li>
+                @if (in_array('unitproduk', $menus))
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('tenant.admin.product-units.index') }}">
+                            <i class="fa fa-th menu-icon" aria-hidden="true"></i>
+                            <span>Unit Produk</span>
+                        </a>
+                    </li>
+                @endif
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>

@@ -17,7 +17,7 @@ class StoreHeroController extends Controller
     public function index()
     {
         $userStore = $this->getCurrentStore();
-        $heroes = StoreHero::where('user_store_id', $userStore->id)->orderBy('order')->get();
+        $heroes = StoreHero::where('user_store_id', $userStore->id)->get();
         return view('tenant.admin.pages.store-hero.index', compact('heroes', 'userStore'));
     }
 
@@ -34,7 +34,6 @@ class StoreHeroController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
             'button_text' => 'nullable|string|max:255', // Added
-            'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -50,7 +49,6 @@ class StoreHeroController extends Controller
             'subtitle' => $validatedData['subtitle'],
             'link' => $validatedData['link'],
             'button_text' => $validatedData['button_text'] ?? null, // Added
-            'order' => $validatedData['order'] ?? 0,
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
@@ -83,7 +81,6 @@ class StoreHeroController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
             'button_text' => 'nullable|string|max:255', // Added
-            'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -101,7 +98,6 @@ class StoreHeroController extends Controller
             'subtitle' => $validatedData['subtitle'],
             'link' => $validatedData['link'],
             'button_text' => $validatedData['button_text'] ?? null, // Added
-            'order' => $validatedData['order'] ?? 0,
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
