@@ -37,7 +37,8 @@ Route::middleware([
 
     Route::get('/tenancy/assets/{path}', TenantAssetController::class)
         ->where('path', '.*')
-        ->name('tenant.asset');
+        ->name('tenant.asset.domain');
+
     // ========================================
     // CUSTOMER-FACING STORE ROUTES
     // ========================================
@@ -66,40 +67,41 @@ Route::middleware([
     Route::prefix('api')->name('tenant.api.')->group(function () {
         Route::get('/products', [StoreController::class, 'getProducts'])->name('products');
         Route::get('/categories', [StoreController::class, 'getCategories'])->name('categories');
+        Route::get('/products/{productId}', [StoreController::class, 'getProductDetails'])->name('product.details');
     });
 
     // ========================================
-    // TENANT ADMIN ROUTES
+    // TENANT ADMIN STORE ROUTES
     // ========================================
 
-    Route::prefix('admin')->name('tenant.admin.')->group(function () {
-        // Admin Dashboard
-        Route::get('/', [AdminController::class, 'dashboard']);
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    // Route::prefix('admin')->name('tenant.admin.')->group(function () {
+    //     // Admin Dashboard
+    //     Route::get('/', [AdminController::class, 'dashboard']);
+    //     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-        // Store Settings
-        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-        Route::put('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
+    //     // Store Settings
+    //     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    //     Route::put('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
 
-        // Products Management
-        Route::resource('products', StoreProductController::class)->names('products')->except(['create', 'edit']);
+    //     // Products Management
+    //     Route::resource('products', StoreProductController::class)->names('products')->except(['create', 'edit']);
 
-        // Categories Management
-        Route::resource('categories', ProductCategoryController::class)->names('categories')->except(['create', 'edit']);
+    //     // Categories Management
+    //     Route::resource('categories', ProductCategoryController::class)->names('categories')->except(['create', 'edit']);
 
-        // Sub-Categories Management
-        Route::resource('sub-categories', ProductSubCategoryController::class)->names('sub-categories')->except(['create', 'edit']);
+    //     // Sub-Categories Management
+    //     Route::resource('sub-categories', ProductSubCategoryController::class)->names('sub-categories')->except(['create', 'edit']);
 
-        // Brands Management
-        Route::resource('brands', ProductBrandController::class)->names('brands')->except(['create', 'edit']);
+    //     // Brands Management
+    //     Route::resource('brands', ProductBrandController::class)->names('brands')->except(['create', 'edit']);
 
-        // Price Ranges Management
-        Route::resource('price-ranges', PriceRangeController::class)->names('price-ranges')->except(['create', 'edit']);
+    //     // Price Ranges Management
+    //     Route::resource('price-ranges', PriceRangeController::class)->names('price-ranges')->except(['create', 'edit']);
 
-        // Store Heroes Management
-        Route::resource('store-heroes', StoreHeroController::class)->names('store-heroes');
+    //     // Store Heroes Management
+    //     Route::resource('store-heroes', StoreHeroController::class)->names('store-heroes');
 
-        // Product Units Management
-        Route::resource('product-units', ProductUnitController::class)->names('product-units');
-    });
+    //     // Product Units Management
+    //     Route::resource('product-units', ProductUnitController::class)->names('product-units');
+    // });
 });

@@ -1,21 +1,24 @@
 <?php
 
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DemoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\StoreSetupController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\CatalogTemplateController;
-use App\Http\Controllers\DemoController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\StoreSetupController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController; // New import
+use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 use App\Http\Controllers\StoreCategoryMenuController; // New import
 
 /*
@@ -34,6 +37,14 @@ foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
 
         // ========================================
+        // TENANT ASSET ROUTE (MANUAL OVERRIDE)
+        // ========================================
+        Route::get('/tenancy/{tenant}/assets/{path}', \App\Http\Controllers\TenantAssetController::class)
+            ->middleware([InitializeTenancyByPath::class])
+            ->where('path', '.*')
+            ->name('tenant.asset.path');
+
+        // ========================================
         // PUBLIC ROUTES (Landing Page)
         // ========================================
 
@@ -42,6 +53,10 @@ foreach (config('tenancy.central_domains') as $domain) {
             return redirect()->route('home');
         });
         Route::get('/welcome', [LandingPageController::class, 'index'])->name('welcome');
+
+        // RUTE BARU UNTUK HALAMAN KONTAK
+        Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
+
 
         // ========================================
         // DEMO ROUTES
@@ -129,6 +144,13 @@ foreach (config('tenancy.central_domains') as $domain) {
         // AUTHENTICATED USER ROUTES
         // ========================================
 
+        // Contact Us
+        // Rute untuk menampilkan halaman kontak
+        Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
+
+        // Rute untuk memproses pengiriman form kontak
+        Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
         Route::middleware(['auth'])->group(function () {
 
             // Profile Routes
@@ -154,7 +176,7 @@ foreach (config('tenancy.central_domains') as $domain) {
 
             // Payment success page
             Route::get('/payment/success', function () {
-                return view('payment.success');
+                return view('payment.checkout.success');
             })->name('payment.success');
 
             // Payment failed page
@@ -166,6 +188,9 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::get('/payment/pending', function () {
                 return view('payment.pending');
             })->name('payment.pending');
+
+            // Route to handle payment cancellation
+            Route::post('/checkout/cancel', [\App\Http\Controllers\CheckoutController::class, 'cancelPayment'])->name('checkout.cancel');
 
             // ========================================
             // STORE SETUP ROUTES (POST-PAYMENT)
@@ -188,20 +213,20 @@ foreach (config('tenancy.central_domains') as $domain) {
                 return redirect()->route('admin-main.index');
             });
 
-            Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-main.index');
+            Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin-main.index');
 
-            Route::resource('/kategori-toko', StoreCategoryController::class)->names('kategori-toko');
-            Route::resource('/template-katalog', CatalogTemplateController::class)->names('template');
+            Route::resource('/kategori-toko', \App\Http\Controllers\StoreCategoryController::class)->names('kategori-toko');
+            Route::resource('/template-katalog', \App\Http\Controllers\CatalogTemplateController::class)->names('template');
 
             // New route for Menu management
-            Route::resource('/menus', MenuController::class)->names('menu');
+            Route::resource('/menus', \App\Http\Controllers\MenuController::class)->names('menu');
 
             // New route for Store Category Menu management
-            Route::resource('/store-category-menus', StoreCategoryMenuController::class)->only(['index', 'update'])->names('store-category-menus');
+            Route::resource('/store-category-menus', \App\Http\Controllers\StoreCategoryMenuController::class)->only(['index', 'update'])->names('store-category-menus');
 
-            Route::resource('/users', UserController::class);
-            Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-            Route::delete('/users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
+            Route::resource('/users', \App\Http\Controllers\UserController::class);
+            Route::post('/users/{id}/restore', [\App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
+            Route::delete('/users/{id}/force-delete', [\App\Http\Controllers\UserController::class, 'forceDelete'])->name('users.force-delete');
 
             // Payment History
             Route::get('/pembayaran', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payments.index');
@@ -213,6 +238,47 @@ foreach (config('tenancy.central_domains') as $domain) {
             // ## BARIS BARU UNTUK APPROVE TOKO ##: Route untuk admin menyetujui (approve) toko yang pending
             Route::post('/toko/{userStore}/approve', [\App\Http\Controllers\ManajemenTokoController::class, 'approve'])->name('toko.approve');
         });
+
+        // ========================================
+        // TENANT ADMIN STORE ROUTES
+        // ========================================
+
+        Route::prefix('kelola-toko/{tenant}')
+            ->middleware([
+                'auth',
+                //InitializeTenancyByPath::class,
+            ])
+            ->name('tenant.admin.')
+            ->group(function () {
+                // Admin Dashboard
+                Route::get('/', [\App\Http\Controllers\Tenant\AdminController::class, 'dashboard']);
+                Route::get('/dashboard', [\App\Http\Controllers\Tenant\AdminController::class, 'dashboard'])->name('dashboard');
+
+                // Store Settings
+                Route::get('/settings', [\App\Http\Controllers\Tenant\AdminController::class, 'settings'])->name('settings');
+                Route::put('/settings', [\App\Http\Controllers\Tenant\AdminController::class, 'updateSettings'])->name('settings.update');
+
+                // Categories Management
+                Route::resource('categories', \App\Http\Controllers\Tenant\ProductCategoryController::class)->names('categories')->except(['create', 'edit']);
+
+                // Sub-Categories Management
+                Route::resource('sub-categories', \App\Http\Controllers\Tenant\ProductSubCategoryController::class)->names('sub-categories')->except(['create', 'edit']);
+
+                // Brands Management
+                Route::resource('brands', \App\Http\Controllers\Tenant\ProductBrandController::class)->names('brands')->except(['create', 'edit']);
+
+                // Product Units Management
+                Route::resource('product-units', \App\Http\Controllers\Tenant\ProductUnitController::class)->names('product-units');
+
+                // Products Management
+                Route::resource('products', \App\Http\Controllers\Tenant\StoreProductController::class)->names('products')->except(['create', 'edit']);
+
+                // Price Ranges Management
+                Route::resource('price-ranges', \App\Http\Controllers\Tenant\PriceRangeController::class)->names('price-ranges')->except(['create', 'edit']);
+
+                // Store Heroes Management
+                Route::resource('store-heroes', \App\Http\Controllers\Tenant\Admin\StoreHeroController::class)->names('store-heroes');
+            });
 
         // ========================================
         // FALLBACK ROUTE

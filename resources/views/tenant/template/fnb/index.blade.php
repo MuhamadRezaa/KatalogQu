@@ -92,7 +92,7 @@
         <div id="image-carousel" class="absolute inset-0 flex transition-transform duration-1000 ease-in-out">
             @forelse ($banners as $banner)
                 <div class="w-screen flex-shrink-0 relative">
-                    <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}" alt="Promo Spesial"
+                    <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}" alt="Promo Spesial"
                         class="absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 flex items-center justify-center text-center p-12">
                         <div class="relative z-10">
@@ -128,7 +128,7 @@
                     @foreach ($categories as $category)
                         <div class="card-category">
                             <img src="{{ $category->image
-                                ? route('tenant.asset', ['path' => ltrim($category->image, '/')])
+                                ? route('tenant.asset.domain', ['path' => ltrim($category->image, '/')])
                                 : asset('assets/images/no-image-icon.png') }}"
                                 alt="{{ $category->name }}" class="w-full h-40 object-cover">
                             <div class="p-4 text-center">
@@ -296,7 +296,7 @@
                                     'id' => $img->id,
                                     'image_path' => $img->image_path,
                                     'is_primary' => $img->is_primary,
-                                    'full_url' => route('tenant.asset', ['path' => $img->image_path]),
+                                    'full_url' => route('tenant.asset.domain', ['path' => $img->image_path]),
                                 ];
                             }
                             // Urutkan agar primary image di index 0

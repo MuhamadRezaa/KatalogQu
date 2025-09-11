@@ -3,29 +3,32 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Models\User;
+use App\Models\Tenant;
 use App\Models\UserStore;
 use App\Models\StoreProduct;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Gemini Added
+use App\Models\Menu; // Add this import
 use Illuminate\Support\Facades\Storage;
 use App\Models\StoreCategory; // Add this import
-use App\Models\Menu; // Add this import
+use Illuminate\Support\Facades\Log; // Gemini Added
 
 class AdminController extends Controller
 {
     /**
      * Store admin dashboard - tenant-specific
      */
-    public function dashboard()
+    public function dashboard(Tenant $tenant)
     {
-        // Get current tenant info
-        $tenant = tenant();
-
+        tenancy()->initialize($tenant);
         // Get user store data for this tenant
         $userStore = UserStore::where('tenant_id', $tenant->id)->first();
+
+        if ($userStore !== null && $userStore->user_id !== Auth::id()) {
+            abort(403, 'UNAUTHORIZED ACTION.');
+        }
 
         if (!$userStore) {
             abort(404, 'Store not found for this tenant');
@@ -68,9 +71,9 @@ class AdminController extends Controller
     /**
      * Store settings
      */
-    public function settings()
+    public function settings(Tenant $tenant)
     {
-        $tenant = tenant();
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', $tenant->id)->first();
 
         if (!$userStore) {
@@ -83,11 +86,11 @@ class AdminController extends Controller
     /**
      * Update store settings
      */
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request, Tenant $tenant)
     {
         Log::info('UpdateSettings: Starting settings update process.');
-
-        $tenant = tenant();
+        tenancy()->initialize($tenant);
+        //$tenant = tenant();
         $userStore = UserStore::where('tenant_id', $tenant->id)->first();
 
         if (!$userStore) {
@@ -144,7 +147,7 @@ class AdminController extends Controller
             return back()->with('error', 'An unexpected error occurred. Please check the logs.');
         }
 
-        return redirect()->route('tenant.admin.settings')
+        return redirect()->route('tenant.admin.settings', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Store settings updated successfully!');
     }
 

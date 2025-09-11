@@ -101,7 +101,7 @@
             @foreach ($slides as $i => $bn)
                 @php
                     $isObj = is_object($bn);
-                    $imgSrc = $isObj ? route('tenant.asset', ['path' => $bn->image_url]) : $bn['image_url'];
+                    $imgSrc = $isObj ? route('tenant.asset.domain', ['path' => $bn->image_url]) : $bn['image_url'];
                     $title = $isObj ? $bn->title ?? 'Banner' : $bn['title'];
                     $subtitle = $isObj ? $bn->subtitle ?? '' : $bn['subtitle'];
                 @endphp

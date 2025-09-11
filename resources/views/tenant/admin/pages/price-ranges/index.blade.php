@@ -94,7 +94,9 @@
                     <h5 class="modal-title" id="addPriceRangeModalLabel">Tambah Price Range Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addPriceRangeForm" action="{{ route('tenant.admin.price-ranges.store') }}" method="POST">
+                <form id="addPriceRangeForm"
+                    action="{{ route('tenant.admin.price-ranges.store', ['tenant' => $userStore->tenant_id]) }}"
+                    method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -204,9 +206,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.price-ranges.show', ['price_range' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.price-ranges.update', ['price_range' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.price-ranges.destroy', ['price_range' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.price-ranges.show', ['tenant' => $userStore->tenant_id, 'price_range' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.price-ranges.update', ['tenant' => $userStore->tenant_id, 'price_range' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.price-ranges.destroy', ['tenant' => $userStore->tenant_id, 'price_range' => ':id']) }}';
 
         function editPriceRange(priceRangeId) {
             const fetchUrl = showUrlTemplate.replace(':id', priceRangeId);

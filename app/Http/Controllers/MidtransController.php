@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use App\Models\TemplatePurchase;
 use App\Models\Payment;
+use App\Models\TemplatePurchase;
+use App\Models\UserStore; // Tambahkan ini
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str; // Tambahkan ini
 use Midtrans\Config;
-// use App\Models\User; // Added for potential use cases
-// use Midtrans\Notification;
 
 class MidtransController extends Controller
 {
@@ -69,19 +69,16 @@ class MidtransController extends Controller
         $fraudStatus = $data['fraud_status'] ?? null;
         $paymentTypeRaw = $data['payment_type'] ?? null; // Ambil tipe pembayaran mentah
 
-        // --- AWAL PERUBAHAN ---
-        // Tentukan metode pembayaran yang akan disimpan
-        $paymentMethod = 'Midtrans'; // Default untuk semua pembayaran via Midtrans
+        $paymentMethod = 'Midtrans';
         if (strtolower((string)$paymentTypeRaw) === 'qris') {
-            $paymentMethod = 'QRIS'; // Ubah menjadi 'QRIS' jika tipenya adalah qris
+            $paymentMethod = 'QRIS';
         }
-        // --- AKHIR PERUBAHAN ---
 
         Log::info('Midtrans notification parsed', [
             'order_id'     => $orderId,
             'trx_status'   => $trxStatus,
             'payment_type' => $paymentTypeRaw,
-            'final_method' => $paymentMethod, // Log metode final yang akan disimpan
+            'final_method' => $paymentMethod,
             'fraud_status' => $fraudStatus,
             'merchant_id'  => $data['merchant_id'] ?? null,
             'currency'     => $data['currency'] ?? null,
@@ -140,7 +137,7 @@ class MidtransController extends Controller
             if ($payment && $payment->status === 'pending') {
                 $payment->status = $internal;
                 $payment->paid_at = $paidAt;
-                $payment->payment_method = $paymentMethod; // Gunakan variabel yang sudah diproses
+                $payment->payment_method = $paymentMethod;
                 $payment->payment_details = array_merge(
                     is_array($payment->payment_details) ? $payment->payment_details : (json_decode($payment->payment_details, true) ?? []),
                     ['midtrans_notification' => $data]
@@ -151,12 +148,29 @@ class MidtransController extends Controller
             if ($tpl && strtolower((string)$tpl->payment_status) === 'pending') {
                 $tpl->payment_status = $internal;
                 $tpl->paid_at = $paidAt;
-                $tpl->payment_method = $paymentMethod; // Gunakan variabel yang sudah diproses
+                $tpl->payment_method = $paymentMethod;
                 $tpl->payment_details = array_merge(
                     is_array($tpl->payment_details) ? $tpl->payment_details : (json_decode($tpl->payment_details, true) ?? []),
                     ['midtrans_notification' => $data]
                 );
                 $tpl->save();
+
+                // --- AWAL PERUBAHAN ---
+                // Jika pembayaran berhasil, secara otomatis buat entri UserStore yang pending
+                if ($internal === 'paid') {
+                    UserStore::firstOrCreate(
+                        ['payment_transaction_id' => $orderId],
+                        [
+                            'user_id' => $tpl->user_id,
+                            'catalog_template_id' => $tpl->catalog_template_id,
+                            'store_name' => 'Store awaiting setup for ' . $orderId,
+                            'subdomain' => 'temp-' . Str::lower(Str::random(12)),
+                            'setup_status' => 'pending', // Status awal: menunggu dimulai oleh user
+                        ]
+                    );
+                    Log::info('Created pending UserStore entry.', ['order_id' => $orderId]);
+                }
+                // --- AKHIR PERUBAHAN ---
             }
 
             DB::commit();
@@ -171,7 +185,6 @@ class MidtransController extends Controller
 
     /**
      * Manual payment status check for debugging.
-     * This method remains for manual checks but should not be part of the primary flow.
      */
     public function checkPaymentStatus(Request $request)
     {

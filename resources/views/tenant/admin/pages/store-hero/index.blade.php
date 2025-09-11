@@ -46,7 +46,7 @@
                                     <tr>
                                         <td>
                                             @if ($hero->image_url)
-                                                <img src="{{ route('tenant.asset', ['path' => $hero->image_url]) }}"
+                                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $hero->image_url]) }}"
                                                     alt="{{ $hero->title }}" class="img-fluid rounded"
                                                     style="max-width: 100px;">
                                             @else
@@ -107,14 +107,15 @@
                     <h5 class="modal-title" id="addHeroModalLabel">Tambah Hero Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addHeroForm" action="{{ route('tenant.admin.store-heroes.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="addHeroForm"
+                    action="{{ route('tenant.admin.store-heroes.store', ['tenant' => $userStore->tenant_id]) }}"
+                    method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="add_image" class="form-label">Image <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="add_image" name="image"
-                                accept="image/jpeg,image/png,image/webp" required>
+                                accept="image/jpeg,image/png,image/jpg" required>
                         </div>
                         <div class="mb-3">
                             <label for="add_title" class="form-label">Title</label>
@@ -165,7 +166,7 @@
                         <div class="mb-3">
                             <label for="edit_image" class="form-label">Ganti Image</label>
                             <input type="file" class="form-control" id="edit_image" name="image"
-                                accept="image/jpeg,image/png,image/webp">
+                                accept="image/jpeg,image/png,image/jpg">
                             <div class="form-text">Biarkan kosong jika tidak ingin mengubah gambar.</div>
                         </div>
                         <div id="currentImagePreview" class="mb-3">
@@ -224,9 +225,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.store-heroes.show', ['store_hero' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.store-heroes.update', ['store_hero' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.store-heroes.destroy', ['store_hero' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.store-heroes.show', ['tenant' => $userStore->tenant_id, 'store_hero' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.store-heroes.update', ['tenant' => $userStore->tenant_id, 'store_hero' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.store-heroes.destroy', ['tenant' => $userStore->tenant_id, 'store_hero' => ':id']) }}';
 
         function editHero(heroId) {
             const fetchUrl = showUrlTemplate.replace(':id', heroId);
@@ -249,13 +253,14 @@
                         form.querySelector('#edit_button_text').value = hero.button_text; // Added
                         form.querySelector('#edit_is_active').checked = hero.is_active;
 
-                        const assetBaseUrl = "{{ url('tenancy/assets') }}/";
+                        const assetUrlTemplate =
+                            '{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => ':path']) }}';
                         const img = document.getElementById('current_hero_image');
 
                         if (hero.image_url) {
-                            img.src = assetBaseUrl + hero.image_url;
+                            img.src = assetUrlTemplate.replace(':path', hero.image_url);
                         } else {
-                            img.src = ''; // Clear image if no image_url
+                            img.src = '';
                         }
 
                         new bootstrap.Modal(document.getElementById('editHeroModal')).show();
@@ -287,19 +292,34 @@
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .then(response => response.json())
+                .then(async (response) => {
+                    // robust handler: kalau bukan JSON (mis. salah config), jangan meledak
+                    const ct = response.headers.get('content-type') || '';
+                    if (!response.ok) {
+                        const err = ct.includes('application/json') ? await response.json() : {
+                            message: await response.text()
+                        };
+                        throw new Error(err.message || 'Gagal memproses permintaan.');
+                    }
+                    return ct.includes('application/json') ? response.json() : {
+                        success: true,
+                        message: 'OK'
+                    };
+                })
                 .then(data => {
                     if (data.success) {
                         alert(data.message);
-                        location.reload(); // Reload page to see changes
+                        location.reload();
                     } else {
-                        alert('Error: ' + data.message);
+                        alert('Error: ' + (data.message || 'Unknown'));
                     }
                 })
-                .catch(error => {
+                .catch(err => {
                     console.error('Error:', error);
                     alert('Terjadi kesalahan. Silakan coba lagi.');
                 });
@@ -318,10 +338,25 @@
                     method: 'POST', // Use POST for FormData with _method spoofing
                     body: formData,
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .then(response => response.json())
+                .then(async (response) => {
+                    // robust handler: kalau bukan JSON (mis. salah config), jangan meledak
+                    const ct = response.headers.get('content-type') || '';
+                    if (!response.ok) {
+                        const err = ct.includes('application/json') ? await response.json() : {
+                            message: await response.text()
+                        };
+                        throw new Error(err.message || 'Gagal memproses permintaan.');
+                    }
+                    return ct.includes('application/json') ? response.json() : {
+                        success: true,
+                        message: 'OK'
+                    };
+                })
                 .then(data => {
                     if (data.success) {
                         alert(data.message);
@@ -330,8 +365,8 @@
                         alert('Error: ' + data.message);
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
+                .catch(err => {
+                    console.error(err);
                     alert('Terjadi kesalahan. Silakan coba lagi.');
                 });
         });

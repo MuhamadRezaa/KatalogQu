@@ -82,7 +82,8 @@
                             </div>
                             <div class="col-6">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('tenant.admin.dashboard') }}">
+                                    <li class="breadcrumb-item"><a
+                                            href="{{ route('tenant.admin.dashboard', ['tenant' => $userStore->tenant_id]) }}">
                                             <svg class="stroke-icon">
                                                 <use
                                                     href="{{ asset('assets/riho-asset/svg/icon-sprite.svg#stroke-home') }}">

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Models\Tenant;
 use App\Models\UserStore;
 use App\Models\StoreBrand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,8 +15,9 @@ class ProductBrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Tenant $tenant)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $brands = StoreBrand::where('user_store_id', $userStore->id)
@@ -27,8 +30,9 @@ class ProductBrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Tenant $tenant, Request $request)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $validated = $request->validate([
@@ -42,20 +46,34 @@ class ProductBrandController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('brands', 'public');
+            Log::info('File details:', [
+                'original_name' => $request->file('image')->getClientOriginalName(),
+                'size' => $request->file('image')->getSize(),
+                'mime_type' => $request->file('image')->getMimeType(),
+                'is_valid' => $request->file('image')->isValid(),
+            ]);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'brands', // folder
+                $fileName,    // nama file
+                'public'      // disk
+            );
         }
 
         StoreBrand::create($validated);
 
-        return redirect()->route('tenant.admin.brands.index')
+        return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Brand created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(StoreBrand $brand)
+    public function show(Tenant $tenant, StoreBrand $brand)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($brand->user_store_id !== $userStore->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
@@ -66,8 +84,9 @@ class ProductBrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StoreBrand $brand)
+    public function update(Tenant $tenant, Request $request, StoreBrand $brand)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($brand->user_store_id !== $userStore->id) {
             abort(403);
@@ -86,19 +105,28 @@ class ProductBrandController extends Controller
             if ($brand->image && Storage::disk('public')->exists($brand->image)) {
                 Storage::disk('public')->delete($brand->image);
             }
-            $validated['image'] = $request->file('image')->store('brands', 'public');
+
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'brands',
+                $fileName,
+                'public'
+            );
         }
 
         $brand->update($validated);
 
-        return redirect()->route('tenant.admin.brands.index')->with('success', 'Brand updated successfully!');
+        return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])->with('success', 'Brand updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StoreBrand $brand)
+    public function destroy(Tenant $tenant, StoreBrand $brand)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($brand->user_store_id !== $userStore->id) {
             abort(403);
@@ -110,7 +138,7 @@ class ProductBrandController extends Controller
 
         $brand->delete();
 
-        return redirect()->route('tenant.admin.brands.index')
+        return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Brand deleted successfully!');
     }
 }

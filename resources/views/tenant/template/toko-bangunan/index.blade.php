@@ -14,14 +14,16 @@
             display: flex;
             justify-content: center;
         }
+
         .pagination {
             display: flex;
             list-style: none;
             padding: 0;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .pagination li a,
         .pagination li span {
             display: block;
@@ -33,26 +35,34 @@
             transition: all 0.3s;
             font-size: 0.9em;
         }
-        .pagination li:first-child a, .pagination li:first-child span {
+
+        .pagination li:first-child a,
+        .pagination li:first-child span {
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
         }
-        .pagination li:last-child a, .pagination li:last-child span {
+
+        .pagination li:last-child a,
+        .pagination li:last-child span {
             border-right: 0;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
         }
+
         .pagination li.active span {
-            background-color: #4A90E2; /* A nice blue */
+            background-color: #4A90E2;
+            /* A nice blue */
             color: #fff;
             border-color: #4A90E2;
             cursor: default;
         }
+
         .pagination li.disabled span {
             color: #aaa;
             background-color: #f5f5f5;
             cursor: not-allowed;
         }
+
         .pagination li a:hover {
             background-color: #f0f0f0;
         }
@@ -77,7 +87,7 @@
             <div class="carousel-inner" id="carouselInner">
                 @forelse ($banners as $banner)
                     <div class="carousel-item">
-                        <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}"
+                        <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                             alt="{{ $banner->title ?? 'Banner' }}">
                         <div class="carousel-caption">
                             <h3>{{ $banner->title ?? 'Banner Title' }}</h3>

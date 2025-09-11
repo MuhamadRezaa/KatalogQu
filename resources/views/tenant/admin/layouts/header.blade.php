@@ -365,13 +365,13 @@
                         @endif
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
-                        <li><a href="{{ route('tenant.admin.settings') }}"><i data-feather="user"></i><span>My
+                        {{-- <li><a href="{{ route('tenant.admin.settings') }}"><i data-feather="user"></i><span>My
                                     Profile</span></a>
                         </li>
                         <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
                         <li> <a href="{{ route('tenant.admin.settings') }}"> <i
                                     data-feather="settings"></i><span>Settings</span></a>
-                        </li>
+                        </li> --}}
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf

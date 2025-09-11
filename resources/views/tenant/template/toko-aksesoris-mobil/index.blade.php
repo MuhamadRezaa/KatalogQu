@@ -39,7 +39,7 @@
         <div class="slider">
             @forelse ($banners as $banner)
                 <div class="slide {{ $loop->first ? 'active' : '' }}" style="position:relative;">
-                    <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}"
+                    <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                         alt="{{ $banner->alt_text ?? ($banner->title ?? 'Banner') }}" loading="lazy" decoding="async"
                         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                     <!-- overlay gelap -->

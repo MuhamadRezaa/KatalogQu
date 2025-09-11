@@ -3,7 +3,8 @@
 @section('title', 'Pengaturan Toko')
 
 @section('content')
-    <form action="{{ route('tenant.admin.settings.update') }}" method="POST" enctype="multipart/form-data" id="settingsForm">
+    <form action="{{ route('tenant.admin.settings.update', ['tenant' => $userStore->tenant_id]) }}" method="POST"
+        enctype="multipart/form-data" id="settingsForm">
         @csrf
         @method('PUT')
         <div class="row">
@@ -266,7 +267,8 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa fa-check"></i> Simpan Perubahan
                             </button>
-                            <a href="{{ route('tenant.admin.dashboard') }}" class="btn btn-secondary">
+                            <a href="{{ route('tenant.admin.dashboard', ['tenant' => $userStore->tenant_id]) }}"
+                                class="btn btn-secondary">
                                 <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
                             </a>
                             <a href="http://{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}"

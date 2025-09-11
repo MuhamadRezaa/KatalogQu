@@ -163,8 +163,7 @@
                     <li class="nav-item"><a class="nav-link" href="#demo">Template</a></li>
                     <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tutorial">Panduan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#applications">Aplikasi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#support">Support</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
                 </ul>
                 <div class="d-flex gap-2 auth-buttons">
                     @auth
@@ -173,12 +172,7 @@
                                 type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 @if (Auth::user()->avatar && !empty(Auth::user()->avatar))
                                     <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="rounded-circle"
-                                        style="width: 24px; height: 24px;"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="rounded-circle d-none align-items-center justify-content-center"
-                                        style="width: 24px; height: 24px; background: #478413; color: white; font-size: 12px; display: none !important;">
-                                        {{ substr(Auth::user()->name, 0, 1) }}
-                                    </div>
+                                        style="width: 24px; height: 24px;">
                                 @else
                                     <div class="rounded-circle d-flex align-items-center justify-content-center"
                                         style="width: 24px; height: 24px; background: #478413; color: white; font-size: 12px;">
@@ -189,7 +183,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                 <li>
-                                    <h6 class="dropdown-header">{{ Auth::user()->name }}</h6>
+                                    <h6 class="dropdown-header">{{ Auth::user()->email }}</h6>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -532,8 +526,7 @@
                             <li><a href="#features">Template</a></li>
                             <li><a href="#demo">Fitur</a></li>
                             <li><a href="#tutorial">Panduan</a></li>
-                            <li><a href="#applications">Aplikasi</a></li>
-                            <li><a href="#support">Support</a></li>
+                            <li><a href="{{ route('contact') }}">Contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -789,6 +782,34 @@
             }
         });
     </script>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const scrollTop = document.getElementById('scrollTop');
+
+            if (window.scrollY > 100) {
+                // Navbar berubah solid
+                navbar.style.background = "#ffffff";
+                navbar.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+
+                // Tombol scrollTop muncul
+                if (scrollTop) {
+                    scrollTop.style.display = "block";
+                }
+            } else {
+                // Navbar transparan
+                navbar.style.background = "transparent";
+                navbar.style.boxShadow = "none";
+
+                // Tombol scrollTop hilang
+                if (scrollTop) {
+                    scrollTop.style.display = "none";
+                }
+            }
+        });
+    </script>
+
 
 </body>
 

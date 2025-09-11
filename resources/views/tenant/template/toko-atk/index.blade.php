@@ -35,7 +35,7 @@
             {{-- Carousel items can be made dynamic from a $banners variable if needed --}}
             @forelse ($banners as $banner)
                 <div class="carousel-slide">
-                    <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}"
+                    <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                         alt="{{ $banner->title ?? 'Banner' }}">
                     <div class="carousel-content">
                         <h3>{{ $banner->title }}</h3>
@@ -202,7 +202,7 @@
                         ->sortBy('position')
                         ->map(
                             fn($img) => [
-                                'image_url' => route('tenant.asset', ['path' => ltrim($img->image_url, '/')]),
+                                'image_url' => route('tenant.asset.domain', ['path' => ltrim($img->image_url, '/')]),
                             ],
                         )
                         ->values()
@@ -212,7 +212,7 @@
                 $primary =
                     $product->primary_image_src ?:
                     ($product->image
-                        ? route('tenant.asset', ['path' => ltrim($product->image, '/')])
+                        ? route('tenant.asset.domain', ['path' => ltrim($product->image, '/')])
                         : null);
 
                 if ($primary) {

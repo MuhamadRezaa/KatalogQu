@@ -412,7 +412,7 @@
                 @forelse ($banners as $index => $banner)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                         <div class="hero-slide">
-                            <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}"
+                            <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                                 alt="{{ $banner->title }}" class="hero-background"
                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80';">
                             <div class="container">
@@ -745,7 +745,7 @@
                 $images = $product->images
                     ? $product->images
                         ->sortBy('position')
-                        ->map(fn($img) => route('tenant.asset', ['path' => ltrim($img->image_url, '/')]))
+                        ->map(fn($img) => route('tenant.asset.domain', ['path' => ltrim($img->image_url, '/')]))
                         ->values()
                         ->all()
                     : [];

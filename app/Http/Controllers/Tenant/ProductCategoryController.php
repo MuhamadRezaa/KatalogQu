@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Models\Tenant;
 use App\Models\UserStore;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
@@ -14,8 +15,9 @@ class ProductCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Tenant $tenant)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $categories = ProductCategory::where('user_store_id', $userStore->id)
@@ -28,8 +30,9 @@ class ProductCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Tenant $tenant)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $validated = $request->validate([
@@ -53,7 +56,14 @@ class ProductCategoryController extends Controller
                 'mime_type' => $request->file('image')->getMimeType(),
                 'is_valid' => $request->file('image')->isValid(),
             ]);
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'categories', // folder
+                $fileName,    // nama file
+                'public'      // disk
+            );
         }
 
         if (isset($validated['image'])) {
@@ -66,15 +76,16 @@ class ProductCategoryController extends Controller
 
         ProductCategory::create($validated);
 
-        return redirect()->route('tenant.admin.categories.index')
+        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Category created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ProductCategory $category)
+    public function show(Tenant $tenant, ProductCategory $category)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($category->user_store_id !== $userStore->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
@@ -85,8 +96,9 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductCategory $category)
+    public function update(Tenant $tenant, Request $request, ProductCategory $category)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($category->user_store_id !== $userStore->id) {
             abort(403);
@@ -106,19 +118,28 @@ class ProductCategoryController extends Controller
             if ($category->image && Storage::disk('public')->exists($category->image)) {
                 Storage::disk('public')->delete($category->image);
             }
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'categories',
+                $fileName,
+                'public'
+            );
         }
 
         $category->update($validated);
 
-        return redirect()->route('tenant.admin.categories.index')->with('success', 'Category updated successfully!');
+        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Category updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductCategory $category)
+    public function destroy(Tenant $tenant, ProductCategory $category)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($category->user_store_id !== $userStore->id) {
             abort(403);
@@ -130,7 +151,7 @@ class ProductCategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('tenant.admin.categories.index')
+        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Category deleted successfully!');
     }
 }

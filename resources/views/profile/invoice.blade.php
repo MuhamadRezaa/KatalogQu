@@ -134,6 +134,10 @@
                     <span class="label">{{ $purchase->catalogTemplate->name ?? 'Template Katalog' }}</span>
                     <span class="value">Rp {{ number_format($purchase->amount, 0, ',', '.') }}</span>
                 </div>
+                <div class="info-row grand-total">
+                    <span class="label">Status</span>
+                    <span class="value">{{ $purchase->payment_status }}</span>
+                </div>
                 <div class="info-row">
                     <span class="label">Metode Pembayaran</span>
                     <span class="value">

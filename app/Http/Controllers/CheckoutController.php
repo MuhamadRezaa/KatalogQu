@@ -61,6 +61,7 @@ class CheckoutController extends Controller
     public function showSuccess(Request $request)
     {
         $orderId = $request->query('order_id');
+        $statusFromUrl = $request->query('payment_status');
 
         // Ambil data dari database berdasarkan order_id
         $templatePurchase = null;
@@ -70,13 +71,17 @@ class CheckoutController extends Controller
                 ->first();
         }
 
-        // Jika data tidak ditemukan di database, gunakan fallback dari URL parameters
+        // Jika data ditemukan di database, gunakan fallback dari URL parameters
         if ($templatePurchase) {
+            // If the URL says it's paid, trust it for the immediate view.
+            // The webhook will provide the final source of truth.
+            $displayStatus = ($statusFromUrl === 'paid') ? 'paid' : $templatePurchase->payment_status;
+
             return view('payment.checkout.success', [
                 'order_id' => $templatePurchase->transaction_id,
                 'template_name' => $templatePurchase->catalogTemplate->name ?? 'Template',
-                'total_amount' => 'Rp ' . number_format($templatePurchase->amount, 0, ',', '.'),
-                'payment_status' => $templatePurchase->payment_status,
+                'total_amount' => 'Rp ' . number_format($templatePurchase->final_amount, 0, ',', '.'),
+                'payment_status' => $displayStatus,
                 'purchase_data' => $templatePurchase
             ]);
         } else {
@@ -354,5 +359,68 @@ class CheckoutController extends Controller
             'expires_at' => now()->addMinutes(15)->format('Y-m-d H:i:s'),
             'instructions' => 'Scan QR Code di atas menggunakan aplikasi mobile banking atau e-wallet yang mendukung QRIS.'
         ]);
+    }
+
+    /**
+     * Handle cancellation of a payment from the frontend.
+     */
+    public function cancelPayment(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|string|max:255',
+        ]);
+
+        $orderId = $validated['order_id'];
+
+        Log::info('Checkout cancellation request received', ['order_id' => $orderId]);
+
+        try {
+            DB::beginTransaction();
+
+            $templatePurchase = \App\Models\TemplatePurchase::where('transaction_id', $orderId)
+                ->where('payment_status', 'pending')
+                ->first();
+
+            if ($templatePurchase) {
+                Log::info('Found pending TemplatePurchase record to cancel.', ['id' => $templatePurchase->id]);
+                $templatePurchase->payment_status = 'cancelled';
+                $templatePurchase->save();
+                Log::info('TemplatePurchase status updated to cancelled.', ['id' => $templatePurchase->id]);
+            } else {
+                Log::warning('Could not find a pending TemplatePurchase record to cancel.', ['order_id' => $orderId]);
+            }
+
+            $userStore = \App\Models\UserStore::where('payment_transaction_id', $orderId)
+                ->where('setup_status', 'pending')
+                ->first();
+
+            if ($userStore) {
+                Log::info('Found pending UserStore record to cancel.', ['id' => $userStore->id]);
+                $userStore->setup_status = 'cancelled';
+                $userStore->is_active = false;
+                $userStore->save();
+                Log::info('UserStore status updated to cancelled.', ['id' => $userStore->id]);
+            } else {
+                Log::warning('Could not find a pending UserStore record to cancel.', ['order_id' => $orderId]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaction successfully cancelled.',
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error during checkout cancellation', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage(),
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel transaction.',
+            ], 500);
+        }
     }
 }

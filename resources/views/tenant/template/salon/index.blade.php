@@ -326,7 +326,7 @@
             <div class="swiper-wrapper">
                 @forelse ($banners as $banner)
                     <div class="swiper-slide relative">
-                        <img src="{{ route('tenant.asset', ['path' => $banner->image_url]) }}"
+                        <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                             alt="{{ $banner->title }}" class="w-full h-full object-cover">
                         <div
                             class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center text-white p-4">

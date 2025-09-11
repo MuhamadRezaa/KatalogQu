@@ -9,14 +9,10 @@ use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API Routes - Updated for Security Enhancement
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
 */
+
 // Rute ini harus ada untuk menangani permintaan pengecekan status
 Route::get('/checkout/status-api/{orderId}', [CheckoutController::class, 'checkStatusApi'])
     ->name('checkout.status.api');
@@ -67,7 +63,7 @@ Route::middleware('auth:sanctum')->post('/save-template-purchase', function (Req
     ]);
 
     // Generate unique transaction ID
-    $transactionId = 'TEMPLATE-' . time() . '-' . $request->user()->id;
+    $transactionId = 'KatalogQu-' . time() . '-' . $request->user()->id;
 
     // For demo purposes, we'll assume catalog_template_id = 1 (toko_komputer template)
     // In production, you should have a proper mapping of template types to catalog_template_id
@@ -177,7 +173,7 @@ Route::post('/midtrans/test-snap-token', function (Request $request) {
     }
 });
 
-// Midtrans Snap Token endpoint
+// Midtrans Snap Token endpoint - UPDATED WITH SECURITY ENHANCEMENT
 Route::post('/midtrans/get-snap-token', function (Request $request) {
     \Illuminate\Support\Facades\Log::info('API: Snap token request received', [
         'timestamp' => now()->toISOString(),
@@ -338,6 +334,39 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
             'was_created' => $guestUser->wasRecentlyCreated
         ]);
 
+        // SECURITY ENHANCEMENT: Create UserStore record immediately with 'pending' status
+        \Illuminate\Support\Facades\Log::info('API: Creating user store record with pending status', [
+            'order_id' => $orderId,
+            'user_id' => $guestUser->id,
+            'catalog_template_id' => $catalogTemplateId
+        ]);
+
+        // Create or update UserStore record with 'pending' status
+        $userStore = \App\Models\UserStore::updateOrCreate(
+            ['payment_transaction_id' => $orderId],
+            [
+                'user_id' => $guestUser->id,
+                'catalog_template_id' => $catalogTemplateId,
+                'store_name' => 'Store-' . time(), // Temporary name, will be updated during setup
+                'subdomain' => 'store-' . strtolower(Str::random(8)), // Temporary subdomain
+                'setup_status' => 'pending', // IMPORTANT: Set to pending immediately
+                'is_active' => false,
+                'payment_transaction_id' => $orderId,
+                'setup_data' => json_encode([
+                    'template_data' => $templateData,
+                    'customer_data' => $customerData,
+                    'payment_initiated_at' => now()->toISOString(),
+                    'payment_amount' => $calculated_total
+                ])
+            ]
+        );
+
+        \Illuminate\Support\Facades\Log::info('API: UserStore record created/updated', [
+            'user_store_id' => $userStore->id,
+            'setup_status' => $userStore->setup_status,
+            'transaction_id' => $userStore->payment_transaction_id
+        ]);
+
         // Create template purchase record
         \Illuminate\Support\Facades\Log::info('API: Creating template purchase record', [
             'order_id' => $orderId,
@@ -365,7 +394,8 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
                     'amount' => $calculated_tax
                 ],
                 'created_via' => 'api_snap_token',
-                'created_at' => now()->toISOString()
+                'created_at' => now()->toISOString(),
+                'user_store_id' => $userStore->id // Link to user store
             ]),
             'download_token' => \Illuminate\Support\Str::random(32),
             'download_count' => 0,
@@ -376,30 +406,35 @@ Route::post('/midtrans/get-snap-token', function (Request $request) {
         \Illuminate\Support\Facades\Log::info('API: Template purchase record created successfully', [
             'purchase_id' => $templatePurchase->id,
             'transaction_id' => $templatePurchase->transaction_id,
-            'status' => $templatePurchase->payment_status
+            'status' => $templatePurchase->payment_status,
+            'linked_user_store_id' => $userStore->id
         ]);
 
         // Get Snap token using custom service to avoid SDK error handling issues
         \Illuminate\Support\Facades\Log::info('API: Calling CustomMidtransService for token generation', [
             'order_id' => $orderId,
-            'purchase_id' => $templatePurchase->id
+            'purchase_id' => $templatePurchase->id,
+            'user_store_id' => $userStore->id
         ]);
 
         $midtransService = new \App\Services\CustomMidtransService();
         $snapToken = $midtransService->getSnapToken($paymentData);
 
-        \Illuminate\Support\Facades\Log::info('API: Complete flow successful - Template purchase and token ready', [
+        \Illuminate\Support\Facades\Log::info('API: Complete flow successful - UserStore and TemplatePurchase created, token ready', [
             'transaction_id' => $orderId,
             'template_purchase_id' => $templatePurchase->id,
+            'user_store_id' => $userStore->id,
             'customer_email' => $customerData['email'] ?? 'unknown',
-            'token_length' => strlen($snapToken)
+            'token_length' => strlen($snapToken),
+            'security_status' => 'UserStore created with pending status before payment'
         ]);
 
         return response()->json([
             'success' => true,
             'snap_token' => $snapToken,
             'order_id' => $orderId,
-            'purchase_id' => $templatePurchase->id
+            'purchase_id' => $templatePurchase->id,
+            'user_store_id' => $userStore->id
         ]);
     } catch (\Exception $e) {
         \Illuminate\Support\Facades\Log::error('Midtrans Snap Token Error: ' . $e->getMessage(), [
@@ -492,9 +527,142 @@ Route::get('/templates/{slug}', function ($slug) {
     return response()->json($template);
 });
 
+
+
 // ========================================
 // STORE SETUP API ROUTES
 // ========================================
 
 // Check subdomain availability
 Route::get('/store-setup/check-subdomain', [App\Http\Controllers\StoreSetupController::class, 'checkSubdomain'])->name('api.store.setup.check-subdomain');
+
+// File: routes/web.php atau routes/api.php
+Route::get('/test-midtrans-config', function () {
+    try {
+        $config = config('services.midtrans');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Midtrans configuration test',
+            'config' => [
+                'server_key_exists' => !empty($config['server_key']),
+                'client_key_exists' => !empty($config['client_key']),
+                'server_key_prefix' => substr($config['server_key'] ?? '', 0, 10) . '...',
+                'client_key_prefix' => substr($config['client_key'] ?? '', 0, 10) . '...',
+                'is_production' => $config['is_production'],
+                'is_sanitized' => $config['is_sanitized'],
+                'is_3ds' => $config['is_3ds'],
+            ],
+            'environment_check' => [
+                'MIDTRANS_SERVER_KEY' => env('MIDTRANS_SERVER_KEY') ? 'Set' : 'Not set',
+                'MIDTRANS_CLIENT_KEY' => env('MIDTRANS_CLIENT_KEY') ? 'Set' : 'Not set',
+            ],
+            'recommendations' => [
+                'server_key' => empty($config['server_key']) ? 'MISSING: Set MIDTRANS_SERVER_KEY in .env' : 'OK',
+                'client_key' => empty($config['client_key']) ? 'MISSING: Set MIDTRANS_CLIENT_KEY in .env' : 'OK',
+                'production_mode' => $config['is_production'] ? 'PRODUCTION MODE' : 'SANDBOX MODE',
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error testing Midtrans configuration',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+Route::get('/debug-payment-flow', function () {
+    if (config('app.env') !== 'local') {
+        return response()->json(['error' => 'Only available in local environment'], 403);
+    }
+
+    try {
+        // Test 1: Check Midtrans Configuration
+        $midtransConfig = config('services.midtrans');
+        $configCheck = [
+            'server_key_configured' => !empty($midtransConfig['server_key']),
+            'client_key_configured' => !empty($midtransConfig['client_key']),
+            'environment' => $midtransConfig['is_production'] ? 'production' : 'sandbox'
+        ];
+
+        // Test 2: Test Database Connection
+        $dbTest = false;
+        try {
+            DB::connection()->getPdo();
+            $dbTest = true;
+        } catch (\Exception $e) {
+            $dbTest = false;
+        }
+
+        // Test 3: Test Template Model
+        $templateCount = 0;
+        try {
+            $templateCount = \App\Models\CatalogTemplate::count();
+        } catch (\Exception $e) {
+            $templateCount = 'Error: ' . $e->getMessage();
+        }
+
+        // Test 4: Test User Creation
+        $userTest = false;
+        try {
+            $testUser = \App\Models\User::where('email', 'debug-test@example.com')->first();
+            if (!$testUser) {
+                \App\Models\User::create([
+                    'name' => 'Debug Test User',
+                    'email' => 'debug-test@example.com',
+                    'password' => bcrypt('password123'),
+                    'email_verified_at' => now()
+                ]);
+            }
+            $userTest = true;
+        } catch (\Exception $e) {
+            $userTest = 'Error: ' . $e->getMessage();
+        }
+
+        // Test 5: Test Midtrans API Connection
+        $midtransApiTest = false;
+        try {
+            \Midtrans\Config::$serverKey = $midtransConfig['server_key'];
+            \Midtrans\Config::$isProduction = $midtransConfig['is_production'];
+
+            // Simple test - this might fail but we can catch it
+            $midtransApiTest = 'Configured, but needs real transaction to test fully';
+        } catch (\Exception $e) {
+            $midtransApiTest = 'Error: ' . $e->getMessage();
+        }
+
+        return response()->json([
+            'debug_results' => [
+                'midtrans_config' => $configCheck,
+                'database_connection' => $dbTest,
+                'template_count' => $templateCount,
+                'user_creation' => $userTest,
+                'midtrans_api' => $midtransApiTest,
+                'php_version' => phpversion(),
+                'laravel_version' => app()->version(),
+                'app_environment' => config('app.env'),
+                'app_debug' => config('app.debug'),
+                'current_time' => now()->toISOString(),
+            ],
+            'recommendations' => [
+                'config' => $configCheck['server_key_configured'] && $configCheck['client_key_configured'] ?
+                    'Midtrans configuration looks good' :
+                    'Missing Midtrans keys in configuration',
+                'database' => $dbTest ? 'Database connection OK' : 'Database connection failed',
+                'next_steps' => [
+                    '1. Ensure .env has MIDTRANS_SERVER_KEY and MIDTRANS_CLIENT_KEY',
+                    '2. Run: php artisan config:cache',
+                    '3. Check browser console for JavaScript errors',
+                    '4. Verify internet connection can reach Midtrans servers'
+                ]
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});

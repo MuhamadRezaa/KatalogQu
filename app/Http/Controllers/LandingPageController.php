@@ -24,4 +24,14 @@ class LandingPageController extends Controller
 
         return view('welcome', compact('templates', 'templateCount', 'user_stores'));
     }
+
+    /**
+     * Display the contact page.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function contact()
+    {
+        return view('contact');
+    }
 }

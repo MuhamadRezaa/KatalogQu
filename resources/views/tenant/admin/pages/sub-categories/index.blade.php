@@ -27,6 +27,7 @@
                         <table class="display" id="table-1">
                             <thead>
                                 <tr>
+                                    <th scope="col">No</th>
                                     <th scope="col">Gambar</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Deskripsi</th>
@@ -37,9 +38,10 @@
                             <tbody>
                                 @forelse ($subCategories as $subCategory)
                                     <tr>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($subCategory->image)
-                                                <img src="{{ route('tenant.asset', ['path' => $subCategory->image]) }}"
+                                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $subCategory->image]) }}"
                                                     alt="{{ $subCategory->name }}" class="img-fluid rounded"
                                                     style="max-width: 60px;">
                                             @else
@@ -102,8 +104,9 @@
                     <h5 class="modal-title" id="addSubCategoryModalLabel">Tambah Sub Kategori Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addSubCategoryForm" action="{{ route('tenant.admin.sub-categories.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="addSubCategoryForm"
+                    action="{{ route('tenant.admin.sub-categories.store', ['tenant' => $userStore->tenant_id]) }}"
+                    method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -205,9 +208,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.sub-categories.show', ['sub_category' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.sub-categories.update', ['sub_category' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.sub-categories.destroy', ['sub_category' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.sub-categories.show', ['tenant' => $userStore->tenant_id, 'sub_category' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.sub-categories.update', ['tenant' => $userStore->tenant_id, 'sub_category' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.sub-categories.destroy', ['tenant' => $userStore->tenant_id, 'sub_category' => ':id']) }}';
 
         function editSubCategory(subCategoryId) {
             const fetchUrl = showUrlTemplate.replace(':id', subCategoryId);
@@ -227,11 +233,12 @@
                         form.querySelector('#edit_description').value = subCategory.description;
                         form.querySelector('#edit_is_active').checked = subCategory.is_active;
 
-                        const assetBaseUrl = "{{ url('tenancy/assets') }}/";
+                        const assetBaseUrl =
+                            '{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => ':path']) }}';
                         const preview = document.getElementById('currentImagePreview');
                         const img = document.getElementById('current_image');
                         if (subCategory.image) {
-                            img.src = assetBaseUrl + subCategory.image;
+                            img.src = assetBaseUrl.replace(':path', subCategory.image);
                             preview.style.display = 'block';
                         } else {
                             preview.style.display = 'none';

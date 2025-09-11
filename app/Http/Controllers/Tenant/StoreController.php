@@ -27,7 +27,7 @@ class StoreController extends Controller
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with(['category', 'subCategory', 'brand'])
+            ->with(['category', 'subCategory', 'brand', 'images'])
             ->take(8)
             ->get();
 
@@ -35,14 +35,14 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with(['category', 'subCategory', 'brand'])
+            ->with(['category', 'subCategory', 'brand', 'images'])
             ->take(8)
             ->get();
 
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with('category');
+            ->with(['category', 'subCategory', 'images']); // Add 'subCategory' here
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -166,6 +166,8 @@ class StoreController extends Controller
             }
         }
 
+        // dd($subCategories);
+
         return view($templateView, compact(
             'userStore',
             'products',
@@ -177,6 +179,22 @@ class StoreController extends Controller
             'priceRanges',
             'banners'
         ));
+    }
+
+    /**
+     * Get product details (for AJAX)
+     */
+    public function getProductDetails($productId)
+    {
+        $userStore = $this->getCurrentStore();
+
+        $product = StoreProduct::where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->where('id', $productId)
+            ->with(['category', 'subCategory', 'images'])
+            ->firstOrFail();
+
+        return response()->json(['success' => true, 'product' => $product]);
     }
 
     /**
@@ -195,7 +213,7 @@ class StoreController extends Controller
                 $query->where('slug', $productSlug)
                     ->orWhere('id', $productSlug);
             })
-            ->with(['category', 'subCategory']) // Add subCategory
+            ->with(['category', 'subCategory', 'images']) // Add subCategory
             ->firstOrFail();
 
         // Get related products (same category, maybe same sub-category is better)
@@ -203,6 +221,7 @@ class StoreController extends Controller
             ->where('is_active', true)
             ->where('sub_category_id', $product->sub_category_id) // Change to sub-category
             ->where('id', '!=', $product->id)
+            ->with('images') // Add images
             ->take(4)
             ->get();
 
@@ -212,6 +231,7 @@ class StoreController extends Controller
                 ->where('is_active', true)
                 ->where('product_category_id', $product->product_category_id)
                 ->where('id', '!=', $product->id)
+                ->with('images') // Add images
                 ->take(4)
                 ->get();
         }
@@ -271,7 +291,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('product_category_id', $category->id)
-            ->with('category');
+            ->with(['category', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -412,7 +432,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('sub_category_id', $subCategory->id)
-            ->with('category');
+            ->with(['category', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -546,7 +566,7 @@ class StoreController extends Controller
                         ->orWhere('description', 'like', "%{$searchTerm}%")
                         ->orWhere('sku', 'like', "%{$searchTerm}%");
                 })
-                ->with('category')
+                ->with(['category', 'images'])
                 ->paginate(12);
         }
 
@@ -676,7 +696,7 @@ class StoreController extends Controller
 
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with('category');
+            ->with(['category', 'subCategory', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -823,7 +843,7 @@ class StoreController extends Controller
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with('category')
+            ->with(['category', 'images'])
             ->take(8)
             ->get();
 
@@ -831,14 +851,14 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with('category')
+            ->with(['category', 'images'])
             ->take(8)
             ->get();
 
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with('category');
+            ->with(['category', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {

@@ -42,7 +42,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($product->image)
-                                                <img src="{{ route('tenant.asset', ['path' => $product->image]) }}"
+                                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $product->image]) }}"
                                                     alt="{{ $product->name }}" class="img-fluid rounded"
                                                     style="max-width: 60px;">
                                             @else
@@ -90,13 +90,13 @@
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-sm btn-primary" title="Edit"
-                                                    data-show-url="{{ route('tenant.admin.products.show', $product->id) }}"
-                                                    data-update-url="{{ route('tenant.admin.products.update', $product->id) }}"
+                                                    data-show-url="{{ route('tenant.admin.products.show', ['tenant' => $userStore->tenant_id, $product->id]) }}"
+                                                    data-update-url="{{ route('tenant.admin.products.update', ['tenant' => $userStore->tenant_id, $product->id]) }}"
                                                     onclick="editProduct(this)">
                                                     <i class="fa fa-pencil"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger" title="Hapus"
-                                                    data-destroy-url="{{ route('tenant.admin.products.destroy', $product->id) }}"
+                                                    data-destroy-url="{{ route('tenant.admin.products.destroy', ['tenant' => $userStore->tenant_id, $product->id]) }}"
                                                     onclick="deleteProduct(this)">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
@@ -126,7 +126,8 @@
                     <h5 class="modal-title" id="addProductModalLabel">Tambah Produk Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addProductForm" action="{{ route('tenant.admin.products.store') }}" method="POST"
+                <form id="addProductForm"
+                    action="{{ route('tenant.admin.products.store', ['tenant' => $userStore->tenant_id]) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
@@ -168,10 +169,10 @@
                                     <input type="number" class="form-control" id="add_old_price" name="old_price"
                                         min="0" step="0.01">
                                 </div>
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label for="add_sku" class="form-label">SKU</label>
                                     <input type="text" class="form-control" id="add_sku" name="sku" readonly>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -574,9 +575,12 @@
                     // Preview gambar utama
                     const currentImagePreview = document.getElementById('currentImagePreview');
                     const currentImage = document.getElementById('current_image');
+                    const assetUrlTemplate =
+                        '{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => ':path']) }}';
                     if (product.image) {
                         // Pastikan backend kirim URL penuh (disarankan)
-                        currentImage.src = product.image_url_full || ("{{ url('tenancy/assets') }}/" + product.image);
+                        currentImage.src = product.image_url_full || (assetUrlTemplate.replace(':path', product
+                            .image));
                         currentImagePreview.style.display = 'block';
                     } else {
                         currentImagePreview.style.display = 'none';
@@ -591,7 +595,7 @@
                         product.images.forEach(img => {
                             const div = document.createElement('div');
                             div.className = 'mb-2';
-                            const url = img.url_full || ("{{ url('tenancy/assets') }}/" + img.image_url);
+                            const url = img.url_full || (assetUrlTemplate.replace(':path', img.image_url));
                             div.innerHTML = `
           <div class="input-group align-items-center">
             <img src="${url}" class="img-fluid rounded me-2" style="max-width:80px;max-height:80px;">
@@ -609,7 +613,8 @@
                     document.getElementById('edit_additional_images_fields_new').innerHTML = '';
                     let editAdditionalImageIndex = 0;
                     document.getElementById('edit_add_additional_image_btn').onclick = function() {
-                        const currCount = (product.images ? product.images.length : 0) + editAdditionalImageIndex;
+                        const currCount = (product.images ? product.images.length : 0) +
+                            editAdditionalImageIndex;
                         if (currCount < 3) {
                             const container = document.getElementById('edit_additional_images_fields_new');
                             const div = document.createElement('div');
@@ -636,7 +641,8 @@
                     specContainer.innerHTML = '';
                     let editSpecIndex = 0;
                     if (product.specification && product.specification.length > 0) {
-                        product.specification.forEach(spec => addSpecField('edit_specification_fields', editSpecIndex++,
+                        product.specification.forEach(spec => addSpecField('edit_specification_fields',
+                            editSpecIndex++,
                             spec.key, spec.value));
                     } else {
                         addSpecField('edit_specification_fields', editSpecIndex++);

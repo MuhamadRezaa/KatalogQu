@@ -35,8 +35,8 @@ return [
 
     'identification' => [
         'http_host' => true, // Identifies tenant by HTTP_HOST (domain/subdomain)
-        'request_data' => false, // Identifies tenant by request data (e.g., form field)
-        'query_string' => false, // Identifies tenant by query string parameter
+        'request_data' => true, // Identifies tenant by request data (e.g., form field)
+        'query_string' => true, // Identifies tenant by query string parameter
         'session' => false, // Identifies tenant by session variable
         'force_https' => false, // Force HTTPS for tenant domains
         'domain_finder_by_request_host' => true, // Use request host to find domain in database

@@ -82,9 +82,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex justify-content-end mt-4">
-                {{ $stores->links() }}
-            </div>
+
         </div>
     </div>
 @endsection

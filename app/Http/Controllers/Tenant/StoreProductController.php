@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Models\Tenant;
 use App\Models\UserStore;
 use App\Models\StoreBrand;
 use App\Models\ProductUnit;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\StoreCategory;
 use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,8 +21,9 @@ class StoreProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Tenant $tenant)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $products = StoreProduct::where('user_store_id', $userStore->id)
@@ -55,8 +58,9 @@ class StoreProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Tenant $tenant, Request $request)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $validated = $request->validate([
@@ -95,7 +99,20 @@ class StoreProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            Log::info('File details:', [
+                'original_name' => $request->file('image')->getClientOriginalName(),
+                'size' => $request->file('image')->getSize(),
+                'mime_type' => $request->file('image')->getMimeType(),
+                'is_valid' => $request->file('image')->isValid(),
+            ]);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'products', // folder
+                $fileName,    // nama file
+                'public'      // disk
+            );
         }
 
         // Process structured specification
@@ -115,7 +132,14 @@ class StoreProductController extends Controller
         if ($request->hasFile('additional_images')) {
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile) {
-                    $imagePath = $imageFile->store('product_gallery', 'public');
+                    $extension = $imageFile->getClientOriginalExtension();
+                    $fileName = $product->slug . '-' . ($position + 1) . '.' . $extension;
+
+                    $imagePath = $imageFile->storeAs(
+                        'product_gallery',
+                        $fileName,
+                        'public'
+                    );
                     ProductImage::create([
                         'product_id' => $product->id,
                         'image_url' => $imagePath,
@@ -126,15 +150,16 @@ class StoreProductController extends Controller
             }
         }
 
-        return redirect()->route('tenant.admin.products.index')
+        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Product created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(StoreProduct $product)
+    public function show(Tenant $tenant, StoreProduct $product)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
@@ -158,8 +183,9 @@ class StoreProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StoreProduct $product)
+    public function update(Tenant $tenant, Request $request, StoreProduct $product)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
             abort(403);
@@ -205,7 +231,15 @@ class StoreProductController extends Controller
             if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
-            $validated['image'] = $request->file('image')->store('products', 'public');
+
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = $validated['slug'] . '.' . $extension;
+
+            $validated['image'] = $request->file('image')->storeAs(
+                'products',
+                $fileName,
+                'public'
+            );
         }
 
         // Process structured specification
@@ -236,7 +270,14 @@ class StoreProductController extends Controller
 
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile && $allowedNewImages > 0) {
-                    $imagePath = $imageFile->store('product_gallery', 'public');
+                    $extension = $imageFile->getClientOriginalExtension();
+                    $fileName = $product->slug . '-' . ($position + 1) . '.' . $extension;
+
+                    $imagePath = $imageFile->storeAs(
+                        'product_gallery',
+                        $fileName,
+                        'public'
+                    );
                     ProductImage::create([
                         'product_id' => $product->id,
                         'image_url' => $imagePath,
@@ -248,14 +289,15 @@ class StoreProductController extends Controller
             }
         }
 
-        return redirect()->route('tenant.admin.products.index')->with('success', 'Product updated successfully!');
+        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])->with('success', 'Product updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StoreProduct $product)
+    public function destroy(Tenant $tenant, StoreProduct $product)
     {
+        tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
             abort(403);
@@ -276,7 +318,7 @@ class StoreProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('tenant.admin.products.index')
+        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Product deleted successfully!');
     }
 }

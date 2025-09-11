@@ -78,7 +78,9 @@
                     <h5 class="modal-title" id="addProductUnitModalLabel">Tambah Satuan Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addProductUnitForm" action="{{ route('tenant.admin.product-units.store') }}" method="POST">
+                <form id="addProductUnitForm"
+                    action="{{ route('tenant.admin.product-units.store', ['tenant' => $userStore->tenant_id]) }}"
+                    method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -158,9 +160,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.product-units.show', ['product_unit' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.product-units.update', ['product_unit' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.product-units.destroy', ['product_unit' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.product-units.show', ['tenant' => $userStore->tenant_id, 'product_unit' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.product-units.update', ['tenant' => $userStore->tenant_id, 'product_unit' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.product-units.destroy', ['tenant' => $userStore->tenant_id, 'product_unit' => ':id']) }}';
 
         function editProductUnit(productUnitId) {
             const fetchUrl = showUrlTemplate.replace(':id', productUnitId);

@@ -39,7 +39,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($brand->image)
-                                                <img src="{{ route('tenant.asset', ['path' => $brand->image]) }}"
+                                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $brand->image]) }}"
                                                     alt="{{ $brand->name }}" class="img-fluid rounded"
                                                     style="max-width: 60px;">
                                             @else
@@ -98,7 +98,8 @@
                     <h5 class="modal-title" id="addBrandModalLabel">Tambah Brand Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addBrandForm" action="{{ route('tenant.admin.brands.store') }}" method="POST"
+                <form id="addBrandForm"
+                    action="{{ route('tenant.admin.brands.store', ['tenant' => $userStore->tenant_id]) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
@@ -192,9 +193,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.brands.show', ['brand' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.brands.update', ['brand' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.brands.destroy', ['brand' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.brands.show', ['tenant' => $userStore->tenant_id, 'brand' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.brands.update', ['tenant' => $userStore->tenant_id, 'brand' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.brands.destroy', ['tenant' => $userStore->tenant_id, 'brand' => ':id']) }}';
 
         function editBrand(brandId) {
             const fetchUrl = showUrlTemplate.replace(':id', brandId);
@@ -213,13 +217,14 @@
                         form.querySelector('#edit_name').value = brand.name;
                         form.querySelector('#edit_is_active').checked = brand.is_active;
 
-                        const assetBaseUrl = "{{ url('tenancy/assets') }}/";
+                        const assetBaseUrl =
+                            '{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => ':path']) }}';
 
                         const preview = document.getElementById('currentImagePreview');
                         const img = document.getElementById('current_image');
 
                         if (brand.image) {
-                            img.src = assetBaseUrl + brand.image;
+                            img.src = assetBaseUrl.replace(':path', brand.image);
                             preview.style.display = 'block';
                         } else {
                             preview.style.display = 'none';

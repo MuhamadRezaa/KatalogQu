@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Setup Your Store - KatalogKu</title>
+    <title>Setup Your Store - KatalogQu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
@@ -15,7 +15,6 @@
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
             <div class="text-center">
-                <!-- Success Icon -->
                 <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
                     <i data-lucide="check" class="h-10 w-10 text-green-600"></i>
                 </div>
@@ -23,7 +22,6 @@
                 <p class="text-gray-600 mb-8">Now let's set up your store</p>
             </div>
 
-            <!-- Order Summary -->
             <div class="mt-6 bg-white shadow rounded-lg px-6 py-4">
                 <h3 class="text-sm font-medium text-gray-900 mb-2">Order Summary</h3>
                 <div class="text-sm text-gray-600">
@@ -39,26 +37,22 @@
                     @csrf
                     <input type="hidden" name="payment_id" value="{{ $payment->id }}">
 
-                    <!-- Store Name -->
                     <div class="mb-6">
                         <label for="store_name" class="block text-sm font-medium text-gray-700 mb-2">
                             Store Name <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="store_name" name="store_name"
-                            value="{{ old('store_name', $userStore->store_name ?? '') }}"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter your store name" required>
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_name_error"></div>
                     </div>
 
-                    <!-- Subdomain -->
                     <div class="mb-6">
                         <label for="subdomain" class="block text-sm font-medium text-gray-700 mb-2">
                             Subdomain <span class="text-red-500">*</span>
                         </label>
                         <div class="flex">
                             <input type="text" id="subdomain" name="subdomain"
-                                value="{{ old('subdomain', $userStore->subdomain ?? '') }}"
                                 class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                 placeholder="yourstore" pattern="[a-zA-Z0-9-]+"
                                 title="Only letters, numbers, and hyphens allowed" required>
@@ -70,10 +64,10 @@
                         <div class="text-sm mt-1" id="subdomain_feedback"></div>
                         <div class="text-red-500 text-sm mt-1 hidden" id="subdomain_error"></div>
                         <p class="text-xs text-gray-500 mt-1">Your store will be accessible at:
-                            http://yourstore.{{ config('app.domain', 'localhost') }}</p>
+                            <span id="url-preview">{{ request()->getScheme() }}://<span id="subdomain-preview">yourstore</span>.{{ config('app.domain', 'localhost') }}</span>
+                        </p>
                     </div>
 
-                    <!-- Store Description -->
                     <div class="mb-6">
                         <label for="store_description" class="block text-sm font-medium text-gray-700 mb-2">
                             Store Description
@@ -84,7 +78,6 @@
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_description_error"></div>
                     </div>
 
-                    <!-- Store Logo -->
                     <div class="mb-6">
                         <label for="store_logo" class="block text-sm font-medium text-gray-700 mb-2">
                             Store Logo
@@ -118,12 +111,10 @@
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_logo_error"></div>
                     </div>
 
-                    <!-- Contact Information -->
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
 
                         <div class="grid grid-cols-1 gap-4">
-                            <!-- Store Phone -->
                             <div>
                                 <label for="store_phone" class="block text-sm font-medium text-gray-700 mb-2">
                                     Phone Number
@@ -135,7 +126,6 @@
                                 <div class="text-red-500 text-sm mt-1 hidden" id="store_phone_error"></div>
                             </div>
 
-                            <!-- Store Email -->
                             <div>
                                 <label for="store_email" class="block text-sm font-medium text-gray-700 mb-2">
                                     Email Address
@@ -149,7 +139,6 @@
                         </div>
                     </div>
 
-                    <!-- Store Address -->
                     <div class="mb-6">
                         <label for="store_address" class="block text-sm font-medium text-gray-700 mb-2">
                             Store Address
@@ -160,7 +149,6 @@
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_address_error"></div>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="mt-8">
                         <button type="submit" id="submit_btn"
                             class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#478413] hover:bg-[#34571E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
@@ -188,8 +176,47 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('storeSetupForm');
+            const paymentIdInput = form.querySelector('input[name="payment_id"]');
+            const storageKey = `storeSetupForm_${paymentIdInput.value}`;
+
+            // --- AWAL PERUBAHAN ---
+            // Fungsi untuk menyimpan data form ke localStorage
+            function saveFormData() {
+                const formData = new FormData(form);
+                const data = {};
+                // Kita tidak menyimpan file di localStorage
+                for (let [key, value] of formData.entries()) {
+                    if (key !== 'store_logo') {
+                        data[key] = value;
+                    }
+                }
+                localStorage.setItem(storageKey, JSON.stringify(data));
+            }
+
+            // Fungsi untuk memuat data dari localStorage ke form
+            function loadFormData() {
+                const savedData = localStorage.getItem(storageKey);
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    for (const key in data) {
+                        const input = form.querySelector(`[name="${key}"]`);
+                        if (input) {
+                            input.value = data[key];
+                        }
+                    }
+                }
+            }
+
+            // Simpan data setiap kali ada input dari pengguna
+            form.addEventListener('input', saveFormData);
+
+            // Muat data saat halaman pertama kali dibuka
+            loadFormData();
+            // --- AKHIR PERUBAHAN ---
+
             const subdomainInput = document.getElementById('subdomain');
             const subdomainFeedback = document.getElementById('subdomain_feedback');
+            const subdomainPreview = document.getElementById('subdomain-preview'); // Tambahan untuk preview
             const logoInput = document.getElementById('store_logo');
             const logoUploadArea = document.getElementById('logo_upload_area');
             const logoPreview = document.getElementById('logo_preview');
@@ -205,6 +232,13 @@
             subdomainInput.addEventListener('input', function() {
                 const subdomain = this.value.toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
                 this.value = subdomain;
+
+                // Update URL preview
+                if (subdomain) {
+                    subdomainPreview.textContent = subdomain;
+                } else {
+                    subdomainPreview.textContent = 'yourstore';
+                }
 
                 clearTimeout(subdomainCheckTimeout);
 
@@ -283,9 +317,11 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Show success message
-                            alert('Store created successfully! Redirecting to your admin panel...');
-                            // Redirect to tenant admin
+                            // --- TAMBAHAN ---
+                            // Hapus data dari localStorage setelah berhasil
+                            localStorage.removeItem(storageKey);
+                            // --- AKHIR TAMBAHAN ---
+                            alert('Store created successfully! Redirecting...');
                             window.location.href = data.redirect_url;
                         } else {
                             // Show validation errors

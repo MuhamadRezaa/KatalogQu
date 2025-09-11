@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\Tenant\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use App\Models\StoreHero;
 use App\Models\UserStore;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class StoreHeroController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Tenant $tenant)
     {
-        $userStore = $this->getCurrentStore();
+        tenancy()->initialize($tenant);
+        $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         $heroes = StoreHero::where('user_store_id', $userStore->id)->get();
         return view('tenant.admin.pages.store-hero.index', compact('heroes', 'userStore'));
     }
@@ -24,12 +28,13 @@ class StoreHeroController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Tenant $tenant, Request $request)
     {
-        $userStore = $this->getCurrentStore();
+        tenancy()->initialize($tenant);
+        $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -38,8 +43,25 @@ class StoreHeroController extends Controller
         ]);
 
         $imagePath = null;
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('store_heroes', 'public');
+            $disk      = Storage::disk('public');
+            $dir       = 'store_heroes'; // folder tujuan
+            $ext       = $request->file('image')->getClientOriginalExtension();
+            $baseSlug  = Str::slug($userStore->store_name);           // dasar nama file
+            $candidate = "{$baseSlug}.{$ext}";                        // coba tanpa suffix dulu
+            $path      = "{$dir}/{$candidate}";
+            $i = 1;
+
+            // Jika sudah ada, tambahkan -1, -2, dst.
+            while ($disk->exists($path)) {
+                $candidate = "{$baseSlug}-{$i}.{$ext}";
+                $path = "{$dir}/{$candidate}";
+                $i++;
+            }
+
+            // Simpan dengan nama final
+            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
         }
 
         StoreHero::create([
@@ -52,31 +74,39 @@ class StoreHeroController extends Controller
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
-        if ($request->expectsJson()) {
+        if ($request->ajax() || $request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Hero created successfully.']);
         }
-
-        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero created successfully.');
+        return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])
+            ->with('success', 'Hero created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(StoreHero $storeHero)
+    public function show(Tenant $tenant, StoreHero $storeHero)
     {
-        $this->authorizeStoreHero($storeHero);
+        tenancy()->initialize($tenant);
+        $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
+        if ($storeHero->user_store_id !== $userStore->id) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
         return response()->json(['success' => true, 'hero' => $storeHero]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StoreHero $storeHero)
+    public function update(Tenant $tenant, Request $request, StoreHero $storeHero)
     {
-        $this->authorizeStoreHero($storeHero);
+        tenancy()->initialize($tenant);
+        $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
+        if ($storeHero->user_store_id !== $userStore->id) {
+            abort(403);
+        }
 
         $validatedData = $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -85,11 +115,33 @@ class StoreHeroController extends Controller
         ]);
 
         $imagePath = $storeHero->image_url;
+
         if ($request->hasFile('image')) {
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
+            $disk = Storage::disk('public');
+
+            // Hapus file lama jika ada
+            if ($imagePath && $disk->exists($imagePath)) {
+                $disk->delete($imagePath);
             }
-            $imagePath = $request->file('image')->store('store_heroes', 'public');
+
+            $dir      = 'store_heroes';
+            $ext      = $request->file('image')->getClientOriginalExtension();
+            $baseSlug = Str::slug($userStore->store_name);
+
+            // Coba tanpa suffix dulu
+            $candidate = "{$baseSlug}.{$ext}";
+            $path      = "{$dir}/{$candidate}";
+            $i = 1;
+
+            // Jika sudah ada, tambahkan -1, -2, dst.
+            while ($disk->exists($path)) {
+                $candidate = "{$baseSlug}-{$i}.{$ext}";
+                $path      = "{$dir}/{$candidate}";
+                $i++;
+            }
+
+            // Simpan dengan nama final
+            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
         }
 
         $storeHero->update([
@@ -101,26 +153,30 @@ class StoreHeroController extends Controller
             'is_active' => $validatedData['is_active'] ?? true,
         ]);
 
-        if ($request->expectsJson()) {
+        if ($request->ajax() || $request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Hero updated successfully.']);
         }
-
-        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero updated successfully.');
+        return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])
+            ->with('success', 'Hero updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StoreHero $storeHero)
+    public function destroy(Tenant $tenant, StoreHero $storeHero)
     {
-        $this->authorizeStoreHero($storeHero);
+        tenancy()->initialize($tenant);
+        $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
+        if ($storeHero->user_store_id !== $userStore->id) {
+            abort(403);
+        }
 
         if ($storeHero->image_url) {
             Storage::disk('public')->delete($storeHero->image_url);
         }
         $storeHero->delete();
 
-        return redirect()->route('tenant.admin.store-heroes.index')->with('success', 'Hero deleted successfully.');
+        return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])->with('success', 'Hero deleted successfully.');
     }
 
     /**

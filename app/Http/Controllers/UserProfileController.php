@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\TemplatePurchase;
-use App\Models\UserStore; // Tambahkan ini
+use App\Models\UserStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class UserProfileController extends Controller
@@ -22,16 +23,26 @@ class UserProfileController extends Controller
         $purchases = TemplatePurchase::where('user_id', $user->id)
             ->with('catalogTemplate')
             ->latest()
-            ->paginate(5, ['*'], 'purchases_page'); // Paginasi untuk pembelian
+            ->paginate(10, ['*'], 'purchases_page'); // Paginasi untuk pembelian
 
-        // Mengambil katalog/toko yang dimiliki pengguna
+        // Mengambil katalog/toko yang dimiliki pengguna (yang sudah selesai)
         $userStores = UserStore::where('user_id', $user->id)
             ->where('setup_status', 'completed')
             ->latest()
-            ->paginate(5, ['*'], 'stores_page'); // Paginasi untuk toko
+            ->paginate(10, ['*'], 'stores_page'); // Paginasi untuk toko
 
-        return view('profile.show', compact('user', 'purchases', 'userStores'));
+        // --- AWAL PERUBAHAN ---
+        // Mengambil data setup toko yang masih tertunda
+        $pendingSetups = UserStore::where('user_id', $user->id)
+            ->whereIn('setup_status', ['pending', 'in_progress', 'pending_validation'])
+            ->with('catalogTemplate') // Memuat relasi template
+            ->latest()
+            ->get();
+        // --- AKHIR PERUBAHAN ---
+
+        return view('profile.show', compact('user', 'purchases', 'userStores', 'pendingSetups'));
     }
+
 
     /**
      * Memperbarui informasi profil pengguna.

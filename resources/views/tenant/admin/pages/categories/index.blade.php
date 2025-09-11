@@ -41,9 +41,10 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($category->image)
-                                                <img src="{{ route('tenant.asset', ['path' => $category->image]) }}"
+                                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $category->image]) }}"
                                                     alt="{{ $category->name }}" class="img-fluid rounded"
                                                     style="max-width: 60px;">
+                                                <p class="f-light">DB Path: {{ $category->image ?? 'N/A' }}</p>
                                             @else
                                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                                     style="width: 60px; height: 60px;">
@@ -105,8 +106,9 @@
                     <h5 class="modal-title" id="addCategoryModalLabel">Tambah Kategori Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addCategoryForm" action="{{ route('tenant.admin.categories.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="addCategoryForm"
+                    action="{{ route('tenant.admin.categories.store', ['tenant' => $userStore->tenant_id]) }}"
+                    method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -209,9 +211,12 @@
             });
         });
 
-        const showUrlTemplate = '{{ route('tenant.admin.categories.show', ['category' => ':id']) }}';
-        const updateUrlTemplate = '{{ route('tenant.admin.categories.update', ['category' => ':id']) }}';
-        const destroyUrlTemplate = '{{ route('tenant.admin.categories.destroy', ['category' => ':id']) }}';
+        const showUrlTemplate =
+            '{{ route('tenant.admin.categories.show', ['tenant' => $userStore->tenant_id, 'category' => ':id']) }}';
+        const updateUrlTemplate =
+            '{{ route('tenant.admin.categories.update', ['tenant' => $userStore->tenant_id, 'category' => ':id']) }}';
+        const destroyUrlTemplate =
+            '{{ route('tenant.admin.categories.destroy', ['tenant' => $userStore->tenant_id, 'category' => ':id']) }}';
 
         function editCategory(categoryId) {
             const fetchUrl = showUrlTemplate.replace(':id', categoryId);
@@ -231,11 +236,12 @@
                         form.querySelector('#edit_description').value = category.description;
                         form.querySelector('#edit_is_active').checked = category.is_active;
 
-                        const assetBaseUrl = "{{ url('tenancy/assets') }}/";
+                        const assetUrlTemplate =
+                            '{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => ':path']) }}';
                         const preview = document.getElementById('currentImagePreview');
                         const img = document.getElementById('current_image');
                         if (category.image) {
-                            img.src = assetBaseUrl + category.image;
+                            img.src = assetUrlTemplate.replace(':path', category.image);
                             preview.style.display = 'block';
                         } else {
                             preview.style.display = 'none';

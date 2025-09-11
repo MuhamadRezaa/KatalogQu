@@ -144,7 +144,7 @@ class StoreProduct extends Model
 
         return Str::startsWith($url, ['http://', 'https://'])
             ? $url
-            : route('tenant.asset', ['path' => $url]);
+            : route('tenant.asset.domain', ['path' => $url]);
     }
 
     /**
