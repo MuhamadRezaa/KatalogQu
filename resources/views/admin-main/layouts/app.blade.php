@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-6">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">
+                                    <li class="breadcrumb-item"><a href="/admin">
                                             <svg class="stroke-icon">
                                                 <use
                                                     href="{{ asset('assets/riho-asset/svg/icon-sprite.svg#stroke-home') }}">

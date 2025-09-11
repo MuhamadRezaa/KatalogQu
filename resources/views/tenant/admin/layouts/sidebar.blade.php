@@ -125,7 +125,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.dashboard') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.dashboard', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-home menu-icon" aria-hidden="true"></i>
                         <span>Dashboard</span>
@@ -140,7 +140,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.categories.*') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                         <span>Kategori Produk</span>
@@ -150,7 +150,7 @@
                 @if (in_array('subkategoriproduk', $menus))
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav"
+                        <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.sub-categories.*') ? 'active' : '' }}"
                             href="{{ route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id]) }}">
                             <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                             <span>Sub Kategori Produk</span>
@@ -161,7 +161,7 @@
                 @if (in_array('brandproduk', $menus))
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav"
+                        <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.brands.*') ? 'active' : '' }}"
                             href="{{ route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id]) }}">
                             <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                             <span>Brand Produk</span>
@@ -172,7 +172,7 @@
                 @if (in_array('unitproduk', $menus))
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav"
+                        <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.product-units.*') ? 'active' : '' }}"
                             href="{{ route('tenant.admin.product-units.index', ['tenant' => $userStore->tenant_id]) }}">
                             <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                             <span>Unit Produk</span>
@@ -182,7 +182,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.products.*') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-tags menu-icon" aria-hidden="true"></i>
                         <span>Produk</span>
@@ -191,7 +191,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.price-ranges.*') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.price-ranges.index', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-money menu-icon" aria-hidden="true"></i>
                         <span>Rentang Harga</span>
@@ -200,7 +200,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.store-heroes.*') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-image menu-icon" aria-hidden="true"></i>
                         <span>Banner Toko</span>
@@ -209,7 +209,7 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav"
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->routeIs('tenant.admin.settings') ? 'active' : '' }}"
                         href="{{ route('tenant.admin.settings', ['tenant' => $userStore->tenant_id]) }}">
                         <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
                         <span>Pengaturan Toko</span>

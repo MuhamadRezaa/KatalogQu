@@ -71,7 +71,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/dashboard') ? 'active' : '' }}"
+                        href="/admin">
                         <i class="fa fa-home menu-icon" aria-hidden="true"></i>
                         <span>Dashboard</span>
                     </a>
@@ -85,7 +86,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/kategori-toko">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/kategori-toko*') ? 'active' : '' }}"
+                        href="/admin/kategori-toko">
                         <i class="fa fa-tags menu-icon" aria-hidden="true"></i>
                         <span>Kategori Toko</span>
                     </a>
@@ -93,7 +95,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/template-katalog">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/template-katalog*') ? 'active' : '' }}"
+                        href="/admin/template-katalog">
                         <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                         <span>Template Katalog</span>
                     </a>
@@ -101,7 +104,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/users">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/users*') ? 'active' : '' }}"
+                        href="/admin/users">
                         <i class="fa fa-users menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Pengguna</span>
                     </a>
@@ -109,7 +113,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/toko">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/toko*') ? 'active' : '' }}"
+                        href="/admin/toko">
                         <i class="fa fa-building menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Toko</span>
                     </a>
@@ -117,7 +122,8 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title link-nav" href="/admin/pembayaran">
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/pembayaran*') ? 'active' : '' }}"
+                        href="/admin/pembayaran">
                         <i class="fa fa-credit-card menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Pembayaran</span>
                     </a>
@@ -133,13 +139,16 @@
 
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
-                    <a class="sidebar-link sidebar-title" href="#">
+                    <a class="sidebar-link sidebar-title {{ request()->is('admin/menus*') || request()->is('admin/store-category-menus*') ? 'active' : '' }}"
+                        href="javascript:void(0)">
                         <i class="fa fa-sliders menu-icon" aria-hidden="true"></i>
                         <span>Manajemen Menu Admin Toko</span>
                     </a>
                     <ul class="sidebar-submenu">
-                        <li><a href="/admin/menus">Menu</a></li>
-                        <li><a href="/admin/store-category-menus">Setelan Menu Toko</a></li>
+                        <li><a class="{{ request()->is('admin/menus*') ? 'active' : '' }}" href="/admin/menus">Menu</a>
+                        </li>
+                        <li><a class="{{ request()->is('admin/store-category-menus*') ? 'active' : '' }}"
+                                href="/admin/store-category-menus">Setelan Menu Toko</a></li>
                     </ul>
                 </li>
 
