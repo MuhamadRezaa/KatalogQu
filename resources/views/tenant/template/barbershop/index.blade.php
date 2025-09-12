@@ -19,6 +19,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     {{-- CSS TAMBAHAN UNTUK MODAL SIDE-BY-SIDE & UI LAINNYA --}}
     <style>
@@ -224,13 +225,12 @@
             </div>
 
             <div class="category-cards-container">
-                <button class="card-category active" data-filter="all">
-                    <div class="card-content">
-                        <img src="{{ asset('assets/demo/barbershop/img/allkategori.png') }}" alt="Semua Kategori"
-                            class="card-image-icon">
-                        <h3 class="card-title">Semua Kategori</h3>
-                    </div>
-                </button>
+                {{-- <button class="card-category active" data-filter="all">
+                <div class="card-content">
+                    <i class="fas fa-tags text-5xl"></i>
+                    <h3 class="card-title">Semua Kategori</h3>
+                </div>
+            </button> --}}
 
                 @if (isset($categories) && $categories->isNotEmpty())
                     @foreach ($categories as $category)
@@ -249,201 +249,56 @@
                 @endif
             </div>
 
-            <style>
-                /* Gaya untuk wadah kartu utama */
-                .category-cards-container {
-                    display: flex;
-                    /* Kunci untuk membuat kartu-kartu berjejer horizontal */
-                    flex-wrap: wrap;
-                    /* Agar kartu turun ke baris baru pada layar kecil */
-                    gap: 1.5rem;
-                    /* Jarak antara setiap kartu */
-                    justify-content: center;
-                    /* Memusatkan kartu-kartu di tengah */
-                    padding: 1.5rem 0;
-                }
-
-                /* Gaya dasar untuk setiap kartu kategori */
-                .card-category {
-                    display: flex;
-                    flex-direction: column;
-                    /* Mengatur konten di dalam kartu secara vertikal */
-                    align-items: center;
-                    /* Memusatkan konten secara horizontal */
-                    text-align: center;
-                    cursor: pointer;
-                    border: 2px solid transparent;
-                    border-radius: 15px;
-                    padding: 1rem;
-                    background-color: #2c3e50;
-                    color: #ecf0f1;
-                    transition: all 0.3s ease;
-                    width: 150px;
-                    /* Lebar tetap untuk setiap kartu */
-                    min-height: 180px;
-                    /* Tinggi minimum agar semua kartu seragam */
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                }
-
-                .card-category:hover {
-                    transform: translateY(-5px);
-                    /* Efek mengangkat saat di-hover */
-                    background-color: #34495e;
-                    border-color: #f39c12;
-                }
-
-                .card-category.active {
-                    background-color: #f39c12;
-                    border-color: #f39c12;
-                    color: #2c3e50;
-                    box-shadow: 0 4px 20px rgba(243, 156, 18, 0.5);
-                }
-
-                .card-category.active .card-title,
-                .card-category.active .fa-tags {
-                    color: #2c3e50;
-                }
-
-                /* Gaya untuk gambar di dalam kartu */
-                .card-image {
-                    width: 100%;
-                    max-width: 120px;
-                    height: 100px;
-                    /* Tinggi gambar tetap */
-                    object-fit: cover;
-                    border-radius: 10px;
-                    margin-bottom: 0.5rem;
-                }
-
-                /* Gaya untuk konten di dalam kartu (ikon dan teks) */
-                .card-content {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100%;
-                }
-
-                .card-title {
-                    margin: 0;
-                    font-size: 1rem;
-                    font-weight: 600;
-                }
-
-                /* Gaya untuk gambar yang menggantikan ikon */
-                .card-image-icon {
-                    width: 60px;
-                    /* Atur lebar gambar sesuai ukuran ikon yang Anda inginkan */
-                    height: 60px;
-                    /* Atur tinggi gambar agar sama dengan lebarnya */
-                    object-fit: contain;
-                    /* Memastikan gambar pas tanpa terpotong */
-                    margin-bottom: 0.5rem;
-                    /* Memberi jarak di bawah gambar, sesuai dengan jarak yang ada */
-                }
-            </style>
-
             {{-- Panel Filter Baru --}}
-            <div class="filter-container">
-                <input type="text" id="search-input" placeholder="Cari nama layanan..."
-                    class="search-input service-btn" />
+            {{-- <div class="filter-container"> ... </div> --}}
 
-
-
-                <select id="price-filter" class="filter-dropdown service-btn">
-                    <option value="all">Semua Harga</option>
-                    @isset($priceRanges)
-                        @foreach ($priceRanges as $range)
-                            <option value="{{ $range->min ?? '0' }}-{{ $range->max ?? '99999999' }}">{{ $range->name }}
-                            </option>
-                        @endforeach
-                    @endisset
-                </select>
-
-                <select id="sort-filter" class="filter-dropdown service-btn">
-                    <option value="default">Urutkan</option>
-                    <option value="price-asc">Harga Terendah</option>
-                    <option value="price-desc">Harga Tertinggi</option>
-                    <option value="name-asc">Nama A-Z</option>
-                    <option value="name-desc">Nama Z-A</option>
-                </select>
+            <div class="view-controls">
+                <button id="grid-view-btn" class="active">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button id="list-view-btn">
+                    <i class="fas fa-list"></i>
+                </button>
             </div>
 
             <style>
-                /* --- Gaya untuk Wadah Filter Utama --- */
-                .filter-container {
-                    background-color: #2c2b29;
-                    /* Warna latar belakang gelap */
-                    padding: 2rem;
-                    border-radius: 10px;
+                .view-controls {
                     display: flex;
-                    /* Menggunakan Flexbox untuk tata letak yang rapi */
-                    flex-wrap: wrap;
-                    gap: 1rem;
-                    /* Jarak antar elemen filter */
+                    justify-content: center;
                     align-items: center;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 10px;
+                    padding: 0.5rem;
+                    margin: 1rem 0;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(8px);
                 }
 
-                /* --- Gaya untuk Input Pencarian dan Dropdown --- */
-                .search-input,
-                .filter-dropdown {
-                    font-family: 'Poppins', sans-serif;
-                    font-size: 1rem;
-                    padding: 0.75rem 1.25rem;
-                    border: 2px solid #575757;
-                    /* Border abu-abu tua */
-                    border-radius: 50px;
-                    /* Sudut membulat penuh */
-                    background-color: #3e3d3b;
-                    /* Warna latar belakang elemen */
-                    color: #e0e0e0;
-                    /* Warna teks */
-                    transition: all 0.3s ease;
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    appearance: none;
-                    outline: none;
+                .view-controls button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 36px;
+                    background: transparent;
+                    color: #ccc;
+                    border: none;
                     cursor: pointer;
+                    font-size: 1rem;
+                    transition: all 0.3s ease;
+                    border-radius: 6px;
+                    margin: 0 0.3rem;
                 }
 
-                /* Mengatur lebar input pencarian */
-                .search-input {
-                    flex-grow: 1;
-                    min-width: 200px;
-                    /* Lebar minimum pada layar kecil */
+                .view-controls button:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                    transform: translateY(-1px);
                 }
 
-                /* Mengatur lebar dropdown */
-                .filter-dropdown {
-                    min-width: 180px;
-                }
-
-                /* Efek saat elemen filter di-hover atau difokuskan */
-                .search-input:hover,
-                .filter-dropdown:hover,
-                .search-input:focus,
-                .filter-dropdown:focus {
-                    border-color: #f39c12;
-                    /* Warna border oranye saat di-hover/fokus */
-                    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.4);
-                    /* Efek bayangan saat fokus */
-                }
-
-                /* Gaya untuk panah dropdown yang disesuaikan */
-                .filter-dropdown {
-                    background-image: url('data:image/svg+xml;utf8,<svg fill="%23e0e0e0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-                    background-repeat: no-repeat;
-                    background-position: right 1rem center;
-                    background-size: 1.5em;
-                    padding-right: 2.5rem;
-                    /* Memberi ruang untuk ikon panah */
-                }
-
-                /* Gaya untuk opsi di dalam dropdown */
-                .filter-dropdown option {
-                    background-color: #3e3d3b;
-                    color: #e0e0e0;
+                .view-controls button.active {
+                    background: #f39c12;
+                    color: #000;
+                    box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
                 }
             </style>
 
@@ -462,6 +317,724 @@
                 {{ $products->links() }}
             </div>
         </div>
+
+        <style>
+            /* Global Box Sizing */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            /* ------------------------------ */
+            /* Overlay & Background Section */
+            /* ------------------------------ */
+            #services-and-styles {
+                position: relative;
+                background-image: url('{{ asset('assets/images/barbershop-bg.jpg') }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                padding: 60px 0;
+                overflow: hidden;
+            }
+
+            #services-and-styles::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(40, 20, 10, 0.9) 100%);
+                z-index: 1;
+            }
+
+            #services-and-styles .container,
+            #services-and-styles .section-header {
+                position: relative;
+                z-index: 2;
+            }
+
+            /* ------------------------------ */
+            /* Header Section */
+            /* ------------------------------ */
+            .section-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: #f39c12;
+                letter-spacing: 1px;
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                position: relative;
+                display: inline-block;
+            }
+
+            .section-title::after {
+                content: '';
+                display: block;
+                width: 70px;
+                height: 3px;
+                background: #f39c12;
+                margin: 8px auto 0;
+                border-radius: 2px;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+                color: #e0e0e0;
+                max-width: 650px;
+                margin: 1.2rem auto 0;
+                line-height: 1.6;
+                font-weight: 300;
+            }
+
+            /* ------------------------------ */
+            /* Kartu Kategori */
+            /* ------------------------------ */
+            .category-cards-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.2rem;
+                justify-content: center;
+                padding: 1.5rem 0;
+                margin-bottom: 2.5rem;
+            }
+
+            .card-category {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                cursor: pointer;
+                border: 2px solid transparent;
+                border-radius: 16px;
+                padding: 1.2rem 0.8rem;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(8px);
+                color: #fff;
+                transition: all 0.3s ease;
+                width: 140px;
+                min-height: 180px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card-category:hover {
+                transform: translateY(-6px);
+                border-color: #f39c12;
+                box-shadow: 0 10px 25px rgba(243, 156, 18, 0.3);
+            }
+
+            .card-category.active {
+                border-color: #f39c12;
+                background: rgba(243, 156, 18, 0.1);
+                transform: translateY(-3px);
+            }
+
+            .card-image {
+                width: 100%;
+                max-width: 110px;
+                height: 90px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-bottom: 0.8rem;
+                border: 2px solid rgba(255, 255, 255, 0.1);
+                transition: transform 0.3s ease;
+            }
+
+            .card-category:hover .card-image {
+                transform: scale(1.05);
+            }
+
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                z-index: 1;
+            }
+
+            .card-title {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 700;
+                color: #fff;
+                transition: color 0.3s ease;
+            }
+
+            .card-category:hover .card-title {
+                color: #f39c12;
+            }
+
+            /* ------------------------------ */
+            /* Grid Produk (Diperbaiki untuk Mobile) */
+            /* ------------------------------ */
+            #product-grid {
+                display: grid;
+                gap: 1.5rem;
+                margin-top: 2rem;
+                justify-items: center;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                padding: 0 1rem;
+            }
+
+            .card-product {
+                width: 100%;
+                max-width: 280px;
+                /* Dikurangi dari 320px */
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(8px);
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                transition: all 0.3s ease;
+                text-align: center;
+                color: #f0f0f0;
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin: 0 auto;
+                /* Pusatkan di mobile */
+            }
+
+            .card-product:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(243, 156, 18, 0.3);
+                border-color: rgba(243, 156, 18, 0.4);
+            }
+
+            .card-product img {
+                width: 100%;
+                height: 160px;
+                /* Dikurangi dari 200px */
+                object-fit: cover;
+                border-bottom: 2px solid rgba(243, 156, 18, 0.3);
+            }
+
+            .card-product .card-body {
+                padding: 1.2rem;
+            }
+
+            .card-product .card-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #f39c12;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-product .card-text {
+                font-size: 0.9rem;
+                color: #ccc;
+                margin-bottom: 1rem;
+                line-height: 1.5;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-product .price {
+                font-size: 1.3rem;
+                font-weight: 800;
+                color: #fff;
+                margin-bottom: 1rem;
+            }
+
+            .card-produc
+
+            /* Global Box Sizing */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            /* ------------------------------ */
+            /* Overlay & Background Section */
+            /* ------------------------------ */
+            #services-and-styles {
+                position: relative;
+                background-image: url('{{ asset('assets/images/barbershop-bg.jpg') }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                padding: 60px 0;
+                overflow: hidden;
+            }
+
+            #services-and-styles::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(40, 20, 10, 0.9) 100%);
+                z-index: 1;
+            }
+
+            #services-and-styles .container,
+            #services-and-styles .section-header {
+                position: relative;
+                z-index: 2;
+            }
+
+            /* ------------------------------ */
+            /* Header Section */
+            /* ------------------------------ */
+            .section-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: #f39c12;
+                letter-spacing: 1px;
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                position: relative;
+                display: inline-block;
+            }
+
+            .section-title::after {
+                content: '';
+                display: block;
+                width: 70px;
+                height: 3px;
+                background: #f39c12;
+                margin: 8px auto 0;
+                border-radius: 2px;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+                color: #e0e0e0;
+                max-width: 650px;
+                margin: 1.2rem auto 0;
+                line-height: 1.6;
+                font-weight: 300;
+            }
+
+            /* ------------------------------ */
+            /* Kartu Kategori */
+            /* ------------------------------ */
+            .category-cards-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.2rem;
+                justify-content: center;
+                padding: 1.5rem 0;
+                margin-bottom: 2.5rem;
+            }
+
+            .card-category {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                cursor: pointer;
+                border: 2px solid transparent;
+                border-radius: 16px;
+                padding: 1.2rem 0.8rem;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(8px);
+                color: #fff;
+                transition: all 0.3s ease;
+                width: 140px;
+                min-height: 180px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card-category:hover {
+                transform: translateY(-6px);
+                border-color: #f39c12;
+                box-shadow: 0 10px 25px rgba(243, 156, 18, 0.3);
+            }
+
+            .card-category.active {
+                border-color: #f39c12;
+                background: rgba(243, 156, 18, 0.1);
+                transform: translateY(-3px);
+            }
+
+            .card-image {
+                width: 100%;
+                max-width: 110px;
+                height: 90px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-bottom: 0.8rem;
+                border: 2px solid rgba(255, 255, 255, 0.1);
+                transition: transform 0.3s ease;
+            }
+
+            .card-category:hover .card-image {
+                transform: scale(1.05);
+            }
+
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                z-index: 1;
+            }
+
+            .card-title {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 700;
+                color: #fff;
+                transition: color 0.3s ease;
+            }
+
+            .card-category:hover .card-title {
+                color: #f39c12;
+            }
+
+            /* ------------------------------ */
+            /* Grid Produk (Diperbaiki)     */
+            /* ------------------------------ */
+            #product-grid {
+                display: grid;
+                gap: 1rem;
+                /* Mengurangi jarak antar kartu */
+                margin-top: 2rem;
+                justify-items: center;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                padding: 0 0.5rem;
+                /* Mengurangi padding horizontal */
+            }
+
+            .card-product {
+                width: 100%;
+                max-width: 280px;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(8px);
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                transition: all 0.3s ease;
+                text-align: center;
+                color: #f0f0f0;
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin: 0 auto;
+            }
+
+            .card-product:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(243, 156, 18, 0.3);
+                border-color: rgba(243, 156, 18, 0.4);
+            }
+
+            .card-product img {
+                width: 100%;
+                height: 160px;
+                object-fit: cover;
+                border-bottom: 2px solid rgba(243, 156, 18, 0.3);
+            }
+
+            .card-product .card-body {
+                padding: 1.2rem;
+            }
+
+            .card-product .card-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #f39c12;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-product .card-text {
+                font-size: 0.9rem;
+                color: #ccc;
+                margin-bottom: 1rem;
+                line-height: 1.5;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-product .price {
+                font-size: 1.3rem;
+                font-weight: 800;
+                color: #fff;
+                margin-bottom: 1rem;
+            }
+
+            .card-product .btn {
+                display: inline-block;
+                padding: 0.5rem 1.2rem;
+                background: #f39c12;
+                color: #000;
+                font-weight: 700;
+                border-radius: 50px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+                width: 100%;
+            }
+
+            .card-product .btn:hover {
+                background: #e67e22;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+            }
+
+            /* ------------------------------ */
+            /* Responsif Khusus Mobile Kecil */
+            /* ------------------------------ */
+            @media (max-width: 480px) {
+                .section-title {
+                    font-size: 2rem;
+                }
+
+                .section-subtitle {
+                    font-size: 1rem;
+                    padding: 0 1rem;
+                }
+
+                .category-cards-container {
+                    gap: 0.8rem;
+                    padding: 1rem 0;
+                }
+
+                .card-category {
+                    width: 120px;
+                    min-height: 160px;
+                    padding: 1rem 0.6rem;
+                }
+
+                .card-image {
+                    height: 80px;
+                }
+
+                #product-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.2rem;
+                    padding: 0 0.8rem;
+                }
+
+                .card-product {
+                    max-width: 95%;
+                    margin: 0 auto;
+                }
+
+                .card-product img {
+                    height: 140px;
+                }
+
+                .card-product .card-body {
+                    padding: 1rem;
+                }
+
+                .card-product .card-title {
+                    font-size: 1.1rem;
+                }
+
+                .card-product .price {
+                    font-size: 1.2rem;
+                }
+            }
+
+            /* ------------------------------ */
+            /* Tablet */
+            /* ------------------------------ */
+            @media (min-width: 481px) and (max-width: 768px) {
+                #product-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            /* ------------------------------ */
+            /* Desktop */
+            /* ------------------------------ */
+            @media (min-width: 769px) {
+                #product-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                }
+            }
+
+            /* ------------------------------ */
+            /* Pesan Tidak Ada Hasil & Pagination */
+            /* ------------------------------ */
+            #no-results-message {
+                display: none;
+                text-align: center;
+                color: #aaa;
+                margin: 3rem 0;
+                font-size: 1.1rem;
+                font-style: italic;
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 12px;
+                border: 1px dashed #555;
+            }
+
+            .pagination-container {
+                margin-top: 2.5rem;
+                text-align: center;
+            }
+
+            .pagination-container .pagination {
+                display: inline-flex;
+                gap: 0.4rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .pagination-container .page-item .page-link {
+                color: #f39c12;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(243, 156, 18, 0.3);
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                font-size: 0.85rem;
+            }
+
+            .pagination-container .page-item.active .page-link {
+                background: #f39c12;
+                color: #000;
+                font-weight: 700;
+            }
+
+            .pagination-container .page-link:hover {
+                background: rgba(243, 156, 18, 0.2);
+                transform: translateY(-1px);
+            }
+
+            /* --------------------------------- */
+            /* GAYA BARU: TAMPILAN LIST        */
+            /* --------------------------------- */
+            #product-grid.product-list {
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+                /* Mengurangi jarak vertikal antar item */
+                padding: 0 1rem;
+            }
+
+            #product-grid.product-list .card-product {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                max-width: 700px;
+                /* Mengurangi lebar maksimum kartu */
+                margin: 0 auto;
+                text-align: left;
+                height: auto;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(8px);
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            #product-grid.product-list .card-product:hover {
+                transform: translateY(-4px);
+                /* Mengurangi efek hover agar tidak terlalu jauh */
+                box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+                border-color: rgba(243, 156, 18, 0.4);
+            }
+
+            #product-grid.product-list .card-product .card-image-container {
+                width: 120px;
+                /* Lebar gambar yang lebih ringkas */
+                min-width: 120px;
+                height: auto;
+                flex-shrink: 0;
+                position: relative;
+                border-radius: 16px 0 0 16px;
+                /* Sudut membulat di kiri */
+                overflow: hidden;
+            }
+
+            #product-grid.product-list .card-product .card-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-bottom: none;
+                border-right: 2px solid rgba(243, 156, 18, 0.3);
+            }
+
+            #product-grid.product-list .card-product .card-body {
+                padding: 1.2rem 1.5rem;
+                /* Sesuaikan padding agar lebih proporsional */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                flex-grow: 1;
+                gap: 0.4rem;
+                /* Mengurangi jarak antar elemen di dalam konten kartu */
+            }
+
+            #product-grid.product-list .card-product .card-text {
+                font-size: 0.9rem;
+                color: #ccc;
+                line-height: 1.4;
+                -webkit-line-clamp: 2;
+                /* Membatasi deskripsi menjadi 2 baris */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #product-grid.product-list .card-product .card-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-top: 0;
+                margin-bottom: 0.2rem;
+                color: #f39c12;
+            }
+
+            #product-grid.product-list .card-product .price {
+                font-size: 1.2rem;
+                font-weight: 800;
+                color: #fff;
+                margin: 0;
+            }
+
+            /* Responsif untuk tampilan list */
+            @media (max-width: 768px) {
+                #product-grid.product-list .card-product {
+                    flex-direction: column;
+                    max-width: 320px;
+                    border-radius: 16px;
+                }
+
+                #product-grid.product-list .card-product .card-image-container {
+                    width: 100%;
+                    height: 150px;
+                    min-width: unset;
+                    border-radius: 16px 16px 0 0;
+                    border-right: none;
+                    border-bottom: 2px solid rgba(243, 156, 18, 0.3);
+                }
+
+                #product-grid.product-list .card-product .card-body {
+                    padding: 1rem;
+                    text-align: center;
+                    align-items: center;
+                }
+            }
+        </style>
     </section>
 
     <style>
@@ -530,284 +1103,6 @@
     </style>
 
     {{-- Our Service (Dynamic from Database) --}}
-    <section class="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Service</h2>
-                <p class="section-subtitle">
-                    Dapatkan pelayanan terbaik dengan standar internasional
-                    dan teknik modern
-                </p>
-            </div>
-
-            <div class="services-grid">
-                @forelse ($featuredProducts ?? $products->take(4) as $product)
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ $product->primary_image_src ?? asset('assets/demo/barbershop/img/klasik.png') }}"
-                                alt="{{ $product->name }}" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>{{ $product->estimasi_waktu ?? '45 min' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">{{ $product->name }}</h3>
-                            <div class="service-price">{{ $product->price_idr }}</div>
-                            @if ($product->old_price && $product->old_price > $product->price)
-                                <div class="service-old-price">{{ $product->old_price_idr }}</div>
-                            @endif
-                            <button class="service-btn" onclick="showDynamicModal({{ $product->id }})">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                @empty
-                    {{-- Fallback to static content if no products available --}}
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/klasik.png') }}" alt="Classic Cut" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>45 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Classic Cut</h3>
-                            <div class="service-price">Rp 75,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Classic Cut', 'Classic Cut adalah potongan rambut klasik yang cocok untuk semua usia.', '{{ asset('assets/demo/barbershop/img/klasik.png') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/moderncut.jpg') }}" alt="Modern Fade" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>50 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Modern Fade</h3>
-                            <div class="service-price">Rp 85,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Modern Fade', 'Potongan rambut stylish dengan gradasi rapi dari tipis ke tebal, memberi tampilan modern dan segar.', '{{ asset('assets/demo/barbershop/img/moderncut.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/beardtrim.jpg') }}" alt="Beard Trim" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>30 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Beard Trim</h3>
-                            <div class="service-price">Rp 45,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Beard Trim', 'Perapian jenggot agar tampak rapi, bersih, dan sesuai bentuk wajah untuk tampilan yang maskulin.', '{{ asset('assets/demo/barbershop/img/beardtrim.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/premiun.jpg') }}" alt="Premium Package" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>90 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Premium Package</h3>
-                            <div class="service-price">Rp 150,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Premium Package', 'Paket perawatan lengkap mulai dari potong rambut, perapian jenggot, hingga styling premium untuk tampilan maksimal.', '{{ asset('assets/demo/barbershop/img/premiun.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
-        <style>
-            /* --- General Section Styles --- */
-            .services {
-                padding: 60px 0;
-                background-color: #121212;
-                /* Warna background gelap yang solid */
-                color: #e0e0e0;
-            }
-
-            /* --- Section Header Styles --- */
-            .section-header {
-                text-align: center;
-                margin-bottom: 3rem;
-                position: relative;
-            }
-
-            .section-header::after {
-                content: '';
-                display: block;
-                width: 60px;
-                height: 3px;
-                background-color: #f39c12;
-                /* Garis pemisah oranye di bawah judul */
-                margin: 1rem auto 0;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: #ffffff;
-                margin-bottom: 0.5rem;
-            }
-
-            .section-subtitle {
-                font-size: 1rem;
-                color: #b0b0b0;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-
-            /* --- Services Grid & Card Styles --- */
-            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                /* Menggunakan grid responsif */
-                gap: 2rem;
-                justify-content: center;
-                align-items: stretch;
-            }
-
-            .service-card {
-                background-color: #1c1c1c;
-                /* Warna kartu lebih terang dari background section */
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .service-card:hover {
-                transform: translateY(-10px);
-                /* Efek mengangkat saat di-hover */
-                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-            }
-
-            .service-image {
-                position: relative;
-                height: 200px;
-                /* Tinggi gambar tetap */
-                overflow: hidden;
-            }
-
-            .service-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.5s ease;
-            }
-
-            .service-card:hover .service-image img {
-                transform: scale(1.1);
-                /* Efek zoom saat di-hover */
-            }
-
-            .service-overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-                /* Gradien transparan di bagian bawah gambar */
-                padding: 1rem;
-                display: flex;
-                justify-content: flex-end;
-                /* Memindahkan durasi ke pojok kanan bawah */
-            }
-
-            .service-duration {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                background-color: rgba(0, 0, 0, 0.5);
-                padding: 0.3rem 0.8rem;
-                border-radius: 20px;
-                color: #ffffff;
-                font-size: 0.875rem;
-            }
-
-            .service-content {
-                padding: 1.5rem;
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                flex-grow: 1;
-                /* Konten mengisi sisa ruang */
-            }
-
-            .service-name {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #f39c12;
-                /* Warna judul layanan oranye */
-                margin-bottom: 0.5rem;
-            }
-
-            .service-price {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: #e0e0e0;
-                margin-top: 0.5rem;
-            }
-
-            .service-old-price {
-                font-size: 1rem;
-                color: #888888;
-                text-decoration: line-through;
-                margin-top: -0.25rem;
-            }
-
-            .service-btn {
-                background-color: #f39c12;
-                color: #121212;
-                padding: 0.75rem 1.5rem;
-                border: none;
-                border-radius: 50px;
-                font-weight: 600;
-                text-transform: uppercase;
-                cursor: pointer;
-                margin-top: 1rem;
-                transition: background-color 0.3s ease, transform 0.2s ease;
-            }
-
-            .service-btn:hover {
-                background-color: #e67e22;
-                transform: translateY(-2px);
-            }
-        </style>
-    </section>
 
 
 
@@ -852,34 +1147,369 @@
         </div>
     </footer>
 
+    <style>
+        .footer {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            padding: 4rem 0 2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand {
+            flex: 1 1 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-brand {
+                align-items: flex-start;
+                text-align: left;
+            }
+        }
+
+        .hero-icon {
+            font-size: 3.5rem;
+            color: #f39c12;
+            margin-bottom: 0.5rem;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .footer-brand h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .footer-contact {
+            flex: 1 1 300px;
+            text-align: right;
+            /* Ini akan membuat semua konten di dalam footer-contact rata kanan */
+        }
+
+        @media (min-width: 768px) {
+            .footer-contact {
+                text-align: right;
+            }
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #f39c12;
+            margin-left: auto;
+            /* Ini yang membuat garis rata kanan */
+            margin-right: 0;
+            margin-top: 10px;
+        }
+
+        .footer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 2.2;
+        }
+
+        .footer-list li {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            /* Ini yang membuat item list rata kanan */
+            gap: 12px;
+        }
+
+        .footer-list i {
+            color: #f39c12;
+            font-size: 1.1rem;
+        }
+
+        .footer-social {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: flex-end;
+            /* Ini yang membuat ikon sosial rata kanan */
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+    </style>
+
     {{-- Modal Detail --}}
     <div id="product-modal" class="modal" style="display: none;">
         <div class="modal-content large">
             <button class="modal-close" id="modal-close">×</button>
             <div class="modal-body">
+                <!-- Gambar -->
                 <div class="modal-image-container">
                     <img id="modal-main-image" src="" alt="Detail Gambar" />
                     <div id="modal-thumbnail-container" class="thumbnail-container">
+                        <!-- Thumbnail akan diisi oleh JS -->
                     </div>
                 </div>
+
+                <!-- Informasi Produk -->
                 <div class="modal-info-container">
                     <h2 id="modal-title" class="modal-title"></h2>
                     <p id="modal-category" class="modal-category"></p>
                     <p id="modal-price" class="modal-price"></p>
-                    <p id="modal-old-price" style="color:#999; text-decoration:line-through;"
-                        class="modal-old-price"></p>
+                    <p id="modal-old-price" class="modal-old-price"></p>
+
                     <h3 class="modal-subtitle">Deskripsi</h3>
                     <p id="modal-description" class="modal-description"></p>
+
                     <h3 class="modal-subtitle">Spesifikasi / Detail</h3>
-                    <ul id="modal-specs" class="modal-specs">
-                    </ul>
-                    <a id="chat-button" href="#" target="_blank" class="modal-chat-button">
-                        <i class="fab fa-whatsapp "></i> Hubungi Kami
-                    </a>
+                    <ul id="modal-specs" class="modal-specs"></ul>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- css detail --}}
+    <style>
+        /* --------------------------------- */
+        /* MODAL STYLING           */
+        /* --------------------------------- */
+
+        /* Kontainer Modal Utama */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Kotak Konten Modal */
+        .modal-content.large {
+            background-color: #2c2b29;
+            border-radius: 15px;
+            padding: 2.5rem;
+            position: relative;
+            max-width: 900px;
+            /* Batasan lebar modal untuk tampilan desktop */
+            width: 90%;
+            /* Menggunakan persentase agar responsif */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: #f0f0f0;
+            display: flex;
+            /* Menggunakan Flexbox untuk tata letak */
+            flex-direction: column;
+            /* Default: susun konten ke bawah */
+            gap: 2rem;
+        }
+
+        /* Pengaturan Responsif untuk Modal */
+        @media (min-width: 768px) {
+            .modal-content.large {
+                flex-direction: row;
+                /* Ubah ke tata letak baris di layar yang lebih lebar */
+                text-align: left;
+            }
+        }
+
+        /* Tombol Tutup Modal */
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #f39c12;
+        }
+
+        /* Bagian Gambar Modal */
+        .modal-image-container {
+            flex: 1;
+            /* Mengambil sisa ruang yang tersedia */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modal-main-image {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            max-height: 400px;
+            /* Batasi tinggi gambar utama */
+        }
+
+        /* Bagian Informasi Modal */
+        .modal-info-container {
+            flex: 1;
+            /* Mengambil sisa ruang yang tersedia */
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f39c12;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-category {
+            background-color: #444;
+            color: #ccc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-old-price {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .modal-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f39c12;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.25rem;
+        }
+
+        .modal-description {
+            font-size: 1rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .modal-specs {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .modal-specs li::before {
+            content: "•";
+            color: #f39c12;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .modal-chat-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #25d366;
+            /* Warna WhatsApp */
+            color: #fff;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            gap: 0.5rem;
+        }
+
+        .modal-chat-button i {
+            font-size: 1.25rem;
+        }
+
+        .modal-chat-button:hover {
+            background-color: #128c7e;
+            transform: translateY(-2px);
+        }
+    </style>
 
     <template id="thumbnail-template">
         <button class="thumbnail"><img class="thumbnail-image" src="" alt="thumbnail" /></button>
@@ -968,6 +1598,10 @@
             // Elemen Filter Kategori (menggunakan card)
             const categoryCards = document.querySelectorAll('.card-category');
 
+            // Elemen Tombol Tampilan BARU
+            const gridViewBtn = document.getElementById('grid-view-btn');
+            const listViewBtn = document.getElementById('list-view-btn');
+
             function formatRupiah(angka) {
                 if (angka === null || typeof angka === 'undefined' || isNaN(Number(angka))) return 'Hubungi Kami';
                 return new Intl.NumberFormat('id-ID', {
@@ -987,6 +1621,9 @@
 
                 if (noResultsMessage) noResultsMessage.style.display = 'none';
 
+                // Tentukan apakah kita harus merender sebagai grid atau list
+                const isList = productGrid.classList.contains('product-list');
+
                 productsToRender.forEach(product => {
                     const imageSrc = product.images.length > 0 ? product.images[0] :
                         '{{ asset('assets/demo/barbershop/img/klasik.png') }}';
@@ -997,27 +1634,41 @@
                             `<div class="service-old-price">${formatRupiah(product.old_price)}</div>`;
                     }
 
-                    const productHtml = `
-                    <div class="service-card product-card"
-                         data-product-id="${product.id}">
-                        <div class="service-image">
-                            <img src="${imageSrc}" alt="${product.name}" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span>Lihat Detail</span>
-                                </div>
-                            </div>
+                    // Pilih template HTML berdasarkan tampilan yang aktif (grid atau list)
+                    let productHtml = '';
+                    if (isList) {
+                        productHtml = `
+                    <div class="card-product" data-product-id="${product.id}">
+                        <div class="card-image-container">
+                            <img src="${imageSrc}" alt="${product.name}" class="w-full h-full object-cover">
                         </div>
-                        <div class="service-content">
-                            <h3 class="service-name">${product.name}</h3>
-                            ${priceHtml}
-                            <p class="line-clamp-2 text-sm text-gray-500 mt-2">
-                                ${(product.description || '').substring(0, 50)}${(product.description || '').length > 50 ? '...' : ''}
-                            </p>
+                        <div class="card-body">
+                            <h3 class="card-title">${product.name}</h3>
+                            <p class="card-text">${product.description || 'Tidak ada deskripsi.'}</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <div class="price">${formatRupiah(product.price)}</div>
+                                <a href="#" class="btn btn-primary" onclick="window.showDynamicModal(${product.id}); return false;">
+                                    Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
+                    } else {
+                        productHtml = `
+                    <div class="card-product" data-product-id="${product.id}">
+                        <img src="${imageSrc}" alt="${product.name}" class="card-image">
+                        <div class="card-body">
+                            <h3 class="card-title">${product.name}</h3>
+                            <p class="card-text">${product.description || 'Tidak ada deskripsi.'}</p>
+
+                            <a href="#" class="btn btn-primary" onclick="window.showDynamicModal(${product.id}); return false;">
+                                Detail
+                            </a>
+                        </div>
+                    </div>
+                `;
+                    }
                     productGrid.insertAdjacentHTML('beforeend', productHtml);
                 });
             }
@@ -1026,7 +1677,6 @@
             function applyFiltersAndSort() {
                 const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
 
-                // Mengambil filter dari kartu kategori yang aktif
                 const activeCategoryCard = document.querySelector('.card-category.active');
                 const selectedCategory = activeCategoryCard ? activeCategoryCard.dataset.filter : 'all';
 
@@ -1066,17 +1716,43 @@
                 }
             }
 
+            // Fungsi untuk beralih ke tampilan grid
+            function setGridView() {
+                if (productGrid.classList.contains('product-list')) {
+                    productGrid.classList.remove('product-list');
+                }
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                applyFiltersAndSort(); // Render ulang produk dengan tampilan baru
+            }
+
+            // Fungsi untuk beralih ke tampilan list
+            function setListView() {
+                if (!productGrid.classList.contains('product-list')) {
+                    productGrid.classList.add('product-list');
+                }
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                applyFiltersAndSort(); // Render ulang produk dengan tampilan baru
+            }
+
+            // Tambahkan event listener untuk tombol tampilan
+            if (gridViewBtn) {
+                gridViewBtn.addEventListener('click', setGridView);
+            }
+            if (listViewBtn) {
+                listViewBtn.addEventListener('click', setListView);
+            }
+
+            // Aktifkan tampilan grid secara default saat halaman dimuat
+            setGridView();
+
             // Tambahkan event listener untuk kartu-kartu kategori
             if (categoryCards) {
                 categoryCards.forEach(card => {
                     card.addEventListener('click', function() {
-                        // Hapus kelas 'active' dari semua kartu
                         categoryCards.forEach(c => c.classList.remove('active'));
-
-                        // Tambahkan kelas 'active' ke kartu yang sedang diklik
                         this.classList.add('active');
-
-                        // Panggil fungsi filter utama untuk memperbarui tampilan
                         applyFiltersAndSort();
                     });
                 });
@@ -1090,7 +1766,7 @@
             // Modal untuk produk dinamis
             if (productGrid) {
                 productGrid.addEventListener('click', function(event) {
-                    const card = event.target.closest('[data-product-id]');
+                    const card = event.target.closest('.card-product');
                     if (!card) return;
 
                     const productId = parseInt(card.dataset.productId, 10);
