@@ -417,9 +417,9 @@ body {
 .section-subtitle {
     color: var(--primary);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Robot', sans-serif;
 
 
 }
