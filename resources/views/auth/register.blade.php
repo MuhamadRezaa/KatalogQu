@@ -288,6 +288,9 @@
                     <label class="form-check-label" for="terms">
                         Saya setuju dengan <a href="#" class="text-link">syarat dan ketentuan</a>
                     </label>
+                    @error('terms')
+                        <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-4">
                     <i class="fas fa-user-plus me-2"></i>Buat Akun
@@ -333,6 +336,69 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- MEMULAI PENERAPAN VALIDASI FORM -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        // Menunggu seluruh halaman siap sebelum menjalankan script
+        $(document).ready(function() {
+            // Menangkap event submit pada form
+            $('#registerForm').on('submit', function(event) {
+                // Hapus semua pesan error sebelumnya
+                $('.error-message').remove();
+                let isValid = true; // Anggap form valid pada awalnya
+
+                // 1. Validasi Nama Lengkap (tidak boleh kosong)
+                const nameInput = $('#name');
+                if (nameInput.val().trim() === '') {
+                    isValid = false;
+                    // Tambahkan pesan error di bawah input nama
+                    nameInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Nama lengkap tidak boleh kosong.</div>');
+                }
+
+                // 2. Validasi Email (format harus benar)
+                const emailInput = $('#email');
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Pola regex sederhana untuk email
+                if (!emailPattern.test(emailInput.val())) {
+                    isValid = false;
+                    emailInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Format email tidak valid.</div>');
+                }
+
+                // 3. Validasi Password (tidak boleh kosong)
+                const passwordInput = $('#password');
+                if (passwordInput.val().trim() === '') {
+                    isValid = false;
+                    passwordInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Password tidak boleh kosong.</div>');
+                }
+
+                // 4. Validasi Konfirmasi Password (harus sama dengan password)
+                const passwordConfirmInput = $('#password_confirmation');
+                if (passwordInput.val() !== passwordConfirmInput.val()) {
+                    isValid = false;
+                    passwordConfirmInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Konfirmasi password tidak sama.</div>');
+                }
+                
+                // 5. Validasi Checkbox Syarat & Ketentuan
+                const termsCheckbox = $('#terms');
+                if (!termsCheckbox.is(':checked')) {
+                    isValid = false;
+                    // Cari parent dari checkbox untuk menempatkan pesan error
+                    termsCheckbox.closest('.form-check').after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Anda harus menyetujui syarat dan ketentuan.</div>');
+                }
+
+
+                // Jika salah satu validasi gagal (isValid menjadi false)
+                if (!isValid) {
+                    // Mencegah form dikirim ke server
+                    event.preventDefault();
+                }
+                // Jika semua validasi berhasil, form akan dikirim secara normal.
+            });
+        });
+    </script>
+    <!-- SELESAI PENERAPAN VALIDASI FORM -->
+
 </body>
 
 </html>
+l>

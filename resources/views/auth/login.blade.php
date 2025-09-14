@@ -208,6 +208,9 @@
                     <input type="password" class="form-control mb-1" id="password" name="password"
                         placeholder="Password" required>
                     <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                    @error('password')
+                        <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 form-check">
                     <input type="checkbox" class="form-check-input" id="remember" name="remember">
@@ -237,6 +240,40 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- MEMULAI PENERAPAN VALIDASI FORM (VERSI PERBAIKAN) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#loginForm').on('submit', function(event) {
+                    // Hapus semua pesan error sebelumnya
+                    $('.error-message').remove();
+                    let isValid = true;
+
+                    // 1. Validasi Email
+                    const emailInput = $('#email');
+                    if (emailInput.val().trim() === '') {
+                        isValid = false;
+                        // Selipkan pesan error setelah input field
+                        emailInput.after('<div class="text-danger error-message" style="font-size: 0.875em; padding-left: 5px;">Email tidak boleh kosong.</div>');
+                    }
+
+                    // 2. Validasi Password
+                    const passwordInput = $('#password');
+                    if (passwordInput.val().trim() === '') {
+                        isValid = false;
+                        // Selipkan pesan error setelah input field
+                        passwordInput.after('<div class="text-danger error-message" style="font-size: 0.875em; padding-left: 5px;">Password tidak boleh kosong.</div>');
+                    }
+
+                    // Jika ada validasi yang gagal, hentikan pengiriman form
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+        <!-- SELESAI PENERAPAN VALIDASI FORM -->
 </body>
 
 </html>

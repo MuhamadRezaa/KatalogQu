@@ -16,8 +16,15 @@
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/public.css') }}">
 
     <style>
+        /* Menyamakan tampilan navbar dengan welcome page (kondisi setelah scroll) */
+        #navbar {
+            background: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+        }
+
         * {
             font-family: 'Poppins', sans-serif;
         }
@@ -27,63 +34,7 @@
             min-height: 100vh;
         }
 
-        /* Navbar Styles */
-        .navbar {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand img {
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: #495057 !important;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #478413 !important;
-            transform: translateY(-1px);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background: linear-gradient(90deg, #478413, #6a9c3b);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        .btn-outline-success {
-            border: 2px solid #478413;
-            color: #478413;
-            font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-success:hover {
-            background: linear-gradient(45deg, #478413, #6a9c3b);
-            border-color: #478413;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(71, 132, 19, 0.3);
-        }
+        /* Navbar Styles disamakan dengan welcome.blade.php, diatur via public.css */
 
         /* Contact Section */
         .contact-section {
@@ -860,19 +811,7 @@
             observer.observe(el);
         });
 
-        // Navbar background change on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (navbar) {
-                if (window.scrollY > 50) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.backdropFilter = 'blur(10px)';
-                } else {
-                    navbar.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)';
-                    navbar.style.backdropFilter = 'blur(10px)';
-                }
-            }
-        });
+        // Script untuk scroll navbar dihapus karena style diatur oleh CSS di atas.
 
         // Add loading animation to submit button
         document.querySelector('form.needs-validation').addEventListener('submit', function(e) {
