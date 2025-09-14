@@ -419,7 +419,7 @@ body {
     font-weight: 600;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    font-family: 'Robot', sans-serif;
+    font-family: 'Roboto', sans-serif;
 
 
 }
@@ -630,7 +630,7 @@ body {
 .about-subtitle {
     color: var(--primary);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -1047,7 +1047,7 @@ body {
 
     .hero-subtitle {
         font-size: 1rem;
-        font-family: 'Robot', sans-serif;
+        font-family: 'Roboto', sans-serif;
     }
 
     .hero-buttons {
