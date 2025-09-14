@@ -130,7 +130,6 @@ class StoreController extends Controller
                 $q->where('is_active', true)
                     ->where('user_store_id', $userStore->id);
             }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -365,7 +364,6 @@ class StoreController extends Controller
                     ->where('user_store_id', $userStore->id)
                     ->where('product_category_id', $category->id);
             }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -499,7 +497,6 @@ class StoreController extends Controller
                 $q->where('is_active', true)
                     ->where('user_store_id', $userStore->id);
             }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -593,7 +590,6 @@ class StoreController extends Controller
                 $q->where('is_active', true)
                     ->where('user_store_id', $userStore->id);
             }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -800,7 +796,6 @@ class StoreController extends Controller
         $subCategories = $query->withCount(['products' => function ($query) {
             $query->where('is_active', true);
         }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
@@ -935,7 +930,6 @@ class StoreController extends Controller
                 $q->where('is_active', true)
                     ->where('user_store_id', $userStore->id);
             }])
-            ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
