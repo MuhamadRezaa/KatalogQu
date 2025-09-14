@@ -144,7 +144,7 @@ class StoreController extends Controller
             ->get();
 
         // Load banners from database
-        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+        $banners = $userStore->heroes()->where('is_active', true)->get();
 
         // Try to load template-specific view based on catalog template
         $catalogTemplate = $userStore->catalogTemplate;
@@ -241,7 +241,7 @@ class StoreController extends Controller
             ->get();
 
         // Load banners from database
-        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+        $banners = $userStore->heroes()->where('is_active', true)->get();
 
         // Try to load template-specific view based on catalog template
         $catalogTemplate = $userStore->catalogTemplate;
@@ -379,7 +379,7 @@ class StoreController extends Controller
             ->get();
 
         // Load banners from database
-        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+        $banners = $userStore->heroes()->where('is_active', true)->get();
 
         // Try to load template-specific view based on catalog template
         $catalogTemplate = $userStore->catalogTemplate;
@@ -512,7 +512,7 @@ class StoreController extends Controller
             ->get();
 
         // Load banners from database
-        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+        $banners = $userStore->heroes()->where('is_active', true)->get();
 
         // Try to load template-specific view based on catalog template
         $catalogTemplate = $userStore->catalogTemplate;
@@ -605,7 +605,7 @@ class StoreController extends Controller
             ->get();
 
         // Load banners from database
-        $banners = $userStore->heroes()->where('is_active', true)->orderBy('order')->get();
+        $banners = $userStore->heroes()->where('is_active', true)->get();
 
         // Try to load template-specific view based on catalog template
         $catalogTemplate = $userStore->catalogTemplate;
