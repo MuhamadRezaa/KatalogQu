@@ -292,7 +292,7 @@
                                 </div>
                                 <div class="demo-buttons-external">
                                     <a href="/demo/{{ $template->slug }}" class="btn-demo btn-demo-primary"
-                                        onclick="showDemo('{{ $template->name }}')">Demo</a>
+                                        onclick="showDemo('{{ $template->name }}')" target="_blank">Demo</a>
                                 </div>
                             </div>
                         </div>

@@ -184,7 +184,7 @@
         }
 
         .swiper-pagination-bullet-active {
-            background: #ec4899;
+            background: #808080;
             transform: scale(1.2);
         }
 
@@ -207,9 +207,9 @@
         .swiper-button-prev:hover,
         .swiper-button-next:hover {
             color: white !important;
-            background: rgba(236, 72, 153, 0.9) !important;
+            background: rgba(128, 128, 128, 0.9) !important;
             transform: scale(1.1);
-            border-color: rgba(236, 72, 153, 0.8);
+            border-color: rgba(128, 128, 128, 0.8);
         }
 
         .swiper-button-prev::after,
@@ -1358,11 +1358,11 @@
                             ${images.map((img, index) => {
                                 const imgUrl = `${window.location.origin}/tenancy/assets/${img.replace(/^\//, '')}`;
                                 return `
-                                                                                                                                                                                                                            <img src="${imgUrl}"
-                                                                                                                                                                                                                                 alt="${product.name} ${index + 1}"
-                                                                                                                                                                                                                                 class="gallery-thumb ${index === 0 ? 'active' : ''}"
-                                                                                                                                                                                                                                 onclick="changeMainImage('${imgUrl}', this)">
-                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                            <img src="${imgUrl}"
+                                                                                                                                                                                                                                                 alt="${product.name} ${index + 1}"
+                                                                                                                                                                                                                                                 class="gallery-thumb ${index === 0 ? 'active' : ''}"
+                                                                                                                                                                                                                                                 onclick="changeMainImage('${imgUrl}', this)">
+                                                                                                                                                                                                                                        `;
                             }).join('')}
                         </div>
                     `;
@@ -1428,11 +1428,11 @@
 
                             <div class="modal-product-specs">
                                 ${material ? `
-                                                                                                                                                                                                                            <div class="modal-section">
-                                                                                                                                                                                                                                <h4>Material:</h4>
-                                                                                                                                                                                                                                <p class="spec-value">${material}</p>
-                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                        ` : ''}
+                                                                                                                                                                                                                                            <div class="modal-section">
+                                                                                                                                                                                                                                                <h4>Material:</h4>
+                                                                                                                                                                                                                                                <p class="spec-value">${material}</p>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                        ` : ''}
                                 ${sizesHTML}
                                 ${colorsHTML}
                             </div>
