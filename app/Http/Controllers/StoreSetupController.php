@@ -164,7 +164,19 @@ class StoreSetupController extends Controller
             if ($logoPath && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
             }
-            $logoPath = $request->file('store_logo')->store('store-logos', 'public');
+
+            // Ambil ekstensi file asli
+            $extension = $request->file('store_logo')->getClientOriginalExtension();
+
+            // Buat nama file sesuai store_name (slug biar aman untuk nama file)
+            $fileName = Str::slug($request->store_name) . '.' . $extension;
+
+            // Simpan file dengan nama khusus
+            $logoPath = $request->file('store_logo')->storeAs(
+                'store-logos',
+                $fileName,
+                'public'
+            );
         }
 
         try {
