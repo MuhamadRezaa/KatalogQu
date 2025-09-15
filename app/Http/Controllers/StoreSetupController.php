@@ -34,7 +34,7 @@ class StoreSetupController extends Controller
         // If UserStore exists and already completed, redirect to admin
         if ($userStore && $userStore->setup_status === 'completed' && $userStore->is_active) {
             $domain = $userStore->subdomain . '.' . config('app.domain', 'localhost');
-            return redirect('http://' . $domain . '/admin')->with('success', 'Store already set up. Welcome back!');
+            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Store already set up. Welcome back!');
         }
 
         // If UserStore exists and is pending validation, redirect to pending page
@@ -244,7 +244,7 @@ class StoreSetupController extends Controller
         // If store is already active, redirect to admin
         if ($userStore->is_active) {
             $domain = $userStore->subdomain . '.' . config('app.domain', 'localhost');
-            return redirect('http://' . $domain . '/admin')->with('success', 'Your store has been approved!');
+            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Your store has been approved!');
         }
 
         return view('payment.store-setup.pending-validation', compact('userStore'));
