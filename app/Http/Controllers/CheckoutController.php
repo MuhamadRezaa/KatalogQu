@@ -501,18 +501,22 @@ class CheckoutController extends Controller
         ]);
 
         try {
+            Log::info('[RENEWAL] Entering try-catch block.');
             DB::beginTransaction();
 
             $user = Auth::user();
+            Log::info('[RENEWAL] User authenticated.', ['user_id' => $user->id]);
 
             // Dapatkan tanggal kedaluwarsa terakhir
             $lastPurchase = TemplatePurchase::where('user_id', $user->id)
                 ->whereIn('payment_status', ['paid', 'settlement'])
                 ->orderBy('expires_at', 'desc')
                 ->first();
+            Log::info('[RENEWAL] Found last purchase.', ['last_purchase_id' => $lastPurchase ? $lastPurchase->id : null]);
 
             // Perbaikan: Ambil paket langganan (CatalogTemplate) langsung dari data toko ($userStore)
             $catalogTemplate = \App\Models\CatalogTemplate::find($userStore->catalog_template_id);
+            Log::info('[RENEWAL] Found catalog template.', ['template_id' => $catalogTemplate ? $catalogTemplate->id : null]);
 
             if (!$catalogTemplate) {
                 // Jika template tidak ditemukan berdasarkan ID, lempar error
@@ -524,6 +528,7 @@ class CheckoutController extends Controller
             if ($lastPurchase && $lastPurchase->expires_at && Carbon::parse($lastPurchase->expires_at)->isFuture()) {
                 $newExpiry = Carbon::parse($lastPurchase->expires_at)->addMonths($catalogTemplate->subscription_duration_months);
             }
+            Log::info('[RENEWAL] Calculated new expiry date.', ['new_expiry' => $newExpiry->toDateTimeString()]);
 
             // Buat ID transaksi unik
             $orderId = 'RENEWAL-' . Str::upper(Str::random(8)) . '-' . now()->timestamp;
@@ -552,11 +557,13 @@ class CheckoutController extends Controller
             $purchase->payment_details = json_encode($details);
 
             $purchase->save();
+            Log::info('[RENEWAL] Created new TemplatePurchase record.', ['purchase_id' => $purchase->id, 'status' => 'pending']);
 
             $userStore->payment_transaction_id = $orderId;
             $userStore->save();
 
             if ($validated['payment_method'] === 'xendit') {
+                Log::info('[RENEWAL] Creating Xendit invoice...');
                 $invoice = $this->xenditService->createInvoice(
                     $orderId,
                     $calculated_total,
@@ -565,6 +572,7 @@ class CheckoutController extends Controller
                     $user->name,
                     'renewal' // <--- Tambahkan parameter keenam ini
                 );
+                Log::info('[RENEWAL] Xendit invoice created.', ['invoice_id' => $invoice ? $invoice->getId() : null]);
 
                 if ($invoice && $invoice->getId()) {
                     $details = json_decode((string) $purchase->payment_details, true) ?? [];
