@@ -545,6 +545,14 @@ class CheckoutController extends Controller
             $purchase->payment_status = 'pending';
             $purchase->payment_method = $validated['payment_method'];
             $purchase->expires_at = $newExpiry;
+
+            // Menambahkan detail penting untuk webhook perpanjangan
+            $details = [
+                'request_type' => 'extension',
+                'user_store_id' => $userStore->id,
+            ];
+            $purchase->payment_details = json_encode($details);
+
             $purchase->save();
 
             $userStore->payment_transaction_id = $orderId;
@@ -644,34 +652,16 @@ class CheckoutController extends Controller
         }
 
         // Dapatkan user store yang terkait dengan pembelian
-        $userStore = $templatePurchase->userStore;
-        $tenant = $userStore->tenant;
+        $userStore = UserStore::where('payment_transaction_id', $templatePurchase->transaction_id)->first();
 
         if (!$userStore) {
             return redirect()->route('home')->withErrors(['message' => 'Data toko pengguna tidak ditemukan.']);
         }
-
-        // Periksa apakah status pembayaran masih pending
-        if ($templatePurchase->payment_status === 'pending') {
-            // Jika ya, perbarui masa aktif di tabel user_stores
-            $currentExpiry = Carbon::parse($userStore->expires_at);
-            $newExpiryDate = $currentExpiry->addYear(1);
-
-            $userStore->update([
-                'expires_at' => $newExpiryDate,
-            ]);
-
-            // Perbarui status pembayaran di tabel template_purchases
-            $templatePurchase->update([
-                'payment_status' => 'settlement',
-            ]);
-
-            Log::info("Pembayaran perpanjangan berhasil. User store " . $userStore->id . " diperbarui.");
-        }
+        $tenant = $userStore->tenant;
 
         // Ambil pembelian terbaru dari database, yang akan digunakan sebagai $latestPurchase
         $latestPurchase = TemplatePurchase::where('user_id', $templatePurchase->user_id)
-            ->where('payment_status', 'settlement')
+            ->whereIn('payment_status', ['paid', 'settlement'])
             ->orderBy('created_at', 'desc')
             ->first();
 
