@@ -491,28 +491,16 @@ class CheckoutController extends Controller
         $loggedInUserId = Auth::id();
         $tenantOwnerId = $userStore->user_id;
 
-        Log::info('Otorisasi perpanjangan toko', [
-            'logged_in_user_id' => $loggedInUserId,
-            'tenant_owner_id' => $tenantOwnerId,
-            'user_store_id' => $userStore->id
-        ]);
-
-        // DEBUG: Log all request data to check for validation issues
-        Log::info('Data request perpanjangan', $request->all());
-
         if ($loggedInUserId !== $tenantOwnerId) {
             return response()->json(['error' => 'Akses ditolak. Anda tidak memiliki izin untuk mengelola toko ini.'], 403);
         }
 
         // Validasi tambahan, tidak lagi memerlukan template_id dari request
-        Log::info('Memulai validasi payment_method.');
         $validated = $request->validate([
             'payment_method' => 'required|in:xendit,bank_transfer,e_wallet,qris',
         ]);
-        Log::info('Validasi payment_method berhasil.');
 
         try {
-            Log::info('Memasuki blok try-catch untuk proses renewal.');
             DB::beginTransaction();
 
             $user = Auth::user();
@@ -524,18 +512,17 @@ class CheckoutController extends Controller
                 ->first();
 
             // Perbaikan: Ambil paket langganan (CatalogTemplate) langsung dari data toko ($userStore)
-            // Ini sesuai permintaan agar tidak bergantung pada template_id dari frontend
-            $catalogTemplate = $userStore->catalogTemplate;
+            $catalogTemplate = \App\Models\CatalogTemplate::find($userStore->catalog_template_id);
 
             if (!$catalogTemplate) {
-                // Jika relasi tidak ditemukan atau null, lempar error
-                throw new \Exception('Data paket langganan untuk toko ini tidak ditemukan.');
+                // Jika template tidak ditemukan berdasarkan ID, lempar error
+                throw new \Exception('Data paket langganan untuk toko ini tidak ditemukan (ID: ' . $userStore->catalog_template_id . ').');
             }
 
             // Hitung tanggal kedaluwarsa baru
             $newExpiry = now()->addMonths($catalogTemplate->subscription_duration_months);
-            if ($lastPurchase && $lastPurchase->expires_at > now()) {
-                $newExpiry = $lastPurchase->expires_at->addMonths($catalogTemplate->subscription_duration_months);
+            if ($lastPurchase && $lastPurchase->expires_at && Carbon::parse($lastPurchase->expires_at)->isFuture()) {
+                $newExpiry = Carbon::parse($lastPurchase->expires_at)->addMonths($catalogTemplate->subscription_duration_months);
             }
 
             // Buat ID transaksi unik
