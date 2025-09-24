@@ -504,9 +504,8 @@ class CheckoutController extends Controller
             return response()->json(['error' => 'Akses ditolak. Anda tidak memiliki izin untuk mengelola toko ini.'], 403);
         }
 
-        // Validasi tambahan
+        // Validasi tambahan, tidak lagi memerlukan template_id dari request
         $validated = $request->validate([
-            'template_id' => 'required|exists:catalog_templates,id',
             'payment_method' => 'required|in:xendit,bank_transfer,e_wallet,qris',
         ]);
 
@@ -517,12 +516,18 @@ class CheckoutController extends Controller
 
             // Dapatkan tanggal kedaluwarsa terakhir
             $lastPurchase = TemplatePurchase::where('user_id', $user->id)
-                ->where('payment_status', 'paid')
+                ->whereIn('payment_status', ['paid', 'settlement'])
                 ->orderBy('expires_at', 'desc')
                 ->first();
 
-            // Perbaikan: Ambil objek CatalogTemplate untuk durasi dan harga
-            $catalogTemplate = CatalogTemplate::findOrFail($validated['template_id']);
+            // Perbaikan: Ambil paket langganan (CatalogTemplate) langsung dari data toko ($userStore)
+            // Ini sesuai permintaan agar tidak bergantung pada template_id dari frontend
+            $catalogTemplate = $userStore->catalogTemplate;
+
+            if (!$catalogTemplate) {
+                // Jika relasi tidak ditemukan atau null, lempar error
+                throw new \Exception('Data paket langganan untuk toko ini tidak ditemukan.');
+            }
 
             // Hitung tanggal kedaluwarsa baru
             $newExpiry = now()->addMonths($catalogTemplate->subscription_duration_months);
