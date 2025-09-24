@@ -497,6 +497,9 @@ class CheckoutController extends Controller
             'user_store_id' => $userStore->id
         ]);
 
+        // DEBUG: Log all request data to check for validation issues
+        Log::info('Data request perpanjangan', $request->all());
+
         if ($loggedInUserId !== $tenantOwnerId) {
             return response()->json(['error' => 'Akses ditolak. Anda tidak memiliki izin untuk mengelola toko ini.'], 403);
         }
