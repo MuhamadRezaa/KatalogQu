@@ -91,11 +91,18 @@ class XenditController extends Controller
 
             if ($purchase) {
                 $purchase->payment_status = strtolower($payload['status']);
-                $purchase->payment_details = json_encode($payload);
+
+                // Ambil detail yang sudah ada ('request_type', 'user_store_id')
+                $paymentDetails = json_decode($purchase->payment_details, true) ?? [];
+                
+                // Tambahkan payload callback dari Xendit ke dalam details untuk arsip
+                $paymentDetails['xendit_callback_payload'] = $payload;
+                
+                // Simpan kembali gabungan details
+                $purchase->payment_details = json_encode($paymentDetails);
                 $purchase->save();
 
                 // Perbarui masa aktif di tabel user_stores jika ini perpanjangan
-                $paymentDetails = json_decode($purchase->payment_details, true);
                 if (isset($paymentDetails['request_type']) && $paymentDetails['request_type'] === 'extension') {
                     $userStore = UserStore::find($paymentDetails['user_store_id']);
                     if ($userStore) {
