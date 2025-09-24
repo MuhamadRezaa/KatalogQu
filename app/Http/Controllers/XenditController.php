@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Models\TemplatePurchase;
+// Tambahkan service dan model yang diperlukan
+use App\Services\XenditService;
+use App\Models\UserStore;
+use Carbon\Carbon;
+
+class XenditController extends Controller
+{
+    protected $xenditService;
+
+    public function __construct(XenditService $xenditService)
+    {
+        $this->xenditService = $xenditService;
+    }
+
+    /**
+     * Create a new Xendit invoice and save the transaction.
+     */
+    public function createInvoice(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'email' => 'required|email',
+            'name' => 'required|string',
+            'catalog_template_id' => 'nullable|integer',
+            'user_store_id' => 'nullable|integer',
+        ]);
+
+        if ($request->user_store_id) {
+            $orderId = 'RENEWAL-' . $request->user_store_id . '-' . time();
+            $description = 'Perpanjangan Layanan Toko';
+            $amount = 100000;
+        } else {
+            $orderId = 'KatalogQu-' . time();
+            $description = 'Pembelian Template ' . $request->catalog_template_id;
+            $amount = 100000;
+        }
+
+        TemplatePurchase::create([
+            'transaction_id' => $orderId,
+            'user_id' => $request->user_id,
+            'catalog_template_id' => $request->catalog_template_id,
+            'amount' => $amount,
+            'final_amount' => $amount,
+            'payment_status' => 'pending',
+            'payment_details' => json_encode(['user_store_id' => $request->user_store_id, 'request_type' => $request->user_store_id ? 'extension' : 'new_purchase']),
+            // Kolom expires_at dihilangkan dari sini karena akan diperbarui setelah pembayaran berhasil
+        ]);
+
+        try {
+            $invoice = $this->xenditService->createInvoice(
+                $orderId,
+                $amount,
+                $request->email,
+                $description,
+                $request->name,
+                'renewal'
+            );
+
+            return response()->json([
+                'status' => 'success',
+                'redirect_url' => $invoice['invoice_url']
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Xendit Invoice Creation Failed: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Gagal membuat invoice.'], 500);
+        }
+    }
+
+    /**
+     * Handle incoming Xendit notifications (callbacks/webhooks).
+     */
+    public function notificationHandler(Request $request)
+    {
+        Log::info('Xendit notification received.', $request->all());
+
+        $payload = $request->all();
+
+        if (isset($payload['status']) && ($payload['status'] === 'PAID' || $payload['status'] === 'SETTLED')) {
+            $orderId = $payload['external_id'];
+
+            $purchase = TemplatePurchase::where('transaction_id', $orderId)
+                ->where('payment_status', 'pending')
+                ->first();
+
+            if ($purchase) {
+                $purchase->payment_status = strtolower($payload['status']);
+                $purchase->payment_details = json_encode($payload);
+                $purchase->save();
+
+                // Perbarui masa aktif di tabel user_stores jika ini perpanjangan
+                $paymentDetails = json_decode($purchase->payment_details, true);
+                if (isset($paymentDetails['request_type']) && $paymentDetails['request_type'] === 'extension') {
+                    $userStore = UserStore::find($paymentDetails['user_store_id']);
+                    if ($userStore) {
+                        $currentExpiry = Carbon::parse($userStore->expires_at);
+                        $newExpiryDate = $currentExpiry->addYear(1);
+
+                        $userStore->update([
+                            'expires_at' => $newExpiryDate,
+                        ]);
+                        Log::info('User store ' . $userStore->id . ' expires_at updated successfully.');
+                    }
+                }
+
+                Log::info('Payment status updated to PAID for order: ' . $orderId);
+            } else {
+                Log::warning('Received Xendit notification for an unknown or already processed order: ' . $orderId);
+            }
+        }
+
+        return response()->json(['status' => 'Notification received'], 200);
+    }
+}

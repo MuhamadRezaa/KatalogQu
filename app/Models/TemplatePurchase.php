@@ -39,6 +39,11 @@ class TemplatePurchase extends Model
         'final_amount' => 'decimal:2'
     ];
 
+    public function userStore(): HasOne
+    {
+        return $this->hasOne(UserStore::class, 'payment_transaction_id', 'transaction_id');
+    }
+
     /**
      * Get the user that owns the template purchase.
      */
@@ -108,9 +113,9 @@ class TemplatePurchase extends Model
      */
     public function canDownload(): bool
     {
-        return $this->isPaid() && 
-               $this->download_count < $this->max_downloads && 
-               ($this->expires_at === null || $this->expires_at->isFuture());
+        return $this->isPaid() &&
+            $this->download_count < $this->max_downloads &&
+            ($this->expires_at === null || $this->expires_at->isFuture());
     }
 
     /**
@@ -135,4 +140,8 @@ class TemplatePurchase extends Model
         return $token;
     }
 
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class, 'user_id', 'id');
+    }
 }

@@ -129,6 +129,17 @@
                     </a>
                 </li>
 
+                {{-- PENAMBAHAN MENU PESAN MASUK --}}
+                <li class="sidebar-list">
+                    <i class="fa fa-thumb-tack"></i>
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/contacts*') ? 'active' : '' }}"
+                        href="{{ route('admin.contacts.index') }}">
+                        <i class="fa fa-envelope menu-icon" aria-hidden="true"></i>
+                        <span>Pesan Masuk</span>
+                    </a>
+                </li>
+                {{-- AKHIR PENAMBAHAN --}}
+
                 {{-- <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title link-nav" href="/admin/settings">

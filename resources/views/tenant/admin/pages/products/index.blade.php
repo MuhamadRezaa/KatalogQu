@@ -306,15 +306,24 @@
                                     <label for="edit_name" class="form-label">Nama Produk <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="edit_name" name="name" required>
+                                    @error('name')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_description" class="form-label">Deskripsi</label>
                                     <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                                    @error('description')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_image" class="form-label">Ganti Gambar Utama Produk</label>
                                     <input type="file" class="form-control" id="edit_image" name="image"
                                         accept="image/jpeg,image/png,image/webp">
+                                    @error('image')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                     <div id="edit_image_preview_container" class="mt-2">
                                         <!-- Preview of new image will be inserted here by JS -->
                                     </div>
@@ -336,24 +345,37 @@
                                     <button type="button" class="btn btn-sm btn-outline-primary"
                                         id="edit_add_additional_image_btn"><i class="fa fa-plus"></i> Tambah
                                         Gambar</button>
+                                    @error('additional_images')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_price" class="form-label">Harga <span
                                             class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="edit_price" name="price"
                                         min="0" step="0.01" required>
+                                    @error('price')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_old_price" class="form-label">Harga Lama (Opsional)</label>
                                     <input type="number" class="form-control" id="edit_old_price" name="old_price"
                                         min="0" step="0.01">
+                                    @error('old_price')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_sku" class="form-label">SKU</label>
                                     <input type="text" class="form-control" id="edit_sku" name="sku">
+                                    @error('sku')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
+
                                 <div class="mb-3">
                                     <label for="edit_product_category_id" class="form-label">Kategori Produk</label>
                                     <select class="form-select" id="edit_product_category_id" name="product_category_id">
@@ -362,48 +384,82 @@
                                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('product_category_id')
+                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label for="edit_sub_category_id" class="form-label">Sub Kategori Produk</label>
-                                    <select class="form-select" id="edit_sub_category_id" name="sub_category_id">
-                                        <option value="">Pilih Sub Kategori</option>
-                                        @foreach ($subCategories as $subCat)
-                                            <option value="{{ $subCat->id }}">{{ $subCat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_brand_id" class="form-label">Brand Produk</label>
-                                    <select class="form-select" id="edit_brand_id" name="brand_id">
-                                        <option value="">Pilih Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_product_unit_id" class="form-label">Unit Produk</label>
-                                    <select class="form-select" id="edit_product_unit_id" name="product_unit_id">
-                                        <option value="">Pilih Unit</option>
-                                        @foreach ($productUnits as $unit)
-                                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Spesifikasi</label>
-                                    <div id="edit_specification_fields">
-                                        <!-- Existing specifications will be loaded here by JS -->
+
+                                @if (in_array('subkategoriproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="edit_sub_category_id" class="form-label">Sub Kategori Produk</label>
+                                        <select class="form-select" id="edit_sub_category_id" name="sub_category_id">
+                                            <option value="">Pilih Sub Kategori</option>
+                                            @foreach ($subCategories as $subCat)
+                                                <option value="{{ $subCat->id }}">{{ $subCat->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('sub_category_id')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
-                                        id="edit_add_spec_field_btn"><i class="fa fa-plus"></i> Tambah
-                                        Spesifikasi</button>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
-                                    <input type="number" class="form-control" id="edit_estimasi_waktu"
-                                        name="estimasi_waktu" min="0">
-                                </div>
+                                @endif
+
+                                @if (in_array('brandproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="edit_brand_id" class="form-label">Brand Produk</label>
+                                        <select class="form-select" id="edit_brand_id" name="brand_id">
+                                            <option value="">Pilih Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('brand_id')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if (in_array('unitproduk', $menus))
+                                    <div class="mb-3">
+                                        <label for="edit_product_unit_id" class="form-label">Unit Produk</label>
+                                        <select class="form-select" id="edit_product_unit_id" name="product_unit_id">
+                                            <option value="">Pilih Unit</option>
+                                            @foreach ($productUnits as $unit)
+                                                <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('product_unit_id')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if (in_array('spesifikasi', $menus))
+                                    <div class="mb-3">
+                                        <label class="form-label">Spesifikasi</label>
+                                        <div id="edit_specification_fields">
+                                            <!-- Existing specifications will be loaded here by JS -->
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            id="edit_add_spec_field_btn"><i class="fa fa-plus"></i> Tambah
+                                            Spesifikasi</button>
+                                        @error('specification')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if (in_array('estimasiwaktu', $menus))
+                                    <div class="mb-3">
+                                        <label for="edit_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
+                                        <input type="number" class="form-control" id="edit_estimasi_waktu"
+                                            name="estimasi_waktu" min="0">
+                                        @error('estimasi_waktu')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
+
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="edit_is_active"

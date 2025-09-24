@@ -18,8 +18,8 @@
                 <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
                     <i data-lucide="check" class="h-10 w-10 text-green-600"></i>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
-                <p class="text-gray-600 mb-8">Now let's set up your store</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Pembayaran Berhasil!</h2>
+                <p class="text-gray-600 mb-8">Sekarang, mari kita siapkan toko Anda.</p>
             </div>
 
             <div class="mt-6 bg-white shadow rounded-lg px-6 py-4">
@@ -27,8 +27,8 @@
                 <div class="text-sm text-gray-600">
                     <p><strong>Template:</strong> {{ $payment->payment_details['template_name'] ?? 'Store Template' }}
                     </p>
-                    <p><strong>Amount:</strong> Rp {{ number_format($payment->final_amount, 0, ',', '.') }}</p>
-                    <p><strong>Transaction ID:</strong> {{ $payment->transaction_id }}</p>
+                    <p><strong>Total Tagihan:</strong> Rp {{ number_format($payment->final_amount, 0, ',', '.') }}</p>
+                    <p><strong>ID Transaksi:</strong> {{ $payment->transaction_id }}</p>
                 </div>
             </div>
 
@@ -39,11 +39,11 @@
 
                     <div class="mb-6">
                         <label for="store_name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Store Name <span class="text-red-500">*</span>
+                            Nama Toko <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="store_name" name="store_name"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Enter your store name" required>
+                            placeholder="Tuliskan nama toko Anda" required>
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_name_error"></div>
                     </div>
 
@@ -54,7 +54,7 @@
                         <div class="flex">
                             <input type="text" id="subdomain" name="subdomain"
                                 class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="yourstore" pattern="[a-zA-Z0-9-]+"
+                                placeholder="tokoanda" pattern="[a-zA-Z0-9-]+"
                                 title="Only letters, numbers, and hyphens allowed" required>
                             <span
                                 class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md">
@@ -64,23 +64,24 @@
                         <div class="text-sm mt-1" id="subdomain_feedback"></div>
                         <div class="text-red-500 text-sm mt-1 hidden" id="subdomain_error"></div>
                         <p class="text-xs text-gray-500 mt-1">Your store will be accessible at:
-                            <span id="url-preview">{{ request()->getScheme() }}://<span id="subdomain-preview">yourstore</span>.{{ config('app.domain', 'localhost') }}</span>
+                            <span id="url-preview">{{ request()->getScheme() }}://<span
+                                    id="subdomain-preview">tokoanda</span>.{{ config('app.domain', 'localhost') }}</span>
                         </p>
                     </div>
 
                     <div class="mb-6">
                         <label for="store_description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Store Description
+                            Deskripsi Toko
                         </label>
                         <textarea id="store_description" name="store_description" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Describe your store...">{{ old('store_description', $userStore->store_description ?? '') }}</textarea>
+                            placeholder="Deskripsikan Toko Anda...">{{ old('store_description', $userStore->store_description ?? '') }}</textarea>
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_description_error"></div>
                     </div>
 
                     <div class="mb-6">
                         <label for="store_logo" class="block text-sm font-medium text-gray-700 mb-2">
-                            Store Logo
+                            Logo Toko
                         </label>
                         <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors"
                             id="logo_dropzone">
@@ -93,31 +94,31 @@
                                 </svg>
                                 <div class="flex text-sm text-gray-600">
                                     <label for="store_logo"
-                                        class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload a logo</span>
+                                        class="relative cursor-pointer bg-white rounded-md font-medium text-[#478413] hover:text-[#34571E] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                        <span>Unggah logo</span>
                                         <input id="store_logo" name="store_logo" type="file" class="sr-only"
                                             accept="image/*">
                                     </label>
-                                    <p class="pl-1">or drag and drop</p>
+                                    <p class="pl-1">atau seret dan letakkan</p>
                                 </div>
                                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
                             </div>
                             <div class="hidden" id="logo_preview">
                                 <img class="mx-auto h-32 w-32 object-cover rounded-lg" id="logo_preview_img">
                                 <button type="button" class="mt-2 text-sm text-red-600 hover:text-red-500"
-                                    id="remove_logo">Remove</button>
+                                    id="remove_logo">Hapus</button>
                             </div>
                         </div>
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_logo_error"></div>
                     </div>
 
                     <div class="mb-6">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Kontak</h3>
 
                         <div class="grid grid-cols-1 gap-4">
                             <div>
                                 <label for="store_phone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Phone Number
+                                    Nomor Telepon
                                 </label>
                                 <input type="tel" id="store_phone" name="store_phone"
                                     value="{{ old('store_phone', $userStore->store_phone ?? '') }}"
@@ -128,7 +129,7 @@
 
                             <div>
                                 <label for="store_email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Email Address
+                                    Alamat Email
                                 </label>
                                 <input type="email" id="store_email" name="store_email"
                                     value="{{ old('store_email', $userStore->store_email ?? '') }}"
@@ -141,11 +142,11 @@
 
                     <div class="mb-6">
                         <label for="store_address" class="block text-sm font-medium text-gray-700 mb-2">
-                            Store Address
+                            Alamat Toko
                         </label>
                         <textarea id="store_address" name="store_address" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Enter your store address...">{{ old('store_address', $userStore->store_address ?? '') }}</textarea>
+                            placeholder="Masukkan alamat toko Anda...">{{ old('store_address', $userStore->store_address ?? '') }}</textarea>
                         <div class="text-red-500 text-sm mt-1 hidden" id="store_address_error"></div>
                     </div>
 
@@ -237,7 +238,7 @@
                 if (subdomain) {
                     subdomainPreview.textContent = subdomain;
                 } else {
-                    subdomainPreview.textContent = 'yourstore';
+                    subdomainPreview.textContent = 'tokoanda';
                 }
 
                 clearTimeout(subdomainCheckTimeout);

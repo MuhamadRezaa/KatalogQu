@@ -95,9 +95,7 @@ class AdminController extends Controller
                 'payment_method' => $purchase->payment_method,
                 'payment_status' => $purchase->payment_status,
                 'order_date' => $purchase->created_at->format('Y-m-d'),
-                'payment_date' => $purchase->paid_at ? $purchase->paid_at->format('Y-m-d') : null,
-                'download_count' => $purchase->download_count,
-                'max_downloads' => $purchase->max_downloads
+                'payment_date' => $purchase->paid_at ? $purchase->paid_at->format('Y-m-d') : null
             ];
 
             return response()->json([
@@ -134,9 +132,6 @@ class AdminController extends Controller
                 'payment_status' => 'paid',
                 'paid_at' => now()
             ]);
-
-            // Generate download token
-            $purchase->generateDownloadToken();
 
             return response()->json([
                 'success' => true,
@@ -180,48 +175,6 @@ class AdminController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error cancelling order'
-            ], 500);
-        }
-    }
-
-    /**
-     * Download template via API
-     */
-    public function downloadTemplate($orderId)
-    {
-        try {
-            $purchase = TemplatePurchase::with(['catalogTemplate'])
-                ->where('transaction_id', $orderId)
-                ->where('payment_status', 'paid')
-                ->first();
-
-            if (!$purchase) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Order not found or not paid'
-                ], 404);
-            }
-
-            if (!$purchase->canDownload()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Download limit exceeded or expired'
-                ], 403);
-            }
-
-            // Increment download count
-            $purchase->incrementDownload();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Template download initiated',
-                'download_url' => $purchase->catalogTemplate->download_url,
-                'remaining_downloads' => $purchase->max_downloads - $purchase->download_count
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error processing download'
             ], 500);
         }
     }

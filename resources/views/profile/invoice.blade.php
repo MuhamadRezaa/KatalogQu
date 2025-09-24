@@ -111,8 +111,18 @@
                 <div class="info-row">
                     <span class="label">Tanggal</span>
                     <span
-                        class="value">{{ $purchase->paid_at ? $purchase->paid_at->format('d/m/Y H:i') : $purchase->created_at->format('d/m/Y H:i') }}
+                        class="value">{{ $purchase->paid_at ? $purchase->paid_at->format('d F Y H:i') : $purchase->created_at->format('d F Y H:i') }}
                         WIB</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Akses Template Berlaku Hingga</span>
+                    <span class="value">
+                        @if ($purchase->userStore && $purchase->userStore->expires_at)
+                            {{ $purchase->userStore->expires_at->format('d F Y H:i') }} WIB
+                        @else
+                            -
+                        @endif
+                    </span>
                 </div>
                 <div class="info-row">
                     <span class="label">Invoice</span>

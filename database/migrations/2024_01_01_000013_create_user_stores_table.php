@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('tenant_id')->nullable();
             $table->boolean('tenant_created')->default(false);
             $table->timestamp('activated_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
 
             // SECURITY ENHANCEMENT: Additional tracking columns
             $table->json('setup_data')->nullable(); // Store template and customer data

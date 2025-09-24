@@ -30,11 +30,13 @@ class UserStore extends Model
         'setup_data', // SECURITY ENHANCEMENT: Store template and customer data
         'is_active',
         'activated_at',
+        'expires_at',
         'facebook_url',
         'instagram_url',
         'twitter_url',
         'whatsapp_number',
-        'maintenance_mode'
+        'maintenance_mode',
+        'expires_at'
     ];
 
     protected $casts = [
@@ -43,6 +45,7 @@ class UserStore extends Model
         'setup_data' => 'array', // SECURITY ENHANCEMENT: Cast to array for JSON storage
         'is_active' => 'boolean',
         'tenant_created' => 'boolean',
+        'expires_at' => 'datetime',
         'maintenance_mode' => 'boolean'
     ];
 

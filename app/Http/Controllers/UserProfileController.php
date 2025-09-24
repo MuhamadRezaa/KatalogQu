@@ -21,7 +21,7 @@ class UserProfileController extends Controller
 
         // Mengambil riwayat pembelian
         $purchases = TemplatePurchase::where('user_id', $user->id)
-            ->with('catalogTemplate')
+            ->with(['catalogTemplate', 'payment'])
             ->latest()
             ->paginate(10, ['*'], 'purchases_page'); // Paginasi untuk pembelian
 
@@ -35,7 +35,7 @@ class UserProfileController extends Controller
         // Mengambil data setup toko yang masih tertunda
         $pendingSetups = UserStore::where('user_id', $user->id)
             ->whereIn('setup_status', ['pending', 'in_progress', 'pending_validation'])
-            ->with('catalogTemplate') // Memuat relasi template
+            ->with(['catalogTemplate', 'templatePurchase.payment']) // Memuat relasi template & pembelian
             ->latest()
             ->get();
         // --- AKHIR PERUBAHAN ---

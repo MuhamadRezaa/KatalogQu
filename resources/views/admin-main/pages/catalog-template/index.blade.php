@@ -105,6 +105,9 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Template</label>
                             <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                            @error('name')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="categories_store_id" class="form-label">Kategori Toko</label>
@@ -116,20 +119,32 @@
                                         {{ $kategori->name }}</option>
                                 @endforeach
                             </select>
+                            @error('categories_store_id')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" name="description" rows="3">{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label">Harga</label>
                             <input type="number" class="form-control" name="price" value="{{ old('price') }}" required
                                 min="0" step="any">
+                            @error('price')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="preview_image" class="form-label">Gambar Preview</label>
                             <input class="form-control" type="file" name="preview_image"
                                 accept="image/jpeg,image/png,image/webp">
+                            @error('preview_image')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -156,6 +171,9 @@
                         <div class="mb-3">
                             <label for="name_edit" class="form-label">Nama Template</label>
                             <input type="text" class="form-control" id="name_edit" name="name">
+                            @error('name')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="categories_store_id_edit" class="form-label">Kategori Toko</label>
@@ -165,21 +183,33 @@
                                     <option value="{{ $kategori->id }}">{{ $kategori->name }}</option>
                                 @endforeach
                             </select>
+                            @error('categories_store_id')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="description_edit" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
+                            @error('description')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="price_edit" class="form-label">Harga</label>
                             <input type="number" class="form-control" id="price_edit" name="price" min="0"
                                 step="any">
+                            @error('price')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="preview_image_edit" class="form-label">Gambar Preview Baru</label>
                             <input class="form-control" type="file" name="preview_image"
                                 accept="image/jpeg,image/png,image/webp">
                             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah gambar.</small>
+                            @error('preview_image')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label>Preview Saat Ini:</label>

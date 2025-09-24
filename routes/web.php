@@ -9,7 +9,6 @@ use App\Http\Controllers\DemoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\StoreSetupController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LandingPageController;
@@ -20,6 +19,9 @@ use App\Http\Controllers\CatalogTemplateController;
 use App\Http\Controllers\MenuController; // New import
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 use App\Http\Controllers\StoreCategoryMenuController; // New import
+// BARIS BARU: Import CheckoutController untuk fitur perpanjangan
+use App\Http\Controllers\CheckoutController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,13 +65,6 @@ foreach (config('tenancy.central_domains') as $domain) {
         // ========================================
 
         Route::get('/demo/{slug}', [DemoController::class, 'show'])->name('demo.show');
-
-        // ========================================
-        // MIDTRANS NOTIFICATION ROUTES
-        // ========================================
-
-        Route::post('/midtrans/notification', [MidtransController::class, 'notificationHandler']);
-        Route::post('/midtrans/test', [MidtransController::class, 'test']);
 
         // ========================================
         // TESTING ROUTES (Development Only)
@@ -202,6 +197,21 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::get('/api/store-setup/check-subdomain', [StoreSetupController::class, 'checkSubdomain'])->name('store.setup.check-subdomain');
             // HALAMAN BARU: Tampilkan halaman validasi pending
             Route::get('/store-setup/pending', [StoreSetupController::class, 'showPendingValidation'])->name('store.setup.pending');
+
+            // ========================================
+            // RUTE UNTUK PERPANJANGAN (VERSI XENDIT)
+            // ========================================
+
+            // Rute untuk menampilkan halaman perpanjangan
+            Route::get('/checkout/renewal/{tenant}', [CheckoutController::class, 'showRenewalCheckout'])
+                ->name('checkout.show-renewal');
+
+            // Rute untuk memproses perpanjangan dan membuat invoice Xendit
+            Route::match(['get', 'post'], '/checkout/process-renewal', [CheckoutController::class, 'processRenewal']);
+
+            // Rute untuk halaman sukses perpanjangan (setelah pembayaran selesai)
+            Route::get('/renewal/success', [CheckoutController::class, 'renewalSuccess'])
+                ->name('renewal.success');
         });
 
         // ========================================
@@ -237,6 +247,11 @@ foreach (config('tenancy.central_domains') as $domain) {
 
             // ## BARIS BARU UNTUK APPROVE TOKO ##: Route untuk admin menyetujui (approve) toko yang pending
             Route::post('/toko/{userStore}/approve', [\App\Http\Controllers\ManajemenTokoController::class, 'approve'])->name('toko.approve');
+
+            // Contact Messages
+            Route::get('/contacts', [\App\Http\Controllers\AdminContactController::class, 'index'])->name('admin.contacts.index');
+            Route::get('/contacts/{contact}', [\App\Http\Controllers\AdminContactController::class, 'show'])->name('admin.contacts.show');
+            Route::delete('/contacts/{contact}', [\App\Http\Controllers\AdminContactController::class, 'destroy'])->name('admin.contacts.destroy');
         });
 
         // ========================================

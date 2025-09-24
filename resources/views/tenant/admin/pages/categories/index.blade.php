@@ -115,6 +115,9 @@
                             <label for="add_name" class="form-label">Nama Kategori <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="add_name" name="name" required>
+                            @error('name')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="add_description" class="form-label">Deskripsi</label>
@@ -159,16 +162,25 @@
                             <label for="edit_name" class="form-label">Nama Kategori <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="edit_name" name="name" required>
+                            @error('name')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="edit_description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                            @error('description')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="edit_image" class="form-label">Ganti Gambar</label>
                             <input type="file" class="form-control" id="edit_image" name="image"
                                 accept="image/jpeg,image/png,image/webp">
                             <div class="form-text">Biarkan kosong jika tidak ingin mengubah gambar.</div>
+                            @error('image')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div id="currentImagePreview" class="mb-3" style="display: none;">
                             <label class="form-label">Gambar Saat Ini</label>

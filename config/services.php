@@ -50,4 +50,8 @@ return [
         'is_sanitized' => env('MIDTRANS_IS_SANITIZED', true),
         'is_3ds' => env('MIDTRANS_IS_3DS', true),
     ],
+
+    'xendit' => [
+        'secret_key' => env('XENDIT_SECRET_KEY'),
+    ],
 ];

@@ -55,9 +55,9 @@ class ManajemenTokoController extends Controller
         // Pastikan hanya toko yang 'pending' yang bisa di-approve.
         if ($userStore->setup_status === 'pending_validation') {
             $userStore->update([
-                // HANYA ubah status setup menjadi 'completed'.
-                // 'is_active' tetap false (default).
+                // Ubah status setup menjadi 'completed' dan set expires_at.
                 'setup_status' => 'completed',
+                'expires_at' => now()->addDays(365),
             ]);
 
             return back()->with('success', 'Toko berhasil disetujui dan sekarang siap untuk diaktifkan.');

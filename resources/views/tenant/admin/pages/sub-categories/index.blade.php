@@ -113,15 +113,24 @@
                             <label for="add_name" class="form-label">Nama Sub Kategori <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="add_name" name="name" required>
+                            @error('name')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="add_description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="add_description" name="description" rows="3"></textarea>
+                            @error('description')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="add_image" class="form-label">Gambar</label>
                             <input type="file" class="form-control" id="add_image" name="image"
                                 accept="image/jpeg,image/png,image/webp">
+                            @error('image')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch">

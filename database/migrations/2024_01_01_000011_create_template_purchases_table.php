@@ -24,9 +24,6 @@ return new class extends Migration
             $table->json('payment_details')->nullable(); // Payment gateway response data
             $table->json('customer_details')->nullable(); // Customer information from payment
             $table->timestamp('paid_at')->nullable();
-            $table->string('download_token')->nullable(); // Unique token for secure download
-            $table->integer('download_count')->default(0);
-            $table->integer('max_downloads')->default(3);
             $table->timestamp('expires_at')->nullable(); // Download link expiry
             $table->text('notes')->nullable(); // Additional notes
             $table->timestamps();

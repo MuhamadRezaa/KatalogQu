@@ -35,3 +35,6 @@ Route::get('/test-checkout', function () {
 Route::post('/test-post', function () {
     return response()->json(['message' => 'Test POST route works!']);
 })->name('test.post');
+
+// Route for cancelling pending payments
+Route::post('/checkout/cancel', [CheckoutController::class, 'cancelPayment'])->name('checkout.cancel');

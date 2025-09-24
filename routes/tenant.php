@@ -69,39 +69,4 @@ Route::middleware([
         Route::get('/categories', [StoreController::class, 'getCategories'])->name('categories');
         Route::get('/products/{productId}', [StoreController::class, 'getProductDetails'])->name('product.details');
     });
-
-    // ========================================
-    // TENANT ADMIN STORE ROUTES
-    // ========================================
-
-    // Route::prefix('admin')->name('tenant.admin.')->group(function () {
-    //     // Admin Dashboard
-    //     Route::get('/', [AdminController::class, 'dashboard']);
-    //     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-    //     // Store Settings
-    //     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-    //     Route::put('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
-
-    //     // Products Management
-    //     Route::resource('products', StoreProductController::class)->names('products')->except(['create', 'edit']);
-
-    //     // Categories Management
-    //     Route::resource('categories', ProductCategoryController::class)->names('categories')->except(['create', 'edit']);
-
-    //     // Sub-Categories Management
-    //     Route::resource('sub-categories', ProductSubCategoryController::class)->names('sub-categories')->except(['create', 'edit']);
-
-    //     // Brands Management
-    //     Route::resource('brands', ProductBrandController::class)->names('brands')->except(['create', 'edit']);
-
-    //     // Price Ranges Management
-    //     Route::resource('price-ranges', PriceRangeController::class)->names('price-ranges')->except(['create', 'edit']);
-
-    //     // Store Heroes Management
-    //     Route::resource('store-heroes', StoreHeroController::class)->names('store-heroes');
-
-    //     // Product Units Management
-    //     Route::resource('product-units', ProductUnitController::class)->names('product-units');
-    // });
 });

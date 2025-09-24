@@ -134,44 +134,6 @@ class DemoAdminController extends Controller
     }
 
     /**
-     * Download template file
-     */
-    public function downloadTemplate($id)
-    {
-        try {
-            $purchase = TemplatePurchase::with('catalogTemplate')->findOrFail($id);
-
-            if ($purchase->payment_status !== 'paid') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Template hanya dapat diunduh setelah pembayaran selesai'
-                ], 403);
-            }
-
-            // Demo: Return a sample file or redirect to template preview
-            $templateName = $purchase->catalogTemplate->name ?? 'Template';
-            $fileName = str_replace(' ', '_', $templateName) . '_' . $purchase->transaction_id . '.zip';
-
-            // For demo purposes, we'll create a simple text file
-            $content = "Demo Template File\n\n";
-            $content .= "Template: {$templateName}\n";
-            $content .= "Customer: {$purchase->customer_name}\n";
-            $content .= "Order ID: {$purchase->transaction_id}\n";
-            $content .= "Download Date: " . now()->format('Y-m-d H:i:s') . "\n\n";
-            $content .= "This is a demo file. In production, this would be the actual template files.";
-
-            return response($content)
-                ->header('Content-Type', 'text/plain')
-                ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengunduh template: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
      * Send template via email
      */
     public function sendTemplate($id)
@@ -200,12 +162,6 @@ class DemoAdminController extends Controller
                 'customer_name' => $customerName,
                 'order_id' => $purchase->transaction_id,
                 'sent_at' => now()
-            ]);
-
-            // Update download count or last sent timestamp if needed
-            $purchase->update([
-                'download_count' => ($purchase->download_count ?? 0) + 1,
-                'last_downloaded_at' => now()
             ]);
 
             return response()->json([

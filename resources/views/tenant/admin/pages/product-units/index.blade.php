@@ -123,14 +123,23 @@
                             <label for="edit_unit_name" class="form-label">Nama Satuan <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="edit_unit_name" name="unit_name" required>
+                            @error('unit_name')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="edit_unit_code" class="form-label">Kode Satuan</label>
                             <input type="text" class="form-control" id="edit_unit_code" name="unit_code">
+                            @error('unit_code')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="edit_description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                            @error('description')
+                                <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">

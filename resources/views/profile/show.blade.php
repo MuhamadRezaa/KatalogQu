@@ -6,48 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
     <title>Profil Saya - KatalogQu</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Poppins', sans-serif;
-            color: #4A5568;
+        /* === AWAL PERUBAHAN UI === */
+
+        :root {
+            --primary-color: #10b981;
+            /* Warna hijau baru yang lebih segar */
+            --primary-color-dark: #0f9a6d;
+            --primary-color-light: #f0fdf4;
+            --text-color-dark: #1f2937;
+            --text-color-light: #6b7280;
+            --border-color: #e5e7eb;
+            --background-color: #f9fafb;
         }
 
+        body {
+            background-color: var(--background-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color-light);
+        }
+
+        /* Navbar */
         .navbar {
             background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+            box-shadow: none;
+            border-bottom: 1px solid var(--border-color);
         }
 
+        /* Layout Utama */
         .profile-container {
             padding-top: 100px;
             padding-bottom: 50px;
         }
 
+        /* Kartu (Card) */
         .profile-sidebar .card,
         .profile-content .card {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .05);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            /* Sudut lebih tumpul */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
             margin-bottom: 1.5rem;
         }
 
+        /* Avatar Profil */
         .profile-avatar-wrapper {
             position: relative;
             width: 120px;
             height: 120px;
-            margin: -60px auto 1rem;
-            border: 4px solid #fff;
+            margin: -40px auto 1rem;
+            /* Ditarik sedikit ke atas */
+            border: 6px solid #fff;
             border-radius: 50%;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
 
         .profile-avatar {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: linear-gradient(135deg, #478413 0%, #2c5a08 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -63,57 +85,161 @@
             object-fit: cover;
         }
 
+        /* Navigasi Samping */
         .profile-nav .list-group-item {
             border: none;
             padding: 1rem 1.5rem;
             font-weight: 500;
-            color: #4A5568;
-            border-left: 3px solid transparent;
-            border-radius: 0;
+            color: var(--text-color-light);
+            margin-bottom: 0.5rem;
+            border-radius: 0.75rem;
+            /* Style seperti pil */
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .profile-nav .list-group-item:hover {
+            background-color: var(--primary-color-light);
+            color: var(--primary-color-dark);
         }
 
         .profile-nav .list-group-item.active {
-            background-color: #e6fffa;
-            color: #478413;
-            border-left-color: #478413;
+            background-color: var(--primary-color);
+            color: #fff;
             font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
         }
 
         .profile-nav .list-group-item i {
             width: 20px;
-            margin-right: 10px;
+            margin-right: 12px;
             text-align: center;
         }
 
+        /* Form Input */
+        .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+        }
+
         .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(71, 132, 19, 0.2);
-            border-color: #478413;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        /* Tombol (Button) */
+        .btn {
+            border-radius: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            font-weight: 500;
         }
 
         .btn-success {
-            background-color: #478413;
-            border-color: #478413;
-            border-radius: 8px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .btn-success:hover {
-            background-color: #2c5a08;
-            border-color: #2c5a08;
+            background-color: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
         }
 
+        /* Judul Section */
         .section-title {
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: #2D3748;
+            color: var(--text-color-dark);
         }
 
-        .table>:not(caption)>*>* {
+        /* Tabel */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table thead th {
+            font-weight: 600;
+            color: var(--text-color-dark);
+            background-color: var(--background-color);
+            border-bottom: 2px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+        }
+
+        .table thead th:first-child {
+            border-top-left-radius: 0.75rem;
+        }
+
+        .table thead th:last-child {
+            border-top-right-radius: 0.75rem;
+        }
+
+        .table tbody td {
             padding: 1rem;
             vertical-align: middle;
+            color: var(--text-color-light);
+            border-bottom: 1px solid var(--border-color);
         }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .table strong {
+            color: var(--text-color-dark);
+            font-weight: 500;
+        }
+
+        /* Badge Status */
+        .badge {
+            padding: 0.4em 0.8em;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        /* Custom Badge Colors */
+        .badge-status-success {
+            color: #059669;
+            background-color: #d1fae5;
+        }
+
+        .badge-status-warning {
+            color: #d97706;
+            background-color: #fef3c7;
+        }
+
+        .badge-status-info {
+            color: #0ea5e9;
+            background-color: #e0f2fe;
+        }
+
+        .badge-status-paid {
+            color: #166534;
+            background-color: #dcfce7;
+        }
+
+        .badge-status-danger {
+            color: #be123c;
+            background-color: #fee2e2;
+        }
+
+        /* Pagination */
+        .pagination .page-link {
+            color: var(--primary-color);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* === AKHIR PERUBAHAN UI === */
     </style>
 </head>
 
@@ -143,12 +269,12 @@
                                         style="width: 24px; height: 24px;"
                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div class="rounded-circle d-none align-items-center justify-content-center"
-                                        style="width: 24px; height: 24px; background: #478413; color: white; font-size: 12px; display: none !important;">
+                                        style="width: 24px; height: 24px; background: var(--primary-color); color: white; font-size: 12px; display: none !important;">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
                                 @else
                                     <div class="rounded-circle d-flex align-items-center justify-content-center"
-                                        style="width: 24px; height: 24px; background: #478413; color: white; font-size: 12px;">
+                                        style="width: 24px; height: 24px; background: var(--primary-color); color: white; font-size: 12px;">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
                                 @endif
@@ -187,7 +313,7 @@
     <main class="profile-container">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 profile-sidebar">
+                <div class="col-lg-4 profile-sidebar">
                     <div class="card">
                         <div class="card-body text-center p-4">
                             <div class="profile-avatar-wrapper">
@@ -199,43 +325,44 @@
                                     @endif
                                 </div>
                             </div>
-                            <h5 class="fw-bold mb-0">{{ $user->name }}</h5>
-                            <p class="text-muted">{{ $user->email }}</p>
+                            <h5 class="fw-bold mb-1 mt-3" style="color: var(--text-color-dark);">{{ $user->name }}
+                            </h5>
+                            <p class="text-muted mb-0">{{ $user->email }}</p>
                         </div>
                     </div>
                     <div class="card profile-nav">
-                        <div class="list-group list-group-flush" id="profile-tabs" role="tablist">
-                            <a class="list-group-item list-group-item-action active" data-bs-toggle="list"
-                                href="#profile" role="tab">
-                                <i class="fas fa-user-edit"></i> Edit Profil
-                            </a>
-                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#stores"
-                                role="tab">
-                                <i class="fas fa-store"></i> Katalog Saya
-                            </a>
-                            {{-- AWAL PERUBAHAN --}}
-                            <a class="list-group-item list-group-item-action" data-bs-toggle="list"
-                                href="#pending-setups" role="tab">
-                                <i class="fas fa-pause-circle"></i> Setup Tertunda
-                            </a>
-                            {{-- AKHIR PERUBAHAN --}}
-                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#purchases"
-                                role="tab">
-                                <i class="fas fa-history"></i> Riwayat Pembelian
-                            </a>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush" id="profile-tabs" role="tablist">
+                                <a class="list-group-item list-group-item-action active" data-bs-toggle="list"
+                                    href="#profile" role="tab">
+                                    <i class="fas fa-user-edit"></i> Edit Profil
+                                </a>
+                                <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#stores"
+                                    role="tab">
+                                    <i class="fas fa-store"></i> Katalog Saya
+                                </a>
+                                <a class="list-group-item list-group-item-action" data-bs-toggle="list"
+                                    href="#pending-setups" role="tab">
+                                    <i class="fas fa-pause-circle"></i> Setup Tertunda
+                                </a>
+                                <a class="list-group-item list-group-item-action" data-bs-toggle="list"
+                                    href="#purchases" role="tab">
+                                    <i class="fas fa-history"></i> Riwayat Pembelian
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-8 profile-content">
+                <div class="col-lg-8 profile-content">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="profile" role="tabpanel">
                             <div class="card">
                                 <div class="card-body p-4 p-md-5">
-                                    <h5 class="section-title">Informasi Akun</h5>
                                     <form method="POST" action="{{ route('profile.update') }}">
                                         @csrf
                                         @method('PUT')
+                                        <h5 class="section-title">Informasi Akun</h5>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label for="name" class="form-label">Nama</label>
@@ -263,7 +390,10 @@
                                                     id="password_confirmation" name="password_confirmation">
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-success mt-3">Simpan Perubahan</button>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-success mt-3">Simpan
+                                                Perubahan</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -274,12 +404,13 @@
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title mb-4">Katalog Saya</h5>
                                     <div class="table-responsive">
-                                        <table class="table align-middle">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Nama Toko</th>
                                                     <th>Status</th>
-                                                    <th class="text-end" style="width: 240px;">Aksi</th>
+                                                    <th>Masa Aktif</th>
+                                                    <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -292,28 +423,53 @@
                                                         </td>
                                                         <td>
                                                             <span
-                                                                class="badge rounded-pill text-bg-{{ $store->is_active ? 'success' : 'warning' }} bg-opacity-50 text-{{ $store->is_active ? 'success' : 'warning' }}-emphasis">
+                                                                class="badge rounded-pill {{ $store->is_active ? 'badge-status-success' : 'badge-status-warning' }}">
                                                                 {{ $store->is_active ? 'Aktif' : 'Nonaktif' }}
                                                             </span>
                                                         </td>
+                                                        <td class="text-center">
+                                                            @php
+                                                                $durationText = '-';
+                                                                if ($store->expires_at) {
+                                                                    $created = \Carbon\Carbon::parse(
+                                                                        $store->created_at,
+                                                                    );
+                                                                    $expires = \Carbon\Carbon::parse(
+                                                                        $store->expires_at,
+                                                                    );
+                                                                    $diffInDays = $created->diffInDays($expires);
+
+                                                                    if ($diffInDays >= 360) {
+                                                                        $years = floor($diffInDays / 365);
+                                                                        $durationText = $years . ' tahun';
+                                                                    } elseif ($diffInDays >= 28) {
+                                                                        $months = floor($diffInDays / 30);
+                                                                        $durationText = $months . ' bulan';
+                                                                    } else {
+                                                                        $durationText = $diffInDays . ' hari';
+                                                                    }
+                                                                }
+                                                            @endphp
+                                                            {{ $durationText }}
+                                                        </td>
                                                         <td class="text-end">
-                                                            <div class="btn-group">
-                                                                <a href="{{ request()->getScheme() }}://{{ $store->subdomain }}.{{ config('app.domain') }}"
-                                                                    target="_blank"
-                                                                    class="btn btn-outline-primary btn-sm">
-                                                                    <i class="fas fa-eye me-1"></i> Kunjungi Toko
-                                                                </a>
-                                                                <a href="{{ route('tenant.admin.dashboard', ['tenant' => $store->tenant_id]) }}"
-                                                                    target="_blank"
-                                                                    class="btn btn-outline-primary btn-sm">Kelola
-                                                                    Toko
-                                                                </a>
-                                                            </div>
+                                                            <a href="{{ request()->getScheme() }}://{{ $store->subdomain }}.{{ config('app.domain') }}"
+                                                                target="_blank"
+                                                                class="btn btn-outline-secondary btn-sm">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                            <a href="{{ route('tenant.admin.dashboard', ['tenant' => $store->tenant_id]) }}"
+                                                                target="_blank"
+                                                                class="btn btn-outline-primary btn-sm">Kelola
+                                                            </a>
+                                                            <a href="{{ route('checkout.show-renewal', ['tenant' => $store->tenant_id]) }}"
+                                                                class="btn btn-outline-success btn-sm">Perpanjang
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="3" class="text-center p-4">Anda belum memiliki
+                                                        <td colspan="4" class="text-center p-4">Anda belum memiliki
                                                             katalog.</td>
                                                     </tr>
                                                 @endforelse
@@ -327,13 +483,12 @@
                             </div>
                         </div>
 
-                        {{-- AWAL PERUBAHAN --}}
                         <div class="tab-pane fade" id="pending-setups" role="tabpanel">
                             <div class="card">
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title mb-4">Setup Toko Tertunda</h5>
                                     <div class="table-responsive">
-                                        <table class="table align-middle">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Template</th>
@@ -352,16 +507,18 @@
                                                         </td>
                                                         <td>{{ $setup->created_at->format('d M Y') }}</td>
                                                         <td>
-                                                            <span
-                                                                class="badge rounded-pill text-bg-info bg-opacity-50 text-info-emphasis">
+                                                            <span class="badge rounded-pill badge-status-info">
                                                                 {{ str_replace('_', ' ', Str::title($setup->setup_status)) }}
                                                             </span>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="{{ route('store.setup.form', ['order_id' => $setup->payment_transaction_id]) }}"
-                                                                class="btn btn-primary btn-sm">
-                                                                <i class="fas fa-arrow-right me-1"></i> Lanjutkan Setup
-                                                            </a>
+                                                            @if (optional($setup->templatePurchase)->payment_status === 'paid' &&
+                                                                    optional($setup->templatePurchase->payment)->status === 'paid')
+                                                                <a href="{{ route('store.setup.form', ['order_id' => $setup->payment_transaction_id]) }}"
+                                                                    class="btn btn-primary btn-sm">
+                                                                    Lanjutkan Setup
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -376,26 +533,25 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- AKHIR PERUBAHAN --}}
 
                         <div class="tab-pane fade" id="purchases" role="tabpanel">
                             <div class="card">
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title">Riwayat Pembelian</h5>
                                     <div class="table-responsive">
-                                        <table class="table align-middle">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>ID Transaksi</th>
-                                                    <th>Template</th>
+                                                    <th>Nama Template</th>
                                                     <th>Total</th>
                                                     <th>Status</th>
-                                                    <th></th>
+                                                    <th class="text-end">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @forelse ($purchases as $purchase)
-                                                    <tr>
+                                                    <tr id="purchase-row-{{ $purchase->transaction_id }}">
                                                         <td><strong>#{{ substr($purchase->transaction_id, -6) }}</strong>
                                                         </td>
                                                         <td>{{ $purchase->catalogTemplate->name ?? 'N/A' }}</td>
@@ -403,12 +559,29 @@
                                                             {{ number_format($purchase->final_amount, 0, ',', '.') }}
                                                         </td>
                                                         <td>
-                                                            <span
-                                                                class="badge rounded-pill text-bg-{{ $purchase->isPaid() ? 'success' : 'warning' }} bg-opacity-10 text-{{ $purchase->isPaid() ? 'success' : 'warning' }}-emphasis">{{ ucfirst($purchase->payment_status) }}</span>
+                                                            <span id="status-badge-{{ $purchase->transaction_id }}"
+                                                                class="badge rounded-pill {{ $purchase->payment_status === 'paid'
+                                                                    ? 'badge-status-paid'
+                                                                    : ($purchase->payment_status === 'cancelled'
+                                                                        ? 'badge-status-danger'
+                                                                        : 'badge-status-warning') }}">
+                                                                {{ ucfirst($purchase->payment_status) }}
+                                                            </span>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="{{ route('profile.invoice.show', $purchase->transaction_id) }}"
-                                                                class="btn btn-light btn-sm">Lihat Struk</a>
+                                                            @if ($purchase->payment_status === 'pending' && optional($purchase->payment)->status !== 'paid')
+                                                                <button type="button"
+                                                                    class="btn btn-danger btn-sm cancel-btn"
+                                                                    data-order-id="{{ $purchase->transaction_id }}"
+                                                                    onclick="cancelOrder(this)">
+                                                                    Batalkan
+                                                                </button>
+                                                            @else
+                                                                @if ($purchase->payment_status !== 'cancelled')
+                                                                    <a href="{{ route('profile.invoice.show', $purchase->transaction_id) }}"
+                                                                        class="btn btn-light btn-sm">Lihat Struk</a>
+                                                                @endif
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -436,11 +609,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Handle tab persistence on page reload
             var hash = window.location.hash;
-            var tabEl = document.querySelector('a[data-bs-toggle="list"][href="' + hash + '"]');
-            if (tabEl) {
-                var tab = new bootstrap.Tab(tabEl);
-                tab.show();
+            if (hash) {
+                var tabEl = document.querySelector('a[data-bs-toggle="list"][href="' + hash + '"]');
+                if (tabEl) {
+                    var tab = new bootstrap.Tab(tabEl);
+                    tab.show();
+                }
             }
+
 
             // Update URL hash when a new tab is shown
             var tabTriggerList = [].slice.call(document.querySelectorAll('#profile-tabs a'));
@@ -457,21 +633,77 @@
             });
 
             // --- FIX FOR PAGINATION ---
-            function fixPaginationLinks(tabPaneId, hash) {
-                const tabPane = document.getElementById(tabPaneId);
-                if (tabPane) {
-                    const paginationLinks = tabPane.querySelectorAll('.pagination a');
-                    paginationLinks.forEach(function(link) {
-                        if (link.href.indexOf('#') === -1) {
-                            link.href += hash;
-                        }
-                    });
-                }
+            // This function ensures that when you click a pagination link,
+            // the page reloads on the correct tab.
+            function fixPaginationLinks() {
+                const activeTabPane = document.querySelector('.tab-pane.active');
+                if (!activeTabPane) return;
+
+                const currentHash = '#' + activeTabPane.id;
+                const paginationLinks = document.querySelectorAll('.pagination a');
+
+                paginationLinks.forEach(function(link) {
+                    // Avoid adding hash multiple times
+                    if (link.href.indexOf('#') === -1) {
+                        link.href += currentHash;
+                    }
+                });
             }
 
-            // Apply the fix for both tabs that have pagination
-            fixPaginationLinks('stores', '#stores');
-            fixPaginationLinks('purchases', '#purchases');
+            // Initial fix on page load
+            fixPaginationLinks();
+
+            // Re-apply the fix whenever a tab is shown
+            tabTriggerList.forEach(function(tabTriggerEl) {
+                tabTriggerEl.addEventListener('shown.bs.tab', fixPaginationLinks);
+            });
+            // New function for canceling orders
+            window.cancelOrder = function(buttonElement) {
+                const orderId = buttonElement.dataset.orderId;
+                if (!confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
+                    return;
+                }
+
+                buttonElement.disabled = true;
+                buttonElement.textContent = 'Membatalkan...';
+
+                fetch('{{ route('checkout.cancel') }}', { // Use named route for consistency
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            order_id: orderId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Pesanan berhasil dibatalkan!');
+                            // Update UI: change status badge and remove/disable button
+                            const statusBadge = document.getElementById(`status-badge-${orderId}`);
+                            if (statusBadge) {
+                                statusBadge.textContent = 'Dibatalkan';
+                                statusBadge.classList.remove('badge-status-warning');
+                                statusBadge.classList.add(
+                                    'badge-status-danger'); // Assuming you have a danger style
+                            }
+                            buttonElement.remove(); // Remove the button after successful cancellation
+                        } else {
+                            alert('Gagal membatalkan pesanan: ' + (data.message || 'Terjadi kesalahan.'));
+                            buttonElement.disabled = false;
+                            buttonElement.textContent = 'Batalkan';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error canceling order:', error);
+                        alert('Terjadi kesalahan saat membatalkan pesanan. Silakan coba lagi.');
+                        buttonElement.disabled = false;
+                        buttonElement.textContent = 'Batalkan';
+                    });
+            };
         });
     </script>
 </body>
