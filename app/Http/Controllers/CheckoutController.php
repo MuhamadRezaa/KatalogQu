@@ -505,11 +505,14 @@ class CheckoutController extends Controller
         }
 
         // Validasi tambahan, tidak lagi memerlukan template_id dari request
+        Log::info('Memulai validasi payment_method.');
         $validated = $request->validate([
             'payment_method' => 'required|in:xendit,bank_transfer,e_wallet,qris',
         ]);
+        Log::info('Validasi payment_method berhasil.');
 
         try {
+            Log::info('Memasuki blok try-catch untuk proses renewal.');
             DB::beginTransaction();
 
             $user = Auth::user();
