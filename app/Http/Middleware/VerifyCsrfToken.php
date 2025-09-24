@@ -17,10 +17,6 @@ class VerifyCsrfToken extends Middleware
         'test-post',
         'simulate-payment',
         'auth/google/*',
-        'midtrans/notification',
-        'api/midtrans/notification',
-        'api/midtrans/get-snap-token',
-        'api/midtrans/test-snap-token',
-        'midtrans/test',
+        'api/xendit/notification', // Webhook Xendit
     ];
 }
