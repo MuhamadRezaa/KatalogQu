@@ -17,6 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/public.css') }}">
+    {!! NoCaptcha::renderJs() !!}
 
     <style>
         /* Menyamakan tampilan navbar dengan welcome page (kondisi setelah scroll) */
@@ -655,6 +656,14 @@
                                         <span id="char-count">0</span>/1.000 karakter
                                     </div>
                                 </div>
+                                <div class="mb-3 d-flex justify-content-center">
+                                    {!! NoCaptcha::display() !!}
+                                </div>
+                                @error('g-recaptcha-response')
+                                    <div class="alert alert-danger mt-1 p-2" role="alert">
+                                        <small>{{ $message }}</small>
+                                    </div>
+                                @enderror
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-submit">
                                         <i class="fas fa-paper-plane me-2"></i>Kirim Pesan

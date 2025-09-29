@@ -23,14 +23,17 @@ class AuthController extends Controller
     /**
      * Handle an incoming registration request.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
+            public function store(Request $request)
+        {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'g-recaptcha-response' => ['required', 'captcha'],
+            ], [
+                'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
+                'g-recaptcha-response.captcha' => 'Verifikasi CAPTCHA gagal, silakan coba lagi.',
+            ]);
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -66,6 +69,10 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'g-recaptcha-response' => ['required', 'captcha'],
+        ], [
+            'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
+            'g-recaptcha-response.captcha' => 'Verifikasi CAPTCHA gagal, silakan coba lagi.',
         ]);
 
         // **PERBARUAN: Cek apakah user ada sebelum mencoba login**
@@ -78,7 +85,7 @@ class AuthController extends Controller
         }
 
         // Lanjutkan proses login jika user ada
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt(\Illuminate\Support\Arr::except($credentials, 'g-recaptcha-response'), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $currentSessionId = $request->session()->getId();

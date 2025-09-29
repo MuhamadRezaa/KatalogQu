@@ -174,6 +174,11 @@ return [
          */
 
         /*
+         * Package Service Providers...
+         */
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,

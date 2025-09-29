@@ -14,10 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withTrashed()
+        $users = User::withoutTenancy()->withTrashed()
             ->orderBy('role', 'asc') // Urutkan berdasarkan role (admin dulu, baru pengguna)
             ->orderBy('deleted_at', 'asc') // Urutkan berdasarkan status (aktif/null dulu, baru nonaktif)
-            ->paginate(10);
+            ->get();
 
         return view('admin-main.pages.manajemen-pengguna.index', compact('users'));
     }

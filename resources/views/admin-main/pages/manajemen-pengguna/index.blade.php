@@ -197,7 +197,7 @@
 
 @push('scripts')
     <script>
-        const allUsers = @json($users->items());
+        const allUsers = @json($users);
 
         $(function() {
             // DataTable initialization

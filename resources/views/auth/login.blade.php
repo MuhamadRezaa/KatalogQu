@@ -10,6 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    {!! NoCaptcha::renderJs() !!}
     <style>
         * {
             margin: 0;
@@ -218,6 +219,14 @@
                         Ingat saya
                     </label>
                 </div>
+                <div class="mb-3 d-flex justify-content-center">
+                    {!! NoCaptcha::display() !!}
+                </div>
+                @error('g-recaptcha-response')
+                    <div class="alert alert-danger mt-1 p-2" role="alert">
+                        <small>{{ $message }}</small>
+                    </div>
+                @enderror
                 <button type="submit" class="btn btn-primary w-100 mb-4">
                     <i class="fas fa-sign-in-alt me-2"></i>Masuk
                 </button>

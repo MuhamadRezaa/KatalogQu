@@ -36,7 +36,10 @@ class ContactController extends Controller
             'no_telp' => 'nullable|max:25', // Diperpanjang untuk nomor internasional
             'subjek' => 'required|min:1|max:255',
             'text' => 'required|min:1|max:10000', // Diperpanjang untuk pesan yang lebih detail
+            'g-recaptcha-response' => 'required|captcha',
         ], [
+            'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
+            'g-recaptcha-response.captcha' => 'Verifikasi CAPTCHA gagal, silakan coba lagi.',
             // Custom error messages yang lebih friendly
             'name.required' => 'Nama lengkap wajib diisi.',
             'name.min' => 'Nama tidak boleh kosong.',
@@ -58,7 +61,7 @@ class ContactController extends Controller
             Log::info('Attempting to save contact message', $validated);
 
             // Membuat entri baru di database
-            $contact = Contact::create($validated);
+            $contact = Contact::create(\Illuminate\Support\Arr::except($validated, 'g-recaptcha-response'));
 
             // Log sukses
             Log::info('Contact message saved successfully', ['id' => $contact->id]);
