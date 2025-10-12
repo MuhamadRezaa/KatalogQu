@@ -26,7 +26,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 font-[Inter]">
+<body class="bg-gray-50">
 
     <!-- Floating Home Button -->
     <div class="fixed top-6 left-6 z-50">

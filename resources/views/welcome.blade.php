@@ -243,7 +243,7 @@
                         <h1 class="hero-title animate__animated animate__fadeInUp">Platform Katalog Digital <span
                                 style="color: #f99a07;">Terdepan</span></h1>
                         <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
-                            Hanya dengan Rp 150.000/tahun, Anda sudah dapat memiliki katalog atau menu digital yang
+                            Mulai dari Rp 15.000/bulan, Anda sudah dapat memiliki katalog atau menu digital yang
                             professional untuk bisnis anda
                         </p>
                         <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
