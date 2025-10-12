@@ -104,15 +104,26 @@ class XenditController extends Controller
 
                 // Perbarui masa aktif di tabel user_stores jika ini perpanjangan
                 if (isset($paymentDetails['request_type']) && $paymentDetails['request_type'] === 'extension') {
+                    Log::info('RENEWAL_WEBHOOK: Processing extension', ['purchase_id' => $purchase->id]);
                     $userStore = UserStore::find($paymentDetails['user_store_id']);
                     if ($userStore) {
+                        $duration = $purchase->duration_months ?? 12; // Fallback to 12
+                        Log::info('RENEWAL_WEBHOOK: Data', [
+                            'user_store_id' => $userStore->id,
+                            'purchase_duration' => $purchase->duration_months,
+                            'calculated_duration' => $duration,
+                            'current_expiry' => $userStore->expires_at
+                        ]);
+
                         $currentExpiry = Carbon::parse($userStore->expires_at);
-                        $newExpiryDate = $currentExpiry->addYear(1);
+                        $newExpiryDate = $currentExpiry->isFuture() ? $currentExpiry->addMonths($duration) : now()->addMonths($duration);
 
                         $userStore->update([
                             'expires_at' => $newExpiryDate,
                         ]);
-                        Log::info('User store ' . $userStore->id . ' expires_at updated successfully.');
+                        Log::info('User store ' . $userStore->id . ' expires_at updated successfully to ' . $newExpiryDate->toDateTimeString());
+                    } else {
+                        Log::error('RENEWAL_WEBHOOK: UserStore not found', ['user_store_id' => $paymentDetails['user_store_id']]);
                     }
                 }
 

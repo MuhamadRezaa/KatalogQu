@@ -168,7 +168,7 @@ Route::post('/midtrans/test-snap-token', function (Request $request) {
 
 // API endpoint to get template data by slug
 Route::get('/templates/{slug}', function ($slug) {
-    $template = \App\Models\CatalogTemplate::where('slug', $slug)->first();
+    $template = \App\Models\CatalogTemplate::with(['prices', 'category'])->where('slug', $slug)->first();
 
     if (!$template) {
         return response()->json(['error' => 'Template not found'], 404);

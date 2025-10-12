@@ -38,4 +38,12 @@ class CatalogTemplate extends Model
     {
         return $this->belongsTo(StoreCategory::class, 'categories_store_id');
     }
+
+    /**
+     * Get the prices for the catalog template.
+     */
+    public function prices()
+    {
+        return $this->hasMany(CatalogTemplatePrice::class);
+    }
 }

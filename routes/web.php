@@ -18,6 +18,7 @@ use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\CatalogTemplateController;
 use App\Http\Controllers\MenuController; // New import
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
+use App\Http\Controllers\CatalogTemplatePriceController;
 use App\Http\Controllers\StoreCategoryMenuController; // New import
 // BARIS BARU: Import CheckoutController untuk fitur perpanjangan
 use App\Http\Controllers\CheckoutController;
@@ -212,6 +213,8 @@ foreach (config('tenancy.central_domains') as $domain) {
             // Rute untuk halaman sukses perpanjangan (setelah pembayaran selesai)
             Route::get('/renewal/success', [CheckoutController::class, 'renewalSuccess'])
                 ->name('renewal.success');
+
+            Route::get('/test-renewal-webhook/{orderId}', [CheckoutController::class, 'testRenewalWebhook']);
         });
 
         // ========================================
@@ -227,6 +230,7 @@ foreach (config('tenancy.central_domains') as $domain) {
 
             Route::resource('/kategori-toko', \App\Http\Controllers\StoreCategoryController::class)->names('kategori-toko');
             Route::resource('/template-katalog', \App\Http\Controllers\CatalogTemplateController::class)->names('template');
+            Route::resource('/template-katalog/{template}/prices', \App\Http\Controllers\CatalogTemplatePriceController::class)->names('template-prices');
 
             // New route for Menu management
             Route::resource('/menus', \App\Http\Controllers\MenuController::class)->names('menu');

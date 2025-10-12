@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserStore;
+use App\Models\TemplatePurchase;
 use Illuminate\Http\Request;
 
 class ManajemenTokoController extends Controller
@@ -54,10 +55,18 @@ class ManajemenTokoController extends Controller
     {
         // Pastikan hanya toko yang 'pending' yang bisa di-approve.
         if ($userStore->setup_status === 'pending_validation') {
+            $purchase = TemplatePurchase::where('transaction_id', $userStore->payment_transaction_id)->first();
+
+            if (!$purchase) {
+                return back()->with('error', 'Data pembelian tidak ditemukan untuk toko ini.');
+            }
+
+            $duration = $purchase->duration_months ?? 12; // Fallback to 12 months if not set
+
             $userStore->update([
                 // Ubah status setup menjadi 'completed' dan set expires_at.
                 'setup_status' => 'completed',
-                'expires_at' => now()->addDays(365),
+                'expires_at' => now()->addMonths($duration),
             ]);
 
             return back()->with('success', 'Toko berhasil disetujui dan sekarang siap untuk diaktifkan.');

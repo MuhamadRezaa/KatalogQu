@@ -94,15 +94,14 @@
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Masukkan nomor telepon Anda">
                         </div>
-
-                        {{-- <div>
-                            <label for="customer-company" class="block text-sm font-medium text-gray-700 mb-1">Nama
-                                Perusahaan (Opsional)</label>
-                            <input type="text" id="customer-company" name="customer_company"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Masukkan nama perusahaan">
-                        </div> --}}
                     </form>
+
+                    <div class="mt-6 pt-4 border-t">
+                        <h3 class="font-medium mb-3">Pilih Durasi Langganan</h3>
+                        <div id="duration-options" class="space-y-2">
+                            <!-- Opsi durasi akan ditambahkan di sini oleh JavaScript -->
+                        </div>
+                    </div>
 
                     <div class="mt-6 pt-4 border-t">
                         <h3 class="font-medium mb-3">Ringkasan Pesanan</h3>
@@ -166,6 +165,7 @@
         // Global variables
         let paymentInProgress = false;
         let templateData = null; // Store template data globally
+        let selectedPrice = 0;
 
         // Helper to format currency
         function formatCurrency(amount) {
@@ -180,6 +180,20 @@
             return urlParams.get('template') || 'toko-komputer'; // Fallback
         }
 
+        function updatePrice() {
+            const selectedDuration = document.querySelector('input[name="duration"]:checked');
+            if (!selectedDuration) return;
+
+            selectedPrice = parseFloat(selectedDuration.value);
+            const tax = selectedPrice * 0.11;
+            const total = selectedPrice + tax;
+
+            document.getElementById('subtotal').textContent = formatCurrency(selectedPrice);
+            document.getElementById('tax-amount').textContent = formatCurrency(tax);
+            document.getElementById('total').textContent = formatCurrency(total);
+            document.getElementById('button-text').textContent = `Bayar Sekarang - ${formatCurrency(total)}`;
+        }
+
         // Fetch template data from API
         function fetchTemplateData() {
             const templateSlug = getTemplateSlug();
@@ -192,18 +206,10 @@
 
                     templateData = data; // Store for later use
 
-                    const price = parseFloat(templateData.price);
-                    const tax = price * 0.11;
-                    const total = price + tax;
-
-                    // Update UI
+                    // Update static UI elements
                     document.getElementById('template-name').textContent = templateData.name;
-                    document.getElementById('template-category').textContent = templateData.category ? templateData
-                        .category.name : 'General';
-                    document.getElementById('template-price').textContent = formatCurrency(price);
-                    document.getElementById('subtotal').textContent = formatCurrency(price);
-                    document.getElementById('tax-amount').textContent = formatCurrency(tax);
-                    document.getElementById('total').textContent = formatCurrency(total);
+                    document.getElementById('template-category').textContent = templateData.category ? templateData.category.name : 'General';
+                    document.getElementById('template-price').textContent = 'Pilih durasi'; // Placeholder
                     if (templateData.preview_image) {
                         document.getElementById('template-preview').src = '/storage/' + templateData.preview_image;
                     }
@@ -211,13 +217,49 @@
                         document.getElementById('back-to-demo').href = templateData.demo_url;
                     }
 
-                    // Enable button and update text
-                    const buttonElement = document.getElementById('process-payment-btn');
-                    buttonElement.disabled = false;
-                    document.getElementById('button-text').textContent = `Bayar Sekarang - ${formatCurrency(total)}`;
+                    // Populate duration options
+                    const durationContainer = document.getElementById('duration-options');
+                    durationContainer.innerHTML = '';
+                    if (templateData.prices && templateData.prices.length > 0) {
+                        templateData.prices.sort((a, b) => a.duration_months - b.duration_months).forEach((price, index) => {
+                            const div = document.createElement('div');
+                            div.className = 'flex items-center justify-between p-3 border rounded-md';
+                            const label = document.createElement('label');
+                            label.className = 'flex items-center cursor-pointer';
+                            const input = document.createElement('input');
+                            input.type = 'radio';
+                            input.name = 'duration';
+                            input.value = price.price;
+                            input.dataset.duration = price.duration_months;
+                            input.className = 'mr-3';
+                            if (index === 0) {
+                                input.checked = true;
+                            }
+                            const span = document.createElement('span');
+                            span.textContent = `${price.duration_months} Bulan`;
+                            label.appendChild(input);
+                            label.appendChild(span);
+                            const priceSpan = document.createElement('span');
+                            priceSpan.className = 'font-semibold';
+                            priceSpan.textContent = formatCurrency(price.price);
+                            div.appendChild(label);
+                            div.appendChild(priceSpan);
+                            durationContainer.appendChild(div);
+                        });
 
-                    const midtransStatus = document.getElementById('midtrans-status');
-                    if (midtransStatus) midtransStatus.style.display = 'none';
+                        // Add event listeners
+                        document.querySelectorAll('input[name="duration"]').forEach(radio => {
+                            radio.addEventListener('change', updatePrice);
+                        });
+
+                        // Initial price update
+                        updatePrice();
+                        document.getElementById('process-payment-btn').disabled = false;
+                    } else {
+                        durationContainer.textContent = 'Opsi harga tidak tersedia.';
+                        document.getElementById('process-payment-btn').disabled = true;
+                        document.getElementById('button-text').textContent = 'Pembayaran tidak tersedia';
+                    }
 
                     hideLoading();
                 })
@@ -242,6 +284,7 @@
             const customerName = document.getElementById('customer-name').value.trim();
             const customerEmail = document.getElementById('customer-email').value.trim();
             const customerPhone = document.getElementById('customer-phone').value.trim();
+            const selectedDuration = document.querySelector('input[name="duration"]:checked');
 
             if (!customerName || !customerEmail || !customerPhone) {
                 alert('Mohon lengkapi semua data yang wajib diisi (*).');
@@ -250,8 +293,8 @@
                 return;
             }
 
-            if (!templateData) {
-                alert('Data template belum dimuat. Silakan tunggu atau refresh halaman.');
+            if (!templateData || !selectedDuration) {
+                alert('Data template atau durasi belum dipilih. Silakan tunggu atau refresh halaman.');
                 paymentInProgress = false;
                 hideLoading();
                 return;
@@ -262,7 +305,8 @@
                 template_data: {
                     id: templateData.slug,
                     name: templateData.name,
-                    price: templateData.price
+                    price: selectedPrice,
+                    duration: selectedDuration.dataset.duration
                 },
                 customer_data: {
                     first_name: customerName.split(' ')[0] || 'Guest',

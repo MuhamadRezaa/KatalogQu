@@ -325,6 +325,8 @@ class CheckoutController extends Controller
             'template_data' => 'required|array',
             'customer_data' => 'required|array',
             'template_data.id' => 'required|string',
+            'template_data.price' => 'required|numeric',
+            'template_data.duration' => 'required|integer|min:1',
             'customer_data.email' => 'required|email',
             'customer_data.first_name' => 'required|string',
         ]);
@@ -337,7 +339,10 @@ class CheckoutController extends Controller
 
             $catalogTemplate = \App\Models\CatalogTemplate::where('slug', $templateData['id'])->firstOrFail();
 
-            $base_price = (float) $catalogTemplate->price;
+            // Price verification
+            $pricing = $catalogTemplate->prices()->where('duration_months', $templateData['duration'])->firstOrFail();
+            $base_price = (float) $pricing->price;
+
             $tax_rate = 0.11;
             $calculated_tax = round($base_price * $tax_rate);
             $calculated_total = $base_price + $calculated_tax;
@@ -372,6 +377,7 @@ class CheckoutController extends Controller
                 'catalog_template_id' => $catalogTemplate->id,
                 'amount' => $base_price,
                 'final_amount' => $calculated_total,
+                'duration_months' => $templateData['duration'],
                 'payment_method' => 'xendit',
                 'payment_status' => 'pending',
                 'payment_details' => json_encode(['flow_source' => 'createXenditInvoiceApi']),
@@ -448,7 +454,7 @@ class CheckoutController extends Controller
         }
 
         // Ambil template dari pembelian terakhir tersebut.
-        $currentTemplate = $latestPurchase->catalogTemplate;
+        $currentTemplate = $latestPurchase->catalogTemplate()->with('prices')->first();
 
         // Sekarang, kirimkan hanya satu template ini ke view
         return view('payment.checkout.renewal', compact('tenant', 'userStore', 'currentTemplate'));
@@ -466,6 +472,9 @@ class CheckoutController extends Controller
         // Validasi input awal
         $validator = Validator::make($request->all(), [
             'user_store_id' => 'required|exists:user_stores,id',
+            'duration' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'payment_method' => 'required|in:xendit,bank_transfer,e_wallet,qris',
         ]);
 
         if ($validator->fails()) {
@@ -473,8 +482,7 @@ class CheckoutController extends Controller
         }
 
         // Cari UserStore dan relasi tenant-nya
-        $userStore = UserStore::with('tenant')
-            ->find($request->input('user_store_id'));
+        $userStore = UserStore::with('tenant')->find($request->input('user_store_id'));
 
         // Cek jika UserStore tidak ditemukan
         if (!$userStore) {
@@ -495,11 +503,6 @@ class CheckoutController extends Controller
             return response()->json(['error' => 'Akses ditolak. Anda tidak memiliki izin untuk mengelola toko ini.'], 403);
         }
 
-        // Validasi tambahan, tidak lagi memerlukan template_id dari request
-        $validated = $request->validate([
-            'payment_method' => 'required|in:xendit,bank_transfer,e_wallet,qris',
-        ]);
-
         try {
             Log::info('[RENEWAL] Entering try-catch block.');
             DB::beginTransaction();
@@ -507,36 +510,36 @@ class CheckoutController extends Controller
             $user = Auth::user();
             Log::info('[RENEWAL] User authenticated.', ['user_id' => $user->id]);
 
+            $catalogTemplate = \App\Models\CatalogTemplate::find($userStore->catalog_template_id);
+            if (!$catalogTemplate) {
+                throw new \Exception('Data paket langganan untuk toko ini tidak ditemukan (ID: ' . $userStore->catalog_template_id . ').');
+            }
+
+            // Price verification
+            $pricing = $catalogTemplate->prices()->where('duration_months', $request->input('duration'))->firstOrFail();
+            $base_price = (float) $pricing->price;
+
+            if (abs($base_price - (float)$request->input('price')) > 0.01) {
+                 throw new \Exception('Price mismatch detected.');
+            }
+
             // Dapatkan tanggal kedaluwarsa terakhir
             $lastPurchase = TemplatePurchase::where('user_id', $user->id)
                 ->whereIn('payment_status', ['paid', 'settlement'])
                 ->orderBy('expires_at', 'desc')
                 ->first();
-            Log::info('[RENEWAL] Found last purchase.', ['last_purchase_id' => $lastPurchase ? $lastPurchase->id : null]);
-
-            // Perbaikan: Ambil paket langganan (CatalogTemplate) langsung dari data toko ($userStore)
-            $catalogTemplate = \App\Models\CatalogTemplate::find($userStore->catalog_template_id);
-            Log::info('[RENEWAL] Found catalog template.', ['template_id' => $catalogTemplate ? $catalogTemplate->id : null]);
-
-            if (!$catalogTemplate) {
-                // Jika template tidak ditemukan berdasarkan ID, lempar error
-                throw new \Exception('Data paket langganan untuk toko ini tidak ditemukan (ID: ' . $userStore->catalog_template_id . ').');
-            }
 
             // Hitung tanggal kedaluwarsa baru
-            $newExpiry = now()->addMonths($catalogTemplate->subscription_duration_months);
+            $newExpiry = now()->addMonths($request->input('duration'));
             if ($lastPurchase && $lastPurchase->expires_at && Carbon::parse($lastPurchase->expires_at)->isFuture()) {
-                $newExpiry = Carbon::parse($lastPurchase->expires_at)->addMonths($catalogTemplate->subscription_duration_months);
+                $newExpiry = Carbon::parse($lastPurchase->expires_at)->addMonths($request->input('duration'));
             }
-            Log::info('[RENEWAL] Calculated new expiry date.', ['new_expiry' => $newExpiry->toDateTimeString()]);
 
             // Buat ID transaksi unik
             $orderId = 'RENEWAL-' . Str::upper(Str::random(8)) . '-' . now()->timestamp;
-            $base_price = (float) $catalogTemplate->price;
             $tax_rate = 0.11;
             $calculated_tax = round($base_price * $tax_rate);
             $calculated_total = $base_price + $calculated_tax;
-            //$finalAmount = $catalogTemplate->price;
 
             // Simpan data perpanjangan
             $purchase = new TemplatePurchase();
@@ -545,11 +548,11 @@ class CheckoutController extends Controller
             $purchase->transaction_id = $orderId;
             $purchase->amount = $base_price;
             $purchase->final_amount = $calculated_total;
+            $purchase->duration_months = $request->input('duration');
             $purchase->payment_status = 'pending';
-            $purchase->payment_method = $validated['payment_method'];
-            $purchase->expires_at = $newExpiry;
+            $purchase->payment_method = $request->input('payment_method');
+            $purchase->expires_at = $newExpiry; // This is tentative until payment is confirmed
 
-            // Menambahkan detail penting untuk webhook perpanjangan
             $details = [
                 'request_type' => 'extension',
                 'user_store_id' => $userStore->id,
@@ -562,7 +565,7 @@ class CheckoutController extends Controller
             $userStore->payment_transaction_id = $orderId;
             $userStore->save();
 
-            if ($validated['payment_method'] === 'xendit') {
+            if ($request->input('payment_method') === 'xendit') {
                 Log::info('[RENEWAL] Creating Xendit invoice...');
                 $invoice = $this->xenditService->createInvoice(
                     $orderId,
@@ -570,9 +573,8 @@ class CheckoutController extends Controller
                     $user->email,
                     'Perpanjangan Layanan Toko',
                     $user->name,
-                    'renewal' // <--- Tambahkan parameter keenam ini
+                    'renewal'
                 );
-                Log::info('[RENEWAL] Xendit invoice created.', ['invoice_id' => $invoice ? $invoice->getId() : null]);
 
                 if ($invoice && $invoice->getId()) {
                     $details = json_decode((string) $purchase->payment_details, true) ?? [];
@@ -658,20 +660,58 @@ class CheckoutController extends Controller
         }
 
         // Dapatkan user store yang terkait dengan pembelian
-        $userStore = UserStore::where('payment_transaction_id', $templatePurchase->transaction_id)->first();
+        $userStore = UserStore::where('user_id', $templatePurchase->user_id)->first();
 
         if (!$userStore) {
             return redirect()->route('home')->withErrors(['message' => 'Data toko pengguna tidak ditemukan.']);
         }
-        $tenant = $userStore->tenant;
-
-        // Ambil pembelian terbaru dari database, yang akan digunakan sebagai $latestPurchase
-        $latestPurchase = TemplatePurchase::where('user_id', $templatePurchase->user_id)
-            ->whereIn('payment_status', ['paid', 'settlement'])
-            ->orderBy('created_at', 'desc')
-            ->first();
 
         // Kirimkan variabel yang diperlukan ke view
-        return view('payment.checkout.successrenewal', compact('templatePurchase', 'userStore', 'tenant', 'latestPurchase'));
+        return view('payment.checkout.successrenewal', compact('templatePurchase', 'userStore'));
+    }
+
+    public function testRenewalWebhook($orderId)
+    {
+        Log::info('TEST_RENEWAL_WEBHOOK: Triggered for orderId: ' . $orderId);
+
+        $purchase = TemplatePurchase::where('transaction_id', $orderId)
+            ->where('payment_status', 'pending')
+            ->first();
+
+        if ($purchase) {
+            $purchase->payment_status = 'paid';
+            $paymentDetails = json_decode($purchase->payment_details, true) ?? [];
+            $purchase->save();
+
+            if (isset($paymentDetails['request_type']) && $paymentDetails['request_type'] === 'extension') {
+                Log::info('TEST_RENEWAL_WEBHOOK: Processing extension', ['purchase_id' => $purchase->id]);
+                $userStore = UserStore::find($paymentDetails['user_store_id']);
+                if ($userStore) {
+                    $duration = $purchase->duration_months ?? 12; // Fallback to 12
+                    Log::info('TEST_RENEWAL_WEBHOOK: Data', [
+                        'user_store_id' => $userStore->id,
+                        'purchase_duration' => $purchase->duration_months,
+                        'calculated_duration' => $duration,
+                        'current_expiry' => $userStore->expires_at
+                    ]);
+
+                    $currentExpiry = Carbon::parse($userStore->expires_at);
+                    $newExpiryDate = $currentExpiry->isFuture() ? $currentExpiry->addMonths($duration) : now()->addMonths($duration);
+
+                    $userStore->update([
+                        'expires_at' => $newExpiryDate,
+                    ]);
+                    Log::info('TEST_RENEWAL_WEBHOOK: User store ' . $userStore->id . ' expires_at updated successfully to ' . $newExpiryDate->toDateTimeString());
+                    return "SUCCESS: Renewal processed. New expiration: " . $newExpiryDate->toDateTimeString();
+                } else {
+                    Log::error('TEST_RENEWAL_WEBHOOK: UserStore not found', ['user_store_id' => $paymentDetails['user_store_id']]);
+                    return "ERROR: UserStore not found.";
+                }
+            }
+            return "SUCCESS: Purchase status updated to paid, but this was not a renewal.";
+        } else {
+            Log::warning('TEST_RENEWAL_WEBHOOK: Order not found or not pending: ' . $orderId);
+            return "ERROR: Order not found or not pending.";
+        }
     }
 }

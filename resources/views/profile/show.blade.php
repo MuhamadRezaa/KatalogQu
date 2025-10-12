@@ -431,22 +431,29 @@
                                                             @php
                                                                 $durationText = '-';
                                                                 if ($store->expires_at) {
-                                                                    $created = \Carbon\Carbon::parse(
-                                                                        $store->created_at,
-                                                                    );
-                                                                    $expires = \Carbon\Carbon::parse(
-                                                                        $store->expires_at,
-                                                                    );
-                                                                    $diffInDays = $created->diffInDays($expires);
-
-                                                                    if ($diffInDays >= 360) {
-                                                                        $years = floor($diffInDays / 365);
-                                                                        $durationText = $years . ' tahun';
-                                                                    } elseif ($diffInDays >= 28) {
-                                                                        $months = floor($diffInDays / 30);
-                                                                        $durationText = $months . ' bulan';
+                                                                    $expires = \Carbon\Carbon::parse($store->expires_at);
+                                                                    
+                                                                    if ($expires->isPast()) {
+                                                                        $durationText = 'Telah Berakhir';
                                                                     } else {
-                                                                        $durationText = $diffInDays . ' hari';
+                                                                        $diff = now()->diff($expires);
+
+                                                                        $parts = [];
+                                                                        if ($diff->y > 0) {
+                                                                            $parts[] = $diff->y . ' tahun';
+                                                                        }
+                                                                        if ($diff->m > 0) {
+                                                                            $parts[] = $diff->m . ' bulan';
+                                                                        }
+                                                                        if ($diff->d > 0) {
+                                                                            $parts[] = $diff->d . ' hari';
+                                                                        }
+
+                                                                        if (empty($parts)) {
+                                                                            $durationText = 'Kurang dari sehari';
+                                                                        } else {
+                                                                            $durationText = implode(' ', $parts);
+                                                                        }
                                                                     }
                                                                 }
                                                             @endphp

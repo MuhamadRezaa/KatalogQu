@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             //PriceRangeSeeder::class,
-            // TenantSeeder::class
+            // TenantSeeder::class,
+            //CatalogTemplatePriceSeeder::class,
         ]);
 
         \App\Models\User::factory()->create([

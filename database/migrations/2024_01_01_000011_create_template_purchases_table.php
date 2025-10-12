@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->decimal('discount_amount', 10, 2)->default(0.00);
             $table->decimal('final_amount', 10, 2);
+            $table->integer('duration_months')->after('final_amount')->nullable();
             $table->string('payment_method')->nullable(); // midtrans, bank_transfer, e_wallet, etc
             $table->string('payment_status')->default('pending'); // pending, paid, failed, refunded, expired
             $table->json('payment_details')->nullable(); // Payment gateway response data

@@ -20,6 +20,7 @@ class TemplatePurchase extends Model
         'amount',
         'discount_amount',
         'final_amount',
+        'duration_months',
         'payment_method',
         'payment_status',
         'payment_details',

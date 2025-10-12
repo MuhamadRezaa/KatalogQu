@@ -60,6 +60,11 @@
                                 <td>
                                     <ul class="action">
                                         <li class="edit">
+                                            <a href="{{ route('template-prices.index', $item) }}" class="btn-price">
+                                                <i class="fa fa-dollar" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li class="edit">
                                             <a href="#" class="btn-edit" data-id="{{ $item->id }}"
                                                 data-bs-toggle="modal" data-bs-target="#editModal">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

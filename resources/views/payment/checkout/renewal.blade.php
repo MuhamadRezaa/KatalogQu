@@ -102,7 +102,6 @@
                     <form id="renewal-form" class="space-y-4">
                         @csrf
                         <input type="hidden" name="user_store_id" value="{{ $userStore->id }}">
-                        <input type="hidden" name="template_id" value="{{ $currentTemplate->id }}">
 
                         <div>
                             <label for="customer-name" class="block text-sm font-medium text-gray-700 mb-1">Nama
@@ -120,25 +119,27 @@
                                 value="{{ Auth::user()->email }}">
                         </div>
 
-
+                        <div class="mt-6 pt-4 border-t">
+                            <h3 class="font-medium mb-3">Pilih Durasi Perpanjangan</h3>
+                            <div id="duration-options" class="space-y-2">
+                                <!-- Opsi durasi akan ditambahkan di sini oleh JavaScript -->
+                            </div>
+                        </div>
 
                         <div class="mt-6 pt-4 border-t">
                             <h3 class="font-medium mb-3">Ringkasan Pesanan</h3>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Subtotal:</span>
-                                    <span id="subtotal"
-                                        class="font-medium">Rp{{ number_format($currentTemplate->price, 0, ',', '.') }}</span>
+                                    <span id="subtotal" class="font-medium"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Pajak (11%):</span>
-                                    <span id="tax-amount"
-                                        class="font-medium">Rp{{ number_format($currentTemplate->price * 0.11, 0, ',', '.') }}</span>
+                                    <span id="tax-amount" class="font-medium"></span>
                                 </div>
                                 <div class="flex justify-between text-lg font-semibold pt-2 border-t">
                                     <span>Total:</span>
-                                    <span id="total"
-                                        class="text-[#478413]">Rp{{ number_format($currentTemplate->price * 1.11, 0, ',', '.') }}</span>
+                                    <span id="total" class="text-[#478413]"></span>
                                 </div>
                             </div>
                         </div>
@@ -198,6 +199,71 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
+        const templateData = @json($currentTemplate);
+        let selectedPrice = 0;
+
+        // Helper to format currency
+        function formatCurrency(amount) {
+            return 'Rp ' + Math.round(amount).toLocaleString('id-ID');
+        }
+
+        function updatePrice() {
+            const selectedDuration = document.querySelector('input[name="duration"]:checked');
+            if (!selectedDuration) return;
+
+            selectedPrice = parseFloat(selectedDuration.value);
+            const tax = selectedPrice * 0.11;
+            const total = selectedPrice + tax;
+
+            document.getElementById('subtotal').textContent = formatCurrency(selectedPrice);
+            document.getElementById('tax-amount').textContent = formatCurrency(tax);
+            document.getElementById('total').textContent = formatCurrency(total);
+            document.getElementById('button-text').textContent = `Bayar Sekarang - ${formatCurrency(total)}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const durationContainer = document.getElementById('duration-options');
+            durationContainer.innerHTML = '';
+            if (templateData.prices && templateData.prices.length > 0) {
+                templateData.prices.sort((a, b) => a.duration_months - b.duration_months).forEach((price, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between p-3 border rounded-md';
+                    const label = document.createElement('label');
+                    label.className = 'flex items-center cursor-pointer';
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = 'duration';
+                    input.value = price.price;
+                    input.dataset.duration = price.duration_months;
+                    input.className = 'mr-3';
+                    if (index === 0) {
+                        input.checked = true;
+                    }
+                    const span = document.createElement('span');
+                    span.textContent = `${price.duration_months} Bulan`;
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    const priceSpan = document.createElement('span');
+                    priceSpan.className = 'font-semibold';
+                    priceSpan.textContent = formatCurrency(price.price);
+                    div.appendChild(label);
+                    div.appendChild(priceSpan);
+                    durationContainer.appendChild(div);
+                });
+
+                document.querySelectorAll('input[name="duration"]').forEach(radio => {
+                    radio.addEventListener('change', updatePrice);
+                });
+
+                updatePrice();
+                document.getElementById('process-payment-btn').disabled = false;
+            } else {
+                durationContainer.textContent = 'Opsi harga tidak tersedia.';
+                document.getElementById('process-payment-btn').disabled = true;
+                document.getElementById('button-text').textContent = 'Perpanjangan tidak tersedia';
+            }
+        });
+
         // Custom alert function
         function customAlert(title, message, type = 'info') {
             const modal = document.getElementById('alert-modal');
@@ -245,14 +311,18 @@
             showLoading();
 
             const userStoreId = document.querySelector('input[name="user_store_id"]').value;
-            const templateId = document.querySelector('input[name="template_id"]').value;
+            const selectedDuration = document.querySelector('input[name="duration"]:checked');
 
-
+            if (!selectedDuration) {
+                hideLoading();
+                customAlert('Gagal', 'Silakan pilih durasi perpanjangan.', 'error');
+                return;
+            }
 
             const data = {
                 user_store_id: userStoreId,
-                template_id: templateId,
-
+                duration: selectedDuration.dataset.duration,
+                price: selectedPrice,
                 payment_method: 'xendit',
             };
 
@@ -269,8 +339,8 @@
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText);
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Terjadi kesalahan pada server.');
                 }
 
                 const result = await response.json();

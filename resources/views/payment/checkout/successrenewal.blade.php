@@ -42,8 +42,8 @@
                         Jumlah Dibayar
                     </span>
                     <span class="font-medium text-gray-800">
-                        @if ($latestPurchase)
-                            {{ 'Rp ' . number_format($latestPurchase->final_amount, 0, ',', '.') }}
+                        @if ($templatePurchase)
+                            {{ 'Rp ' . number_format($templatePurchase->final_amount, 0, ',', '.') }}
                         @else
                             -
                         @endif
