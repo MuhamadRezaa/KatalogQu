@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             //PriceRangeSeeder::class,
             // TenantSeeder::class,
             //CatalogTemplatePriceSeeder::class,
+            MenuSeeder::class,
         ]);
 
         \App\Models\User::factory()->create([

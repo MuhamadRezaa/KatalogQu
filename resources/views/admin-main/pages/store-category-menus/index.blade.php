@@ -84,6 +84,12 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Pilih Menu:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-all-checkbox">
+                                <label class="form-check-label" for="check-all-checkbox">
+                                    Pilih Semua
+                                </label>
+                            </div>
                             @foreach ($allMenus as $menu)
                                 <div class="form-check">
                                     <input class="form-check-input menu-checkbox" type="checkbox" name="menus[]"
@@ -107,7 +113,10 @@
 
 @push('scripts')
     <script>
-        const allStoreCategoriesData = @json($storeCategories->map(function($sc) { return ['id' => $sc->id, 'menus' => $sc->menus->pluck('id')]; }));
+        const allStoreCategoriesData = @json(
+            $storeCategories->map(function ($sc) {
+                return ['id' => $sc->id, 'menus' => $sc->menus->pluck('id')];
+            }));
 
         $(function() {
             // DataTable initialization
@@ -142,6 +151,11 @@
                         editForm.find(`#menu-${menuId}`).prop('checked', true);
                     });
 
+                    // Sync the 'Select All' checkbox state after populating
+                    const menuCheckboxes = editForm.find('.menu-checkbox');
+                    const allChecked = menuCheckboxes.length > 0 && menuCheckboxes.length === menuCheckboxes.filter(':checked').length;
+                    $('#check-all-checkbox').prop('checked', allChecked);
+
                     // Set form action URL
                     let actionUrl = `{{ route('store-category-menus.update', '') }}/${id}`;
                     editForm.attr('action', actionUrl);
@@ -154,6 +168,26 @@
             // Clear form on modal close (optional, as we uncheck all on open)
             $('#editModal').on('hidden.bs.modal', function() {
                 $(this).find('form')[0].reset();
+                // Also reset the 'Select All' checkbox
+                $('#check-all-checkbox').prop('checked', false);
+            });
+
+            // Logic for 'Select All' checkbox
+            const checkAll = $('#check-all-checkbox');
+            const menuCheckboxes = $('.menu-checkbox');
+
+            checkAll.on('change', function() {
+                menuCheckboxes.prop('checked', $(this).prop('checked'));
+            });
+
+            menuCheckboxes.on('change', function() {
+                if (!$(this).prop('checked')) {
+                    checkAll.prop('checked', false);
+                }
+                // Optional: check 'Select All' if all individuals are checked
+                if (menuCheckboxes.filter(':checked').length === menuCheckboxes.length) {
+                    checkAll.prop('checked', true);
+                }
             });
         });
     </script>
