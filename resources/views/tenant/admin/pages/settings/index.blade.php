@@ -205,7 +205,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Logo Saat Ini</label>
                                 <div class="text-center">
-                                    <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                                    <img src="{{ asset('storage/' . $userStore->store_logo) . '?v=' . $userStore->updated_at->timestamp }}"
                                         alt="{{ $userStore->store_name }}" class="img-fluid rounded"
                                         style="max-height: 150px;">
                                 </div>
