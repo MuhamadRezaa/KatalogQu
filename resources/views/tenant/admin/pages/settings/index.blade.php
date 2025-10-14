@@ -217,7 +217,7 @@
                                 {{ $userStore->store_logo ? 'Ganti Logo' : 'Unggah Logo' }}
                             </label>
                             <input type="file" class="form-control @error('store_logo') is-invalid @enderror"
-                                id="store_logo" name="store_logo" accept="image/*">
+                                id="store_logo" name="store_logo" accept="image/jpeg,image/png,image/jpg">
                             @error('store_logo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
