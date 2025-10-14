@@ -76,10 +76,18 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* 16:9 */
         }
 
-        .video-responsive iframe {
+        .video-responsive-portrait {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding-top: 177.77%; /* 9:16 */
+        }
+
+        .video-responsive iframe,
+        .video-responsive-portrait iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -436,11 +444,12 @@
                             <div class="row g-5 align-items-center">
                                 <div class="col-lg-6">
                                     <div class="video-container">
-                                        <div class="video-responsive">
-                                            <iframe id="youtubeVideo" src="" title="Panduan KatalogQu"
-                                                frameborder="0"
+                                        <div class="video-responsive-portrait">
+                                            <iframe id="youtubeVideo"
+                                                src="https://youtube.com/embed/k_ZXMZJFMQo?rel=0"
+                                                title="Panduan KatalogQu" frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe>
+                                                allowfullscreen loading="lazy"></iframe>
                                         </div>
                                     </div>
                                 </div>
