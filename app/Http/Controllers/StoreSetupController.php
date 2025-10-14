@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class StoreSetupController extends Controller
@@ -60,7 +61,7 @@ class StoreSetupController extends Controller
                         'store_name' => 'Store Setup - ' . $orderId,
                         'amount' => $templatePurchase->final_amount,
                         'final_amount' => $templatePurchase->final_amount,
-                        'payment_method' => 'midtrans',
+                        'payment_method' => $templatePurchase->payment_method ?? 'xendit',
                         'status' => 'paid',
                         'payment_details' => [
                             'from_template_purchase' => true,
@@ -149,7 +150,7 @@ class StoreSetupController extends Controller
             'store_name' => 'required|string|max:255|unique:user_stores,store_name,' . $userStoreId,
             'subdomain' => 'required|string|max:50|alpha_dash|unique:user_stores,subdomain,' . $userStoreId . '|unique:domains,domain',
             'store_description' => 'nullable|string|max:1000',
-            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'store_phone' => 'nullable|string|max:20',
             'store_email' => 'nullable|email|max:255',
             'store_address' => 'nullable|string|max:500'
@@ -161,22 +162,35 @@ class StoreSetupController extends Controller
 
         $logoPath = $userStore->store_logo ?? null; // Pertahankan logo lama jika tidak ada yang baru
         if ($request->hasFile('store_logo')) {
+            \Illuminate\Support\Facades\Log::info('New logo upload initiated.');
+            \Illuminate\Support\Facades\Log::info('Old logo path: ' . $logoPath);
+
             if ($logoPath && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
+                \Illuminate\Support\Facades\Log::info('Old logo deleted: ' . $logoPath);
             }
 
-            // Ambil ekstensi file asli
-            $extension = $request->file('store_logo')->getClientOriginalExtension();
+            $file = $request->file('store_logo');
+            $image = Image::make($file);
 
-            // Buat nama file sesuai store_name (slug biar aman untuk nama file)
+            if ($file->getSize() > 1 * 1024 * 1024) { // 1MB
+                \Illuminate\Support\Facades\Log::info('Image is larger than 1MB, resizing...');
+                $image->resize(512, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+
+            $extension = $file->getClientOriginalExtension();
             $fileName = Str::slug($request->store_name) . '.' . $extension;
-
-            // Simpan file dengan nama khusus
-            $logoPath = $request->file('store_logo')->storeAs(
-                'store-logos',
-                $fileName,
-                'public'
-            );
+            $path = 'store-logos/' . $fileName;
+            
+            try {
+                $image->save(storage_path('app/public/' . $path), 80);
+                $logoPath = $path;
+                \Illuminate\Support\Facades\Log::info('New logo saved successfully to: ' . $path);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Failed to save image: ' . $e->getMessage());
+            }
         }
 
         try {
