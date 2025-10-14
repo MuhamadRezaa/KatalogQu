@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Laravel\Facades\Image;
 
 class StoreHeroController extends Controller
 {
@@ -35,7 +34,7 @@ class StoreHeroController extends Controller
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
         $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:10240',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -46,18 +45,9 @@ class StoreHeroController extends Controller
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $image = Image::make($file);
-
-            if ($file->getSize() > 5 * 1024 * 1024) { // 5MB
-                $image->resize(1920, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-
             $disk      = Storage::disk('public');
             $dir       = 'store_heroes'; // folder tujuan
-            $ext       = $file->getClientOriginalExtension();
+            $ext       = $request->file('image')->getClientOriginalExtension();
             $baseSlug  = 'banner-' . Str::slug($userStore->store_name);           // dasar nama file
             $candidate = "{$baseSlug}.{$ext}";                        // coba tanpa suffix dulu
             $path      = "{$dir}/{$candidate}";
@@ -71,8 +61,7 @@ class StoreHeroController extends Controller
             }
 
             // Simpan dengan nama final
-            $disk->put($path, (string) $image->encode('jpg', 80));
-            $imagePath = $path;
+            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
         }
 
         StoreHero::create([
@@ -117,7 +106,7 @@ class StoreHeroController extends Controller
         }
 
         $validatedData = $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -128,15 +117,6 @@ class StoreHeroController extends Controller
         $imagePath = $storeHero->image_url;
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $image = Image::make($file);
-
-            if ($file->getSize() > 5 * 1024 * 1024) { // 5MB
-                $image->resize(1920, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-
             $disk = Storage::disk('public');
 
             // Hapus file lama jika ada
@@ -145,7 +125,7 @@ class StoreHeroController extends Controller
             }
 
             $dir      = 'store_heroes';
-            $ext      = $file->getClientOriginalExtension();
+            $ext      = $request->file('image')->getClientOriginalExtension();
             $baseSlug = 'banner-' . Str::slug($userStore->store_name);
 
             // Coba tanpa suffix dulu
@@ -161,8 +141,7 @@ class StoreHeroController extends Controller
             }
 
             // Simpan dengan nama final
-            $disk->put($path, (string) $image->encode('jpg', 80));
-            $imagePath = $path;
+            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
         }
 
         $storeHero->update([

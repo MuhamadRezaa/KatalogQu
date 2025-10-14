@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class StoreSetupController extends Controller
@@ -150,7 +149,7 @@ class StoreSetupController extends Controller
             'store_name' => 'required|string|max:255|unique:user_stores,store_name,' . $userStoreId,
             'subdomain' => 'required|string|max:50|alpha_dash|unique:user_stores,subdomain,' . $userStoreId . '|unique:domains,domain',
             'store_description' => 'nullable|string|max:1000',
-            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'store_phone' => 'nullable|string|max:20',
             'store_email' => 'nullable|email|max:255',
             'store_address' => 'nullable|string|max:500'
@@ -162,29 +161,22 @@ class StoreSetupController extends Controller
 
         $logoPath = $userStore->store_logo ?? null; // Pertahankan logo lama jika tidak ada yang baru
         if ($request->hasFile('store_logo')) {
-            \Illuminate\Support\Facades\Log::info('New logo upload initiated.');
-            \Illuminate\Support\Facades\Log::info('Old logo path: ' . $logoPath);
-
             if ($logoPath && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
-                \Illuminate\Support\Facades\Log::info('Old logo deleted: ' . $logoPath);
             }
 
-            $file = $request->file('store_logo');
-            $image = Image::make($file);
+            // Ambil ekstensi file asli
+            $extension = $request->file('store_logo')->getClientOriginalExtension();
 
-            if ($file->getSize() > 1 * 1024 * 1024) { // 1MB
-                \Illuminate\Support\Facades\Log::info('Image is larger than 1MB, resizing...');
-                $image->resize(512, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-
-            $extension = $file->getClientOriginalExtension();
+            // Buat nama file sesuai store_name (slug biar aman untuk nama file)
             $fileName = Str::slug($request->store_name) . '.' . $extension;
-            $path = 'store-logos/' . $fileName;
-            Storage::disk('public')->put($path, (string) $image);
-            $logoPath = $path;
+
+            // Simpan file dengan nama khusus
+            $logoPath = $request->file('store_logo')->storeAs(
+                'store-logos',
+                $fileName,
+                'public'
+            );
         }
 
         try {

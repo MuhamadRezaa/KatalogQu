@@ -188,7 +188,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,
         Stancl\Tenancy\TenancyServiceProvider::class,
-        Intervention\Image\Laravel\ServiceProvider::class,
+    
     
     ])->toArray(),
 
@@ -205,7 +205,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'Image' => Intervention\Image\Laravel\Facades\Image::class,
     ])->toArray(),
 
 ];

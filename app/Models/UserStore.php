@@ -115,6 +115,14 @@ class UserStore extends Model
     }
 
     /**
+     * Get the products for the store.
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(StoreProduct::class, 'user_store_id');
+    }
+
+    /**
      * SECURITY ENHANCEMENT: Check if store setup can be completed
      */
     public function canCompleteSetup()
