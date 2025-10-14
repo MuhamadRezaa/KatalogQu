@@ -151,7 +151,7 @@
                 <div class="info-row">
                     <span class="label">Metode Pembayaran</span>
                     <span class="value">
-                        {{-- Logika ini akan menampilkan nilai dari database, baik itu "Midtrans" atau "QRIS" --}}
+
                         {{ $purchase->payment_method ?? 'N/A' }}
                     </span>
                 </div>

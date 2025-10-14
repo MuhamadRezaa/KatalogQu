@@ -97,8 +97,17 @@
                     // Update price display
                     const priceElement = document.getElementById('template-price');
                     if (priceElement) {
-                        const price = parseFloat(template.price) || 150000;
-                        priceElement.textContent = 'Rp ' + price.toLocaleString('id-ID');
+                        let displayPrice = 150000; // Default price
+
+                        if (template.prices && template.prices.length > 0) {
+                            // Find the price with the minimum duration
+                            const minDurationPrice = template.prices.reduce((min, p) => p.duration_months < min.duration_months ? p : min, template.prices[0]);
+                            displayPrice = parseFloat(minDurationPrice.price);
+                        } else if (template.price) {
+                            displayPrice = parseFloat(template.price);
+                        }
+
+                        priceElement.textContent = 'Rp ' + displayPrice.toLocaleString('id-ID');
                     }
 
                     // Set gradient based on template category

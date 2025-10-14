@@ -183,14 +183,8 @@ class StoreSetupController extends Controller
             $extension = $file->getClientOriginalExtension();
             $fileName = Str::slug($request->store_name) . '.' . $extension;
             $path = 'store-logos/' . $fileName;
-            
-            try {
-                $image->save(storage_path('app/public/' . $path), 80);
-                $logoPath = $path;
-                \Illuminate\Support\Facades\Log::info('New logo saved successfully to: ' . $path);
-            } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Failed to save image: ' . $e->getMessage());
-            }
+            Storage::disk('public')->put($path, (string) $image);
+            $logoPath = $path;
         }
 
         try {

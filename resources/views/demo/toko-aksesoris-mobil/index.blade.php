@@ -906,73 +906,7 @@ Terima kasih!`;
             }, 100);
         });
 
-        // Checkout Bubble Functionality
-        function setupCheckoutBubble() {
-            const checkoutBubble = document.getElementById('checkoutBubble');
-            if (checkoutBubble) {
-                checkoutBubble.addEventListener('click', function() {
-                    // Button disabled - no action
-                });
-            }
-        }
 
-        function handleCheckout() {
-            // Sample checkout data - replace with your actual product data
-            const checkoutData = {
-                transaction_details: {
-                    order_id: 'ORDER-' + Math.random().toString(36).substr(2, 9),
-                    gross_amount: 150000
-                },
-                item_details: [{
-                    id: 'template-001',
-                    price: 150000,
-                    quantity: 1,
-                    name: 'Checkout Template'
-                }],
-                customer_details: {
-                    first_name: 'Customer',
-                    last_name: 'AutoParts',
-                    email: 'customer@autoparts.com',
-                    phone: '08116584545'
-                }
-            };
-
-            // Check if Midtrans Snap is loaded
-            if (typeof snap !== 'undefined') {
-                // Call Midtrans Snap
-                snap.pay(checkoutData.transaction_details.order_id, {
-                    // Replace with your actual snap token from backend
-                    onSuccess: function(result) {
-                        console.log('Payment success:', result);
-                        showNotification('Pembayaran berhasil! Terima kasih atas pembelian Anda.', 'success');
-                    },
-                    onPending: function(result) {
-                        console.log('Payment pending:', result);
-                        showNotification('Pembayaran sedang diproses. Silakan selesaikan pembayaran Anda.',
-                            'info');
-                    },
-                    onError: function(result) {
-                        console.log('Payment error:', result);
-                        showNotification('Terjadi kesalahan dalam pembayaran. Silakan coba lagi.', 'error');
-                    }
-                });
-            } else {
-                // Fallback if Midtrans is not loaded - redirect to WhatsApp
-                const message = `Halo AutoParts Pro!
-
-Saya ingin membeli:
-📦 *Checkout Template*
-💰 Harga: Rp 150.000
-
-Mohon informasi lebih lanjut untuk proses pembelian.
-
-Terima kasih!`;
-
-                const encodedMessage = encodeURIComponent(message);
-                const whatsappURL = `https://wa.me/6285273147673?text=${encodedMessage}`;
-                window.open(whatsappURL, '_blank');
-            }
-        }
     </script>
 
     <!-- Universal Checkout Bubble -->

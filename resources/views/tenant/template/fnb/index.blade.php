@@ -15,9 +15,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Midtrans Snap CDN (Sandbox for Demo) -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fnb/style.css') }}">
 

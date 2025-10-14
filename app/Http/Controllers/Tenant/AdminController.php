@@ -115,7 +115,7 @@ class AdminController extends Controller
                 Log::info('UpdateSettings: store_logo file is present.');
 
                 // Use the central_public disk to store the logo
-                $disk = Storage::disk('central_public');
+                $disk = Storage::disk('public');
 
                 // Delete old logo if exists
                 if ($userStore->store_logo && $disk->exists($userStore->store_logo)) {
@@ -129,7 +129,7 @@ class AdminController extends Controller
                 $extension = $request->file('store_logo')->getClientOriginalExtension();
                 $filename = $storeNameSlug . '.' . $extension;
 
-                $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'central_public');
+                $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'public');
                 $validated['store_logo'] = $path;
                 Log::info('UpdateSettings: New logo stored at path: ' . $path);
             } else {

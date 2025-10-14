@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-atk/styles.css') }}">
     <!-- Font Awesome untuk icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Midtrans Snap JS -->
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="YOUR_CLIENT_KEY_HERE"></script>
+
 </head>
 
 <body>
@@ -1070,32 +1069,7 @@
     </div>
 </footer>
 
-<script>
-    // Checkout bubble functionality
-    document.getElementById('checkoutBubble').addEventListener('click', function() {
-        // Replace with your actual Midtrans token
-        const snapToken = 'YOUR_SNAP_TOKEN_HERE';
 
-        // Midtrans Snap payment
-        snap.pay(snapToken, {
-            onSuccess: function(result) {
-                alert('Pembayaran berhasil!');
-                console.log(result);
-            },
-            onPending: function(result) {
-                alert('Pembayaran pending!');
-                console.log(result);
-            },
-            onError: function(result) {
-                alert('Pembayaran gagal!');
-                console.log(result);
-            },
-            onClose: function() {
-                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
-            }
-        });
-    });
-</script>
 
 <!-- Universal Checkout Bubble -->
 @include('demo.universal-checkout-bubble', [

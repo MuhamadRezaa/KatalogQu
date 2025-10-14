@@ -158,17 +158,7 @@ foreach (config('tenancy.central_domains') as $domain) {
             // PAYMENT ROUTES
             // ========================================
 
-            // Create payment transaction
-            Route::post('/payment/create', function (Request $request) {
-                // Create payment logic
-                return response()->json(['success' => true, 'payment_url' => 'https://app.sandbox.midtrans.com/snap/v1/transactions/...']);
-            })->name('payment.create');
 
-            // Midtrans payment callback
-            Route::post('/payment/callback', function (Request $request) {
-                // Handle payment callback from Midtrans
-                return response()->json(['success' => true]);
-            })->name('payment.callback');
 
             // Payment success page
             Route::get('/payment/success', function () {

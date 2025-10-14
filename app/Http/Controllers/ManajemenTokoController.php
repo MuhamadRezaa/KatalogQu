@@ -13,7 +13,7 @@ class ManajemenTokoController extends Controller
      */
     public function index()
     {
-        $stores = UserStore::with('user')->latest()->paginate(15);
+        $stores = UserStore::with('user')->whereIn('setup_status', ['pending_validation', 'completed'])->latest()->paginate(15);
         $centralDomain = config('tenancy.central_domains')[0] ?? request()->getHost();
 
         return view('admin-main.pages.manajemen-toko.index', compact('stores', 'centralDomain'));

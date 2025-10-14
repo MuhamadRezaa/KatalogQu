@@ -8,8 +8,7 @@
     <title>{{ $userStore->store_name ?? 'E-Katalog ATK' }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-atk/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}">
-    </script>
+
 
 </head>
 

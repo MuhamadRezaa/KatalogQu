@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\XenditController;
 
@@ -68,7 +67,7 @@ Route::middleware('auth:sanctum')->post('/save-template-purchase', function (Req
         'amount' => $validated['price'],
         'discount_amount' => 0,
         'final_amount' => $validated['price'],
-        'payment_method' => 'midtrans',
+        'payment_method' => 'xendit',
         'payment_status' => $validated['status'],
         'payment_details' => json_encode([
             'template_name' => $validated['template_name'],
@@ -92,78 +91,7 @@ Route::middleware('auth:sanctum')->post('/save-template-purchase', function (Req
     ]);
 });
 
-// Test endpoint for debugging
-Route::post('/midtrans/test-snap-token', function (Request $request) {
-    try {
-        \Illuminate\Support\Facades\Log::info('Test endpoint called', $request->all());
 
-        // Get or create a test user
-        $testUser = \App\Models\User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-                'password' => bcrypt(\Illuminate\Support\Str::random(16)),
-                'email_verified_at' => now()
-            ]
-        );
-
-        $testData = [
-            'transaction_details' => [
-                'order_id' => 'TEST-' . time(),
-                'gross_amount' => 150000
-            ],
-            'customer_details' => [
-                'first_name' => 'Test User',
-                'email' => 'test@example.com',
-                'phone' => '081234567890'
-            ],
-            'item_details' => [[
-                'id' => 'template-test',
-                'price' => 150000,
-                'quantity' => 1,
-                'name' => 'Test Template'
-            ]]
-        ];
-
-        // Create test template purchase record
-        $templatePurchase = \App\Models\TemplatePurchase::create([
-            'transaction_id' => $testData['transaction_details']['order_id'],
-            'user_id' => $testUser->id,
-            'catalog_template_id' => 1,
-            'amount' => $testData['transaction_details']['gross_amount'],
-            'discount_amount' => 0,
-            'final_amount' => $testData['transaction_details']['gross_amount'],
-            'payment_method' => 'midtrans',
-            'payment_status' => 'pending',
-            'payment_details' => json_encode([
-                'customer' => $testData['customer_details'],
-                'template' => ['id' => 'template-test', 'name' => 'Test Template'],
-                'payment_data' => $testData
-            ]),
-            'download_token' => \Illuminate\Support\Str::random(32),
-            'download_count' => 0,
-            'max_downloads' => 3,
-            'expires_at' => now()->addYears(1)
-        ]);
-
-        $midtransService = new \App\Services\CustomMidtransService();
-        $snapToken = $midtransService->getSnapToken($testData);
-
-        return response()->json([
-            'success' => true,
-            'snap_token' => $snapToken,
-            'message' => 'Test successful',
-            'purchase_id' => $templatePurchase->id
-        ]);
-    } catch (\Exception $e) {
-        \Illuminate\Support\Facades\Log::error('Test endpoint error: ' . $e->getMessage());
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
 
 
 // API endpoint to get template data by slug

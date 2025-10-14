@@ -29,8 +29,7 @@
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Checkout Template</h1>
                 <p class="text-gray-600">Selesaikan pembelian template Anda</p>
-                <div id="midtrans-status" class="mt-3 p-3 rounded-lg inline-block" style="display:none;">
-                </div>
+
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
