@@ -114,7 +114,7 @@ class AdminController extends Controller
             if ($request->hasFile('store_logo')) {
                 Log::info('UpdateSettings: store_logo file is present.');
 
-                // Use the central_public disk to store the logo
+                // Use the tenant-aware 'public' disk to store the logo
                 $disk = Storage::disk('public');
 
                 // Delete old logo if exists
@@ -123,11 +123,11 @@ class AdminController extends Controller
                     $disk->delete($userStore->store_logo);
                 }
 
-                Log::info('UpdateSettings: Storing new logo on central_public disk...');
+                Log::info('UpdateSettings: Storing new logo on tenant-aware public disk...');
                 // Generate a custom filename based on store_name slug
                 $storeNameSlug = \Illuminate\Support\Str::slug($validated['store_name']);
                 $extension = $request->file('store_logo')->getClientOriginalExtension();
-                $filename = $storeNameSlug . '.' . $extension;
+                $filename = $storeNameSlug . '-' . time() . '.' . $extension;
 
                 $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'public');
                 $validated['store_logo'] = $path;

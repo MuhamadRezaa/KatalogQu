@@ -54,11 +54,14 @@
                                         <td>
                                             <div class="user-info">
                                                 <h6>{{ $subCategory->name }}</h6>
-                                                <p class="f-light">Slug: {{ $subCategory->slug }}</p>
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="f-light">{{ Str::limit($subCategory->description, 100) }}</p>
+                                            @if ($subCategory->description === null)
+                                                <span class="text-muted">Tidak Ada Deskripsi</span>
+                                            @else
+                                                <p class="f-light">{{ Str::limit($subCategory->description, 100) }}</p>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($subCategory->is_active)

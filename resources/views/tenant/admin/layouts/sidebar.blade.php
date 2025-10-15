@@ -78,7 +78,7 @@
         <a href="{{ route('tenant.admin.dashboard', ['tenant' => $userStore->tenant_id]) }}" class="store-logo-container">
             <div class="d-flex align-items-center">
                 @if (isset($userStore) && $userStore->store_logo)
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                    <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="{{ $userStore->store_name ?? 'Store Logo' }}" class="rounded-circle" width="50"
                         height="50" onerror="this.src='{{ asset('assets/images/no-image-icon.png') }}'">
                 @else

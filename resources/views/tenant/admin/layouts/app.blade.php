@@ -13,7 +13,9 @@
     @auth
         <meta name="api-token" content="{{ auth()->user()->createToken('dashboard')->plainTextToken }}">
     @endauth
-    <link rel="icon" href="{{ asset('storage/' . ($userStore->store_logo ?? 'favicon.png')) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('storage/' . ($userStore->store_logo ?? 'favicon.png')) }}"
         type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'Store' }} - Admin Panel</title>

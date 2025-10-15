@@ -44,7 +44,6 @@
                                                 <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $category->image]) }}"
                                                     alt="{{ $category->name }}" class="img-fluid rounded"
                                                     style="max-width: 60px;">
-                                                <p class="f-light">DB Path: {{ $category->image ?? 'N/A' }}</p>
                                             @else
                                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                                     style="width: 60px; height: 60px;">
@@ -55,11 +54,14 @@
                                         <td>
                                             <div class="user-info">
                                                 <h6>{{ $category->name }}</h6>
-                                                <p class="f-light">Slug: {{ $category->slug }}</p>
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="f-light">{{ Str::limit($category->description, 100) }}</p>
+                                            @if ($category->description === null)
+                                                <span class="text-muted">Tidak Ada Deskripsi</span>
+                                            @else
+                                                <p class="f-light">{{ Str::limit($category->description, 100) }}</p>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($category->is_active)

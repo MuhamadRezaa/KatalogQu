@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'TechZone' }} - Modern Computer Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,7 +23,8 @@
         <div class="container mx-auto px-4 sm:px-6 flex items-center justify-center lg:justify-start h-16">
             <a href="{{ url('/') }}" class="flex items-center space-x-2">
                 @if ($userStore->store_logo)
-                    <img class="rounded h-8 w-8 sm:h-10 sm:w-10" src="{{ asset('storage/' . $userStore->store_logo) }}"
+                    <img class="rounded h-8 w-8 sm:h-10 sm:w-10"
+                        src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="{{ $userStore->store_name ?? 'TechZone' }} Logo" loading="lazy" decoding="async" />
                 @else
                     <img class="rounded h-8 w-8 sm:h-10 sm:w-10"
@@ -488,7 +491,8 @@
                 <div class="space-y-4 mr-6">
                     <a href="{{ url('/') }}" class="flex items-center space-x-4 mb-4">
                         @if (isset($userStore->store_logo))
-                            <img class="h-16 w-16 rounded" src="{{ asset('/storage/' . $userStore->store_logo) }}"
+                            <img class="h-16 w-16 rounded"
+                                src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="{{ $userStore->store_name ?? 'TechZone' }} Logo" loading="lazy"
                                 decoding="async" />
                         @else

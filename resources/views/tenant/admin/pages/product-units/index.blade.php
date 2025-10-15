@@ -40,7 +40,13 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $productUnit->unit_name }}</td>
                                         <td>{{ $productUnit->unit_code }}</td>
-                                        <td>{{ Str::limit($productUnit->description, 100) }}</td>
+                                        <td>
+                                            @if ($productUnit->description === null)
+                                                <span class="text-muted">Tidak Ada Deskripsi</span>
+                                            @else
+                                                {{ Str::limit($productUnit->description, 100) }}
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-sm btn-primary"

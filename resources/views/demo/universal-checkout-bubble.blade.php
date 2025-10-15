@@ -30,7 +30,7 @@
                 <span class="font-semibold">Checkout Template</span>
             </div>
             <div class="bg-white/20 rounded-full px-3 py-1">
-                <span id="template-price" class="text-sm font-bold">Rp 150.000</span>
+                <span id="template-price" class="text-sm font-bold">Rp 15.000</span>
             </div>
         </button>
     </div>
@@ -101,7 +101,8 @@
 
                         if (template.prices && template.prices.length > 0) {
                             // Find the price with the minimum duration
-                            const minDurationPrice = template.prices.reduce((min, p) => p.duration_months < min.duration_months ? p : min, template.prices[0]);
+                            const minDurationPrice = template.prices.reduce((min, p) => p.duration_months <
+                                min.duration_months ? p : min, template.prices[0]);
                             displayPrice = parseFloat(minDurationPrice.price);
                         } else if (template.price) {
                             displayPrice = parseFloat(template.price);

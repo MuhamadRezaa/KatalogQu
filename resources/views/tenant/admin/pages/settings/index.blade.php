@@ -205,7 +205,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Logo Saat Ini</label>
                                 <div class="text-center">
-                                    <img src="{{ asset('storage/' . $userStore->store_logo) . '?v=' . $userStore->updated_at->timestamp }}"
+                                    <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                         alt="{{ $userStore->store_name }}" class="img-fluid rounded"
                                         style="max-height: 150px;">
                                 </div>
@@ -221,7 +221,7 @@
                             @error('store_logo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Ukuran yang disarankan: 200x200px. Ukuran file maksimal: 2MB</div>
+                            <div class="form-text">Ukuran file maksimal: 2MB</div>
                         </div>
 
                         <!-- Pratinjau Logo Baru -->

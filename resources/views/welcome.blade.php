@@ -508,7 +508,7 @@
 
     <div class="fab-container">
         <div class="fab-dropdown" id="fab-dropdown">
-            <a href="https://wa.me/628116584545?text=Halo%2C%20saya%20tertarik%20dengan%20layanan%20KatalogQu."
+            <a href="https://wa.me/6281572505989?text=Halo%2C%20saya%20tertarik%20dengan%20layanan%20KatalogQu."
                 target="_blank">
                 <i class="fab fa-whatsapp whatsapp-icon"></i>
                 <span>Contact via WhatsApp</span>
@@ -652,40 +652,6 @@
                     '*');
             });
         });
-
-        function selectTemplate(type) {
-            const templates = {
-                'fnb': 'Template Food & Beverage',
-                'tech': 'Template Tech Store',
-                'barber': 'Template Barbershop',
-                'aksesoris-mobil': 'Template Aksesoris Mobil',
-                'aksesoris-hp': 'Template Aksesoris HP',
-                'fashion': 'Template Fashion',
-                'kosmetik': 'Template Kosmetik',
-                'atk': 'Template ATK',
-                'toko-bangunan': 'Template Toko Bangunan',
-                'salon': 'Template Salon'
-            };
-            Swal.fire({
-                title: 'Template Dipilih!',
-                text: `Anda memilih ${templates[type]}. Lanjutkan ke halaman kustomisasi?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Lanjutkan',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#667eea'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Mengalihkan...',
-                        text: 'Mengarahkan ke halaman kustomisasi',
-                        icon: 'info',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                }
-            });
-        }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

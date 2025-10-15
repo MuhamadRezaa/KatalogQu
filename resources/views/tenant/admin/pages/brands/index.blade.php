@@ -52,7 +52,6 @@
                                         <td>
                                             <div class="user-info">
                                                 <h6>{{ $brand->name }}</h6>
-                                                <p class="f-light">Slug: {{ $brand->slug }}</p>
                                             </div>
                                         </td>
                                         <td>
