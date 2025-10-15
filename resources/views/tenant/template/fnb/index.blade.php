@@ -138,6 +138,67 @@
                     <p class="text-gray-500">Belum ada kategori</p>
                 @endif
             </div>
+            <script>
+                // Filter menu sesuai kategori saat card kategori ditekan
+                document.querySelectorAll('.card-category').forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        var categoryText = card.querySelector('.card-title').textContent.trim().toLowerCase();
+                        // Mapping kategori agar sesuai dengan data menu
+                        var categoryMap = {
+                            'minuman': 'minuman',
+                            'makanan': 'makanan',
+                            'cemilan': 'cemilan',
+                            'dessert': 'dessert'
+                        };
+                        var selectedCategory = categoryMap[categoryText] || 'all';
+                        window.currentCategory = selectedCategory;
+                        window.currentPage = 1;
+                        if (typeof sortAndRender === 'function') sortAndRender();
+                        var productSection = document.getElementById('menu-list');
+                        if (productSection) {
+                            productSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                        // Update label kategori jika ada
+                        var categoryLabel = document.getElementById('category-label');
+                        if (categoryLabel) {
+                            switch (selectedCategory) {
+                                case 'minuman':
+                                    categoryLabel.innerText = 'Minuman';
+                                    break;
+                                case 'makanan':
+                                    categoryLabel.innerText = 'Makanan';
+                                    break;
+                                case 'cemilan':
+                                    categoryLabel.innerText = 'Cemilan';
+                                    break;
+                                case 'dessert':
+                                    categoryLabel.innerText = 'Dessert';
+                                    break;
+                                default:
+                                    categoryLabel.innerText = 'Semua Menu';
+                            }
+                        }
+                    });
+                });
+            </script>
+            <script>
+                // Scroll ke produk saat kategori ditekan
+                document.querySelectorAll('.card-category').forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        // Ganti selector berikut sesuai id/section produk utama
+                        var productSection = document.getElementById('menu-list');
+                        if (productSection) {
+                            productSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            </script>
         </section>
 
 
