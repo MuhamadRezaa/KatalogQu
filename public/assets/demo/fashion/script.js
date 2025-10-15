@@ -443,9 +443,13 @@ const categoriesData = {
       if (categoryId === 'all') {
           filteredProducts = allProducts;
           hideSubcategories();
+          // Scroll to products grid
+          scrollToElementSmoothly('productsGrid', 800);
       } else if (categoryId === 'new') {
           filteredProducts = allProducts.filter(product => isProductNew(product));
           hideSubcategories();
+          // Scroll to products grid
+          scrollToElementSmoothly('productsGrid', 800);
       } else {
           const category = allCategories.find(cat => cat.id == categoryId);
           if (category) {
@@ -453,10 +457,17 @@ const categoriesData = {
                   product.category.toLowerCase() === category.name.toLowerCase()
               );
               showSubcategories(category);
+              // Scroll to subcategory section
+              scrollToElementSmoothly('subcategorySection', 800);
           }
       }
 
       renderProducts(filteredProducts);
+
+      // Scroll to subcategory section if displayed
+      if (subcategorySection.style.display === 'block') {
+          scrollToElementSmoothly('subcategorySection', 800);
+      }
   }
 
   // Check if product is new (has 'new' or 'baru' in colors/materials)
@@ -556,6 +567,9 @@ const categoriesData = {
       }
 
       renderProducts(filteredProducts);
+
+      // Scroll to products section
+      scrollToElementSmoothly('productsGrid', 800);
   }
 
   // Search products
@@ -839,11 +853,33 @@ const categoriesData = {
   function smoothScrollTo(elementId) {
       const element = document.getElementById(elementId);
       if (element) {
-          element.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-          });
+          scrollToElementSmoothly(elementId, 800);
       }
+  }
+
+  // Custom smooth scroll function with longer duration
+  function scrollToElementSmoothly(elementId, duration = 800) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+
+      const start = window.pageYOffset;
+      const end = element.getBoundingClientRect().top + window.pageYOffset;
+      const change = end - start;
+      let startTime = null;
+
+      function animateScroll(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const progress = (currentTime - startTime) / duration;
+          // Menggunakan fungsi easing yang lebih lambat di awal dan akhir
+          const easeInOutCubic = progress < 0.5
+              ? 4 * progress * progress * progress
+              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+          window.scrollTo(0, start + change * easeInOutCubic);
+          if (progress < 1) {
+              requestAnimationFrame(animateScroll);
+          }
+      }
+      requestAnimationFrame(animateScroll);
   }
 
   // Add scroll effect to navbar
