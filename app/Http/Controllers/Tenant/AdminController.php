@@ -14,6 +14,7 @@ use App\Models\Menu; // Add this import
 use Illuminate\Support\Facades\Storage;
 use App\Models\StoreCategory; // Add this import
 use Illuminate\Support\Facades\Log; // Gemini Added
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -139,6 +140,9 @@ class AdminController extends Controller
             Log::info('UpdateSettings: Updating UserStore with validated data.', $validated);
             $userStore->update($validated);
             Log::info('UpdateSettings: UserStore updated successfully.');
+
+            // Clear the cache for this store so changes appear immediately on the subdomain
+            Cache::forget("store_{$userStore->subdomain}");
         } catch (\Exception $e) {
             Log::error('UpdateSettings: An error occurred during the update process.', [
                 'message' => $e->getMessage(),
