@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
-        href="{{ $userStore->store_logo ? asset('storage/' . $userStore->store_logo) : asset('assets/images/katalogqu_icon.png') }}"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
         type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'Toko Kosmetik' }} - E-Katalog Premium</title>
 
@@ -386,7 +386,8 @@
         <div class="container">
             <a class="navbar-brand" href="#">
                 @if ($userStore->store_logo)
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="Logo" class="brand-logo me-2">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="Logo" class="brand-logo me-2">
                 @else
                     <div class="brand-icon"><i class="fas fa-gem"></i></div>
                 @endif
@@ -625,8 +626,8 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="footer-brand">
                         @if ($userStore->store_logo)
-                            <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="Logo"
-                                class="footer-logo mb-3" width="150"
+                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                                alt="Logo" class="footer-logo mb-3" width="150"
                                 style="border-radius:10px; background: white; padding: 10px;">
                         @else<h4 class="text-white">{{ $userStore->store_name }}</h4>
                         @endif

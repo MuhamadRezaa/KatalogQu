@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +22,8 @@
         <nav>
             <div class="logo">
                 <div class="logo-icon">
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="AutoParts Pro Logo">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="AutoParts Pro Logo">
                 </div>
                 <div class="logo-text">
                     <span class="logo-main">{{ $userStore->store_name }}</span>
@@ -184,7 +187,7 @@
                 <div class="footer-section">
                     <div class="footer-logo">
                         <div class="footer-logo-icon">
-                            <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="{{ $userStore->store_name }}">
                         </div>
                         <div class="footer-logo-text">

@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'E-Katalog ATK' }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-atk/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +19,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-section">
-                    <img src="{{ $userStore->store_logo ? asset('storage/' . $userStore->store_logo) : asset('assets/demo/toko-atk/images/20250819_1904_Logo_E-Catalog_Alat_Tulis_simple_compose_01k313dfh6e1xtcnhs1atfdnt3-removebg-preview.png') }}"
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="Logo Toko" class="logo-image">
                     <div class="header-text">
                         <h1>{{ $userStore->store_name ?? 'Tinta Cipta' }}</h1>
@@ -150,7 +152,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">
-                <img src="{{ $userStore->store_logo ? asset('storage/' . $userStore->store_logo) : asset('assets/demo/toko-atk/images/20250819_1904_Logo_E-Catalog_Alat_Tulis_simple_compose_01k313dfh6e1xtcnhs1atfdnt3-removebg-preview.png') }}"
+                <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                     alt="Logo Toko" class="footer-logo">
             </div>
             <div class="footer-section">

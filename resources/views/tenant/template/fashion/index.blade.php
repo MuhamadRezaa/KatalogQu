@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'E-Katalog Fashion' }}</title>
 
     <meta name="description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
@@ -30,7 +32,8 @@
             <a href="{{ url('/') }}" class="nav-brand">
                 <div class="brand-icon">
                     @if ($userStore && $userStore->store_logo)
-                        <img class="brand-logo" src="{{ asset('storage/' . $userStore->store_logo) }}"
+                        <img class="brand-logo"
+                            src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                             alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
                     @else
                         <img class="brand-logo" src="{{ asset('assets/images/no-image-icon.png') }}"
@@ -547,7 +550,7 @@
                     <div class="footer-brand-container">
                         @if ($userStore && $userStore->store_logo)
                             <img id="footerStoreLogo" class="footer-logo"
-                                src="{{ asset('storage/' . $userStore->store_logo) }}"
+                                src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
                         @else
                             <img id="footerStoreLogo" class="footer-logo"
@@ -1358,11 +1361,11 @@
                             ${images.map((img, index) => {
                                 const imgUrl = `${window.location.origin}/tenancy/assets/${img.replace(/^\//, '')}`;
                                 return `
-                                                                                                                                                                                                                                            <img src="${imgUrl}"
-                                                                                                                                                                                                                                                 alt="${product.name} ${index + 1}"
-                                                                                                                                                                                                                                                 class="gallery-thumb ${index === 0 ? 'active' : ''}"
-                                                                                                                                                                                                                                                 onclick="changeMainImage('${imgUrl}', this)">
-                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                        <img src="${imgUrl}"
+                                                                                                                                                                                                                                                             alt="${product.name} ${index + 1}"
+                                                                                                                                                                                                                                                             class="gallery-thumb ${index === 0 ? 'active' : ''}"
+                                                                                                                                                                                                                                                             onclick="changeMainImage('${imgUrl}', this)">
+                                                                                                                                                                                                                                                    `;
                             }).join('')}
                         </div>
                     `;
@@ -1428,11 +1431,11 @@
 
                             <div class="modal-product-specs">
                                 ${material ? `
-                                                                                                                                                                                                                                            <div class="modal-section">
-                                                                                                                                                                                                                                                <h4>Material:</h4>
-                                                                                                                                                                                                                                                <p class="spec-value">${material}</p>
-                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                        ` : ''}
+                                                                                                                                                                                                                                                        <div class="modal-section">
+                                                                                                                                                                                                                                                            <h4>Material:</h4>
+                                                                                                                                                                                                                                                            <p class="spec-value">${material}</p>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                    ` : ''}
                                 ${sizesHTML}
                                 ${colorsHTML}
                             </div>

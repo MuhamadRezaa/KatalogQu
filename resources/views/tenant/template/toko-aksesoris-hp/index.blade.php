@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-aksesoris-hp/styles.css') }}" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,8 +49,8 @@
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
             <div class="flex items-center space-x-4 mb-4 md:mb-0">
                 @if ($userStore->store_logo)
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                        class="rounded-full w-16 h-16 object-cover">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="{{ $userStore->store_name }}" class="rounded-full w-16 h-16 object-cover">
                 @else
                     <div class="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center">
                         <span class="text-white font-bold text-2xl">{{ substr($userStore->store_name, 0, 1) }}</span>
@@ -282,8 +284,8 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center mb-4 md:mb-0">
                     @if ($userStore->store_logo)
-                        <img src="{{ Storage::url($userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                            class="w-10 h-10 rounded-full mr-3">
+                        <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                            alt="{{ $userStore->store_name }}" class="w-10 h-10 rounded-full mr-3">
                     @else
                         <div
                             class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3">

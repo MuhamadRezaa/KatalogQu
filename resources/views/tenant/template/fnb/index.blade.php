@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ $userStore->store_name ?? 'Kopi Seduh Pagi' }}</title>
 
@@ -33,7 +35,7 @@
         <div class="max-w-6xl mx-auto flex justify-between items-center relative">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="{{ $userStore->store_name ?? 'Kopi Seduh Pagi' }}"
                         class="w-full
                         h-full object-cover">
@@ -1049,7 +1051,7 @@
                     <div class="flex flex-col items-center space-y-4">
                         <div class="flex items-center gap-4">
                             <div class="w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
-                                <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                                <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                     alt="{{ $userStore->store_name ?? 'Kopi Seduh Pagi' }}"
                                     class="w-full h-full object-cover">
                             </div>

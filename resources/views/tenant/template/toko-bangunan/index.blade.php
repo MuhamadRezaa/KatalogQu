@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-bangunan/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -74,8 +76,8 @@
         <div class="header-container">
             <div class="header-top">
                 <div class="logo">
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="Logo Toko" class="logo-image"
-                        style="width: 50px; height: 50px; background: transparent;">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="Logo Toko" class="logo-image" style="width: 50px; height: 50px; background: transparent;">
                     <div class="logo-text">{{ $userStore->store_name }}</div>
                 </div>
             </div>
@@ -264,8 +266,9 @@
         <div class="footer-container">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="Logo Toko"
-                        class="footer-logo-image" style="width: 150px; height: 150px; background: transparent;">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="Logo Toko" class="footer-logo-image"
+                        style="width: 150px; height: 150px; background: transparent;">
                     <h3 class="footer-logo-text">{{ $userStore->store_name }}</h3>
                 </div>
             </div>

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="{{ $userStore->store_logo ? asset('storage/' . $userStore->store_logo) : '' }}"
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
         type="image/x-icon">
     <title>{{ $userStore->store_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -305,8 +306,8 @@
             <div class="flex justify-between items-center h-16">
                 <a href="/" class="flex items-center space-x-3 group">
                     @if ($userStore->store_logo)
-                        <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                            class="w-10 h-10 rounded-full object-cover shadow-md">
+                        <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                            alt="{{ $userStore->store_name }}" class="w-10 h-10 rounded-full object-cover shadow-md">
                     @else
                         <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center shadow-md">
                             <span class="text-white font-bold text-lg">{{ substr($userStore->store_name, 0, 1) }}</span>
@@ -434,7 +435,7 @@
                 <div class="md:col-span-1">
                     <a href="/" class="flex items-center space-x-2 mb-4">
                         @if ($userStore->store_logo)
-                            <img src="{{ asset('storage/' . $userStore->store_logo) }}"
+                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="{{ $userStore->store_name }}" class="w-10 h-10 rounded-full object-cover">
                         @else
                             <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center"><span
