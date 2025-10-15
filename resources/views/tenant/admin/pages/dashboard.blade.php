@@ -11,8 +11,8 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             @if ($userStore->store_logo)
-                                <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                                    class="rounded-circle" width="50" height="50">
+                                <img src="{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                                    alt="{{ $userStore->store_name }}" class="rounded-circle" width="50" height="50">
                             @else
                                 <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
