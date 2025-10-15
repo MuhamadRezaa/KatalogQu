@@ -76,14 +76,16 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 */
+            padding-top: 56.25%;
+            /* 16:9 */
         }
 
         .video-responsive-portrait {
             overflow: hidden;
             position: relative;
             width: 100%;
-            padding-top: 177.77%; /* 9:16 */
+            padding-top: 177.77%;
+            /* 9:16 */
         }
 
         .video-responsive iframe,
@@ -681,34 +683,6 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                }
-            });
-        }
-
-        function showDemo(type) {
-            const demos = {
-                'Katalog_FnB': 'Demo Katalog F&B',
-                'KatalogTokoKomputer': 'Demo Katalog Tech Store',
-                'BARBER1': 'Demo Katalog Barbershop',
-                'AksesorisMobil': 'Demo Katalog Aksesoris Mobil',
-                'Aksesoris_HP': 'Demo Katalog Aksesoris HP',
-                'Fashion': 'Demo Katalog Fashion',
-                'demo/toko_kosmetik': 'Demo Katalog Kosmetik',
-                'e-katalog-ATK-detailed': 'Demo Katalog ATK',
-                'e-katalog-toko-bangunan': 'Demo Katalog Toko Bangunan',
-                'salon': 'Demo Katalog Salon'
-            };
-            Swal.fire({
-                title: demos[type] || 'Demo Katalog',
-                text: 'Membuka demo di tab baru...',
-                icon: 'info',
-                timer: 1500,
-                showConfirmButton: false
-            }).then(() => {
-                if (type === 'demo/toko_kosmetik') {
-                    window.open('/demo/toko-kosmetik', '_blank');
-                } else {
-                    window.open(`/${type}/index.html`, '_blank');
                 }
             });
         }
