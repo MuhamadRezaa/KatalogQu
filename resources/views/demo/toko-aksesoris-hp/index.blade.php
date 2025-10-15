@@ -38,31 +38,49 @@
 
     <!-- Hero Section dengan Background Gambar Blur -->
     <section class="relative text-white text-center py-20 overflow-hidden">
-        <!-- Wrapper untuk slider -->
+        <!-- Wrapper untuk slider: setiap slide sekarang berisi gambar + teks berbeda -->
         <div id="hero-slider" class="absolute inset-0">
-            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag.webp') }}" alt="Background"
-                class="slide w-full h-full object-cover brightness-75 absolute inset-0 opacity-100 transition-opacity duration-1000">
-            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg') }}" alt="Background"
-                class="slide w-full h-full object-cover brightness-75 absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg') }}" alt="Background"
-                class="slide w-full h-full object-cover brightness-75 absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000">
+                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag.webp') }}" alt="Background"
+                    class="w-full h-full object-cover brightness-75 absolute inset-0">
+                <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+                <div class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Temukan aksesoris handphone kamu di sini</h1>
+                    <p class="text-lg md:text-xl font-light mb-6">Pilihan case, charger, dan aksesori berkualitas untuk
+                        semua tipe HP.</p>
+                </div>
+            </div>
 
-            <!-- Overlay -->
-            <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg') }}" alt="Background"
+                    class="w-full h-full object-cover brightness-75 absolute inset-0">
+                <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+                <div class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Promo Spesial & Diskon</h1>
+                    <p class="text-lg md:text-xl font-light mb-6">Dapatkan harga terbaik untuk produk pilihan setiap
+                        minggu.</p>
+                </div>
+            </div>
+
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg') }}" alt="Background"
+                    class="w-full h-full object-cover brightness-75 absolute inset-0">
+                <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+                <div class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Kualitas & Garansi</h1>
+                    <p class="text-lg md:text-xl font-light mb-6">Semua produk terjamin kualitasnya dan didukung garansi
+                        resmi.</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Konten -->
-        <div class="relative z-10 container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Temukan aksesoris handphone kamu disini</h1>
-            <p class="text-lg md:text-xl font-light mb-6">Koleksi aksesoris handphone terlengkap dengan harga terjangkau
-            </p>
-
-            <!-- Dot Indicator -->
-            <div class="flex justify-center space-x-3">
+        <!-- Dot Indicator: tampilkan tepat di bawah teks slide -->
+        <div id="hero-dots" class="absolute left-0 right-0 z-20 flex justify-center" style="top:65%">
+            {{-- <div class="flex justify-center space-x-3">
                 <span class="dot w-3 h-3 rounded-full bg-white opacity-50 transition-all duration-500"></span>
                 <span class="dot w-3 h-3 rounded-full bg-white opacity-50 transition-all duration-500"></span>
                 <span class="dot w-3 h-3 rounded-full bg-white opacity-50 transition-all duration-500"></span>
-            </div>
+            </div> --}}
         </div>
     </section>
 
@@ -1110,6 +1128,45 @@
                     product.style.display = 'none';
                 }
             });
+            // Setelah filter diterapkan, scroll ke produk pertama yang terlihat
+            // (tunggu sedikit agar DOM repaint selesai jika perlu)
+            setTimeout(() => {
+                scrollToFirstVisibleProduct(category);
+            }, 50);
+        }
+
+        // Scroll ke produk pertama yang terlihat untuk kategori yang dipilih.
+        // Jika category === 'all', scroll ke bagian produk (judul section).
+        function scrollToFirstVisibleProduct(category) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+
+            if (category === 'all') {
+                // Scroll ke judul section Produk Unggulan
+                const sectionTitle = document.querySelector('.section-title');
+                if (sectionTitle) {
+                    sectionTitle.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    return;
+                }
+            }
+
+            // Temukan elemen product-card pertama yang sedang ditampilkan dan cocok dengan kategori
+            const products = Array.from(grid.querySelectorAll('.product-card'));
+            const firstVisible = products.find(p => p.style.display !== 'none' && (category === 'all' || p.dataset
+                .category === category));
+            if (firstVisible) {
+                // Scroll ke posisi card, memberi sedikit offset agar tidak tersembunyi di bawah header
+                const headerOffset = 20; // pixel
+                const rect = firstVisible.getBoundingClientRect();
+                const absoluteY = window.pageYOffset + rect.top - headerOffset;
+                window.scrollTo({
+                    top: absoluteY,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         // Mencari produk berdasarkan kata kunci dari input pencarian.

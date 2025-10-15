@@ -35,7 +35,8 @@
                             class="font-semibold text-yellow-700">Menunggu Persetujuan</span></p>
                 </div>
                 <p class="mt-6 text-sm text-gray-500">
-                    Proses ini biasanya memakan waktu beberapa jam. Anda akan menerima notifikasi email setelah toko
+                    Website toko Anda akan kami proses dalam waktu 1 jam saat waktu jam kerja dan Anda akan menerima
+                    notifikasi setelah toko
                     Anda aktif. Halaman ini akan otomatis diperbarui.
                 </p>
             </div>

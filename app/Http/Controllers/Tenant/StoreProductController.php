@@ -63,7 +63,7 @@ class StoreProductController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
-        if ($userStore->products()->count() >= 500) {
+        if ($userStore->products()->count() >= 200) {
             return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
                 ->with('error', 'You have reached the maximum number of products (500).');
         }
@@ -72,7 +72,7 @@ class StoreProductController extends Controller
             'name' => 'required|string|max:255|unique:store_products,name,NULL,id,user_store_id,' . $userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'product_category_id' => 'nullable|exists:product_categories,id,user_store_id,' . $userStore->id . ',is_active,1',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
@@ -88,7 +88,7 @@ class StoreProductController extends Controller
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3',
-            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
@@ -200,7 +200,7 @@ class StoreProductController extends Controller
             'name' => 'required|string|max:255|unique:store_products,name,' . $product->id . ',id,user_store_id,' . $userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'product_category_id' => 'nullable|exists:product_categories,id',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
@@ -216,7 +216,7 @@ class StoreProductController extends Controller
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3', // Max 3 additional images
-            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'existing_images_ids' => 'nullable|array', // IDs of images to keep
             'existing_images_ids.*' => 'exists:product_images,id',
         ]);
