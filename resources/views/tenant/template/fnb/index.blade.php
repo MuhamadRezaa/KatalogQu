@@ -736,6 +736,30 @@
                 sortAndRender();
                 addModalEventListeners();
 
+
+                // Event listener untuk tombol 'Pesan Sekarang' di semua modal produk
+                document.querySelectorAll('.order-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Cari modal terdekat
+                        var modal = btn.closest('[id^="product-modal-"]');
+                        if (!modal) return;
+                        // Ambil nama produk dari modal
+                        var productName = modal.querySelector('h3') ? modal.querySelector('h3')
+                            .innerText.trim() : '';
+                        // Ambil harga produk
+                        var priceSpan = modal.querySelector('span.text-3xl') ? modal.querySelector(
+                            'span.text-3xl').innerText.trim() : '';
+                        // Format pesan WhatsApp
+                        var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
+                            productName + ' dengan harga ' + priceSpan + '.');
+                        // Nomor WhatsApp tujuan (ganti dengan nomor toko Anda)
+                        var waNumber = '6289643425076'; // Ganti dengan nomor WA toko
+                        var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
+                        window.open(waUrl, '_blank');
+                    });
+                });
+
                 // Event listener untuk sort dropdown
                 const sortMenuBtn = document.getElementById('sort-menu-btn');
                 const sortOptions = document.getElementById('sort-options');
