@@ -453,7 +453,7 @@
                     <ul>
                         <li><i class="fas fa-map-marker-alt"></i> Jl. Cycas Raya Jl. Taman Setia Budi Indah Blok VV
                             No.172 Kompleks, Asam Kumbang, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20133</li>
-                        <li><i class="fas fa-phone"></i> 08116584545</li>
+                        <li><i class="fas fa-phone"></i> +62 815-7250-5989</li>
                         <li><i class="fas fa-envelope"></i> pteraciptadigital@gmail.com</li>
                     </ul>
                 </div>
@@ -783,7 +783,7 @@
             const productName = productCard.querySelector('h4').textContent;
             const productPrice = productCard.querySelector('.product-price').textContent;
 
-            const phoneNumber = '6285273147673';
+            const phoneNumber = '6281572505989';
             const message = `Halo AutoParts
 
 Saya tertarik untuk memesan produk:

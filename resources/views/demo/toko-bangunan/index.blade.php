@@ -205,7 +205,7 @@
                         <div>Sumatera Utara 20133</div>
                     </div>
                 </div>
-                <p><i class="fas fa-phone"></i> 08116584545</p>
+                <p><i class="fas fa-phone"></i> +62 815-7250-5989</p>
                 <p><i class="fas fa-envelope"></i> pteraciptadigital@gmail.com</p>
                 <div class="social-media">
                     <a href="https://www.instagram.com/fauzy900_" target="_blank" class="social-icon"><i
@@ -233,9 +233,7 @@
                 price: "Rp 250.000",
                 unit: "kaleng",
                 description: "Cat tembok berkualitas tinggi merk Dulux dengan daya tutup yang baik dan tahan lama. Cocok untuk interior rumah dengan berbagai pilihan warna.",
-                image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                category: "cat",
-                whatsapp: "6287897325612"
+                whatsapp: "6281572505989"
             },
             {
                 id: 2,

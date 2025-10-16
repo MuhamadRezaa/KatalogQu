@@ -314,7 +314,7 @@
                             Perjuangan No. 13, Medan 10220
                         </li>
                         <li>
-                            <i class="fas fa-phone"></i> +62 813-8549-7404
+                            <i class="fas fa-phone"></i> +62 815-7250-5989
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i> info@barber.com

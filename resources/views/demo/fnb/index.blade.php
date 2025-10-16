@@ -1069,7 +1069,7 @@
                         var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
                             productName + ' dengan harga ' + priceSpan + '.');
                         // Nomor WhatsApp tujuan (ganti dengan nomor toko Anda)
-                        var waNumber = '6289643425076'; // Ganti dengan nomor WA toko
+                        var waNumber = '6281572505989'; // Ganti dengan nomor WA toko
                         var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
                         window.open(waUrl, '_blank');
                     });

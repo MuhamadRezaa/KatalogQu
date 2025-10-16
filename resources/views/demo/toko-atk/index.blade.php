@@ -873,7 +873,7 @@
 
             // Chat WhatsApp
             function chatWhatsApp(productName, price) {
-                const phoneNumber = '6287897325612';
+                const phoneNumber = '6281572505989';
                 const message =
                     `Halo, saya tertarik dengan produk ${productName} dengan harga ${price}. Bisa info lebih lanjut?`;
                 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -1052,7 +1052,7 @@
                 <p>Sumatera Utara 20133</p>
                 <br>
                 <p>ptenciptadigital@gmail.com</p>
-                <p>081166484545</p>
+                <p>+62 815-7250-5989</p>
                 <br>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>

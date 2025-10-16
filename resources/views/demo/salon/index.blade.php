@@ -523,7 +523,7 @@
                     <h3 class="text-lg font-bold mb-2">Kontak</h3>
                     <div class="space-y-1 text-sm text-gray-300">
                         <p>📍 Jl. Setiabudi No. 17</p>
-                        <p>📞 (021) 555-0123</p>
+                        <p>📞 +62 815-7250-5989</p>
                         <p>✉ info@glamoursalon.com</p>
                     </div>
                 </div>
@@ -651,7 +651,7 @@
             document.getElementById("modal-price").textContent = price;
 
             // Ubah link WhatsApp sesuai produk
-            const nomorWA = "6281234567890"; // ganti dengan nomor kamu
+            const nomorWA = "6281572505989"; // ganti dengan nomor kamu
             const pesan = `Halo, saya tertarik dengan produk ${title} seharga ${price}. Bisa jelaskan lebih lanjut?`;
             document.getElementById("chat-btn").href = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
 

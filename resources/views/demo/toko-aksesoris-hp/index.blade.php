@@ -178,7 +178,7 @@
                                 <span class="text-gray-400 line-through mr-2">Rp 120.000</span>
                             </div>
                             <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20Case%20Silikon%20Premium" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo%20saya%20tertarik%20dengan%20produk%20Case%20Silikon%20Premium" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                         '>Detail</button>
@@ -222,7 +222,7 @@
                                 <span class="text-gray-400 line-through mr-2">Rp 110.000</span>
                             </div>
                             <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20Casing%20HP%20Panda%20Lucu%20dan%20Unik" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo%20saya%20tertarik%20dengan%20produk%20Casing%20HP%20Panda%20Lucu%20dan%20Unik" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -264,7 +264,7 @@
                                     <span class="text-gray-400 line-through mr-2">Rp 130.000</span>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20Casing%20Couple" target="_blank"
+                                    <a href="https://wa.me/6281572505989?text=Halo%20saya%20tertarik%20dengan%20produk%20Casing%20Couple" target="_blank"
                                         class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                                 </div>
                         '>Detail</button>
@@ -300,7 +300,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 65.000</div>
                         <div class="text-center mt-3">
-                            <a href="https://wa.me/6282392184679?text=Halo saya tertarik dengan Case Transparan Clear " target="_blank"
+                            <a href="https://wa.me/6281572505989?text=Halo saya tertarik dengan Case Transparan Clear " target="_blank"
                                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                         </div>
                     '>Detail</button>
@@ -337,7 +337,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 275.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo Saya tertarik dengan Fast Charger 65W" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo Saya tertarik dengan Fast Charger 65W" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -373,7 +373,7 @@
                                 </ul>
                                 <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 45.000</div>
                                 <div class="text-center mt-3">
-                                    <a href="https://wa.me/6282392184679?text=Halo, saya tertarik dengan Kabel Data Lucu Karakter" target="_blank"
+                                    <a href="https://wa.me/6281572505989?text=Halo, saya tertarik dengan Kabel Data Lucu Karakter" target="_blank"
                                         class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                                 </div>
                             '>Detail</button>
@@ -409,7 +409,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 189.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo saya tertarik dengan Wireless Charger Stand" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo saya tertarik dengan Wireless Charger Stand" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -443,7 +443,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 135.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo saya tertarik dengan Charger USB-C 20W" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo saya tertarik dengan Charger USB-C 20W" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -480,7 +480,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 55.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text="Halo Saya tertarik dengan Earphone Kabel In-Ear" target="_blank"
+                                <a href="https://wa.me/6281572505989?text="Halo Saya tertarik dengan Earphone Kabel In-Ear" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -515,7 +515,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 450.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Earbuds Pro" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Earbuds Pro" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -551,7 +551,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 225.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo saya tertarik dengan Headphone Bluetooth" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo saya tertarik dengan Headphone Bluetooth" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -585,7 +585,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 135.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Ring Light LED Tripod Stand" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Ring Light LED Tripod Stand" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -621,7 +621,7 @@
                             </ul>
                             <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 25.000</div>
                             <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Lampu Selfie Clip-On LED Rokeet" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Lampu Selfie Clip-On LED Rokeet" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                         '>Detail</button>
@@ -656,7 +656,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 95.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo saya tertarik dengan Lensa Makro & Wide Clip-On 3-in-1" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo saya tertarik dengan Lensa Makro & Wide Clip-On 3-in-1" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -693,7 +693,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 375.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Power Bank 20000mAh" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Power Bank 20000mAh" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -729,7 +729,7 @@
                             </ul>
                             <div class='text-teal-500 font-bold text-lg mt-4 text-center'>Rp 425.000</div>
                             <div class='text-center mt-3'>
-                                <a href='https://wa.me/6282392184679?text=Hallo, saya tertarik dengan Power Bank Wireless' target='_blank'
+                                <a href='https://wa.me/6281572505989?text=Hallo, saya tertarik dengan Power Bank Wireless' target='_blank'
                                     class='inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full'>Chat Penjual</a>
                             </div>
                         ">Detail</button>
@@ -765,7 +765,7 @@
                             </ul>
                             <div class='text-teal-500 font-bold text-lg mt-4 text-center'>Rp 395.000</div>
                             <div class='text-center mt-3'>
-                                <a href='https://wa.me/6282392184679?text=Hallo, saya tertarik dengan Power Bank Vivan Wireless' target='_blank'
+                                <a href='https://wa.me/6281572505989?text=Hallo, saya tertarik dengan Power Bank Vivan Wireless' target='_blank'
                                     class='inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full'>Chat Penjual</a>
                             </div>
                         ">Detail</button>
@@ -801,7 +801,7 @@
             </ul>
             <div class='text-teal-500 font-bold text-lg mt-4 text-center'>Rp 215.000</div>
             <div class='text-center mt-3'>
-                <a href='https://wa.me/6282392184679?text=Hallo, saya tertarik dengan Mini Power Bank LED' target='_blank'
+                <a href='https://wa.me/6281572505989?text=Hallo, saya tertarik dengan Mini Power Bank LED' target='_blank'
                     class='inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full'>Chat Penjual</a>
             </div>
         ">Detail</button>
@@ -837,7 +837,7 @@
                         </ul>
                         <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 35.000</div>
                         <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Tempered Glass Screen Protector" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Tempered Glass Screen Protector" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                     '>Detail</button>
@@ -873,7 +873,7 @@
                             </ul>
                             <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 45.000</div>
                             <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Hallo saya tertarik dengan Stand HP Lipat Serbaguna" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Hallo saya tertarik dengan Stand HP Lipat Serbaguna" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                         '>Detail</button>
@@ -909,7 +909,7 @@
                             </ul>
                             <div class="text-teal-500 font-bold text-lg mt-4 text-center">Rp 45.000</div>
                             <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20ini" target="_blank"
+                                <a href="https://wa.me/6281572505989?text=Halo%20saya%20tertarik%20dengan%20produk%20ini" target="_blank"
                                     class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
                             </div>
                         '>Detail</button>
@@ -1009,8 +1009,8 @@
                 <p>Owner: Hans</p>
                 <p>
                     Telp/WhatsApp:
-                    <a href="https://wa.me/628123456789" class="text-teal-400 hover:text-teal-300 transition-colors">
-                        +62 812-3456-789
+                    <a href="https://wa.me/6281572505989" class="text-teal-400 hover:text-teal-300 transition-colors">
+                        +62 815-7250-5989
                     </a>
                 </p>
                 <p>

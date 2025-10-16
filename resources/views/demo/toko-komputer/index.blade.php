@@ -556,7 +556,7 @@
 
                             <!-- Chat Button -->
                             <div class="pt-6 border-t border-gray-200">
-                                <a href="https://wa.me/6281234567890" target="_blank"
+                                <a href="https://wa.me/6281572505989" target="_blank"
                                     class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
                                     <i data-lucide="message-circle" class="h-5 w-5 mr-2"></i>
                                     Chat Toko
@@ -647,7 +647,7 @@
                                 Phone & WhatsApp
                             </p>
                             <p class="text-xs lg:text-sm text-gray-400">
-                                08116584545
+                                0815-7250-5989
                             </p>
                         </div>
                     </div>

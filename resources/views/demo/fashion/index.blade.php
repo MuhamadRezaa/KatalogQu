@@ -197,7 +197,7 @@
                 <h3>Informasi Kontak</h3>
                 <div class="contact-item">
                     <i class="contact-icon">📞</i>
-                    <span>+62 123 456 789</span>
+                    <span>+62 815 7250 5989</span>
                 </div>
                 <div class="contact-item">
                     <i class="contact-icon">✉️</i>
