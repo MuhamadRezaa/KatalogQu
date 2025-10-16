@@ -150,14 +150,19 @@
                                         <!-- Preview will be inserted here by JS -->
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Gambar Tambahan (Maks. 3)</label>
-                                    <div id="add_additional_images_fields">
-                                        <!-- Dynamic inputs and previews will be added here by JS -->
+
+                                @if (in_array('gambartambahan', $menus))
+                                    <div class="mb-3">
+                                        <label class="form-label">Gambar Tambahan (Maks. 3)</label>
+                                        <div id="add_additional_images_fields">
+                                            <!-- Dynamic inputs and previews will be added here by JS -->
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            id="add_additional_image_btn"><i class="fa fa-plus"></i> Tambah
+                                            Gambar</button>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
-                                        id="add_additional_image_btn"><i class="fa fa-plus"></i> Tambah Gambar</button>
-                                </div>
+                                @endif
+
                                 <div class="mb-3">
                                     <label for="add_price" class="form-label">Harga <span
                                             class="text-danger">*</span></label>

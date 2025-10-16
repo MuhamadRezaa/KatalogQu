@@ -33,7 +33,7 @@
         2.18 Forms CSS
         2.19 Icons CSS
         2.20 List CSS
-        2.21 Loader CSS 
+        2.21 Loader CSS
         2.22 Modal CSS
         2.23 Popover CSS
         2.24 Print CSS
@@ -60,7 +60,7 @@
         3.7 Comingsoon CSS
         3.8 Contacts CSS
         3.9 Dashboard_2 CSS
-        3.10 Dashboard_3 CSS 
+        3.10 Dashboard_3 CSS
         3.11 Dashboard_4 CSS
         3.12 Dashboard_5 CSS
         3.13 Dashboard_default CSS
@@ -111,12 +111,12 @@
         5.6 Select2 CSS
         5.7 Sidebar CSS
         5.8 Rtl CSS
-        5.9 Box-layout CSS 
+        5.9 Box-layout CSS
 
  */
 :root {
-  --theme-deafult: #006666;
-  --theme-secondary: #FE6A49;
+  --theme-deafult: #478413;
+  --theme-secondary: #F99A07;
   --light-background: rgba(242, 243, 247, 0.7);
   --body-font-color: #86909C;
   --chart-border: #E6E9EB;

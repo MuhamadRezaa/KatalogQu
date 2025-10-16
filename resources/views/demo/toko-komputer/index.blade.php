@@ -61,11 +61,11 @@
 
     <!-- Slider Banner -->
     <div class="mx-auto">
-        <div class="swiper-container h-80 md:h-96 lg:h-[36rem] overflow-hidden">
+        <div class="swiper-container h-56 md:h-[27rem] lg:h-[36rem] overflow-hidden">
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
                 <div class="swiper-slide relative">
-                    <img src="https://images.pexels.com/photos/2115257/pexels-photo-2115257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    <img src="https://images.pexels.com/photos/2115257/pexels-photo-2115257.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1"
                         class="w-full h-full object-cover" alt="Build PC Offer" />
                     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                         <div class="text-center text-white p-4">
@@ -84,7 +84,7 @@
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide relative">
-                    <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1"
                         class="w-full h-full object-cover" alt="Gaming Gear" />
                     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                         <div class="text-center text-white p-4">
@@ -103,7 +103,7 @@
                 </div>
                 <!-- Slide 3 -->
                 <div class="swiper-slide relative">
-                    <img src="https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    <img src="https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1"
                         class="w-full h-full object-cover" alt="Laptops on Sale" />
                     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                         <div class="text-center text-white p-4">
@@ -316,8 +316,9 @@
             <template id="product-card-template">
                 <div
                     class="product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer">
-                    <div class="product-image-container relative overflow-hidden aspect-square bg-gray-100">
-                        <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105"
+                    <div class="product-image-container relative overflow-hidden bg-gray-100"
+                        style="aspect-ratio: 5 / 4;">
+                        <img class="product-image w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
                             loading="lazy" decoding="async" src="" alt="" />
 
                         <!-- Discount badge -->
@@ -436,7 +437,8 @@
                             <!-- Thumbnail Template -->
                             <template id="thumbnail-template">
                                 <button
-                                    class="thumbnail aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent hover:border-gray-300">
+                                    class="thumbnail bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent hover:border-gray-300"
+                                    style="aspect-ratio: 5 / 4;">
                                     <img class="thumbnail-image w-full h-full object-cover" loading="lazy"
                                         decoding="async" src="" alt="" />
                                 </button>

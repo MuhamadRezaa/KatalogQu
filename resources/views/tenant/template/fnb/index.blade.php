@@ -412,7 +412,6 @@
             let currentPage = 1;
             let searchTerm = '';
             let productStatus = 'all';
-            let maxPrice = 50000;
             let productStock = 'all';
             let minPriceRange = 0;
             let maxPriceRange = Infinity; // Menggunakan Infinity sebagai nilai awal untuk mempermudah logika
@@ -622,8 +621,7 @@
                     itemsToRender = itemsToRender.filter(item => !item.isAvailable);
                 }
 
-                // 5. Filter berdasarkan harga dari slider
-                itemsToRender = itemsToRender.filter(item => item.price <= maxPrice);
+
 
                 // 6. Tambahkan filter berdasarkan rentang harga (dari input Min-Max atau dropdown)
                 itemsToRender = itemsToRender.filter(item => {

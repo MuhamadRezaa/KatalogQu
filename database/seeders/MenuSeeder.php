@@ -34,6 +34,10 @@ class MenuSeeder extends Seeder
                 'code' => 'spesifikasi',
                 'name' => 'Spesifikasi',
             ],
+            [
+                'code' => 'gambartambahan',
+                'name' => 'Gambar Tambahan',
+            ],
         ];
 
         foreach ($menus as $menu) {
