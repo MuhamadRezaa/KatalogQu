@@ -45,23 +45,8 @@ class StoreHeroController extends Controller
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            $disk      = Storage::disk('public');
-            $dir       = 'store_heroes'; // folder tujuan
-            $ext       = $request->file('image')->getClientOriginalExtension();
-            $baseSlug  = 'banner-' . Str::slug($userStore->store_name);           // dasar nama file
-            $candidate = "{$baseSlug}.{$ext}";                        // coba tanpa suffix dulu
-            $path      = "{$dir}/{$candidate}";
-            $i = 1;
-
-            // Jika sudah ada, tambahkan -1, -2, dst.
-            while ($disk->exists($path)) {
-                $candidate = "{$baseSlug}-{$i}.{$ext}";
-                $path = "{$dir}/{$candidate}";
-                $i++;
-            }
-
-            // Simpan dengan nama final
-            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
+            // Simpan dengan nama unik
+            $imagePath = $request->file('image')->store('store_heroes', 'public');
         }
 
         StoreHero::create([
@@ -117,31 +102,13 @@ class StoreHeroController extends Controller
         $imagePath = $storeHero->image_url;
 
         if ($request->hasFile('image')) {
-            $disk = Storage::disk('public');
-
             // Hapus file lama jika ada
-            if ($imagePath && $disk->exists($imagePath)) {
-                $disk->delete($imagePath);
+            if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
             }
 
-            $dir      = 'store_heroes';
-            $ext      = $request->file('image')->getClientOriginalExtension();
-            $baseSlug = 'banner-' . Str::slug($userStore->store_name);
-
-            // Coba tanpa suffix dulu
-            $candidate = "{$baseSlug}.{$ext}";
-            $path      = "{$dir}/{$candidate}";
-            $i = 1;
-
-            // Jika sudah ada, tambahkan -1, -2, dst.
-            while ($disk->exists($path)) {
-                $candidate = "{$baseSlug}-{$i}.{$ext}";
-                $path      = "{$dir}/{$candidate}";
-                $i++;
-            }
-
-            // Simpan dengan nama final
-            $imagePath = $request->file('image')->storeAs($dir, $candidate, 'public');
+            // Simpan file baru dengan nama unik
+            $imagePath = $request->file('image')->store('store_heroes', 'public');
         }
 
         $storeHero->update([
