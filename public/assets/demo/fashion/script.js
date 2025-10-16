@@ -119,6 +119,8 @@ const categoriesData = {
         "name": "Kemeja Pria",
         "description": "Kemeja pria berkualitas tinggi dengan bahan katun premium. Cocok untuk acara formal dan kantor. Tersedia dalam berbagai ukuran dengan desain yang modern.",
         "price": 299000,
+        "oldPrice": 350000,
+        "promoTag": "PROMO",
         "category": "Pakaian Pria",
         "subcategory": "Kemeja",
         "image": "images/KemejaPria.jpeg",
@@ -133,6 +135,7 @@ const categoriesData = {
         "name": "Blouse Wanita",
         "description": "Blouse wanita yang nyaman dan stylish untuk aktivitas sehari-hari. Bahan yang adem dan tidak mudah kusut. Desain yang timeless dan cocok untuk berbagai acara.",
         "price": 189000,
+        "oldPrice": 250000,
         "category": "Pakaian Wanita",
         "subcategory": "Blouse",
         "image": "images/BlouseWanita.jpeg",
@@ -375,12 +378,25 @@ const categoriesData = {
           productCard.setAttribute('data-product-id', product.id);
           productCard.onclick = () => showProductDetails(product.id);
 
+          // Generate promo tag HTML
+          const promoTagHTML = product.promoTag ? `<div class="promo-tag">${product.promoTag}</div>` : '';
+
           // Format price
           const formattedPrice = new Intl.NumberFormat('id-ID', {
               style: 'currency',
               currency: 'IDR',
               minimumFractionDigits: 0
           }).format(product.price);
+
+          let priceHTML = `<div class="current-price">${formattedPrice}</div>`;
+          if (product.oldPrice) {
+              const formattedOldPrice = new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                  minimumFractionDigits: 0
+              }).format(product.oldPrice);
+              priceHTML = `<div class="old-price">${formattedOldPrice}</div>${priceHTML}`;
+          }
 
           // Generate tags HTML
           let tagsHTML = '';
@@ -398,6 +414,7 @@ const categoriesData = {
 
           productCard.innerHTML = `
               <div class="product-image">
+                  ${promoTagHTML}
                   <img src="${imageUrl}"
                        alt="${product.name}"
                        loading="lazy"
@@ -409,8 +426,8 @@ const categoriesData = {
               <div class="product-info">
                   <div class="product-category">${product.category}${product.subcategory ? ' - ' + product.subcategory : ''}</div>
                   <div class="product-name">${product.name}</div>
-                  <div class="product-price">${formattedPrice}</div>
-                  ${tagsHTML}
+                  <div class="product-price">${priceHTML}</div>
+                  <!-- ${tagsHTML} -->
               </div>
           `;
 
@@ -679,9 +696,24 @@ const categoriesData = {
 
       const imageUrl = `${ASSET_URL}/${product.image}`;
 
+      // Generate promo tag HTML
+      const promoTagHTML = product.promoTag ? `<div class="promo-tag">${product.promoTag}</div>` : '';
+
+      // Generate price HTML with old price if available
+      let priceHTML = `<span class="current-price">${formattedPrice}</span>`;
+      if (product.oldPrice) {
+          const formattedOldPrice = new Intl.NumberFormat('id-ID', {
+              style: 'currency',
+              currency: 'IDR',
+              minimumFractionDigits: 0
+          }).format(product.oldPrice);
+          priceHTML = `<span class="old-price">${formattedOldPrice}</span> ${priceHTML}`;
+      }
+
       modalContent.innerHTML = `
           <div class="modal-product-details">
-              <div class="modal-product-image">
+              <div class="modal-product-image-wrapper">
+                  ${promoTagHTML}
                   <img src="${imageUrl}"
                        alt="${product.name}"
                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
@@ -691,17 +723,11 @@ const categoriesData = {
               <div class="modal-product-info">
                   <div class="modal-product-category">${product.category}${product.subcategory ? ' - ' + product.subcategory : ''}</div>
                   <h2 class="modal-product-name">${product.name}</h2>
-                  <div class="modal-product-price">${formattedPrice}</div>
+                  <div class="modal-product-price">${priceHTML}</div>
                   <div class="modal-product-description">
                       <h4>Deskripsi:</h4>
                       <p>${product.description}</p>
                   </div>
-                  ${product.material ? `
-                      <div class="modal-section">
-                          <h4>Material:</h4>
-                          <p>${product.material}</p>
-                      </div>
-                  ` : ''}
                   ${product.brand ? `
                       <div class="modal-section">
                           <h4>Brand:</h4>
@@ -709,15 +735,7 @@ const categoriesData = {
                       </div>
                   ` : ''}
                   ${sizesHTML}
-                  ${colorsHTML}
-                  ${product.stock ? `
-                      <div class="modal-section">
-                          <h4>Stok:</h4>
-                          <p class="stock-info ${product.stock > 10 ? 'in-stock' : product.stock > 0 ? 'low-stock' : 'out-of-stock'}">
-                              ${product.stock > 0 ? `${product.stock} unit tersedia` : 'Stok habis'}
-                          </p>
-                      </div>
-                  ` : ''}
+                  <a href="https://wa.me/6281572505989?text=Halo,%20saya%20tertarik%20dengan%20produk%20${product.name}%20ini." target="_blank" class="contact-button">Hubungi</a>
               </div>
           </div>
 

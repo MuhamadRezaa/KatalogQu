@@ -446,7 +446,7 @@ body {
 /* Category Grid */
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-xl);
     margin: var(--spacing-xl) 0;
 }
@@ -466,6 +466,8 @@ body {
     border: 2px solid var(--border-color);
     border-radius: 16px;
     padding: var(--spacing-lg);
+    max-width: 300px;
+    margin: 0 auto;
     text-align: center;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -653,14 +655,14 @@ body {
 /* Products Grid */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
     gap: var(--spacing-xl);
     margin: var(--spacing-xl) 0;
 }
 
 @media (max-width: 768px) {
     .products-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
     }
 }
@@ -746,6 +748,29 @@ body {
     font-weight: 700;
     color: var(--accent-color);
     margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-price .old-price {
+    text-decoration: line-through;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.promo-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ef4444; /* Red-500 */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 10;
 }
 
 .product-tags {
@@ -1077,6 +1102,46 @@ body {
     transform: scale(1.1);
 }
 
+              .modal-product-price {
+                  font-size: 1.8rem;
+                  font-weight: 700;
+              }
+
+              .modal-product-price .old-price {
+                  text-decoration: line-through;
+                  color: var(--text-light);
+                  font-size: 1.2rem;
+                  font-weight: 500;
+                  margin-right: 8px;
+              }
+
+              .contact-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px 24px;
+                margin-top: 20px;
+                border-radius: 50px;
+                background: linear-gradient(to right, #28a745, #218838);
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+              }
+
+              .contact-button:hover {
+                background: linear-gradient(to right, #218838, #1e7e34);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+                transform: translateY(-2px);
+              }
+
+              .contact-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              }
+
 /* Loading Overlay */
 .loading-overlay {
     display: none;
@@ -1177,7 +1242,9 @@ body {
     }
 
     .products-grid {
-        grid-template-columns: 1fr;
+        /* PERUBAHAN: Mengatur ke 2 kolom untuk mobile */
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm); /* Disarankan menggunakan gap yang lebih kecil di mobile */
     }
 
     .stats {
