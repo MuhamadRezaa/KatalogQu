@@ -27,7 +27,8 @@
                             <th>Nama Toko</th>
                             <th>Pemilik</th>
                             <th>Status</th>
-                            <th>Tanggal Dibuat</th>
+                            <th>Tanggal Toko Dibuat</th>
+                            <th>Tanggal Toko Aktif</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -43,9 +44,10 @@
                                 <td>{{ $item->store_name }}</td>
                                 <td>{{ $item->user->name ?? 'N/A' }}</td>
                                 <td>
-                                    {{-- Logika Status yang Sudah Benar --}}
                                     @if ($item->setup_status === 'pending_validation')
                                         <span class="badge badge-light-warning">Menunggu Persetujuan</span>
+                                    @elseif ($item->expires_at && $item->expires_at->isPast())
+                                        <span class="badge badge-light-danger">Kedaluwarsa</span>
                                     @elseif ($item->is_active)
                                         <span class="badge badge-light-success">Aktif</span>
                                     @else
@@ -53,6 +55,20 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->created_at->format('d M Y') }}</td>
+                                <td>
+                                    @if ($item->expires_at)
+                                        {{ $item->expires_at->format('d M Y') }}
+                                        @if ($item->activated_at)
+                                            <br>
+                                            <small class="text-muted">
+                                                (Durasi: {{ $item->activated_at->diffInDays($item->expires_at) }}
+                                                hari)
+                                            </small>
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     {{-- Logika Tombol Aksi yang Sudah Benar --}}
                                     @if ($item->setup_status === 'pending_validation')

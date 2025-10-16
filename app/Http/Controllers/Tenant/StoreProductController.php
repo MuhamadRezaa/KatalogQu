@@ -162,9 +162,11 @@ class StoreProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tenant $tenant, StoreProduct $product)
+    public function show(Tenant $tenant, $product)
     {
         tenancy()->initialize($tenant);
+        $product = StoreProduct::findOrFail($product);
+
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);

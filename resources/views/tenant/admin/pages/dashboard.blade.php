@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <!-- Welcome Card -->
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
@@ -22,34 +22,63 @@
                         </div>
                         <div class="col">
                             <h4 class="text-white mb-0">{{ $userStore->store_name }}</h4>
-                            <p class="text-white-50 mb-0">Store Management Dashboard</p>
-                        </div>
-                        <div class="col-auto">
-                            <a href="http://{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}"
-                                target="_blank" class="btn btn-light btn-sm">
-                                <i class="fa fa-external-link"></i> View Store
-                            </a>
+                            <p class="text-white-50 mb-0">Dashboard Manajemen Toko</p>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h6 class="text-muted">Store URL</h6>
+                            <h6 class="text-muted">URL Toko</h6>
                             <p class="mb-0">
                                 <strong>{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}</strong>
                             </p>
                         </div>
                         <div class="col-md-4 text-md-end">
-                            <small class="text-muted">Setup completed:
+                            <small class="text-muted">Setup Toko Selesai Pada:
                                 {{ $userStore->setup_completed_at ? $userStore->setup_completed_at->format('M d, Y') : 'N/A' }}</small>
                         </div>
                     </div>
 
                 </div>
             </div>
+            <!-- Baris Statistik -->
+            <div class="row">
+                <div class="col-sm-6 col-xl-3 col-lg-6">
+                    <div class="card o-hidden">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-2">Total Produk</p>
+                                    <h4 class="mb-0">{{ $userStore->products->count() }}</h4>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <i data-feather="box" class="text-primary" style="width: 48px; height: 48px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-3 col-lg-6">
+                    <div class="card o-hidden">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-2">Total Sub Kategori Produk</p>
+                                    <h4 class="mb-0">{{ $userStore->productcategories->count() }}</h4>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <i data-feather="box" class="text-primary" style="width: 48px; height: 48px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-md-2">
+
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0 text-center">QR Code Toko</h5>
@@ -57,9 +86,18 @@
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
                         <h4 class="mb-3">{{ $userStore->store_name }}</h4>
-                        <span class="mb-2">Scan Me</span>
+                        <span class="mb-2">Scan Ini</span>
                         <div id="qrcode" class="mb-3"></div>
-                        <button id="download-qrcode" class="btn btn-primary">Download QR</button>
+                        <div class="d-flex justify-content-center gap-2 w-100">
+                            <button id="copy-link"
+                                class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-copy me-2"></i> Copy Link
+                            </button>
+                            <button id="download-qrcode"
+                                class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
+                                Download QR
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,18 +105,17 @@
     </div>
     <br>
 
-
 @endsection
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const storeUrl = "http://{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}";
+            const storeUrl = `${window.location.protocol}//{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}`;
             const storeName = "{{ $userStore->store_name }}";
 
             // 1. Buat QR Code untuk ditampilkan di halaman (ukuran kecil & simpel)
             jQuery('#qrcode').qrcode({
-                width: 128,
-                height: 128,
+                width: 256,
+                height: 256,
                 text: storeUrl
             });
 
@@ -194,7 +231,7 @@
                         // 10. Tambahkan URL dan Footer
                         ctx.fillStyle = lightTextColor;
                         ctx.font = '22px Arial';
-                        ctx.fillText(storeUrl.replace('http://', ''), canvasWidth / 2, canvasHeight -
+                        ctx.fillText(storeUrl.replace(/^https?:\/\//, ''), canvasWidth / 2, canvasHeight -
                             110); // --- PERUBAHAN: Menambah jarak
 
                         ctx.font = 'bold 18px Arial';
@@ -222,6 +259,34 @@
                 } catch (error) {
                     console.error("Terjadi kesalahan saat mengunduh QR code:", error);
                     alert("Terjadi kesalahan, tidak dapat mengunduh QR code.");
+                }
+            });
+
+                        // Logika untuk tombol Copy Link
+
+                        $('#copy-link').on('click', async function() {
+
+                            const button = $(this);
+
+            
+
+                            try {
+
+                                await navigator.clipboard.writeText(storeUrl);
+
+                    // Simpan teks asli
+                    const originalText = button.html();
+
+                    // Ubah teks tombol menjadi "Copied!"
+                    button.html('<i class="fa fa-check me-2"></i> Link Tersimpan!');
+
+                    // Kembalikan ke teks asli setelah beberapa detik
+                    setTimeout(() => {
+                        button.html(originalText);
+                    }, 2000);
+
+                } catch (err) {
+                    alert('Gagal menyalin link.');
                 }
             });
         });

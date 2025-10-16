@@ -339,21 +339,25 @@
                                     <div><img id="current_image" src="" class="img-fluid rounded"
                                             style="max-height: 100px;"></div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Gambar Tambahan (Maks. 3)</label>
-                                    <div id="edit_additional_images_fields_existing">
-                                        <!-- Existing images will be loaded here by JS -->
+
+                                @if (in_array('gambartambahan', $menus))
+                                    <div class="mb-3">
+                                        <label class="form-label">Gambar Tambahan (Maks. 3)</label>
+                                        <div id="edit_additional_images_fields_existing">
+                                            <!-- Existing images will be loaded here by JS -->
+                                        </div>
+                                        <div id="edit_additional_images_fields_new">
+                                            <!-- Dynamic new inputs and previews will be added here by JS -->
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            id="edit_add_additional_image_btn"><i class="fa fa-plus"></i> Tambah
+                                            Gambar</button>
+                                        @error('additional_images')
+                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <div id="edit_additional_images_fields_new">
-                                        <!-- Dynamic new inputs and previews will be added here by JS -->
-                                    </div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
-                                        id="edit_add_additional_image_btn"><i class="fa fa-plus"></i> Tambah
-                                        Gambar</button>
-                                    @error('additional_images')
-                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                @endif
+
                                 <div class="mb-3">
                                     <label for="edit_price" class="form-label">Harga <span
                                             class="text-danger">*</span></label>
@@ -540,9 +544,12 @@
         }
 
         let addSpecIndex = 0;
-        document.getElementById('add_spec_field_btn').addEventListener('click', function() {
-            addSpecField('add_specification_fields', addSpecIndex++);
-        });
+        const addSpecFieldBtn = document.getElementById('add_spec_field_btn');
+        if (addSpecFieldBtn) {
+            addSpecFieldBtn.addEventListener('click', function() {
+                addSpecField('add_specification_fields', addSpecIndex++);
+            });
+        }
 
         function setupImagePreview(inputFileElement, previewContainerElement) {
             inputFileElement.addEventListener('change', function() {
@@ -570,31 +577,35 @@
 
         // For additional images in Add Modal
         let addAdditionalImageIndex = 0;
-        document.getElementById('add_additional_image_btn').addEventListener('click', function() {
-            if (addAdditionalImageIndex < 3) { // Max 3 additional images
-                const container = document.getElementById('add_additional_images_fields');
-                const div = document.createElement('div');
-                div.className = 'mb-2'; // Outer div for spacing
-                div.innerHTML = `
+        const addAdditionalImageBtn = document.getElementById('add_additional_image_btn');
+        if (addAdditionalImageBtn) {
+            addAdditionalImageBtn.addEventListener('click', function() {
+                if (addAdditionalImageIndex < 3) { // Max 3 additional images
+                    const container = document.getElementById('add_additional_images_fields');
+                    const div = document.createElement('div');
+                    div.className = 'mb-2'; // Outer div for spacing
+                    div.innerHTML = `
                     <div class="input-group">
                         <input type="file" class="form-control additional-image-input" name="additional_images[]" accept="image/jpeg,image/png,image/webp">
                         <button type="button" class="btn btn-outline-danger remove-additional-image"><i class="fa fa-times"></i></button>
                     </div>
                     <div class="additional-image-preview mt-2"></div>
                 `;
-                container.appendChild(div);
+                    container.appendChild(div);
 
-                setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
-                    '.additional-image-preview'));
-                div.querySelector('.remove-additional-image').addEventListener('click', function() {
-                    div.remove();
-                    addAdditionalImageIndex--;
-                });
-                addAdditionalImageIndex++;
-            } else {
-                alert('Maksimal 3 gambar tambahan.');
-            }
-        });
+                    setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
+                        '.additional-image-preview'));
+                    div.querySelector('.remove-additional-image').addEventListener('click', function() {
+                        div.remove();
+                        addAdditionalImageIndex--;
+                    });
+                    addAdditionalImageIndex++;
+                } else {
+                    alert('Maksimal 3 gambar tambahan.');
+                }
+            });
+        }
+
 
         function editProduct(btn) {
             const fetchUrl = btn.dataset.showUrl; // URL lengkap dari Blade
@@ -618,20 +629,33 @@
                     const form = document.getElementById('editProductForm');
                     form.action = updateUrl;
 
-                    form.querySelector('#edit_name').value = product.name || '';
-                    form.querySelector('#edit_description').value = product.description || '';
-                    form.querySelector('#edit_image').value = '';
-                    form.querySelector('#edit_price').value = product.price ?? '';
-                    form.querySelector('#edit_old_price').value = product.old_price ?? '';
-                    form.querySelector('#edit_sku').value = product.sku ?? '';
-                    form.querySelector('#edit_product_category_id').value = product.product_category_id || '';
-                    form.querySelector('#edit_sub_category_id').value = product.sub_category_id || '';
-                    form.querySelector('#edit_brand_id').value = product.brand_id || '';
-                    form.querySelector('#edit_estimasi_waktu').value = product.estimasi_waktu ?? '';
-                    form.querySelector('#edit_is_active').checked = !!product.is_active;
-                    form.querySelector('#edit_is_new').checked = !!product.is_new;
-                    form.querySelector('#edit_is_available').checked = !!product.is_available;
-                    form.querySelector('#edit_is_featured').checked = !!product.is_featured; // Add this line
+                    // Helper function for safe value setting
+                    const setInputValue = (id, value) => {
+                        const el = form.querySelector(id);
+                        if (el) el.value = value;
+                    };
+
+                    const setInputChecked = (id, checked) => {
+                        const el = form.querySelector(id);
+                        if (el) el.checked = checked;
+                    };
+
+                    setInputValue('#edit_name', product.name || '');
+                    setInputValue('#edit_description', product.description || '');
+                    setInputValue('#edit_image', '');
+                    setInputValue('#edit_price', product.price ?? '');
+                    setInputValue('#edit_old_price', product.old_price ?? '');
+                    setInputValue('#edit_sku', product.sku ?? '');
+                    setInputValue('#edit_product_category_id', product.product_category_id || '');
+                    setInputValue('#edit_sub_category_id', product.sub_category_id || '');
+                    setInputValue('#edit_brand_id', product.brand_id || '');
+                    setInputValue('#edit_product_unit_id', product.product_unit_id || '');
+                    setInputValue('#edit_estimasi_waktu', product.estimasi_waktu ?? '');
+
+                    setInputChecked('#edit_is_active', !!product.is_active);
+                    setInputChecked('#edit_is_new', !!product.is_new);
+                    setInputChecked('#edit_is_available', !!product.is_available);
+                    setInputChecked('#edit_is_featured', !!product.is_featured);
 
                     // Preview gambar utama
                     const currentImagePreview = document.getElementById('currentImagePreview');
@@ -651,13 +675,14 @@
 
                     // Gambar tambahan
                     const existingContainer = document.getElementById('edit_additional_images_fields_existing');
-                    existingContainer.innerHTML = '';
-                    if (product.images && product.images.length > 0) {
-                        product.images.forEach(img => {
-                            const div = document.createElement('div');
-                            div.className = 'mb-2';
-                            const url = img.url_full || (assetUrlTemplate.replace(':path', img.image_url));
-                            div.innerHTML = `
+                    if (existingContainer) {
+                        existingContainer.innerHTML = '';
+                        if (product.images && product.images.length > 0) {
+                            product.images.forEach(img => {
+                                const div = document.createElement('div');
+                                div.className = 'mb-2';
+                                const url = img.url_full || (assetUrlTemplate.replace(':path', img.image_url));
+                                div.innerHTML = `
           <div class="input-group align-items-center">
             <img src="${url}" class="img-fluid rounded me-2" style="max-width:80px;max-height:80px;">
             <input type="hidden" name="existing_images_ids[]" value="${img.id}">
@@ -665,49 +690,61 @@
               <i class="fa fa-times"></i> Hapus
             </button>
           </div>`;
-                            existingContainer.appendChild(div);
-                            div.querySelector('.remove-existing-image').addEventListener('click', () => div
-                                .remove());
-                        });
+                                existingContainer.appendChild(div);
+                                div.querySelector('.remove-existing-image').addEventListener('click', () => div
+                                    .remove());
+                            });
+                        }
                     }
 
-                    document.getElementById('edit_additional_images_fields_new').innerHTML = '';
+                    const editAdditionalImagesNew = document.getElementById('edit_additional_images_fields_new');
+                    if (editAdditionalImagesNew) {
+                        editAdditionalImagesNew.innerHTML = '';
+                    }
+
                     let editAdditionalImageIndex = 0;
-                    document.getElementById('edit_add_additional_image_btn').onclick = function() {
-                        const currCount = (product.images ? product.images.length : 0) +
-                            editAdditionalImageIndex;
-                        if (currCount < 3) {
-                            const container = document.getElementById('edit_additional_images_fields_new');
-                            const div = document.createElement('div');
-                            div.className = 'mb-2';
-                            div.innerHTML = `
+                    const editAddAdditionalImageBtn = document.getElementById('edit_add_additional_image_btn');
+                    if (editAddAdditionalImageBtn) {
+                        editAddAdditionalImageBtn.onclick = function() {
+                            const currCount = (product.images ? product.images.length : 0) +
+                                editAdditionalImageIndex;
+                            if (currCount < 3) {
+                                const container = document.getElementById('edit_additional_images_fields_new');
+                                const div = document.createElement('div');
+                                div.className = 'mb-2';
+                                div.innerHTML = `
           <div class="input-group">
             <input type="file" class="form-control additional-image-input" name="additional_images[]" accept="image/jpeg,image/png,image/webp">
             <button type="button" class="btn btn-outline-danger remove-additional-image"><i class="fa fa-times"></i></button>
           </div>
           <div class="additional-image-preview mt-2"></div>`;
-                            container.appendChild(div);
-                            setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
-                                '.additional-image-preview'));
-                            div.querySelector('.remove-additional-image').addEventListener('click', () => div
-                                .remove());
-                            editAdditionalImageIndex++;
-                        } else {
-                            alert('Maksimal 3 gambar tambahan.');
-                        }
-                    };
+                                container.appendChild(div);
+                                setupImagePreview(div.querySelector('.additional-image-input'), div.querySelector(
+                                    '.additional-image-preview'));
+                                div.querySelector('.remove-additional-image').addEventListener('click', () => div
+                                    .remove());
+                                editAdditionalImageIndex++;
+                            } else {
+                                alert('Maksimal 3 gambar tambahan.');
+                            }
+                        };
+                    }
+
 
                     // Spesifikasi
                     const specContainer = document.getElementById('edit_specification_fields');
-                    specContainer.innerHTML = '';
-                    let editSpecIndex = 0;
-                    if (product.specification && product.specification.length > 0) {
-                        product.specification.forEach(spec => addSpecField('edit_specification_fields',
-                            editSpecIndex++,
-                            spec.key, spec.value));
-                    } else {
-                        addSpecField('edit_specification_fields', editSpecIndex++);
+                    if (specContainer) {
+                        specContainer.innerHTML = '';
+                        let editSpecIndex = 0;
+                        if (product.specification && product.specification.length > 0) {
+                            product.specification.forEach(spec => addSpecField('edit_specification_fields',
+                                editSpecIndex++,
+                                spec.key, spec.value));
+                        } else {
+                            addSpecField('edit_specification_fields', editSpecIndex++);
+                        }
                     }
+
 
                     new bootstrap.Modal(document.getElementById('editProductModal')).show();
                 })
@@ -717,10 +754,16 @@
                 });
         }
 
-        document.getElementById('edit_add_spec_field_btn').addEventListener('click', function() {
-            const container = document.getElementById('edit_specification_fields');
-            addSpecField('edit_specification_fields', container.children.length);
-        });
+        const editAddSpecFieldBtn = document.getElementById('edit_add_spec_field_btn');
+        if (editAddSpecFieldBtn) {
+            editAddSpecFieldBtn.addEventListener('click', function() {
+                const container = document.getElementById('edit_specification_fields');
+                if (container) {
+                    addSpecField('edit_specification_fields', container.children.length);
+                }
+            });
+        }
+
 
         function deleteProduct(btn) {
             if (!confirm('Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.')) return;
@@ -731,39 +774,70 @@
 
         document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('addProductForm').reset();
-            document.getElementById('add_specification_fields').innerHTML = ''; // Clear spec fields
-            addSpecField('add_specification_fields', 0); // Add one empty spec field
-            document.getElementById('add_image_preview_container').innerHTML = ''; // Clear main image preview
-            document.getElementById('add_image_preview_container').style.display = 'none';
-            document.getElementById('add_additional_images_fields').innerHTML =
-                ''; // Clear additional images fields
+            const addSpecFields = document.getElementById('add_specification_fields');
+            if (addSpecFields) {
+                addSpecFields.innerHTML = ''; // Clear spec fields
+                addSpecField('add_specification_fields', 0); // Add one empty spec field
+            }
+            const addImagePreview = document.getElementById('add_image_preview_container');
+            if (addImagePreview) {
+                addImagePreview.innerHTML = ''; // Clear main image preview
+                addImagePreview.style.display = 'none';
+            }
+            const addAdditionalImages = document.getElementById('add_additional_images_fields');
+            if (addAdditionalImages) {
+                addAdditionalImages.innerHTML = ''; // Clear additional images fields
+            }
             addAdditionalImageIndex = 0; // Reset index
-            document.getElementById('add_is_featured').checked = false; // Add this line
+            const addIsFeatured = document.getElementById('add_is_featured');
+            if (addIsFeatured) {
+                addIsFeatured.checked = false;
+            }
         });
 
         document.getElementById('editProductModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('editProductForm').reset();
 
             // Spesifikasi
-            document.getElementById('edit_specification_fields').innerHTML = '';
+            const editSpecFields = document.getElementById('edit_specification_fields');
+            if (editSpecFields) {
+                editSpecFields.innerHTML = '';
+            }
 
             // Gambar tambahan
-            document.getElementById('edit_additional_images_fields_existing').innerHTML = '';
-            document.getElementById('edit_additional_images_fields_new').innerHTML = '';
+            const editAdditionalExisting = document.getElementById('edit_additional_images_fields_existing');
+            if (editAdditionalExisting) {
+                editAdditionalExisting.innerHTML = '';
+            }
+            const editAdditionalNew = document.getElementById('edit_additional_images_fields_new');
+            if (editAdditionalNew) {
+                editAdditionalNew.innerHTML = '';
+            }
 
             // Preview gambar utama – JANGAN kosongkan innerHTML karena menghapus <img id="current_image">
             const currentImagePreview = document.getElementById('currentImagePreview');
             const currentImg = document.getElementById('current_image');
             if (currentImg) currentImg.src = '';
-            currentImagePreview.style.display = 'none';
+            if (currentImagePreview) {
+                currentImagePreview.style.display = 'none';
+            }
 
             // Preview gambar baru
-            document.getElementById('edit_image_preview_container').innerHTML = '';
-            document.getElementById('edit_image_preview_container').style.display = 'none';
-            document.getElementById('edit_is_featured').checked = false; // Add this line
+            const editImagePreview = document.getElementById('edit_image_preview_container');
+            if (editImagePreview) {
+                editImagePreview.innerHTML = '';
+                editImagePreview.style.display = 'none';
+            }
+            const editIsFeatured = document.getElementById('edit_is_featured');
+            if (editIsFeatured) {
+                editIsFeatured.checked = false;
+            }
         });
 
         // Initial add spec field for add modal
-        addSpecField('add_specification_fields', addSpecIndex++);
+        const addSpecFieldsContainer = document.getElementById('add_specification_fields');
+        if (addSpecFieldsContainer) {
+            addSpecField('add_specification_fields', addSpecIndex++);
+        }
     </script>
 @endpush

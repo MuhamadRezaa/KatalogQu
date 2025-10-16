@@ -122,6 +122,11 @@ class UserStore extends Model
         return $this->hasMany(StoreProduct::class, 'user_store_id');
     }
 
+    public function productcategories(): HasMany
+    {
+        return $this->hasMany(ProductSubCategory::class, 'user_store_id');
+    }
+
     /**
      * SECURITY ENHANCEMENT: Check if store setup can be completed
      */

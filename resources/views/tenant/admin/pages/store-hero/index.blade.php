@@ -126,12 +126,12 @@
                             <input type="text" class="form-control" id="add_subtitle" name="subtitle">
                         </div>
                         <div class="mb-3">
-                            <label for="add_link" class="form-label">Link (URL)</label>
-                            <input type="url" class="form-control" id="add_link" name="link">
+                            <label for="add_button_text" class="form-label">Teks Untuk Tombol</label>
+                            <input type="text" class="form-control" id="add_button_text" name="button_text">
                         </div>
                         <div class="mb-3">
-                            <label for="add_button_text" class="form-label">Button Text</label>
-                            <input type="text" class="form-control" id="add_button_text" name="button_text">
+                            <label for="add_link" class="form-label">Tautan Untuk Tombol</label>
+                            <input type="url" class="form-control" id="add_link" name="link">
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch">
@@ -183,12 +183,12 @@
                             <input type="text" class="form-control" id="edit_subtitle" name="subtitle">
                         </div>
                         <div class="mb-3">
-                            <label for="edit_link" class="form-label">Link (URL)</label>
-                            <input type="url" class="form-control" id="edit_link" name="link">
+                            <label for="edit_button_text" class="form-label">Teks Untuk Tombol</label>
+                            <input type="text" class="form-control" id="edit_button_text" name="button_text">
                         </div>
                         <div class="mb-3">
-                            <label for="edit_button_text" class="form-label">Button Text</label>
-                            <input type="text" class="form-control" id="edit_button_text" name="button_text">
+                            <label for="edit_link" class="form-label">Tautan Untuk Tombol</label>
+                            <input type="url" class="form-control" id="edit_link" name="link">
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch">
