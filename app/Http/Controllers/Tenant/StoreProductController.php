@@ -111,7 +111,7 @@ class StoreProductController extends Controller
                 'is_valid' => $request->file('image')->isValid(),
             ]);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $fileName = $validated['slug'] . '-' . uniqid() . '.' . $extension;
 
             $validated['image'] = $request->file('image')->storeAs(
                 'products', // folder
@@ -138,7 +138,7 @@ class StoreProductController extends Controller
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile) {
                     $extension = $imageFile->getClientOriginalExtension();
-                    $fileName = $product->slug . '-' . ($position + 1) . '.' . $extension;
+                    $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
 
                     $imagePath = $imageFile->storeAs(
                         'product_gallery',
@@ -240,7 +240,7 @@ class StoreProductController extends Controller
             }
 
             $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $fileName = $validated['slug'] . '-' . uniqid() . '.' . $extension;
 
             $validated['image'] = $request->file('image')->storeAs(
                 'products',
@@ -278,7 +278,7 @@ class StoreProductController extends Controller
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile && $allowedNewImages > 0) {
                     $extension = $imageFile->getClientOriginalExtension();
-                    $fileName = $product->slug . '-' . ($position + 1) . '.' . $extension;
+                    $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
 
                     $imagePath = $imageFile->storeAs(
                         'product_gallery',
