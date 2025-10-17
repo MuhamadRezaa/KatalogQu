@@ -457,7 +457,6 @@
         </div>
         <script>
             // Data menu dan variabel lainnya
-            // Data menu dan variabel lainnya
             const menuData = [{
                     id: 'kopisusugulaaren',
                     category: 'minuman',
@@ -697,6 +696,286 @@
                     image: '{{ asset('assets/demo/fnb/images/onionrings.jpg') }}',
                     isNew: false,
                     isAvailable: false
+                },
+                {
+                    id: 'matchalatte',
+                    category: 'minuman',
+                    name: 'Matcha Latte',
+                    description: 'Minuman dengan perpaduan teh hijau matcha premium dan susu segar.',
+                    price: 24000,
+                    image: '{{ asset('assets/demo/fnb/images/matchalatte.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'thaitea',
+                    category: 'minuman',
+                    name: 'Thai Tea',
+                    description: 'Teh Thailand yang creamy dengan rempah khas.',
+                    price: 18000,
+                    image: '{{ asset('assets/demo/fnb/images/thaitea.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'chickenparm',
+                    category: 'makanan',
+                    name: 'Chicken Parmigiana',
+                    description: 'Ayam crispy dengan saus marinara dan keju mozzarella.',
+                    price: 38000,
+                    image: '{{ asset('assets/demo/fnb/images/chickenparm.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'churros',
+                    category: 'cemilan',
+                    name: 'Churros',
+                    description: 'Camilan manis khas Spanyol dengan saus coklat.',
+                    price: 20000,
+                    image: '{{ asset('assets/demo/fnb/images/churros.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'tiramisu',
+                    category: 'dessert',
+                    name: 'Tiramisu',
+                    description: 'Dessert Italia klasik dengan lapisan mascarpone dan kopi.',
+                    price: 32000,
+                    image: '{{ asset('assets/demo/fnb/images/tiramisu.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'beefburger',
+                    category: 'makanan',
+                    name: 'Classic Beef Burger',
+                    description: 'Burger dengan patty daging sapi, keju, dan sayuran segar.',
+                    price: 45000,
+                    image: '{{ asset('assets/demo/fnb/images/beefburger.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'orangejuice',
+                    category: 'minuman',
+                    name: 'Fresh Orange Juice',
+                    description: 'Jus jeruk segar tanpa tambahan gula.',
+                    price: 15000,
+                    image: '{{ asset('assets/demo/fnb/images/orangejuice.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'nachos',
+                    category: 'cemilan',
+                    name: 'Loaded Nachos',
+                    description: 'Tortilla chips dengan keju leleh, guacamole, dan salsa.',
+                    price: 28000,
+                    image: '{{ asset('assets/demo/fnb/images/nachos.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'pavlova',
+                    category: 'dessert',
+                    name: 'Fruit Pavlova',
+                    description: 'Meringue renyah dengan whipped cream dan buah segar.',
+                    price: 30000,
+                    image: '{{ asset('assets/demo/fnb/images/pavlova.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'avocadocoffee',
+                    category: 'minuman',
+                    name: 'Avocado Coffee',
+                    description: 'Perpaduan unik alpukat segar dengan espresso premium.',
+                    price: 28000,
+                    image: '{{ asset('assets/demo/fnb/images/avocadocoffee.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'grassjelly',
+                    category: 'minuman',
+                    name: 'Grass Jelly Milk Tea',
+                    description: 'Milk tea dengan cincau hitam yang menyegarkan.',
+                    price: 20000,
+                    image: '{{ asset('assets/demo/fnb/images/grassjelly.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'strawberrysmoothie',
+                    category: 'minuman',
+                    name: 'Strawberry Smoothie',
+                    description: 'Smoothie strawberry segar dengan yogurt.',
+                    price: 25000,
+                    image: '{{ asset('assets/demo/fnb/images/strawberrysmoothie.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'coconutcoffee',
+                    category: 'minuman',
+                    name: 'Coconut Coffee',
+                    description: 'Kopi dengan santan kelapa dan gula aren.',
+                    price: 23000,
+                    image: '{{ asset('assets/demo/fnb/images/coconutcoffee.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'beefsteak',
+                    category: 'makanan',
+                    name: 'Beef Steak',
+                    description: 'Steak daging sapi dengan saus mushroom.',
+                    price: 75000,
+                    image: '{{ asset('assets/demo/fnb/images/beefsteak.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'chickensalad',
+                    category: 'makanan',
+                    name: 'Grilled Chicken Salad',
+                    description: 'Salad dengan ayam panggang dan sayuran segar.',
+                    price: 35000,
+                    image: '{{ asset('assets/demo/fnb/images/chickensalad.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'fishchips',
+                    category: 'makanan',
+                    name: 'Fish and Chips',
+                    description: 'Ikan dory goreng tepung dengan kentang goreng.',
+                    price: 40000,
+                    image: '{{ asset('assets/demo/fnb/images/fishchips.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'clubsandwich',
+                    category: 'makanan',
+                    name: 'Club Sandwich',
+                    description: 'Sandwich berlapis dengan ayam, telur, dan sayuran.',
+                    price: 32000,
+                    image: '{{ asset('assets/demo/fnb/images/clubsandwich.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'springroll',
+                    category: 'cemilan',
+                    name: 'Spring Roll',
+                    description: 'Lumpia isi sayuran dengan saus asam manis.',
+                    price: 18000,
+                    image: '{{ asset('assets/demo/fnb/images/springroll.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'mozarellasticks',
+                    category: 'cemilan',
+                    name: 'Mozzarella Sticks',
+                    description: 'Stik keju mozzarella goreng dengan saus marinara.',
+                    price: 25000,
+                    image: '{{ asset('assets/demo/fnb/images/mozarellasticks.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'calamari',
+                    category: 'cemilan',
+                    name: 'Crispy Calamari',
+                    description: 'Cumi goreng tepung dengan saus tartar.',
+                    price: 30000,
+                    image: '{{ asset('assets/demo/fnb/images/calamari.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'dimsum',
+                    category: 'cemilan',
+                    name: 'Dimsum Platter',
+                    description: 'Aneka dimsum dengan saus spesial.',
+                    price: 35000,
+                    image: '{{ asset('assets/demo/fnb/images/dimsum.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'chocolatecake',
+                    category: 'dessert',
+                    name: 'Chocolate Lava Cake',
+                    description: 'Kue coklat dengan lelehan coklat di dalamnya.',
+                    price: 35000,
+                    image: '{{ asset('assets/demo/fnb/images/chocolatecake.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'crepedurian',
+                    category: 'dessert',
+                    name: 'Crepe Durian',
+                    description: 'Crepe tipis dengan filling durian asli.',
+                    price: 28000,
+                    image: '{{ asset('assets/demo/fnb/images/crepedurian.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pannacotta',
+                    category: 'dessert',
+                    name: 'Panna Cotta',
+                    description: 'Dessert Italia dengan saus berry segar.',
+                    price: 27000,
+                    image: '{{ asset('assets/demo/fnb/images/pannacotta.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'icecreamcake',
+                    category: 'dessert',
+                    name: 'Ice Cream Cake',
+                    description: 'Kue es krim dengan topping buah.',
+                    price: 40000,
+                    image: '{{ asset('assets/demo/fnb/images/icecreamcake.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'milkshake',
+                    category: 'minuman',
+                    name: 'Classic Milkshake',
+                    description: 'Milkshake vanilla dengan whipped cream.',
+                    price: 25000,
+                    image: '{{ asset('assets/demo/fnb/images/milkshake.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'chickenwrap',
+                    category: 'makanan',
+                    name: 'Chicken Wrap',
+                    description: 'Tortilla wrap dengan isian ayam dan sayuran.',
+                    price: 28000,
+                    image: '{{ asset('assets/demo/fnb/images/chickenwrap.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'fruitsalad',
+                    category: 'dessert',
+                    name: 'Fresh Fruit Salad',
+                    description: 'Aneka buah segar dengan yogurt dan madu.',
+                    price: 23000,
+                    image: '{{ asset('assets/demo/fnb/images/fruitsalad.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
                 }
             ];
 
