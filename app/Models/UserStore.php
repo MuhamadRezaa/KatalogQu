@@ -124,7 +124,17 @@ class UserStore extends Model
 
     public function productcategories(): HasMany
     {
+        return $this->hasMany(ProductCategory::class, 'user_store_id');
+    }
+
+    public function productsubcategories(): HasMany
+    {
         return $this->hasMany(ProductSubCategory::class, 'user_store_id');
+    }
+
+    public function brands(): HasMany
+    {
+        return $this->hasMany(StoreBrand::class, 'user_store_id');
     }
 
     /**

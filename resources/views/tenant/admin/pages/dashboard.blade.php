@@ -42,40 +42,68 @@
 
                 </div>
             </div>
-            <!-- Baris Statistik -->
-            <div class="row">
-                <div class="col-sm-6 col-xl-3 col-lg-6">
-                    <div class="card o-hidden">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted mb-2">Total Produk</p>
-                                    <h4 class="mb-0">{{ $userStore->products->count() }}</h4>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <i data-feather="box" class="text-primary" style="width: 48px; height: 48px;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-xl-3 col-lg-6">
-                    <div class="card o-hidden">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted mb-2">Total Sub Kategori Produk</p>
-                                    <h4 class="mb-0">{{ $userStore->productcategories->count() }}</h4>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <i data-feather="box" class="text-primary" style="width: 48px; height: 48px;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+            <!-- Baris Statistik -->
+            @php
+                // Dua metrik ini selalu aktif
+                $metrics = collect([
+                    [
+                        'label' => 'Total Produk',
+                        'icon' => 'box',
+                        'value' => $userStore->products_count ?? $userStore->products->count(),
+                        'enabled' => true,
+                    ],
+                    [
+                        'label' => 'Total Kategori',
+                        'icon' => 'layers',
+                        'value' => $userStore->productcategories_count ?? $userStore->productcategories->count(),
+                        'enabled' => true,
+                    ],
+                    // Opsional
+                    [
+                        'label' => 'Total Sub Kategori',
+                        'icon' => 'git-branch',
+                        'value' => $userStore->productsubcategories_count ?? $userStore->productsubcategories->count(),
+                        'enabled' => in_array('subkategoriproduk', $menus ?? []),
+                    ],
+                    [
+                        'label' => 'Total Brand',
+                        'icon' => 'tag',
+                        'value' => $userStore->brands_count ?? $userStore->brands->count(),
+                        'enabled' => in_array('brandproduk', $menus ?? []),
+                    ],
+                ])->where('enabled', true);
+
+                $count = $metrics->count();
+
+                // Mapping: 4→4 kolom, 3→3 kolom, 2→2 kolom (default minimal 2 biar rapi di desktop)
+                $lgCols = $count >= 4 ? 4 : ($count == 3 ? 3 : 2);
+            @endphp
+
+            <div class="row row-cols-2 row-cols-lg-{{ $lgCols }} g-3 mb-3">
+                @foreach ($metrics as $m)
+                    <div class="col">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-1">{{ $m['label'] }}</p>
+                                    <h4 class="mb-0">{{ $m['value'] }}</h4>
+                                </div>
+                                <i data-feather="{{ $m['icon'] }}" class="txt-primary"
+                                    style="width:48px;height:48px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
+
+            @push('scripts')
+                <script>
+                    feather.replace();
+                </script>
+            @endpush
+
+
         </div>
 
         <div class="col-md-3">
@@ -108,8 +136,12 @@
 @endsection
 @push('scripts')
     <script>
+        feather.replace();
+    </script>
+    <script>
         $(document).ready(function() {
-            const storeUrl = `${window.location.protocol}//{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}`;
+            const storeUrl =
+                `${window.location.protocol}//{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}`;
             const storeName = "{{ $userStore->store_name }}";
 
             // 1. Buat QR Code untuk ditampilkan di halaman (ukuran kecil & simpel)
@@ -231,7 +263,8 @@
                         // 10. Tambahkan URL dan Footer
                         ctx.fillStyle = lightTextColor;
                         ctx.font = '22px Arial';
-                        ctx.fillText(storeUrl.replace(/^https?:\/\//, ''), canvasWidth / 2, canvasHeight -
+                        ctx.fillText(storeUrl.replace(/^https?:\/\//, ''), canvasWidth / 2,
+                            canvasHeight -
                             110); // --- PERUBAHAN: Menambah jarak
 
                         ctx.font = 'bold 18px Arial';
@@ -262,17 +295,17 @@
                 }
             });
 
-                        // Logika untuk tombol Copy Link
+            // Logika untuk tombol Copy Link
 
-                        $('#copy-link').on('click', async function() {
+            $('#copy-link').on('click', async function() {
 
-                            const button = $(this);
+                const button = $(this);
 
-            
 
-                            try {
 
-                                await navigator.clipboard.writeText(storeUrl);
+                try {
+
+                    await navigator.clipboard.writeText(storeUrl);
 
                     // Simpan teks asli
                     const originalText = button.html();
