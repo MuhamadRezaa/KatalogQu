@@ -741,20 +741,23 @@
                 document.querySelectorAll('.order-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        // Cari modal terdekat
-                        var modal = btn.closest('[id^="product-modal-"]');
+                        // Cari modal terdekat yang memiliki id "product-modal-..." atau fallback ke universal modal
+                        var modal = btn.closest('[id^="product-modal-"]') || document.getElementById(
+                            'universal-product-modal');
                         if (!modal) return;
-                        // Ambil nama produk dari modal
-                        var productName = modal.querySelector('h3') ? modal.querySelector('h3')
-                            .innerText.trim() : '';
+                        // Ambil nama produk dari modal (cari elemen yang sesuai)
+                        var productNameEl = modal.querySelector('#modal-product-name') || modal
+                            .querySelector('h3');
+                        var productName = productNameEl ? productNameEl.innerText.trim() : '';
                         // Ambil harga produk
-                        var priceSpan = modal.querySelector('span.text-3xl') ? modal.querySelector(
-                            'span.text-3xl').innerText.trim() : '';
+                        var priceEl = modal.querySelector('#modal-product-price') || modal
+                            .querySelector('span.text-3xl');
+                        var priceSpan = priceEl ? priceEl.innerText.trim() : '';
                         // Format pesan WhatsApp
                         var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
-                            productName + ' dengan harga ' + priceSpan + '.');
-                        // Nomor WhatsApp tujuan (ganti dengan nomor toko Anda)
-                        var waNumber = '6289643425076'; // Ganti dengan nomor WA toko
+                            productName + (priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
+                        // Nomor WhatsApp tujuan (ambil dari data toko jika tersedia)
+                        var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '081572505989')) !!};
                         var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
                         window.open(waUrl, '_blank');
                     });
