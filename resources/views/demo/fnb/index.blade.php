@@ -328,7 +328,7 @@
 
                 </div> -->
 
-                <div class="mb-5 pb-5 border-b-2 border-gray-300">
+                {{-- <div class="mb-5 pb-5 border-b-2 border-gray-300">
                     <h3 class="text-sm font-bold text-gray-800 mb-2 uppercase tracking-wide">Rentang Harga</h3>
                     <select id="price-range-dropdown"
                         class="w-full py-2 px-3 border border-gray-300 rounded-lg text-sm focus:ring-[#994d51] focus:border-[#994d51] transition">
@@ -341,7 +341,7 @@
                     </select>
                     <input type="hidden" id="min-price-filter" name="min_price" />
                     <input type="hidden" id="max-price-filter" name="max_price" />
-                </div>
+                </div> --}}
 
                 <button id=""
                     class="mt-3 w-full bg-[#994d51] hover:bg-[#7a3c3f] text-white text-sm font-medium py-2 px-4 rounded-md shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
