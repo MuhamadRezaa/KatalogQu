@@ -168,11 +168,18 @@
                     <div class="product-image">
                         <img src="https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp"
                             alt="LED Headlight H4" class="product-img">
+                        <div class="promo-flag">
+                            <span class="promo-text">PROMO</span>
+                        </div>
                     </div>
                     <div class="product-info">
                         <div class="product-category">Pencahayaan</div>
                         <h4>LED Headlight H4</h4>
-                        <div class="product-price">Rp 350.000</div>
+                        <div class="product-price-wrapper">
+                            <div class="product-price-original">Rp 500.000</div>
+                            <div class="product-price">Rp 350.000</div>
+                            <div class="product-savings"><i class="fas fa-tag"></i> Hemat Rp 150.000</div>
+                        </div>
                         <p>Lampu LED super terang 6000 lumens dengan teknologi terbaru untuk visibilitas maksimal. Tahan
                             air IP67, hemat energi 35W, mudah dipasang plug and play dengan heat sink aluminum.</p>
                         <div class="product-buttons">
@@ -212,11 +219,18 @@
                     <div class="product-image">
                         <img src="https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg"
                             alt="Audio System Pioneer" class="product-img">
+                        <div class="promo-flag">
+                            <span class="promo-text">PROMO</span>
+                        </div>
                     </div>
                     <div class="product-info">
                         <div class="product-category">Elektronik</div>
                         <h4>Audio System Pioneer</h4>
-                        <div class="product-price">Rp 1.800.000</div>
+                        <div class="product-price-wrapper">
+                            <div class="product-price-original">Rp 2.500.000</div>
+                            <div class="product-price">Rp 1.800.000</div>
+                            <div class="product-savings"><i class="fas fa-tag"></i> Hemat Rp 700.000</div>
+                        </div>
                         <p>System audio premium dengan head unit 2DIN layar 7 inci, 4 speaker, dan subwoofer 10 inci.
                             Mendukung Bluetooth, USB, AUX, radio FM/AM dengan equalizer 7 band, garansi 3 tahun.</p>
                         <div class="product-buttons">
@@ -699,7 +713,37 @@
             const modal = document.getElementById('detailModal');
             const modalBody = document.getElementById('detailModalBody');
             const productName = productCard.querySelector('h4').textContent;
-            const productPrice = productCard.querySelector('.product-price').textContent;
+            const productPriceWrapper = productCard.querySelector('.product-price-wrapper');
+            const productPriceOriginal = productCard.querySelector('.product-price-original');
+            let productPriceHTML = '';
+
+            if (productPriceWrapper && productPriceOriginal) {
+                const originalPrice = productPriceOriginal.textContent;
+                const promoPrice = productCard.querySelector('.product-price').textContent;
+
+                // Hitung penghematan
+                const originalPriceNum = parseFloat(originalPrice.replace(/[^0-9]/g, ''));
+                const promoPriceNum = parseFloat(promoPrice.replace(/[^0-9]/g, ''));
+                const savings = originalPriceNum - promoPriceNum;
+                const savingsFormatted = formatRupiah(savings);
+                const savingsPercent = Math.round((savings / originalPriceNum) * 100);
+
+                productPriceHTML = `
+                    <div class="product-price-original" style="color: #95a5a6; font-size: 1.2rem; text-decoration: line-through; margin-bottom: 5px;">${originalPrice}</div>
+                    <div class="product-detail-price">${promoPrice}</div>
+                    <div class="product-savings" style="background: linear-gradient(135deg, #27ae60, #229954); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; display: inline-block; margin-top: 10px; box-shadow: 0 3px 10px rgba(39, 174, 96, 0.3);">
+                        <i class="fas fa-tag"></i> Hemat ${savingsFormatted} (${savingsPercent}%)
+                    </div>
+                `;
+            } else {
+                const productPrice = productCard.querySelector('.product-price').textContent;
+                productPriceHTML = `<div class="product-detail-price">${productPrice}</div>`;
+            }
+
+            function formatRupiah(amount) {
+                return 'Rp ' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
             const productDesc = productCard.querySelector('p').textContent;
             const productCategory = productCard.querySelector('.product-category').textContent;
             const productImg = productCard.querySelector('.product-img');
@@ -726,7 +770,7 @@
                             <i class="fas fa-tag"></i> ${productCategory}
                         </div>
                         <h3 class="product-detail-title">${productName}</h3>
-                        <div class="product-detail-price">${productPrice}</div>
+                        ${productPriceHTML}
                     </div>
 
                     <div class="product-detail-info">
@@ -765,11 +809,106 @@
                             </button>
                         </div>
                     </div>
+
+                    ${getSimilarProductsHTML(productId, productCategory)}
                 </div>
             `;
 
             modalBody.innerHTML = detailHTML;
             modal.classList.add('active');
+        }
+
+        function getSimilarProductsHTML(currentProductId, currentCategory) {
+            const allProducts = document.querySelectorAll('.product-card');
+            const similarProducts = [];
+
+            allProducts.forEach(card => {
+                const cardId = card.getAttribute('data-id');
+                const cardCategory = card.getAttribute('data-category');
+
+                // Ambil produk dengan kategori yang sama, kecuali produk yang sedang dilihat
+                if (cardId !== currentProductId.toString()) {
+                    const categoryMatch = card.querySelector('.product-category').textContent;
+                    if (categoryMatch === currentCategory) {
+                        similarProducts.push({
+                            id: cardId,
+                            name: card.querySelector('h4').textContent,
+                            price: card.querySelector('.product-price').textContent,
+                            priceOriginal: card.querySelector('.product-price-original') ? card.querySelector('.product-price-original').textContent : null,
+                            category: categoryMatch,
+                            image: card.querySelector('.product-img') ? card.querySelector('.product-img').getAttribute('src') : '',
+                            hasPromo: card.querySelector('.promo-flag') !== null
+                        });
+                    }
+                }
+            });
+
+            // Jika tidak ada produk dengan kategori yang sama, ambil produk lainnya
+            if (similarProducts.length === 0) {
+                allProducts.forEach(card => {
+                    const cardId = card.getAttribute('data-id');
+                    if (cardId !== currentProductId.toString() && similarProducts.length < 3) {
+                        similarProducts.push({
+                            id: cardId,
+                            name: card.querySelector('h4').textContent,
+                            price: card.querySelector('.product-price').textContent,
+                            priceOriginal: card.querySelector('.product-price-original') ? card.querySelector('.product-price-original').textContent : null,
+                            category: card.querySelector('.product-category').textContent,
+                            image: card.querySelector('.product-img') ? card.querySelector('.product-img').getAttribute('src') : '',
+                            hasPromo: card.querySelector('.promo-flag') !== null
+                        });
+                    }
+                });
+            }
+
+            // Batasi maksimal 3 produk
+            const displayProducts = similarProducts.slice(0, 3);
+
+            if (displayProducts.length === 0) {
+                return '';
+            }
+
+            let html = `
+                <div class="similar-products-section">
+                    <h4><i class="fas fa-layer-group"></i> Produk Serupa</h4>
+                    <div class="similar-products-grid">
+            `;
+
+            displayProducts.forEach(product => {
+                let savingsHTML = '';
+                if (product.priceOriginal) {
+                    const originalPriceNum = parseFloat(product.priceOriginal.replace(/[^0-9]/g, ''));
+                    const promoPriceNum = parseFloat(product.price.replace(/[^0-9]/g, ''));
+                    const savings = originalPriceNum - promoPriceNum;
+                    const savingsPercent = Math.round((savings / originalPriceNum) * 100);
+                    savingsHTML = `<div style="background: linear-gradient(135deg, #27ae60, #229954); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; display: inline-block; margin-top: 5px;"><i class="fas fa-tag"></i> -${savingsPercent}%</div>`;
+                }
+
+                html += `
+                    <div class="similar-product-card" onclick="showProductDetail(${product.id})">
+                        <div class="similar-product-image">
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : '<i class="fas fa-image" style="font-size: 2rem; color: #ccc;"></i>'}
+                            ${product.hasPromo ? '<div class="similar-product-promo-badge">PROMO</div>' : ''}
+                        </div>
+                        <div class="similar-product-info">
+                            <div class="similar-product-category">${product.category}</div>
+                            <div class="similar-product-name">${product.name}</div>
+                            ${product.priceOriginal ? `
+                                <div style="text-decoration: line-through; color: #95a5a6; font-size: 0.85rem; margin-bottom: 3px;">${product.priceOriginal}</div>
+                            ` : ''}
+                            <div class="similar-product-price">${product.price}</div>
+                            ${savingsHTML}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            return html;
         }
 
         function closeDetailModal() {
@@ -781,14 +920,24 @@
             if (!productCard) return;
 
             const productName = productCard.querySelector('h4').textContent;
-            const productPrice = productCard.querySelector('.product-price').textContent;
+            const productPriceOriginal = productCard.querySelector('.product-price-original');
+            let priceText = '';
+
+            if (productPriceOriginal) {
+                const originalPrice = productPriceOriginal.textContent;
+                const promoPrice = productCard.querySelector('.product-price').textContent;
+                priceText = `Harga Normal: ${originalPrice}\n💰 Harga Promo: ${promoPrice}`;
+            } else {
+                const productPrice = productCard.querySelector('.product-price').textContent;
+                priceText = `Harga: ${productPrice}`;
+            }
 
             const phoneNumber = '6281572505989';
             const message = `Halo AutoParts
 
 Saya tertarik untuk memesan produk:
 📦 *${productName}*
-💰 Harga: ${productPrice}
+${priceText}
 
 Bisakah Anda berikan informasi lebih lanjut mengenai:
 - Ketersediaan stock
