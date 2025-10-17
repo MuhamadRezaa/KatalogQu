@@ -223,7 +223,7 @@
                     </div>
                 </div>
 
-                <div class="mb-5 pb-5 border-b-2 border-gray-300">
+                {{-- <div class="mb-5 pb-5 border-b-2 border-gray-300">
                     <h3 class="text-sm font-bold text-gray-800 mb-2 uppercase tracking-wide">Rentang Harga</h3>
                     <select id="price-range-dropdown"
                         class="w-full py-2 px-3 border border-gray-300 rounded-lg text-sm focus:ring-[#994d51] focus:border-[#994d51] transition">
@@ -238,7 +238,7 @@
                     </select>
                     <input type="hidden" id="min-price-filter" name="min_price" />
                     <input type="hidden" id="max-price-filter" name="max_price" />
-                </div>
+                </div> --}}
 
                 <button id=""
                     class="mt-3 w-full bg-[#994d51] hover:bg-[#7a3c3f] text-white text-sm font-medium py-2 px-4 rounded-md shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
@@ -741,20 +741,23 @@
                 document.querySelectorAll('.order-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        // Cari modal terdekat
-                        var modal = btn.closest('[id^="product-modal-"]');
+                        // Cari modal terdekat yang memiliki id "product-modal-..." atau fallback ke universal modal
+                        var modal = btn.closest('[id^="product-modal-"]') || document.getElementById(
+                            'universal-product-modal');
                         if (!modal) return;
-                        // Ambil nama produk dari modal
-                        var productName = modal.querySelector('h3') ? modal.querySelector('h3')
-                            .innerText.trim() : '';
+                        // Ambil nama produk dari modal (cari elemen yang sesuai)
+                        var productNameEl = modal.querySelector('#modal-product-name') || modal
+                            .querySelector('h3');
+                        var productName = productNameEl ? productNameEl.innerText.trim() : '';
                         // Ambil harga produk
-                        var priceSpan = modal.querySelector('span.text-3xl') ? modal.querySelector(
-                            'span.text-3xl').innerText.trim() : '';
+                        var priceEl = modal.querySelector('#modal-product-price') || modal
+                            .querySelector('span.text-3xl');
+                        var priceSpan = priceEl ? priceEl.innerText.trim() : '';
                         // Format pesan WhatsApp
                         var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
-                            productName + ' dengan harga ' + priceSpan + '.');
-                        // Nomor WhatsApp tujuan (ganti dengan nomor toko Anda)
-                        var waNumber = '6289643425076'; // Ganti dengan nomor WA toko
+                            productName + (priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
+                        // Nomor WhatsApp tujuan (ambil dari data toko jika tersedia)
+                        var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '081572505989')) !!};
                         var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
                         window.open(waUrl, '_blank');
                     });
