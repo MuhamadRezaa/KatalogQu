@@ -275,6 +275,24 @@
             /* Warna soft pink */
         }
 
+        /* [BARU] Penyesuaian Swiper agar mirip promo */
+        .featured-swiper {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+
+        .featured-swiper .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 280px;
+        }
+
+        .featured-swiper .swiper-slide-shadow-left,
+        .featured-swiper .swiper-slide-shadow-right {
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+        }
+
         .search-filter-section,
         .products-content-section {
             background-color: transparent;
@@ -345,13 +363,35 @@
             color: var(--primary-color);
         }
 
+        /* [PERBAIKAN] Menambahkan style untuk harga lama yang dicoret */
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+            margin-left: 0.5rem;
+        }
+
         .badge-new,
         .badge-promo {
             position: absolute;
             top: 15px;
             left: 15px;
             z-index: 10;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: 600;
         }
+
+        .badge-new {
+            background-color: #28a745;
+        }
+
+        .badge-promo {
+            background-color: #dc3545;
+        }
+
 
         .footer {
             background-color: var(--rose-gold-color);
@@ -377,6 +417,15 @@
 
         .modal-image-col {
             background-color: var(--secondary-color);
+        }
+
+        /* [BARU] Style untuk Brand di Modal */
+        #modalProductBrand {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
         }
     </style>
 </head>
@@ -477,7 +526,7 @@
                             <div class="swiper-slide h-100 pb-3">
                                 <div class="product-card" data-product-id="{{ $product->id }}">
                                     @if ($product->discount_percentage)
-                                        <div class="badge-promo">-{{ $product->discount_percentage }}%</div>
+                                        <div class="badge-promo">PROMO</div>
                                     @elseif ($product->is_new)
                                         <div class="badge-new">Baru</div>
                                     @endif
@@ -548,7 +597,7 @@
                 <p class="section-subtitle">Pilih kategori produk yang sesuai dengan selera Anda</p>
             </div>
             <div class="row align-items-center g-3 mt-3">
-                <div class="col-lg-4"><input type="text" id="searchInput" class="form-control filter-control"
+                <div class="col-lg-3"><input type="text" id="searchInput" class="form-control filter-control"
                         placeholder="Cari produk..." value="{{ request('search') }}"></div>
                 <div class="col-lg-2 col-md-3"><select id="categoryFilter" class="form-select filter-control">
                         <option value="">Semua Kategori</option>
@@ -556,6 +605,12 @@
                             <option value="{{ $cat->id }}"
                                 {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
+                    </select></div>
+                <div class="col-lg-2 col-md-3"><select id="subcategoryFilter" class="form-select filter-control">
+                        <option value="">Semua Sub Kategori</option>
+                    </select></div>
+                <div class="col-lg-2 col-md-3"><select id="brandFilter" class="form-select filter-control">
+                        <option value="">Semua Brand</option>
                     </select></div>
                 <div class="col-lg-2 col-md-3"><select id="priceFilter" class="form-select filter-control">
                         <option value="">Semua Harga</option>
@@ -574,7 +629,7 @@
                             Tertinggi</option>
                         <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nama A-Z</option>
                     </select></div>
-                <div class="col-lg-2 col-md-3"><a href="{{ url()->current() }}#products"
+                <div class="col-lg-1 col-md-3"><a href="{{ url()->current() }}#products"
                         class="btn btn-outline-secondary w-100">Reset</a></div>
             </div>
         </div>
@@ -587,7 +642,7 @@
                     <div class="col-md-4 col-lg-3">
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             @if ($product->discount_percentage)
-                                <div class="badge-promo">-{{ $product->discount_percentage }}%</div>
+                                <div class="badge-promo">PROMO</div>
                             @elseif ($product->is_new)
                                 <div class="badge-new">Baru</div>
                             @endif
@@ -634,35 +689,6 @@
                         <p class="footer-description">{{ $userStore->store_description }}</p>
                     </div>
                 </div>
-
-                <div class="col-lg-8 col-md-6 mb-4 footer-contact-section">
-                    <h5 class="footer-title">Hubungi Kami</h5>
-                    <div class="contact-info">
-                        @if ($userStore->store_address)
-                            <p class="contact-address">{!! nl2br(e($userStore->store_address)) !!}</p>
-                        @endif
-                        @if ($userStore->store_email)
-                            <p class="contact-email">{{ $userStore->store_email }}</p>
-                        @endif
-                        @if ($userStore->store_phone)
-                            <p class="contact-phone">{{ $userStore->store_phone }}</p>
-                        @endif
-                        <div class="social-links mt-3">
-                            @if ($userStore->facebook_url)
-                                <a href="{{ $userStore->facebook_url }}" target="_blank" class="social-link"><i
-                                        class="fab fa-facebook"></i></a>
-                            @endif
-                            @if ($userStore->instagram_url)
-                                <a href="{{ $userStore->instagram_url }}" target="_blank" class="social-link"><i
-                                        class="fab fa-instagram"></i></a>
-                            @endif
-                            @if ($userStore->twitter_url)
-                                <a href="{{ $userStore->twitter_url }}" target="_blank" class="social-link"><i
-                                        class="fab fa-twitter"></i></a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="row mt-4 pt-4 border-top border-secondary">
                 <div class="col-12 text-center">
@@ -698,9 +724,11 @@
                             </div>
                         </div>
                         <div class="col-lg-6 modal-details-col">
+                            {{-- [DIUBAH] Penambahan elemen untuk brand --}}
+                            <p id="modalProductBrand">BRAND</p>
                             <div class="d-flex align-items-center mb-2">
                                 <h3 id="modalProductName" class="mb-0">Nama Produk</h3>
-                                <span id="modalProductBadge" class="badge"></span>
+                                <span id="modalProductBadge" class="badge ms-2"></span>
                             </div>
                             <p class="text-muted" id="modalProductCategory">Kategori</p>
                             <div class="d-flex align-items-baseline mb-3">
@@ -714,8 +742,7 @@
                             <div id="modalProductSpecs"></div>
                             <div class="d-grid mt-4">
                                 <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg">
-                                    <i class="fab fa-whatsapp me-2"></i> Chat Toko
-                                </a>
+                                    <i class="fab fa-whatsapp me-2"></i> Chat Toko</a>
                             </div>
 
                             <div id="related-products-section" class="mt-4 pt-4 border-top">
@@ -735,11 +762,13 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     @php
+        // Menggabungkan semua produk yang ada di halaman untuk Javascript
         $allProducts = ($products->getCollection() ?? collect())
             ->merge($featuredProducts ?? collect())
             ->merge($newProducts ?? collect())
             ->merge($promoProducts ?? collect());
 
+        // Memformat data produk untuk digunakan di Javascript
         $productsForJs = $allProducts
             ->unique('id')
             ->map(function ($product) {
@@ -756,53 +785,86 @@
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
+                    'brand' => $product->brand->name ?? '',
                     'category_id' => $product->product_category_id,
                     'category' => $product->category->name ?? 'Uncategorized',
+                    'subcategory' => $product->subcategory->name ?? '',
                     'price_formatted' => $product->price_idr,
                     'old_price_formatted' => $product->old_price_idr,
                     'description' => $product->description,
                     'specs' => $product->specification,
                     'images' => array_unique($images),
                     'image' => $product->primary_image_src ?: asset('assets/demo/toko-kosmetik/img/placeholder.png'),
-                    'is_new' => $product->is_new, // Data untuk badge modal
-                    'discount_percentage' => $product->discount_percentage, // Data untuk badge modal
+                    'is_new' => $product->is_new,
+                    'discount_percentage' => $product->discount_percentage,
                 ];
             })
             ->values();
+
+        // [PERBAIKAN TOTAL] Membuat data Kategori -> Subkategori dari variabel Controller
+        // Pastikan variabel $categoriesWithSubcategories sudah dikirim dari Controller (Langkah 1)
+        $categoriesForFilterJs = collect($categoriesWithSubcategories ?? [])
+            ->keyBy('id')
+            ->map(function ($category) {
+                // Mengambil nama dari relasi subcategories yang sudah di-load
+                return $category->subcategories->pluck('name');
+            })
+            ->filter(function ($subcategories) {
+                // Hanya sertakan kategori yang punya sub-kategori
+                return $subcategories->isNotEmpty();
+            });
+
     @endphp
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Data dari PHP
             const allProductsData = @json($productsForJs);
+            // [PERBAIKAN TOTAL] Menggunakan data kategori dan subkategori yang lengkap dari controller
+            const categoriesData = @json($categoriesForFilterJs);
+
+            // Inisialisasi Modal dan Variabel
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
             const storePhoneNumber = "{{ $userStore->store_phone ?? '' }}";
 
+            // Inisialisasi Swiper/Carousel
             if (document.querySelector('.featured-swiper')) {
                 new Swiper('.featured-swiper', {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    loop: true,
+                    slidesPerView: 'auto',
+                    coverflowEffect: {
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: true,
+                    },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true
                     },
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2
-                        },
                         768: {
-                            slidesPerView: 3
-                        },
-                        1024: {
-                            slidesPerView: 4
+                            slidesPerView: 3,
                         }
                     }
                 });
             }
 
+            // Fungsi untuk mengisi detail produk di modal
             function populateModal(product) {
                 if (!product) return;
+                document.getElementById('modalProductBrand').textContent = product.brand || '';
                 document.getElementById('modalProductName').textContent = product.name;
-                document.getElementById('modalProductCategory').textContent = product.category;
+                document.getElementById('modalProductCategory').textContent = product.category + (product
+                    .subcategory ? ' > ' + product.subcategory : '');
                 document.getElementById('modalProductPrice').textContent = product.price_formatted;
 
                 const oldPriceEl = document.getElementById('modalProductOldPrice');
@@ -814,11 +876,11 @@
 
                 const badgeEl = document.getElementById('modalProductBadge');
                 badgeEl.textContent = '';
-                badgeEl.className = 'badge'; // Reset class
+                badgeEl.className = 'badge ms-2';
 
                 if (product.discount_percentage) {
                     badgeEl.classList.add('bg-danger');
-                    badgeEl.textContent = `PROMO ${product.discount_percentage}%`;
+                    badgeEl.textContent = 'PROMO';
                 } else if (product.is_new) {
                     badgeEl.classList.add('bg-success');
                     badgeEl.textContent = 'BARU';
@@ -831,9 +893,7 @@
                     ).join('') :
                     `<div class="carousel-item active"><img src="{{ asset('assets/demo/toko-kosmetik/img/placeholder.png') }}" class="d-block w-100" alt="Placeholder"></div>`;
 
-                // Re-initialize carousel after content update
-                const modalCarousel = new bootstrap.Carousel(document.getElementById('modalCarousel'));
-                modalCarousel.to(0); // Go to the first slide
+                new bootstrap.Carousel(document.getElementById('modalCarousel')).to(0);
 
                 const specsContainer = document.getElementById('modalProductSpecs');
                 specsContainer.innerHTML = '';
@@ -851,21 +911,20 @@
                 document.getElementById('chatButton').href =
                     `https://wa.me/${storePhoneNumber}?text=${encodeURIComponent(message)}`;
 
-                // Populate Related Products
+                // Logika untuk menampilkan produk terkait (related products)
                 const relatedContainer = document.getElementById('related-products-container');
                 relatedContainer.innerHTML = '';
                 const relatedProducts = allProductsData.filter(p => p.category_id === product.category_id && p
                     .id !== product.id).slice(0, 3);
-
                 if (relatedProducts.length > 0) {
                     document.getElementById('related-products-section').style.display = 'block';
                     relatedProducts.forEach(rp => {
                         const col = document.createElement('div');
                         col.className = 'col-4';
                         col.innerHTML = `
-                            <div class="related-product-card" data-product-id="${rp.id}">
-                                <img src="${rp.image}" alt="${rp.name}" class="img-fluid">
-                                <div class="related-product-title">${rp.name}</div>
+                            <div class="related-product-card" data-product-id="${rp.id}" style="cursor:pointer;">
+                                <img src="${rp.image}" alt="${rp.name}" class="img-fluid rounded">
+                                <div class="small mt-1">${rp.name}</div>
                             </div>
                         `;
                         relatedContainer.appendChild(col);
@@ -875,6 +934,7 @@
                 }
             }
 
+            // Fungsi untuk menambahkan event listener ke semua kartu produk
             function setupProductCardListeners() {
                 document.querySelectorAll('.product-card, .related-product-card').forEach(card => {
                     card.addEventListener('click', function(e) {
@@ -886,8 +946,9 @@
                     });
                 });
             }
-            setupProductCardListeners();
+            setupProductCardListeners(); // Panggil saat halaman pertama kali dimuat
 
+            // Event listener untuk produk terkait di dalam modal
             document.getElementById('related-products-container').addEventListener('click', function(e) {
                 const card = e.target.closest('.related-product-card');
                 if (card) {
@@ -897,112 +958,106 @@
                 }
             });
 
+            // --- LOGIKA FILTER ---
             const filterControls = document.querySelectorAll('.filter-control');
             let debounceTimer;
 
-            function filterProducts() {
-                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            // [PERBAIKAN TOTAL] Fungsi untuk mengisi filter sub-kategori berdasarkan data lengkap dari server
+            function updateSubcategoryFilter() {
                 const categoryId = document.getElementById('categoryFilter').value;
-                const sortBy = document.getElementById('sortFilter').value;
-                const priceFilter = document.getElementById('priceFilter').options[document.getElementById(
-                    'priceFilter').selectedIndex];
-                const priceMin = priceFilter.dataset.min ? parseFloat(priceFilter.dataset.min) : null;
-                const priceMax = priceFilter.dataset.max ? parseFloat(priceFilter.dataset.max) : null;
+                const subcategoryFilter = document.getElementById('subcategoryFilter');
 
-                let filtered = allProductsData.filter(product => {
-                    const matchesSearch = !searchTerm ||
-                        product.name.toLowerCase().includes(searchTerm) ||
-                        product.category.toLowerCase().includes(searchTerm);
+                // Simpan nilai sub-kategori yang sedang dipilih (jika ada)
+                const currentSubcategoryValue = new URLSearchParams(window.location.search).get('subcategory');
 
-                    const matchesCategory = !categoryId || product.category_id == categoryId;
+                subcategoryFilter.innerHTML = '<option value="">Semua Sub Kategori</option>'; // Reset
+                subcategoryFilter.disabled = true; // Nonaktifkan sementara
 
-                    let matchesPrice = true;
-                    if (priceMin !== null || priceMax !== null) {
-                        const priceStr = product.price_formatted.replace(/[^0-9]/g, '');
-                        const price = parseFloat(priceStr);
-                        matchesPrice = (!priceMin || price >= priceMin) && (!priceMax || price <= priceMax);
-                    }
-                    return matchesSearch && matchesCategory && matchesPrice;
-                });
-
-                filtered.sort((a, b) => {
-                    switch (sortBy) {
-                        case 'price_low':
-                            return parseFloat(a.price_formatted.replace(/[^0-9]/g, '')) - parseFloat(b
-                                .price_formatted.replace(/[^0-9]/g, ''));
-                        case 'price_high':
-                            return parseFloat(b.price_formatted.replace(/[^0-9]/g, '')) - parseFloat(a
-                                .price_formatted.replace(/[^0-9]/g, ''));
-                        case 'name':
-                            return a.name.localeCompare(b.name);
-                        case 'newest':
-                        default:
-                            return b.id - a.id;
-                    }
-                });
-                displayProducts(filtered);
-            }
-
-            function displayProducts(products) {
-                const productsGrid = document.getElementById('productsGrid');
-                if (products.length === 0) {
-                    productsGrid.innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            <p class="fs-4 text-muted">Produk tidak ditemukan.</p>
-                            <p>Coba ubah kata kunci atau filter Anda.</p>
-                            <button class="btn btn-primary mt-3" onclick="resetFilters()">Reset Filter</button>
-                        </div>
-                    `;
-                    return;
+                if (categoryId && categoriesData[categoryId] && categoriesData[categoryId].length > 0) {
+                    const subcategories = categoriesData[categoryId];
+                    subcategories.forEach(subName => {
+                        const option = document.createElement('option');
+                        option.value = subName;
+                        option.textContent = subName;
+                        // Jika nilai sama dengan yang ada di URL, pilih opsi ini
+                        if (subName === currentSubcategoryValue) {
+                           option.selected = true;
+                        }
+                        subcategoryFilter.appendChild(option);
+                    });
+                    subcategoryFilter.disabled = false; // Aktifkan kembali jika ada isinya
                 }
-                productsGrid.innerHTML = products.map(product => {
-                    let badgeHtml = '';
-                    if (product.discount_percentage) {
-                        badgeHtml = `<div class="badge-promo">-${product.discount_percentage}%</div>`;
-                    } else if (product.is_new) {
-                        badgeHtml = `<div class="badge-new">Baru</div>`;
+            }
+
+            // Fungsi untuk mengisi filter brand secara dinamis
+            function populateBrandFilter() {
+                const brandFilter = document.getElementById('brandFilter');
+                const brands = [...new Set(allProductsData.map(p => p.brand).filter(b => b))];
+                brands.sort();
+
+                const currentBrandValue = new URLSearchParams(window.location.search).get('brand');
+
+                brands.forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand;
+                    option.textContent = brand;
+                    if(brand === currentBrandValue) {
+                       option.selected = true;
                     }
-
-                    return `
-                        <div class="col-md-4 col-lg-3">
-                            <div class="product-card" data-product-id="${product.id}">
-                                ${badgeHtml}
-                                <div class="product-image-container">
-                                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                                </div>
-                                <div class="product-info">
-                                    <p class="product-category">${product.category}</p>
-                                    <h5 class="product-title">${product.name}</h5>
-                                    <div class="product-price mt-auto">
-                                        <span class="current-price">${product.price_formatted}</span>
-                                        ${product.old_price_formatted ? `<span class="old-price">${product.old_price_formatted}</span>` : ''}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                setupProductCardListeners();
+                    brandFilter.appendChild(option);
+                });
             }
 
-            window.resetFilters = function() {
-                document.getElementById('searchInput').value = '';
-                document.getElementById('categoryFilter').value = '';
-                document.getElementById('priceFilter').value = '';
-                document.getElementById('sortFilter').value = 'newest';
-                filterProducts();
+            // Fungsi utama untuk memfilter dan menampilkan produk
+            function applyFilters() {
+                const search = document.getElementById('searchInput').value;
+                const category = document.getElementById('categoryFilter').value;
+                const subcategory = document.getElementById('subcategoryFilter').value;
+                const brand = document.getElementById('brandFilter').value;
+                const sort = document.getElementById('sortFilter').value;
+                const priceFilter = document.getElementById('priceFilter').options[document.getElementById('priceFilter').selectedIndex];
+                const price_min = priceFilter.dataset.min || '';
+                const price_max = priceFilter.dataset.max || '';
+
+                const params = new URLSearchParams({
+                    search, category, subcategory, brand, sort, price_min, price_max
+                });
+
+                // Hapus parameter kosong
+                for(let [key, value] of params.entries()) {
+                    if (!value) {
+                        params.delete(key);
+                    }
+                }
+
+                // Ganti URL tanpa me-reload halaman
+                window.location.href = window.location.pathname + '?' + params.toString() + '#products';
             }
+
+            // Event Listeners untuk semua kontrol filter
+            document.getElementById('categoryFilter').addEventListener('change', (e) => {
+                updateSubcategoryFilter();
+                // Langsung terapkan filter setelah mengganti kategori
+                applyFilters();
+            });
 
             filterControls.forEach(control => {
-                control.addEventListener('change', filterProducts);
-                if (control.id === 'searchInput') {
-                    control.addEventListener('input', () => {
-                        clearTimeout(debounceTimer);
-                        debounceTimer = setTimeout(filterProducts, 300);
-                    });
+                // Jangan tambahkan event listener ganda ke categoryFilter
+                if (control.id !== 'categoryFilter' && control.id !== 'searchInput') {
+                    control.addEventListener('change', applyFilters);
                 }
             });
-            filterProducts();
+
+            document.getElementById('searchInput').addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                // Menunggu 500ms setelah user berhenti mengetik sebelum menerapkan filter
+                debounceTimer = setTimeout(applyFilters, 500);
+            });
+
+            // Inisialisasi filter saat halaman dimuat
+            updateSubcategoryFilter();
+            populateBrandFilter();
+
         });
     </script>
 </body>
