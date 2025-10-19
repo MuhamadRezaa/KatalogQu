@@ -418,6 +418,12 @@
                                     case 'dessert':
                                         categoryLabel.innerText = 'Dessert';
                                         break;
+                                    case 'pakethemat':
+                                        categoryLabel.innerText = 'Paket Hemat';
+                                        break;
+                                    case 'promo':
+                                        categoryLabel.innerText = 'Promo';
+                                        break;
                                     default:
                                         categoryLabel.innerText = 'Semua Menu';
                                 }
@@ -644,6 +650,12 @@
                                         <a href="#"
                                             class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                                             data-category="dessert">Dessert</a>
+                                        <a href="#"
+                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                            data-category="pakethemat">Paket Hemat</a>
+                                        <a href="#"
+                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                            data-category="promo">Promo</a>
                                     </div>
                                 </div>
                             </div>
@@ -1232,7 +1244,207 @@
                     image: '{{ asset('assets/demo/fnb/images/fruitsalad.jpg') }}',
                     isNew: true,
                     isAvailable: true
-                }
+                },
+                {
+                    id: 'pkthmt1',
+                    category: 'pakethemat',
+                    name: 'Paket Puas 1 (Burger + Fries + Cola)',
+                    description: 'Cheeseburger klasik, kentang goreng reguler, dan Cola 300ml.',
+                    price: 45000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_puas1.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt2',
+                    category: 'pakethemat',
+                    name: 'Paket Nasi Ayam Geprek Komplit',
+                    description: 'Nasi hangat, ayam geprek pedas level 3, tahu/tempe, dan es teh manis.',
+                    price: 35000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_geprek.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt3',
+                    category: 'pakethemat',
+                    name: 'Paket Roti Bakar Duo (2 Roti + 2 Kopi)',
+                    description: 'Dua porsi roti bakar (keju dan cokelat) ditambah dua kopi susu panas.',
+                    price: 55000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_roti_duo.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt4',
+                    category: 'pakethemat',
+                    name: 'Paket Sarapan Sehat (Oatmeal + Juice)',
+                    description: 'Semangkuk Oatmeal dengan topping buah dan satu gelas orange juice.',
+                    price: 32000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_sarapan.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt5',
+                    category: 'pakethemat',
+                    name: 'Paket Siang Cepat (Mie Goreng + Es Jeruk)',
+                    description: 'Mie goreng spesial dengan telur dan es jeruk segar.',
+                    price: 27000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_siang.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt6',
+                    category: 'pakethemat',
+                    name: 'Paket Pizza Mini Couple',
+                    description: 'Dua mini pizza dengan topping berbeda dan dua minuman soda dingin.',
+                    price: 65000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_pizza_mini.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt7',
+                    category: 'pakethemat',
+                    name: 'Paket Kopi dan Donat (1 Kopi + 2 Donat)',
+                    description: 'Satu Latte panas dan dua donat klasik pilihan.',
+                    price: 38000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_kopi_donat.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt8',
+                    category: 'pakethemat',
+                    name: 'Paket Ikan Fillet Saus Mentai',
+                    description: 'Nasi dengan ikan fillet crispy dan saus mentai spesial, termasuk air mineral.',
+                    price: 42000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_ikan_mentai.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt9',
+                    category: 'pakethemat',
+                    name: 'Paket Seblak Pedas Level 5 + Minuman Dingin',
+                    description: 'Seblak dengan isian komplit dan es lemon tea.',
+                    price: 30000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_seblak.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'pkthmt10',
+                    category: 'pakethemat',
+                    name: 'Paket Family (4 Makanan Utama + Diskon Minuman)',
+                    description: 'Diskon 25% untuk 4 menu utama apa saja, harga yang tertera adalah harga diskon rata-rata.',
+                    price: 90000,
+                    image: '{{ asset('assets/demo/fnb/images/paket_family.jpg') }}',
+                    isNew: false,
+                    isAvailable: false // Stok habis
+                },
+                {
+                    id: 'promo1',
+                    category: 'promo',
+                    name: 'DISKON 50% Smoothies Hari Senin',
+                    description: 'Semua varian buah Smoothies diskon 50% setiap hari Senin.',
+                    price: 15000, // Harga setelah diskon
+                    image: '{{ asset('assets/demo/fnb/images/promo_smoothies.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo2',
+                    category: 'promo',
+                    name: 'Buy 1 Get 1 Free Large Pizza',
+                    description: 'Beli 1 pizza ukuran besar, gratis 1 pizza medium (pilih rasa).',
+                    price: 99000,
+                    image: '{{ asset('assets/demo/fnb/images/promo_pizza_b1g1.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo3',
+                    category: 'promo',
+                    name: 'Gratis Tambah Keju di Semua Pasta',
+                    description: 'Dapatkan keju mozarella ekstra gratis untuk semua menu pasta.',
+                    price: 0, // Item promosi tambahan (harga 0 karena gratis)
+                    image: '{{ asset('assets/demo/fnb/images/promo_keju_pasta.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo4',
+                    category: 'promo',
+                    name: 'Weekend Hemat (Diskon 20% Minuman)',
+                    description: 'Diskon 20% untuk semua minuman non-kopi pada hari Sabtu & Minggu.',
+                    price: 12000, // Harga rata-rata setelah diskon
+                    image: '{{ asset('assets/demo/fnb/images/promo_weekend_minuman.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo5',
+                    category: 'promo',
+                    name: 'Nasi Goreng Merah Spesial',
+                    description: 'Menu spesial bulanan: Nasi goreng merah dengan udang besar (Harga normal 40k).',
+                    price: 38000,
+                    image: '{{ asset('assets/demo/fnb/images/promo_nasi_goreng_merah.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo6',
+                    category: 'promo',
+                    name: 'Beli 2 Es Kopi Susu, Hemat 10K',
+                    description: 'Beli dua Es Kopi Susu signature, hemat Rp 10.000 dari harga normal.',
+                    price: 40000,
+                    image: '{{ asset('assets/demo/fnb/images/promo_kopi_hemat.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo7',
+                    category: 'promo',
+                    name: 'Hot Dog XXL Edisi Terbatas',
+                    description: 'Hot Dog dengan sosis ukuran jumbo dan topping ekstra, hanya untuk bulan ini!',
+                    price: 40000,
+                    image: '{{ asset('assets/demo/fnb/images/promo_hotdog_xxl.jpg') }}',
+                    isNew: true,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo8',
+                    category: 'promo',
+                    name: 'Gratis Tambah Toping (Ice Cream)',
+                    description: 'Setiap pembelian Ice Cream, gratis satu topping (pilih whip cream/cherry).',
+                    price: 0,
+                    image: '{{ asset('assets/demo/fnb/images/promo_icecream.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo9',
+                    category: 'promo',
+                    name: 'Diskon 30% Semua Kue Tart',
+                    description: 'Diskon besar 30% untuk semua pembelian kue tart (ukuran apa saja).',
+                    price: 150000, // Harga setelah diskon
+                    image: '{{ asset('assets/demo/fnb/images/promo_kue_tart.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
+                {
+                    id: 'promo10',
+                    category: 'promo',
+                    name: 'Diskon Khusus Pelajar/Mahasiswa',
+                    description: 'Tunjukkan kartu pelajar/mahasiswa dan dapatkan diskon 15% untuk semua menu.',
+                    price: 0, // Item informasi promosi
+                    image: '{{ asset('assets/demo/fnb/images/promo_pelajar.jpg') }}',
+                    isNew: false,
+                    isAvailable: true
+                },
             ];
 
             let currentCategory = 'all';
