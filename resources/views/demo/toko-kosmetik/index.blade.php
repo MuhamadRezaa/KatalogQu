@@ -426,6 +426,9 @@
                 <div class="col-6 col-lg-2"><select id="categoryFilter" class="form-select filter-control">
                         <option value="">Kategori</option>
                     </select></div>
+                <div class="col-6 col-lg-2"><select id="subcategoryFilter" class="form-select filter-control">
+                        <option value="">Sub Kategori</option>
+                    </select></div>
                 <div class="col-6 col-lg-2"><select id="brandFilter" class="form-select filter-control">
                         <option value="">Brand</option>
                     </select></div>
@@ -457,16 +460,10 @@
     <footer id="contact" class="footer">
         <div class="container">
             <div class="row gy-4">
-                <div class="col-lg-4 col-md-12">
+                <div class="col-lg-4 col-md-6">
                     <h5 class="footer-title">Canu Cosmetics</h5>
                     <p>Temukan kecantikan sejati Anda dengan koleksi kosmetik premium kami. Dibuat dengan bahan-bahan
                         terbaik untuk menonjolkan pesona alami Anda setiap hari.</p>
-                    <div class="social-links mt-3">
-                        <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
-                    </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5 class="footer-title">Hubungi Kami</h5>
@@ -476,18 +473,10 @@
                         <li class="mb-2">+62 815-7250-5989</li>
                     </ul>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="footer-title">Tautan Cepat</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#home">Beranda</a></li>
-                        <li class="mb-2"><a href="#products">Produk</a></li>
-                        <li class="mb-2"><a href="#contact">Kontak</a></li>
-                    </ul>
-                </div>
             </div>
             <div class="row mt-4 pt-4 border-top border-white border-opacity-25">
                 <div class="col-12 text-center">
-                    <p class="mb-0 small">&copy; 2025 Canu Cosmetics. Diberdayakan oleh PT. Era Cipta Digital.</p>
+                    <p class="mb-0 small">&copy; 2025 Canu Cosmetics. Powered by PT. Era Cipta Digital.</p>
                 </div>
             </div>
         </div>
@@ -524,7 +513,7 @@
                                 <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg"><i
                                         class="fab fa-whatsapp me-2"></i> Chat Toko</a>
                             </div>
-                            <div id="related-products-section" class="mt-4 pt-4 border-top" style="display: none;">
+                            <div id="related-products-section" class="mt-4 pt-4 border-top">
                                 <h6 class="mb-3">Anda Mungkin Juga Suka</h6>
                                 <div id="related-products-container" class="row g-2"></div>
                             </div>
@@ -757,7 +746,6 @@
                     `<ul class="list-unstyled">${Object.entries(product.specs).map(([k, v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('')}</ul>` :
                     '<p>Tidak ada spesifikasi.</p>';
 
-                // [BARU] Logika untuk menampilkan produk serupa
                 const relatedContainer = document.getElementById('related-products-container');
                 const relatedSection = document.getElementById('related-products-section');
                 const relatedProducts = allProductsData.filter(p => p.category_id === product.category_id && p
@@ -783,6 +771,7 @@
             function filterProducts() {
                 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
                 const categoryId = document.getElementById('categoryFilter').value;
+                const subcategory = document.getElementById('subcategoryFilter').value;
                 const brand = document.getElementById('brandFilter').value;
                 const sortBy = document.getElementById('sortFilter').value;
                 const priceFilter = document.getElementById('priceFilter').options[document.getElementById(
@@ -794,6 +783,7 @@
                     (!searchTerm || p.name.toLowerCase().includes(searchTerm) || p.brand.toLowerCase().includes(
                         searchTerm)) &&
                     (!categoryId || p.category_id == categoryId) &&
+                    (!subcategory || p.subcategory === subcategory) &&
                     (!brand || p.brand === brand) &&
                     (!priceMin || p.price >= priceMin) &&
                     (!priceMax || p.price <= priceMax)
@@ -828,7 +818,6 @@
                     debounceTimer = setTimeout(filterProducts, 300);
                 });
 
-                // [BARU] Event listener untuk produk serupa di dalam modal
                 document.getElementById('related-products-container').addEventListener('click', function(e) {
                     const card = e.target.closest('.related-product-card');
                     if (card) {
@@ -857,6 +846,11 @@
                 const catFilter = document.getElementById('categoryFilter');
                 catFilter.innerHTML += dummyCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join(
                     '');
+
+                const subcatFilter = document.getElementById('subcategoryFilter');
+                const subcategories = [...new Set(allProductsData.map(p => p.subcategory))].sort();
+                subcatFilter.innerHTML += subcategories.map(s => `<option value="${s}">${s}</option>`).join('');
+
                 const brandFilter = document.getElementById('brandFilter');
                 brandFilter.innerHTML += [...new Set(allProductsData.map(p => p.brand))].sort().map(b =>
                     `<option value="${b}">${b}</option>`).join('');
