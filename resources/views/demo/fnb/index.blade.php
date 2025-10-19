@@ -44,171 +44,386 @@
             .card-category {
                 background-color: #fff;
                 border-radius: 1.5rem;
-                /* 2xl = 24px */
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                /* shadow-md */
                 overflow: hidden;
-                transition: transform 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
             }
 
             /* Gaya saat di-hover (efek animasi) */
             .card-category:hover {
                 transform: scale(1.05);
-                /* Memperbesar 5% */
+            }
+
+            /* Gaya untuk kategori tersembunyi */
+            .category-hidden {
+                display: none;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .category-hidden.show {
+                display: block;
+                opacity: 1;
             }
 
             /* Gaya untuk teks */
             .section-title {
                 text-align: center;
                 font-size: 1.5rem;
-                /* 2xl */
                 font-weight: 700;
-                /* bold */
                 margin-bottom: 2rem;
-                /* mb-8 */
             }
 
             .card-title {
                 font-weight: 600;
-                /* semibold */
             }
 
             .card-description {
                 font-size: 0.875rem;
-                /* sm */
                 color: #4b5563;
-                /* gray-600 */
+            }
+
+            /* Animasi untuk tombol show more */
+            .show-more-icon {
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #show-more-categories {
+                transition: all 0.3s ease-in-out;
+            }
+
+            #show-more-categories:hover {
+                transform: translateY(-2px);
             }
         </style>
     </header>
 
-    <div
-        class="relative overflow-hidden rounded-none shadow-lg bg-[#2a1a1a] w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] max-w-none h-96 top-0 z-40">
-        <div id="image-carousel" class="absolute inset-0 flex transition-transform duration-1000 ease-in-out">
-            <div class="w-screen flex-shrink-0 relative">
-                <img src="{{ asset('assets/demo/fnb/images/background4.jpg') }}" alt="Promo Spesial"
-                    class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 flex items-center justify-center text-center p-12">
-                    <div class="relative z-10">
-                        <h3 class="text-4xl font-bold text-white drop-shadow-lg">Promo Kopi Spesial</h3>
-                        <p class="text-lg text-gray-200 mt-2 drop-shadow-lg">Dapatkan diskon 20% untuk semua varian kopi
-                            pilihan.</p>
+    <div class="relative w-full overflow-hidden bg-[#2a1a1a] z-40">
+        <!-- Container dengan aspect ratio 16:9 (1920:1080) -->
+        <div class="relative w-full" style="padding-top: 56.25%;">
+            <div id="image-carousel"
+                class="absolute top-0 left-0 w-full h-full flex transition-transform duration-1000 ease-in-out">
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="{{ asset('assets/demo/fnb/images/background4.jpg') }}" alt="Promo Spesial"
+                        class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-30">
+                        <div class="absolute inset-0 flex items-center justify-center text-center p-4 sm:p-8 md:p-12">
+                            <div class="relative z-10 max-w-4xl mx-auto">
+                                <h3
+                                    class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                                    Promo Kopi Spesial</h3>
+                                <p
+                                    class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+                                    Dapatkan diskon 20% untuk semua varian kopi pilihan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="{{ asset('assets/demo/fnb/images/background5.jpg') }}" alt="Produk Terbaru"
+                        class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-30">
+                        <div class="absolute inset-0 flex items-center justify-center text-center p-4 sm:p-8 md:p-12">
+                            <div class="relative z-10 max-w-4xl mx-auto">
+                                <h3
+                                    class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                                    Kopi Arabika Gayo</h3>
+                                <p
+                                    class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+                                    Nikmati sensasi rasa baru dari biji kopi Gayo premium.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="{{ asset('assets/demo/fnb/images/background6.jpg') }}" alt="Event Mendatang"
+                        class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-30">
+                        <div class="absolute inset-0 flex items-center justify-center text-center p-4 sm:p-8 md:p-12">
+                            <div class="relative z-10 max-w-4xl mx-auto">
+                                <h3
+                                    class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                                    Workshop Meracik Kopi</h3>
+                                <p
+                                    class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+                                    Ikuti workshop kami dan jadi barista handal!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="w-screen flex-shrink-0 relative">
-                <img src="{{ asset('assets/demo/fnb/images/background5.jpg') }}" alt="Produk Terbaru"
-                    class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 flex items-center justify-center text-center p-12">
-                    <div class="relative z-10">
-                        <h3 class="text-4xl font-bold text-white drop-shadow-lg">Kopi Arabika Gayo</h3>
-                        <p class="text-lg text-gray-200 mt-2 drop-shadow-lg">Nikmati sensasi rasa baru dari biji kopi
-                            Gayo premium.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="w-screen flex-shrink-0 relative">
-                <img src="{{ asset('assets/demo/fnb/images/background6.jpg') }}" alt="Event Mendatang"
-                    class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 flex items-center justify-center text-center p-12">
-                    <div class="relative z-10">
-                        <h3 class="text-4xl font-bold text-white drop-shadow-lg">Workshop Meracik Kopi</h3>
-                        <p class="text-lg text-gray-200 mt-2 drop-shadow-lg">Ikuti workshop kami dan jadi barista
-                            handal!</p>
-                    </div>
-                </div>
+
+            <!-- Navigation Buttons -->
+            <button
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full focus:outline-none transition-all duration-200"
+                id="prevSlide">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full focus:outline-none transition-all duration-200"
+                id="nextSlide">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <button
+                    class="w-2 h-2 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all duration-200 dot active"></button>
+                <button
+                    class="w-2 h-2 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all duration-200 dot"></button>
+                <button
+                    class="w-2 h-2 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all duration-200 dot"></button>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('image-carousel');
+            const slides = carousel.children;
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            let autoplayInterval;
+
+            // Navigation functions
+            function updateSlidePosition() {
+                carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+                updateDots();
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlidePosition();
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlidePosition();
+            }
+
+            // Update dots
+            function updateDots() {
+                document.querySelectorAll('.dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                    dot.classList.toggle('bg-opacity-50', index !== currentSlide);
+                    dot.classList.toggle('bg-opacity-100', index === currentSlide);
+                });
+            }
+
+            // Event listeners
+            document.getElementById('nextSlide').addEventListener('click', () => {
+                nextSlide();
+                resetAutoplay();
+            });
+
+            document.getElementById('prevSlide').addEventListener('click', () => {
+                prevSlide();
+                resetAutoplay();
+            });
+
+            // Dot navigation
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlidePosition();
+                    resetAutoplay();
+                });
+            });
+
+            // Autoplay
+            function startAutoplay() {
+                autoplayInterval = setInterval(nextSlide, 5000);
+            }
+
+            function resetAutoplay() {
+                clearInterval(autoplayInterval);
+                startAutoplay();
+            }
+
+            // Touch support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            carousel.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            carousel.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                    resetAutoplay();
+                }
+            }
+
+            // Initial setup
+            startAutoplay();
+        });
+    </script>
 
     <main class="w-full mx-auto py-8 px-4 space-y-10 pt-5">
         <section class="py-1 px-4">
             <h2 class="text-center text-2xl font-bold mb-8">CATEGORY MENU</h2>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                @php
+                    $categories = [
+                        [
+                            'name' => 'Minuman',
+                            'image' => 'capuccino.jpg',
+                            'description' => 'Dari minuman tradisional...',
+                        ],
+                        [
+                            'name' => 'Makanan',
+                            'image' => 'nasigoreng.jpg',
+                            'description' => 'Berbagai macam hidangan...',
+                        ],
+                        [
+                            'name' => 'Cemilan',
+                            'image' => 'kentanggoreng.jpg',
+                            'description' => 'Teman akrab buat ngopi...',
+                        ],
+                        [
+                            'name' => 'Dessert',
+                            'image' => 'brownies.jpg',
+                            'description' => 'Sajian manis yang...',
+                        ],
+                        [
+                            'name' => 'Paket Hemat',
+                            'image' => 'pakethemat.jpg',
+                            'description' => 'Hemat dan mengenyangkan...',
+                        ],
+                        [
+                            'name' => 'Promo',
+                            'image' => 'promo.jpg',
+                            'description' => 'Penawaran spesial...',
+                        ],
+                    ];
+                    $totalCategories = count($categories);
+                @endphp
 
-                <!-- Card -->
-                <div class="card-category">
-                    <img src="{{ asset('assets/demo/fnb/images/capuccino.jpg') }}" alt="Minuman"
-                        class="w-full h-40 object-cover">
-                    <div class="p-4 text-center">
-                        <h3 class="card-title">Minuman</h3>
-                        <p class="card-description">Dari minuman tradisional...</p>
+                @foreach ($categories as $index => $category)
+                    <div
+                        class="card-category {{ $index >= 4 ? 'hidden category-hidden' : '' }} transition-all duration-300 ease-in-out transform hover:scale-105">
+                        <img src="{{ asset('assets/demo/fnb/images/' . $category['image']) }}"
+                            alt="{{ $category['name'] }}" class="w-full h-40 object-cover">
+                        <div class="p-4 text-center">
+                            <h3 class="card-title">{{ $category['name'] }}</h3>
+                            <p class="card-description">{{ $category['description'] }}</p>
+                        </div>
                     </div>
-                </div>
+                @endforeach
 
-                <div class="card-category">
-                    <img src="{{ asset('assets/demo/fnb/images/nasigoreng.jpg') }}" alt="Makanan"
-                        class="w-full h-40 object-cover">
-                    <div class="p-4 text-center">
-                        <h3 class="card-title">Makanan</h3>
-                        <p class="card-description">Berbagai macam hidangan...</p>
+                @if ($totalCategories > 4)
+                    <div class="col-span-2 md:col-span-4 flex justify-center mt-4">
+                        <button id="show-more-categories"
+                            class="bg-[#994d51] hover:bg-[#7a3c3f] text-white text-sm font-medium py-2 px-6 rounded-full shadow transition duration-200 flex items-center gap-2">
+                            <span class="show-more-text">Lihat Semua Kategori</span>
+                            <svg class="w-4 h-4 transform transition-transform show-more-icon" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
                     </div>
-                </div>
-
-                <div class="card-category">
-                    <img src="{{ asset('assets/demo/fnb/images/kentanggoreng.jpg') }}" alt="Cemilan"
-                        class="w-full h-40 object-cover">
-                    <div class="p-4 text-center">
-                        <h3 class="card-title">Cemilan</h3>
-                        <p class="card-description">Teman akrab buat ngopi...</p>
-                    </div>
-                </div>
-
-                <div class="card-category">
-                    <img src="{{ asset('assets/demo/fnb/images/brownies.jpg') }}" alt="Dessert"
-                        class="w-full h-40 object-cover">
-                    <div class="p-4 text-center">
-                        <h3 class="card-title">Dessert</h3>
-                        <p class="card-description">Sajian manis yang...</p>
-                    </div>
-                </div>
+                @endif
             </div>
+
             <script>
-                // Filter menu sesuai kategori saat card kategori ditekan
-                document.querySelectorAll('.card-category').forEach(function(card) {
-                    card.addEventListener('click', function() {
-                        var categoryText = card.querySelector('.card-title').textContent.trim().toLowerCase();
-                        // Mapping kategori agar sesuai dengan data menu
-                        var categoryMap = {
-                            'minuman': 'minuman',
-                            'makanan': 'makanan',
-                            'cemilan': 'cemilan',
-                            'dessert': 'dessert'
-                        };
-                        var selectedCategory = categoryMap[categoryText] || 'all';
-                        window.currentCategory = selectedCategory;
-                        window.currentPage = 1;
-                        if (typeof sortAndRender === 'function') sortAndRender();
-                        var productSection = document.getElementById('menu-list');
-                        if (productSection) {
-                            productSection.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
+                document.addEventListener('DOMContentLoaded', function() {
+                    const showMoreBtn = document.getElementById('show-more-categories');
+                    const hiddenCategories = document.querySelectorAll('.category-hidden');
+                    const showMoreText = showMoreBtn?.querySelector('.show-more-text');
+                    const showMoreIcon = showMoreBtn?.querySelector('.show-more-icon');
+                    let isExpanded = false;
+
+                    if (showMoreBtn) {
+                        showMoreBtn.addEventListener('click', function() {
+                            isExpanded = !isExpanded;
+
+                            hiddenCategories.forEach(category => {
+                                if (isExpanded) {
+                                    category.classList.remove('hidden');
+                                    // Animate opacity
+                                    category.style.opacity = '0';
+                                    setTimeout(() => {
+                                        category.style.opacity = '1';
+                                    }, 50);
+                                } else {
+                                    category.style.opacity = '0';
+                                    setTimeout(() => {
+                                        category.classList.add('hidden');
+                                    }, 200);
+                                }
                             });
-                        }
-                        // Update label kategori jika ada
-                        var categoryLabel = document.getElementById('category-label');
-                        if (categoryLabel) {
-                            switch (selectedCategory) {
-                                case 'minuman':
-                                    categoryLabel.innerText = 'Minuman';
-                                    break;
-                                case 'makanan':
-                                    categoryLabel.innerText = 'Makanan';
-                                    break;
-                                case 'cemilan':
-                                    categoryLabel.innerText = 'Cemilan';
-                                    break;
-                                case 'dessert':
-                                    categoryLabel.innerText = 'Dessert';
-                                    break;
-                                default:
-                                    categoryLabel.innerText = 'Semua Menu';
+
+                            // Update button text and icon
+                            showMoreText.textContent = isExpanded ? 'Sembunyikan Kategori' : 'Lihat Semua Kategori';
+                            showMoreIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0)';
+                        });
+                    }
+                }); <
+                script >
+                    // Filter menu sesuai kategori saat card kategori ditekan
+                    document.querySelectorAll('.card-category').forEach(function(card) {
+                        card.addEventListener('click', function() {
+                            var categoryText = card.querySelector('.card-title').textContent.trim().toLowerCase();
+                            // Mapping kategori agar sesuai dengan data menu
+                            var categoryMap = {
+                                'minuman': 'minuman',
+                                'makanan': 'makanan',
+                                'cemilan': 'cemilan',
+                                'dessert': 'dessert'
+                            };
+                            var selectedCategory = categoryMap[categoryText] || 'all';
+                            window.currentCategory = selectedCategory;
+                            window.currentPage = 1;
+                            if (typeof sortAndRender === 'function') sortAndRender();
+                            var productSection = document.getElementById('menu-list');
+                            if (productSection) {
+                                productSection.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
                             }
-                        }
+                            // Update label kategori jika ada
+                            var categoryLabel = document.getElementById('category-label');
+                            if (categoryLabel) {
+                                switch (selectedCategory) {
+                                    case 'minuman':
+                                        categoryLabel.innerText = 'Minuman';
+                                        break;
+                                    case 'makanan':
+                                        categoryLabel.innerText = 'Makanan';
+                                        break;
+                                    case 'cemilan':
+                                        categoryLabel.innerText = 'Cemilan';
+                                        break;
+                                    case 'dessert':
+                                        categoryLabel.innerText = 'Dessert';
+                                        break;
+                                    default:
+                                        categoryLabel.innerText = 'Semua Menu';
+                                }
+                            }
+                        });
                     });
-                });
             </script>
             <script>
                 // Scroll ke produk saat kategori ditekan
@@ -223,6 +438,47 @@
                             });
                         }
                     });
+                });
+            </script>
+
+            <script>
+                // Show More Categories functionality
+                document.addEventListener('DOMContentLoaded', function() {
+                    const showMoreBtn = document.getElementById('show-more-categories');
+                    const hiddenCategories = document.querySelectorAll('.category-hidden');
+                    const showMoreText = showMoreBtn?.querySelector('.show-more-text');
+                    const showMoreIcon = showMoreBtn?.querySelector('.show-more-icon');
+                    let isExpanded = false;
+
+                    if (showMoreBtn && hiddenCategories.length > 0) {
+                        // Initially hide categories
+                        hiddenCategories.forEach(cat => {
+                            cat.style.display = 'none';
+                            cat.style.opacity = '0';
+                        });
+
+                        showMoreBtn.addEventListener('click', function() {
+                            isExpanded = !isExpanded;
+
+                            hiddenCategories.forEach(category => {
+                                if (isExpanded) {
+                                    category.style.display = 'block';
+                                    setTimeout(() => {
+                                        category.style.opacity = '1';
+                                    }, 10);
+                                } else {
+                                    category.style.opacity = '0';
+                                    setTimeout(() => {
+                                        category.style.display = 'none';
+                                    }, 300);
+                                }
+                            });
+
+                            // Update button text and icon
+                            showMoreText.textContent = isExpanded ? 'Sembunyikan Kategori' : 'Lihat Semua Kategori';
+                            showMoreIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0)';
+                        });
+                    }
                 });
             </script>
         </section>
@@ -1115,17 +1371,67 @@
                 const modalId = `product-modal-${item.id}`;
                 if (!document.getElementById(modalId)) {
                     const modalHTML = `
+                        <style>
+                            .fullscreen {
+                                position: fixed !important;
+                                top: 0 !important;
+                                left: 0 !important;
+                                width: 100vw !important;
+                                height: 100vh !important;
+                                z-index: 9999 !important;
+                                background: rgba(0, 0, 0, 0.95) !important;
+                                padding: 2rem !important;
+                                display: flex !important;
+                                align-items: center !important;
+                                justify-content: center !important;
+                                transition: all 0.3s ease-in-out !important;
+                            }
+                            .fullscreen img {
+                                max-height: 90vh !important;
+                                width: auto !important;
+                                max-width: 90vw !important;
+                                object-fit: contain !important;
+                            }
+                            .modal-img-container {
+                                position: relative;
+                                width: 100%;
+                                cursor: pointer;
+                                overflow: hidden;
+                            }
+                            .modal-img-container:hover .fullscreen-button {
+                                opacity: 1;
+                            }
+                            .fullscreen-button {
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                background: rgba(0, 0, 0, 0.5);
+                                color: white;
+                                padding: 8px;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                opacity: 0;
+                                transition: opacity 0.2s ease-in-out;
+                            }
+                        </style>
                         <div id="${modalId}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
-                            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
-                                <button class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
+                            <div class="bg-white rounded-2xl p-6 max-w-5xl w-full mx-auto shadow-2xl relative">
+                                <button class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200 z-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
-                                <div class="flex flex-col md:flex-row items-center gap-8">
-                                    <div class="w-full md:w-1/2 relative">
-                                        <img src="${item.image}" alt="${item.name}" class="w-full h-auto rounded-xl object-cover" />
-                                        ${!item.isAvailable ? '<div class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl">Stok Habis</div>' : ''}
+                                <div class="flex flex-col md:flex-row items-start gap-8">
+                                    <div class="w-full md:w-1/2">
+                                        <div class="modal-img-container" style="aspect-ratio: 4/5;">
+                                            <img src="${item.image}" alt="${item.name}" class="w-full h-full rounded-xl object-cover" style="width: 640px; max-width: 100%;" />
+                                            ${!item.isAvailable ? '<div class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl">Stok Habis</div>' : ''}
+                                            <button class="fullscreen-button" title="Lihat gambar penuh">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
                                         <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">${item.name}</h3>
@@ -1153,6 +1459,9 @@
                     return;
                 }
 
+                // Remove existing modals
+                document.querySelectorAll('[id^="product-modal-"]').forEach(modal => modal.remove());
+
                 // Create modals for all items first
                 items.forEach(item => createDynamicModal(item));
 
@@ -1178,7 +1487,7 @@
         <p class="text-base font-bold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</p>
         <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-4 py-1 text-sm rounded-full shadow transition duration-200" data-modal="product-modal-${item.id}">Detail</button>
     </div>
-    <div class="relative w-32 h-32 rounded-lg ml-6">
+    <div class="relative w-32 ml-6" style="aspect-ratio: 4/5;">
         <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
         ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
     </div>
@@ -1187,7 +1496,7 @@
                     } else { // Tampilan Grid
                         itemHTML = `
 <div class="relative flex flex-col items-center border border-gray-200 rounded-lg p-4 text-center transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
-    <div class="relative w-24 h-24 rounded-lg mb-2">
+    <div class="relative w-full mb-2" style="aspect-ratio: 4/5;">
         <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
         ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
     </div>
@@ -1281,6 +1590,50 @@
                 // Ambil semua tombol detail dan modal
                 const detailButtons = document.querySelectorAll('.detail-btn');
                 const modals = document.querySelectorAll('[id^="product-modal-"]');
+
+                // Handle fullscreen functionality
+                function toggleFullscreen(imgContainer) {
+                    const isFullscreen = imgContainer.classList.contains('fullscreen');
+                    if (!isFullscreen) {
+                        // Enter fullscreen
+                        imgContainer.classList.add('fullscreen');
+                        // Change fullscreen button icon to exit fullscreen
+                        const button = imgContainer.querySelector('.fullscreen-button svg');
+                        if (button) {
+                            button.innerHTML =
+                                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18h12M6 6h12" />';
+                        }
+                    } else {
+                        // Exit fullscreen
+                        imgContainer.classList.remove('fullscreen');
+                        // Change back to fullscreen icon
+                        const button = imgContainer.querySelector('.fullscreen-button svg');
+                        if (button) {
+                            button.innerHTML =
+                                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />';
+                        }
+                    }
+                }
+
+                // Add event listeners for fullscreen buttons
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.fullscreen-button') || e.target.closest('.fullscreen img')) {
+                        const imgContainer = e.target.closest('.modal-img-container');
+                        if (imgContainer) {
+                            toggleFullscreen(imgContainer);
+                        }
+                    }
+                });
+
+                // Exit fullscreen when pressing Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        const fullscreenImage = document.querySelector('.modal-img-container.fullscreen');
+                        if (fullscreenImage) {
+                            toggleFullscreen(fullscreenImage);
+                        }
+                    }
+                });
 
                 // Tambahkan event listener untuk tombol detail
                 detailButtons.forEach(button => {
@@ -1572,176 +1925,7 @@
 
 
 
-        <!-- Modal untuk Kopi Susu Aren -->
-        <div id="product-modal-kopisusugulaaren"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
-                <button
-                    class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div class="w-full md:w-1/2 relative">
-                        <img src="{{ asset('assets/demo/fnb/images/kopisusugulaaren.jpg') }}"
-                            alt="Kopi Susu Gula Aren" class="w-full h-auto rounded-xl object-cover" />
-
-                        <div
-                            class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
-                            Stok Habis
-                        </div>
-                    </div>
-
-                    <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
-                        <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">Kopi Susu Gula Aren</h3>
-                        <p class="text-sm text-gray-700">Perpaduan espresso, susu segar, dan manisnya gula aren alami.
-                        </p>
-                        <div class="flex items-center justify-center md:justify-start gap-2">
-                            <span class="text-3xl font-extrabold text-[#994d51]">Rp18.000</span>
-                            <span class="text-sm text-gray-500">/ cup</span>
-                        </div>
-
-                        <button
-                            class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal untuk Capuccino -->
-        <div id="product-modal-capuccino"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
-                <button
-                    class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div class="w-full md:w-1/2 relative">
-                        <img src="{{ asset('assets/demo/fnb/images/capuccino.jpg') }}" alt="Capuccino"
-                            class="w-full h-auto rounded-xl object-cover" />
-                        <div
-                            class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
-                            Stok Habis
-                        </div>
-                    </div>
-
-                    <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
-                        <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">Capuccino</h3>
-                        <p class="text-sm text-gray-700">Paduan sempurna antara espresso kental, susu hangat, dan busa
-                            susu yang lembut. Ditaburi bubuk kakao, Capuccino kami menawarkan pengalaman minum kopi yang
-                            seimbang, lembut, dan kaya rasa.</p>
-                        <div class="flex items-center justify-center md:justify-start gap-2">
-                            <span class="text-3xl font-extrabold text-[#994d51]">Rp20.000</span>
-                            <span class="text-sm text-gray-500">/ cup</span>
-                        </div>
-
-                        <button
-                            class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal untuk moccacino -->
-        <div id="product-modal-moccacino"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
-                <button
-                    class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div class="w-full md:w-1/2 relative">
-                        <img src="{{ asset('assets/demo/fnb/images/moccacino.jpg') }}" alt="Moccacino"
-                            class="w-full h-auto rounded-xl object-cover" />
-                        <div
-                            class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
-                            Stok Habis
-                        </div>
-                    </div>
-
-                    <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
-                        <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">Moccacino</h3>
-                        <p class="text-sm text-gray-700">Perpaduan sempurna antara espresso, cokelat, dan susu.
-                            Moccacino kami menghadirkan rasa kopi yang kuat dengan manisnya cokelat yang lembut,
-                            menciptakan minuman yang kaya dan memuaskan.</p>
-                        <div class="flex items-center justify-center md:justify-start gap-2">
-                            <span class="text-3xl font-extrabold text-[#994d51]">Rp22.000</span>
-                            <span class="text-sm text-gray-500">/ cup</span>
-                        </div>
-
-                        <button
-                            class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal untuk Teh Tarik -->
-        <div id="product-modal-tehtarik"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
-                <button
-                    class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div class="w-full md:w-1/2 relative">
-                        <img src="{{ asset('assets/demo/fnb/images/tehtarik.jpg') }}" alt="Teh Tarik"
-                            class="w-full h-auto rounded-xl object-cover" />
-                        <div
-                            class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
-                            Stok Habis
-                        </div>
-                    </div>
-
-                    <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
-                        <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">Teh Tarik</h3>
-                        <p class="text-sm text-gray-700">Minuman teh tradisional yang unik dari perpaduan teh hitam
-                            pekat dengan susu kental manis, dituang bolak-balik untuk menghasilkan tekstur yang berbusa
-                            dan rasa yang menyatu sempurna. Manis dan creamy, Teh Tarik kami adalah pilihan yang
-                            menyegarkan.</p>
-                        <div class="flex items-center justify-center md:justify-start gap-2">
-                            <span class="text-3xl font-extrabold text-[#994d51]">Rp18.000</span>
-                            <span class="text-sm text-gray-500">/ cup</span>
-                        </div>
-
-                        <button
-                            class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal untuk Lemon Tea -->
+        <!-- Modals will be dynamically created here -->
         <div id="product-modal-lemontea"
             class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
             <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
@@ -2816,7 +3000,7 @@
     </script>
 
     <button id="scrollToTopBtn"
-        class="fixed bottom-8 right-20 z-50 w-12 h-12 rounded-full bg-[#994d51] bg-opacity-10 shadow-lg flex items-center justify-center transition-opacity opacity-20 pointer-events-none">
+        class="fixed bottom-8 left-10 z-50 w-12 h-12 rounded-full bg-[#994d51] bg-opacity-10 shadow-lg flex items-center justify-center transition-opacity opacity-20 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
