@@ -87,46 +87,180 @@
         </style>
     </header>
 
-    <div
-        class="relative overflow-hidden rounded-none shadow-lg bg-[#2a1a1a] w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] max-w-none h-96 top-0 z-40">
-        <div id="image-carousel" class="absolute inset-0 flex transition-transform duration-1000 ease-in-out">
-            @forelse ($banners as $banner)
-                <div class="w-screen flex-shrink-0 relative">
-                    <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}" alt="Promo Spesial"
-                        class="absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 flex items-center justify-center text-center p-12">
-                        <div class="relative z-10">
-                            <h3 class="text-4xl font-bold text-white drop-shadow-lg">{{ $banner->title }}</h3>
-                            <p class="text-lg text-gray-200 mt-2 drop-shadow-lg">{{ $banner->subtitle }}</p>
+    <div class="relative w-full overflow-hidden bg-[#2a1a1a] z-40">
+        <!-- Container dengan aspect ratio 16:9 (1920:1080) -->
+        <div class="relative w-full" style="padding-top: 56.25%;">
+            <div id="image-carousel"
+                class="absolute top-0 left-0 w-full h-full flex transition-transform duration-1000 ease-in-out">
+                @forelse ($banners as $banner)
+                    <div class="w-full flex-shrink-0 relative">
+                        <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
+                            alt="{{ $banner->title }}" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30">
+                            <div
+                                class="absolute inset-0 flex items-center justify-center text-center p-4 sm:p-8 md:p-12">
+                                <div class="relative z-10 max-w-4xl mx-auto">
+                                    <h3
+                                        class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                                        {{ $banner->title }}</h3>
+                                    <p
+                                        class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+                                        {{ $banner->subtitle }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <div class="w-screen flex-shrink-0 relative">
-                    <img src="{{ asset('assets/demo/fnb/images/background4.jpg') }}" alt="Promo Spesial"
-                        class="absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 flex items-center justify-center text-center p-12">
-                        <div class="relative z-10">
-                            <h3 class="text-4xl font-bold text-white drop-shadow-lg">{{ $userStore->store_name }}</h3>
-                            <p class="text-lg text-gray-200 mt-2 drop-shadow-lg">{{ $userStore->store_description }}
-                            </p>
+                @empty
+                    <div class="w-full flex-shrink-0 relative">
+                        <img src="{{ asset('assets/demo/fnb/images/background4.jpg') }}"
+                            alt="{{ $userStore->store_name }}" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30">
+                            <div
+                                class="absolute inset-0 flex items-center justify-center text-center p-4 sm:p-8 md:p-12">
+                                <div class="relative z-10 max-w-4xl mx-auto">
+                                    <h3
+                                        class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                                        {{ $userStore->store_name }}</h3>
+                                    <p
+                                        class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+                                        {{ $userStore->store_description }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforelse
+                @endforelse
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full focus:outline-none transition-all duration-200 hidden sm:block"
+                id="prevSlide">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full focus:outline-none transition-all duration-200 hidden sm:block"
+                id="nextSlide">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                @foreach ($banners as $index => $banner)
+                    <button
+                        class="w-2 h-2 rounded-full bg-white {{ $index === 0 ? 'bg-opacity-100' : 'bg-opacity-50' }} hover:bg-opacity-100 transition-all duration-200 dot"></button>
+                @endforeach
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('image-carousel');
+            const slides = carousel.children;
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            let autoplayInterval;
+
+            // Navigation functions
+            function updateSlidePosition() {
+                carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+                updateDots();
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlidePosition();
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlidePosition();
+            }
+
+            // Update dots
+            function updateDots() {
+                document.querySelectorAll('.dot').forEach((dot, index) => {
+                    dot.classList.toggle('bg-opacity-50', index !== currentSlide);
+                    dot.classList.toggle('bg-opacity-100', index === currentSlide);
+                });
+            }
+
+            // Event listeners
+            document.getElementById('nextSlide')?.addEventListener('click', () => {
+                nextSlide();
+                resetAutoplay();
+            });
+
+            document.getElementById('prevSlide')?.addEventListener('click', () => {
+                prevSlide();
+                resetAutoplay();
+            });
+
+            // Dot navigation
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlidePosition();
+                    resetAutoplay();
+                });
+            });
+
+            // Autoplay
+            function startAutoplay() {
+                autoplayInterval = setInterval(nextSlide, 5000);
+            }
+
+            function resetAutoplay() {
+                clearInterval(autoplayInterval);
+                startAutoplay();
+            }
+
+            // Touch support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            carousel.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            carousel.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                    resetAutoplay();
+                }
+            }
+
+            // Initial setup
+            startAutoplay();
+        });
+    </script>
 
     <main class="w-full mx-auto py-8 px-4 space-y-10 pt-5">
         <section class="py-1 px-4">
             <h2 class="text-center text-2xl font-bold mb-8">CATEGORY MENU</h2>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
-
                 <!-- Card -->
                 @if (isset($categories) && $categories->isNotEmpty())
-                    @foreach ($categories as $category)
-                        <div class="card-category">
+                    @php $totalCategories = $categories->count(); @endphp
+                    @foreach ($categories as $index => $category)
+                        <div class="card-category {{ $index >= 4 ? 'hidden category-hidden' : '' }}">
                             <img src="{{ $category->image
                                 ? route('tenant.asset.domain', ['path' => ltrim($category->image, '/')])
                                 : asset('assets/images/no-image-icon.png') }}"
@@ -136,10 +270,54 @@
                             </div>
                         </div>
                     @endforeach
+                    @if ($totalCategories > 4)
+                        <div class="col-span-2 md:col-span-4 flex justify-center mt-4">
+                            <button id="show-more-categories"
+                                class="bg-[#994d51] hover:bg-[#7a3c3f] text-white text-sm font-medium py-2 px-6 rounded-full shadow transition duration-200 flex items-center gap-2">
+                                <span class="show-more-text">Lihat Semua Kategori</span>
+                                <svg class="w-4 h-4 transform transition-transform show-more-icon" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
                 @else
                     <p class="text-gray-500">Belum ada kategori</p>
                 @endif
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const showMoreBtn = document.getElementById('show-more-categories');
+                    const hiddenCategories = document.querySelectorAll('.category-hidden');
+                    const showMoreText = showMoreBtn?.querySelector('.show-more-text');
+                    const showMoreIcon = showMoreBtn?.querySelector('.show-more-icon');
+                    let isExpanded = false;
+
+                    if (showMoreBtn) {
+                        showMoreBtn.addEventListener('click', function() {
+                            isExpanded = !isExpanded;
+
+                            hiddenCategories.forEach(category => {
+                                category.classList.toggle('hidden');
+                                // Animate opacity
+                                if (!category.classList.contains('hidden')) {
+                                    category.style.opacity = '0';
+                                    setTimeout(() => {
+                                        category.style.opacity = '1';
+                                    }, 50);
+                                }
+                            });
+
+                            // Update button text and icon
+                            showMoreText.textContent = isExpanded ? 'Sembunyikan Kategori' : 'Lihat Semua Kategori';
+                            showMoreIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0)';
+                        });
+                    }
+                });
+            </script>
             <script>
                 // Filter menu sesuai kategori saat card kategori ditekan
                 document.querySelectorAll('.card-category').forEach(function(card) {
@@ -566,18 +744,22 @@
         <p class="text-base font-bold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</p>
         <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-4 py-1 text-sm rounded-full shadow transition duration-200" data-product-id="${item.id}">Detail</button>
     </div>
-    <div class="relative w-32 h-32 rounded-lg ml-6">
-        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
-        ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+    <div class="relative w-40 h-50 rounded-lg ml-6 overflow-hidden">
+        <div class="relative w-full pb-[125%]">
+            <img src="${item.image}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
+            ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+        </div>
     </div>
 </div>
 `;
                     } else { // Tampilan Grid
                         itemHTML = `
 <div class="relative flex flex-col items-center border border-gray-200 rounded-lg p-4 text-center transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
-    <div class="relative w-24 h-24 rounded-lg mb-2">
-        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
-        ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+    <div class="relative w-full overflow-hidden rounded-lg mb-2">
+        <div class="relative w-full pb-[125%]">
+            <img src="${item.image}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
+            ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+        </div>
     </div>
     <h3 class="font-semibold text-sm">${item.name}</h3>
     <p class="text-xs font-bold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</p>
@@ -667,9 +849,24 @@
             }
 
             function addModalEventListeners() {
+                // Fullscreen functionality
                 // Ambil semua tombol detail dan modal
                 const detailButtons = document.querySelectorAll('.detail-btn');
                 const modals = document.querySelectorAll('[id^="product-modal-"]');
+
+                // Event listener for fullscreen button
+                document.getElementById('fullscreen-button')?.addEventListener('click', function() {
+                    const modalImage = document.getElementById('modal-product-image');
+                    if (modalImage) {
+                        const imageUrl = modalImage.src;
+                        const imageFullscreenModal = document.getElementById('image-fullscreen-modal');
+                        const fullscreenImage = document.getElementById('fullscreen-image');
+
+                        fullscreenImage.src = imageUrl;
+                        imageFullscreenModal.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
 
                 // Tambahkan event listener untuk tombol detail
                 detailButtons.forEach(button => {
@@ -974,11 +1171,21 @@
 
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div class="w-full md:w-1/2 relative">
-                        <img id="modal-product-image" src="" alt=""
-                            class="w-full h-auto rounded-xl object-cover" />
-                        <div id="modal-stock-overlay"
-                            class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
-                            Stok Habis
+                        <div class="relative w-full pb-[125%] overflow-hidden rounded-xl">
+                            <img id="modal-product-image" src="" alt=""
+                                class="absolute inset-0 w-full h-full object-cover rounded-xl cursor-pointer" />
+                            <div id="modal-stock-overlay"
+                                class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
+                                Stok Habis
+                            </div>
+                            <button id="fullscreen-button"
+                                class="absolute top-2 right-2 bg-black bg-opacity-50 p-2 rounded-full text-white hover:bg-opacity-75 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5m-7 7v4m0 0H4m4 0l-5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
 
@@ -1216,7 +1423,7 @@
     </script>
 
     <button id="scrollToTopBtn"
-        class="fixed bottom-8 right-20 z-50 w-12 h-12 rounded-full bg-[#994d51] bg-opacity-100 shadow-lg flex items-center justify-center transition-opacity opacity-20 pointer-events-none">
+        class="fixed bottom-8 left-10 z-50 w-12 h-12 rounded-full bg-[#994d51] bg-opacity-100 shadow-lg flex items-center justify-center transition-opacity opacity-20 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -1241,6 +1448,45 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+    </script>
+
+    <!-- Fullscreen Image Modal -->
+    <div id="image-fullscreen-modal"
+        class="fixed inset-0 z-[60] hidden bg-black bg-opacity-90 flex items-center justify-center p-4">
+        <div class="relative max-w-full max-h-full">
+            <button class="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
+                onclick="closeFullscreenImage()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="fullscreen-image" src="" alt=""
+                class="max-h-[90vh] max-w-[90vw] object-contain" />
+        </div>
+    </div>
+
+    <script>
+        function closeFullscreenImage() {
+            const modal = document.getElementById('image-fullscreen-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close fullscreen image modal when clicking outside the image
+        document.getElementById('image-fullscreen-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFullscreenImage();
+            }
+        });
+
+        // Close fullscreen image modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !document.getElementById('image-fullscreen-modal').classList.contains(
+                    'hidden')) {
+                closeFullscreenImage();
+            }
         });
     </script>
 </body>
