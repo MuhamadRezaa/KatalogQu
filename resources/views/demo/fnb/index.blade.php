@@ -1111,12 +1111,50 @@
             }
 
             // Fungsi untuk merender menu
+            function createDynamicModal(item) {
+                const modalId = `product-modal-${item.id}`;
+                if (!document.getElementById(modalId)) {
+                    const modalHTML = `
+                        <div id="${modalId}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
+                            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full mx-auto shadow-2xl relative">
+                                <button class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col md:flex-row items-center gap-8">
+                                    <div class="w-full md:w-1/2 relative">
+                                        <img src="${item.image}" alt="${item.name}" class="w-full h-auto rounded-xl object-cover" />
+                                        ${!item.isAvailable ? '<div class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl">Stok Habis</div>' : ''}
+                                    </div>
+                                    <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
+                                        <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">${item.name}</h3>
+                                        <p class="text-sm text-gray-700">${item.description}</p>
+                                        <div class="flex items-center justify-center md:justify-start gap-2">
+                                            <span class="text-3xl font-extrabold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</span>
+                                            <span class="text-sm text-gray-500">/ porsi</span>
+                                        </div>
+                                        <button class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
+                                            Pesan Sekarang
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                }
+            }
+
             function renderMenu(items) {
                 const menuList = document.getElementById('menu-list');
                 if (!menuList) {
                     console.error("Elemen dengan id 'menu-list' tidak ditemukan.");
                     return;
                 }
+
+                // Create modals for all items first
+                items.forEach(item => createDynamicModal(item));
 
                 menuList.innerHTML = '';
 
@@ -1495,38 +1533,35 @@
                         minPriceRange = 0;
                         maxPriceRange = Infinity;
 
-                        // Reset elemen DOM
-                        document.getElementById('search-product').value = '';
-                        document.getElementById('status-all').checked = true;
-                        document.getElementById('stock-all').checked = true;
+                        // Reset search input
+                        const searchInput = document.getElementById('search-product');
+                        if (searchInput) {
+                            searchInput.value = '';
+                        }
 
-                        const priceRangeSlider = document.getElementById('price-range');
-                        const priceValueDisplay = document.getElementById('price-value');
-                        priceRangeSlider.value = maxPrice;
-                        priceValueDisplay.textContent = `Rp${formatRupiah(maxPrice)}`;
-
-                        // document.getElementById('min-price-input').value = '';
-                        // document.getElementById('max-price-input').value = '';
-
-                        document.getElementById('price-range-dropdown').value = '';
-
+                        // Reset sort label
                         const sortLabel = document.getElementById('sort-label');
-                        if (sortLabel) sortLabel.innerText = "Terbaru";
+                        if (sortLabel) {
+                            sortLabel.innerText = "Urutkan menu";
+                        }
 
+                        // Reset category label
                         const categoryLabel = document.getElementById('category-label');
-                        if (categoryLabel) categoryLabel.innerText = "Semua Kategori";
+                        if (categoryLabel) {
+                            categoryLabel.innerText = "Semua Menu";
+                        }
 
+                        // Reset view buttons
                         const viewListBtn = document.getElementById('view-list');
                         const viewGridBtn = document.getElementById('view-grid');
                         if (viewListBtn && viewGridBtn) {
-                            viewListBtn.classList.remove('bg-white', 'border-gray-300', 'hover:bg-gray-50');
-                            viewListBtn.classList.add('bg-gray-200');
-                            viewGridBtn.classList.remove('bg-gray-200');
-                            viewGridBtn.classList.add('bg-white', 'border', 'border-gray-300',
-                                'hover:bg-gray-50');
+                            currentView = 'list';
+                            viewListBtn.classList.add('bg-white', 'text-gray-700');
+                            viewGridBtn.classList.remove('bg-white');
+                            viewGridBtn.classList.add('bg-gray-100');
                         }
 
-                        // Panggil fungsi utama untuk me-render ulang dengan filter yang telah direset
+                        // Re-render the menu with reset filters
                         sortAndRender();
                     });
                 }
