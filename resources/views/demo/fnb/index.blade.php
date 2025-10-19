@@ -792,7 +792,7 @@
                     category: 'minuman',
                     name: 'Avocado Coffee',
                     description: 'Perpaduan unik alpukat segar dengan espresso premium.',
-                    price: 28000,
+                    price: 48000,
                     image: '{{ asset('assets/demo/fnb/images/avocadocoffee.jpg') }}',
                     isNew: true,
                     isAvailable: true
