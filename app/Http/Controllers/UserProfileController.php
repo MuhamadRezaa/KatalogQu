@@ -55,11 +55,13 @@ class UserProfileController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'confirmed', Password::defaults()],
+            'phone_number' => ['nullable', 'string', 'regex:/^62[0-9]{8,13}$/'],
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
         ];
 
         if ($request->filled('password')) {

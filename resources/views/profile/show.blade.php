@@ -237,10 +237,14 @@
         .pagination .page-item.active .page-link {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            color: #fff !important;
+            /* Ensure text is white */
         }
 
         /* === AKHIR PERUBAHAN UI === */
     </style>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
 
 <body>
@@ -359,6 +363,20 @@
                         <div class="tab-pane fade show active" id="profile" role="tabpanel">
                             <div class="card">
                                 <div class="card-body p-4 p-md-5">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger mb-4">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    @if (session('success'))
+                                        <div class="alert alert-success mb-4">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
                                     <form method="POST" action="{{ route('profile.update') }}">
                                         @csrf
                                         @method('PUT')
@@ -372,7 +390,20 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="email" class="form-label">Alamat Email</label>
                                                 <input type="email" class="form-control" id="email"
-                                                    name="email" value="{{ old('email', $user->email) }}" required>
+                                                    name="email" value="{{ old('email', $user->email) }}" disabled>
+                                                <input type="email" class="form-control" id="email"
+                                                    name="email" value="{{ old('email', $user->email) }}" hidden>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="phone_number" class="form-label">Nomor Telepon
+                                                    (WhatsApp)</label>
+                                                <input type="text" class="form-control" id="phone_number"
+                                                    name="phone_number"
+                                                    value="{{ old('phone_number', $user->phone_number) }}"
+                                                    placeholder="Gunakan format 628...">
+                                                <div class="form-text">Gunakan format 628XXX...</div>
                                             </div>
                                         </div>
                                         <hr class="my-4">
@@ -404,12 +435,12 @@
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title mb-4">Katalog Saya</h5>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="stores-table">
                                             <thead>
                                                 <tr>
-                                                    <th>Nama Toko</th>
-                                                    <th>Status</th>
-                                                    <th>Masa Aktif</th>
+                                                    <th class="text-center">Nama Toko</th>
+                                                    <th class="text-center">Status</th>
+                                                    <th class="text-center">Masa Aktif</th>
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -421,7 +452,7 @@
                                                             <small
                                                                 class="text-muted">{{ $store->subdomain }}.{{ config('app.domain') }}</small>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             <span
                                                                 class="badge rounded-pill {{ $store->is_active ? 'badge-status-success' : 'badge-status-warning' }}">
                                                                 {{ $store->is_active ? 'Aktif' : 'Nonaktif' }}
@@ -431,8 +462,10 @@
                                                             @php
                                                                 $durationText = '-';
                                                                 if ($store->expires_at) {
-                                                                    $expires = \Carbon\Carbon::parse($store->expires_at);
-                                                                    
+                                                                    $expires = \Carbon\Carbon::parse(
+                                                                        $store->expires_at,
+                                                                    );
+
                                                                     if ($expires->isPast()) {
                                                                         $durationText = 'Telah Berakhir';
                                                                     } else {
@@ -457,21 +490,33 @@
                                                                     }
                                                                 }
                                                             @endphp
-                                                            {{ $durationText }}
+                                                            <small class="text-muted mb-3">
+                                                                Berakhir pada:
+                                                                {{ $store->expires_at ? \Carbon\Carbon::parse($store->expires_at)->format('d M Y') : 'N/A' }}
+                                                            </small>
+                                                            {{-- <br>
+                                                            <small class="text-muted">
+                                                                (Durasi :{{ $durationText }})
+                                                            </small> --}}
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="{{ request()->getScheme() }}://{{ $store->subdomain }}.{{ config('app.domain') }}"
-                                                                target="_blank"
-                                                                class="btn btn-outline-secondary btn-sm">
-                                                                <i class="fas fa-eye"></i>
-                                                            </a>
-                                                            <a href="{{ route('tenant.admin.dashboard', ['tenant' => $store->tenant_id]) }}"
-                                                                target="_blank"
-                                                                class="btn btn-outline-primary btn-sm">Kelola
-                                                            </a>
-                                                            <a href="{{ route('checkout.show-renewal', ['tenant' => $store->tenant_id]) }}"
-                                                                class="btn btn-outline-success btn-sm">Perpanjang
-                                                            </a>
+                                                            <div class="btn-group btn-group-sm" role="group">
+                                                                <a href="{{ request()->getScheme() }}://{{ $store->subdomain }}.{{ config('app.domain') }}"
+                                                                    target="_blank" class="btn btn-outline-secondary"
+                                                                    title="Lihat Toko">
+                                                                    <i class="fas fa-eye"></i> Lihat
+                                                                </a>
+                                                                <a href="{{ route('tenant.admin.dashboard', ['tenant' => $store->tenant_id]) }}"
+                                                                    target="_blank" class="btn btn-outline-primary"
+                                                                    title="Kelola Toko">
+                                                                    <i class="fas fa-cogs"></i> Kelola
+                                                                </a>
+                                                                <a href="{{ route('checkout.show-renewal', ['tenant' => $store->tenant_id]) }}"
+                                                                    class="btn btn-outline-success"
+                                                                    title="Perpanjang Toko">
+                                                                    <i class="fas fa-sync-alt"></i> Perpanjang
+                                                                </a>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -483,9 +528,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-center mt-3">
-                                        {{ $userStores->links('pagination::bootstrap-5') }}
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -495,13 +538,13 @@
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title mb-4">Setup Toko Tertunda</h5>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="pending-setups-table">
                                             <thead>
                                                 <tr>
-                                                    <th>Template</th>
-                                                    <th>Tanggal Pembelian</th>
-                                                    <th>Status Setup</th>
-                                                    <th class="text-end">Aksi</th>
+                                                    <th class="text-center">Template</th>
+                                                    <th class="text-center">Tanggal Pembelian</th>
+                                                    <th class="text-center">Status Setup</th>
+                                                    <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -546,14 +589,14 @@
                                 <div class="card-body p-4 p-md-5">
                                     <h5 class="section-title">Riwayat Pembelian</h5>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="purchases-table">
                                             <thead>
                                                 <tr>
-                                                    <th>ID Transaksi</th>
-                                                    <th>Nama Template</th>
-                                                    <th>Total</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Aksi</th>
+                                                    <th class="text-center">ID Transaksi</th>
+                                                    <th class="text-center">Nama Template</th>
+                                                    <th class="text-center">Total</th>
+                                                    <th class="text-center">Status</th>
+                                                    <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -565,7 +608,7 @@
                                                         <td>Rp
                                                             {{ number_format($purchase->final_amount, 0, ',', '.') }}
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             <span id="status-badge-{{ $purchase->transaction_id }}"
                                                                 class="badge rounded-pill {{ $purchase->payment_status === 'paid'
                                                                     ? 'badge-status-paid'
@@ -600,9 +643,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-center mt-4">
-                                        {{ $purchases->links('pagination::bootstrap-5') }}
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -711,6 +752,31 @@
                         buttonElement.textContent = 'Batalkan';
                     });
             };
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#stores-table').DataTable({
+                responsive: true,
+                paging: true,
+                info: true,
+                searching: true
+            });
+            $('#pending-setups-table').DataTable({
+                responsive: true,
+                paging: true,
+                info: true,
+                searching: true
+            });
+            $('#purchases-table').DataTable({
+                responsive: true,
+                paging: true,
+                info: true,
+                searching: true
+            });
         });
     </script>
 </body>

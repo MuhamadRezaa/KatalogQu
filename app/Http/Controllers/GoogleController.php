@@ -91,6 +91,7 @@ class GoogleController extends Controller
             'email' => 'required|string|email|max:255',
             'google_id' => 'required|string',
             'avatar' => 'nullable|string|url',
+            'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/'],
         ]);
 
         try {
@@ -109,8 +110,15 @@ class GoogleController extends Controller
 
                 // Update google_id jika belum ada (misal: daftar manual lalu login Google)
                 if (empty($user->google_id)) {
-                    $user->update(['google_id' => $request->google_id]);
+                    $user->google_id = $request->google_id;
                 }
+
+                // Update nomor telepon jika kosong
+                if (empty($user->phone_number)) {
+                    $user->phone_number = $request->phone_number;
+                }
+                
+                $user->save(); // Simpan semua perubahan
 
                 Auth::login($user, true);
                 session()->forget('google_user_data');
@@ -126,6 +134,7 @@ class GoogleController extends Controller
                 'avatar' => $request->avatar,
                 'password' => Hash::make(Str::random(24)), // Buat password acak yang aman
                 'email_verified_at' => now(),
+                'phone_number' => $request->phone_number,
             ]);
 
             Auth::login($user, true);

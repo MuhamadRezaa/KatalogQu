@@ -139,13 +139,16 @@
                                     <input type="text" class="form-control" id="add_name" name="name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="add_description" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="add_description" name="description" rows="3"></textarea>
+                                    <label for="add_description" class="form-label">Deskripsi (Opsional)</label>
+                                    <textarea class="form-control" id="add_description" name="description" rows="3"
+                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini"></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="add_image" class="form-label">Gambar Utama Produk</label>
+                                    <label for="add_image" class="form-label">Gambar Utama Produk <span
+                                            class="text-danger">*</span></label>
                                     <input type="file" class="form-control" id="add_image" name="image"
                                         accept="image/jpeg,image/png,image/webp">
+                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
                                     <div id="add_image_preview_container" class="mt-2">
                                         <!-- Preview will be inserted here by JS -->
                                     </div>
@@ -153,7 +156,8 @@
 
                                 @if (in_array('gambartambahan', $menus))
                                     <div class="mb-3">
-                                        <label class="form-label">Gambar Tambahan (Maks. 3)</label>
+                                        <label class="form-label">Gambar Tambahan (Maks. 3) (Opsional)</label>
+                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
                                         <div id="add_additional_images_fields">
                                             <!-- Dynamic inputs and previews will be added here by JS -->
                                         </div>
@@ -181,7 +185,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="add_product_category_id" class="form-label">Kategori Produk</label>
+                                    <label for="add_product_category_id" class="form-label">Kategori Produk <span
+                                            class="text-danger">*</span></label>
                                     <select class="form-select" id="add_product_category_id" name="product_category_id">
                                         <option value="">Pilih Kategori</option>
                                         @foreach ($categories as $cat)
@@ -316,16 +321,23 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="edit_description" class="form-label">Deskripsi</label>
+                                    <label for="edit_description" class="form-label">Deskripsi (Opsional)</label>
                                     <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
                                     @error('description')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <div id="currentImagePreview" class="mb-3" style="display: none;">
+                                    <label class="form-label">Gambar Utama Saat Ini</label>
+                                    <div><img id="current_image" src="" class="img-fluid rounded"
+                                            style="max-height: 100px;"></div>
+                                </div>
                                 <div class="mb-3">
                                     <label for="edit_image" class="form-label">Ganti Gambar Utama Produk</label>
                                     <input type="file" class="form-control" id="edit_image" name="image"
                                         accept="image/jpeg,image/png,image/webp">
+                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
                                     @error('image')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
@@ -334,15 +346,11 @@
                                     </div>
                                     <div class="form-text">Biarkan kosong jika tidak ingin mengubah gambar.</div>
                                 </div>
-                                <div id="currentImagePreview" class="mb-3" style="display: none;">
-                                    <label class="form-label">Gambar Utama Saat Ini</label>
-                                    <div><img id="current_image" src="" class="img-fluid rounded"
-                                            style="max-height: 100px;"></div>
-                                </div>
 
                                 @if (in_array('gambartambahan', $menus))
                                     <div class="mb-3">
-                                        <label class="form-label">Gambar Tambahan (Maks. 3)</label>
+                                        <label class="form-label">Gambar Tambahan (Maks. 3) (Opsional)</label>
+                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
                                         <div id="edit_additional_images_fields_existing">
                                             <!-- Existing images will be loaded here by JS -->
                                         </div>
@@ -386,7 +394,8 @@
                             <div class="col-md-6">
 
                                 <div class="mb-3">
-                                    <label for="edit_product_category_id" class="form-label">Kategori Produk</label>
+                                    <label for="edit_product_category_id" class="form-label">Kategori Produk <span
+                                            class="text-danger">*</span></label>
                                     <select class="form-select" id="edit_product_category_id" name="product_category_id">
                                         <option value="">Pilih Kategori</option>
                                         @foreach ($categories as $cat)

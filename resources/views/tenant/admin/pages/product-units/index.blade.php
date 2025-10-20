@@ -30,7 +30,7 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Nama Satuan</th>
                                     <th scope="col">Kode Satuan</th>
-                                    <th scope="col">Deskripsi</th>
+                                    {{-- <th scope="col">Deskripsi</th> --}}
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -40,13 +40,13 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $productUnit->unit_name }}</td>
                                         <td>{{ $productUnit->unit_code }}</td>
-                                        <td>
+                                        {{-- <td>
                                             @if ($productUnit->description === null)
                                                 <span class="text-muted">Tidak Ada Deskripsi</span>
                                             @else
                                                 {{ Str::limit($productUnit->description, 100) }}
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-sm btn-primary"
@@ -92,16 +92,19 @@
                         <div class="mb-3">
                             <label for="add_unit_name" class="form-label">Nama Satuan <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="add_unit_name" name="unit_name" required>
+                            <input type="text" class="form-control" id="add_unit_name" name="unit_name"
+                                placeholder="Contoh: Unit" required>
                         </div>
                         <div class="mb-3">
-                            <label for="add_unit_code" class="form-label">Kode Satuan</label>
-                            <input type="text" class="form-control" id="add_unit_code" name="unit_code">
+                            <label for="add_unit_code" class="form-label">Kode Satuan <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_unit_code" name="unit_code"
+                                placeholder="Contoh: Pcs" required>
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="add_description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="add_description" name="description" rows="3"></textarea>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -128,25 +131,28 @@
                         <div class="mb-3">
                             <label for="edit_unit_name" class="form-label">Nama Satuan <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_unit_name" name="unit_name" required>
+                            <input type="text" class="form-control" id="edit_unit_name" name="unit_name"
+                                placeholder="Contoh: Unit" required>
                             @error('unit_name')
                                 <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="edit_unit_code" class="form-label">Kode Satuan</label>
-                            <input type="text" class="form-control" id="edit_unit_code" name="unit_code">
+                            <label for="edit_unit_code" class="form-label">Kode Satuan <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit_unit_code" name="unit_code"
+                                placeholder="Contoh: Pcs" required>
                             @error('unit_code')
                                 <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="edit_description" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
                             @error('description')
                                 <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -197,11 +203,10 @@
 
                         form.action = updateUrlTemplate.replace(':id', productUnitId);
                         form.querySelector('#edit_unit_name').value = productUnit.unit_name;
-                        form.querySelector('#edit_unit_code').value = productUnit.unit_code;
-                        form.querySelector('#edit_description').value = productUnit.description;
-
-                        new bootstrap.Modal(document.getElementById('editProductUnitModal')).show();
-                    } else {
+                                            form.querySelector('#edit_unit_code').value = productUnit.unit_code;
+                                            // form.querySelector('#edit_description').value = productUnit.description; // Removed as field is commented out
+                        
+                                            new bootstrap.Modal(document.getElementById('editProductUnitModal')).show();                    } else {
                         alert('Error: ' + data.message);
                     }
                 })

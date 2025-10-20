@@ -40,7 +40,7 @@
 
     {{-- Slider Banner dari kode pertama --}}
     <div class="mx-auto">
-        <div class="swiper-container h-80 md:h-96 lg:h-[36rem] overflow-hidden">
+        <div class="swiper-container aspect-video overflow-hidden">
             <div class="swiper-wrapper">
                 @forelse ($banners as $banner)
                     <div class="swiper-slide relative">

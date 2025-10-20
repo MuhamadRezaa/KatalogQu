@@ -9,6 +9,8 @@ use App\Models\ProductSubCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductSubCategoryController extends Controller
 {
@@ -38,7 +40,7 @@ class ProductSubCategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:product_sub_categories,name,NULL,id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -47,20 +49,32 @@ class ProductSubCategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            Log::info('File details:', [
-                'original_name' => $request->file('image')->getClientOriginalName(),
-                'size' => $request->file('image')->getSize(),
-                'mime_type' => $request->file('image')->getMimeType(),
-                'is_valid' => $request->file('image')->isValid(),
-            ]);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $uploaded = $request->file('image');
+            $filename = $validated['slug'] . '.png';
+            $path = 'sub-categories/' . $filename;
 
-            $validated['image'] = $request->file('image')->storeAs(
-                'sub-categories', // folder
-                $fileName,    // nama file
-                'public'      // disk
-            );
+            // Check if the uploaded file is already a PNG
+            if ($uploaded->getClientMimeType() === 'image/png') {
+                // If it's already PNG, store it directly without re-encoding
+                $uploaded->storeAs('sub-categories', $filename, 'public');
+            } else {
+                // For other formats (JPEG, WEBP), process with Intervention Image
+                $manager = new ImageManager(new Driver());
+                $img = $manager->read($uploaded->getRealPath());
+
+                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+                $img->resize(410, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Encode to PNG
+                $encodedPng = $img->toPng();
+
+                // Store the processed image
+                Storage::disk('public')->put($path, (string) $encodedPng);
+            }
+            $validated['image'] = $path;
         }
 
         ProductSubCategory::create($validated);
@@ -96,7 +110,7 @@ class ProductSubCategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:product_sub_categories,name,' . $subCategory->id . ',id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -104,18 +118,37 @@ class ProductSubCategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
+            // Delete old image if exists
             if ($subCategory->image && Storage::disk('public')->exists($subCategory->image)) {
                 Storage::disk('public')->delete($subCategory->image);
             }
 
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $uploaded = $request->file('image');
+            $filename = $validated['slug'] . '.png';
+            $path = 'sub-categories/' . $filename;
 
-            $validated['image'] = $request->file('image')->storeAs(
-                'sub-categories',
-                $fileName,
-                'public'
-            );
+            // Check if the uploaded file is already a PNG
+            if ($uploaded->getClientMimeType() === 'image/png') {
+                // If it's already PNG, store it directly without re-encoding
+                $uploaded->storeAs('sub-categories', $filename, 'public');
+            } else {
+                // For other formats (JPEG, WEBP), process with Intervention Image
+                $manager = new ImageManager(new Driver());
+                $img = $manager->read($uploaded->getRealPath());
+
+                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+                $img->resize(410, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Encode to PNG
+                $encodedPng = $img->toPng();
+
+                // Store the processed image
+                Storage::disk('public')->put($path, (string) $encodedPng);
+            }
+            $validated['image'] = $path;
         }
 
         $subCategory->update($validated);

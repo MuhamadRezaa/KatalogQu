@@ -29,6 +29,7 @@ class AuthController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/'],
                 'g-recaptcha-response' => ['required', 'captcha'],
             ], [
                 'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
@@ -39,6 +40,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'phone_number' => $request->phone_number,
             ]);
 
             Auth::login($user);

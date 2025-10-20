@@ -275,6 +275,11 @@
                     <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
                 </div>
                 <div class="form-floating">
+                    <input type="text" class="form-control" id="phone_number" name="phone_number"
+                        placeholder="Nomor Telepon (WhatsApp)" value="{{ old('phone_number') }}" required>
+                    <label for="phone_number"><i class="fab fa-whatsapp me-2"></i>Nomor WhatsApp (628XXX...)</label>
+                </div>
+                <div class="form-floating">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                         required>
                     <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
@@ -362,7 +367,9 @@
                 if (nameInput.val().trim() === '') {
                     isValid = false;
                     // Tambahkan pesan error di bawah input nama
-                    nameInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Nama lengkap tidak boleh kosong.</div>');
+                    nameInput.after(
+                        '<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Nama lengkap tidak boleh kosong.</div>'
+                    );
                 }
 
                 // 2. Validasi Email (format harus benar)
@@ -370,29 +377,37 @@
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Pola regex sederhana untuk email
                 if (!emailPattern.test(emailInput.val())) {
                     isValid = false;
-                    emailInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Format email tidak valid.</div>');
+                    emailInput.after(
+                        '<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Format email tidak valid.</div>'
+                    );
                 }
 
                 // 3. Validasi Password (tidak boleh kosong)
                 const passwordInput = $('#password');
                 if (passwordInput.val().trim() === '') {
                     isValid = false;
-                    passwordInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Password tidak boleh kosong.</div>');
+                    passwordInput.after(
+                        '<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Password tidak boleh kosong.</div>'
+                    );
                 }
 
                 // 4. Validasi Konfirmasi Password (harus sama dengan password)
                 const passwordConfirmInput = $('#password_confirmation');
                 if (passwordInput.val() !== passwordConfirmInput.val()) {
                     isValid = false;
-                    passwordConfirmInput.after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Konfirmasi password tidak sama.</div>');
+                    passwordConfirmInput.after(
+                        '<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Konfirmasi password tidak sama.</div>'
+                    );
                 }
-                
+
                 // 5. Validasi Checkbox Syarat & Ketentuan
                 const termsCheckbox = $('#terms');
                 if (!termsCheckbox.is(':checked')) {
                     isValid = false;
                     // Cari parent dari checkbox untuk menempatkan pesan error
-                    termsCheckbox.closest('.form-check').after('<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Anda harus menyetujui syarat dan ketentuan.</div>');
+                    termsCheckbox.closest('.form-check').after(
+                        '<div class="text-danger error-message" style="font-size: 0.8rem; margin-top: 5px;">Anda harus menyetujui syarat dan ketentuan.</div>'
+                    );
                 }
 
 
