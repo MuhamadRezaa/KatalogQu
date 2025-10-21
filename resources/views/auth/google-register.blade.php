@@ -56,7 +56,7 @@
                 <label for="phone_number" class="block text-sm font-medium text-gray-700">No Telepon</label>
                 <input type="text" name="phone_number" id="phone_number" required
                     class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Gunakan format 628XXXX...">
+                    placeholder="Gunakan format 628XXXX..." value="{{ old('phone_number', $google_user['phone_number'] ?? '') }}">
                 <small class="text-gray-500 mt-1">Pastikan nomor ini tertaut dengan nomor whatsapp aktif.</small>
             </div>
 

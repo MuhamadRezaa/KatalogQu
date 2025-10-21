@@ -50,16 +50,36 @@ class GoogleController extends Controller
                 }
             }
 
-            // 3. PENTING: Jika pengguna ditemukan (baik via google_id atau email) ATAU pengguna sama sekali tidak ditemukan,
-            //    selalu alihkan ke proses registrasi/konfirmasi dengan membawa data dari Google.
-            session([
-                'google_user_data' => [
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                ]
-            ]);
+            // 3. Jika pengguna ditemukan, aktif, DAN memiliki nomor telepon, langsung login.
+            //    Jika tidak memenuhi kriteria di atas (pengguna baru, di-soft-delete, atau nomor telepon kosong),
+            //    arahkan ke proses registrasi/konfirmasi.
+            if ($user && !$user->trashed() && !empty($user->phone_number)) { // User found, NOT soft-deleted, AND has phone number
+                // Update google_id jika belum ada (misal: daftar manual lalu login Google)
+                if (empty($user->google_id)) {
+                    $user->google_id = $googleUser->getId();
+                    $user->save();
+                }
+                Auth::login($user, true);
+                session()->forget('google_user_data'); // Hapus data dari session
+                return redirect()->route('welcome')->with('success', 'Selamat datang kembali!');
+            }
+
+            // Jika pengguna tidak ditemukan, atau ditemukan tapi di-soft-delete,
+            // atau pengguna aktif tapi nomor telepon kosong,
+            // alihkan ke proses registrasi/konfirmasi.
+            $sessionData = [
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'google_id' => $googleUser->getId(),
+                'avatar' => $googleUser->getAvatar(),
+            ];
+
+            // Jika pengguna ditemukan (aktif atau di-soft-delete), tambahkan nomor telepon mereka ke data sesi jika ada
+            if ($user) {
+                $sessionData['phone_number'] = $user->phone_number;
+            }
+
+            session(['google_user_data' => $sessionData]);
             return redirect()->route('google.register.view'); // Arahkan ke route view registrasi baru
 
         } catch (Exception $e) {

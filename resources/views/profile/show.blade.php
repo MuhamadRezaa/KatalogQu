@@ -759,24 +759,30 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#stores-table').DataTable({
-                responsive: true,
-                paging: true,
-                info: true,
-                searching: true
-            });
-            $('#pending-setups-table').DataTable({
-                responsive: true,
-                paging: true,
-                info: true,
-                searching: true
-            });
-            $('#purchases-table').DataTable({
-                responsive: true,
-                paging: true,
-                info: true,
-                searching: true
-            });
+            if ($('#stores-table tbody tr td[colspan]').length == 0) {
+                $('#stores-table').DataTable({
+                    responsive: true,
+                    paging: true,
+                    info: true,
+                    searching: true
+                });
+            }
+            if ($('#pending-setups-table tbody tr td[colspan]').length == 0) {
+                $('#pending-setups-table').DataTable({
+                    responsive: true,
+                    paging: true,
+                    info: true,
+                    searching: true
+                });
+            }
+            if ($('#purchases-table tbody tr td[colspan]').length == 0) {
+                $('#purchases-table').DataTable({
+                    responsive: true,
+                    paging: true,
+                    info: true,
+                    searching: true
+                });
+            }
         });
     </script>
 </body>
