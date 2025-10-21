@@ -46,7 +46,7 @@ class PriceRangeController extends Controller
         PriceRange::create($validated);
 
         return redirect()->route('tenant.admin.price-ranges.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Price range created successfully!');
+            ->with('success', 'Rentang harga berhasil dibuat!');
     }
 
     /**
@@ -57,7 +57,7 @@ class PriceRangeController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($priceRange->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'priceRange' => $priceRange]);
     }
@@ -85,7 +85,7 @@ class PriceRangeController extends Controller
         $priceRange->update($validated);
 
         return redirect()->route('tenant.admin.price-ranges.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Price range updated successfully!');
+            ->with('success', 'Rentang harga berhasil diperbarui!');
     }
 
     /**
@@ -103,6 +103,6 @@ class PriceRangeController extends Controller
         $priceRange->delete();
 
         return redirect()->route('tenant.admin.price-ranges.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Price range deleted successfully!');
+            ->with('success', 'Rentang harga berhasil dihapus!');
     }
 }

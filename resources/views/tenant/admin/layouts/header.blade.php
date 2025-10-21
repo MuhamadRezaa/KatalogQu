@@ -39,9 +39,11 @@
                     <div class="media profile-media">
                         @if (isset($userStore) && isset($userStore->user))
                             @if ($userStore->user->avatar)
-                                <img class="b-r-10" src="{{ asset($userStore->user->avatar) }}" alt="{{ $userStore->user->name }}" width="40px" height="40px">
+                                <img class="b-r-10" src="{{ asset($userStore->user->avatar) }}"
+                                    alt="{{ $userStore->user->name }}" width="40px" height="40px">
                             @else
-                                <img class="b-r-10" src="{{ asset('assets/images/defaultfoto.png') }}" alt="{{ $userStore->user->name }}" width="40px" height="40px">
+                                <img class="b-r-10" src="{{ asset('assets/images/defaultfoto.png') }}"
+                                    alt="{{ $userStore->user->name }}" width="40px" height="40px">
                             @endif
                             <div class="media-body d-xxl-block d-none box-col-none">
                                 <div class="d-flex align-items-center gap-2">
@@ -53,7 +55,8 @@
                                 </p>
                             </div>
                         @else
-                            <img class="b-r-10" src="{{ asset('assets/images/defaultfoto.png') }}" alt="User" width="40px" height="40px">
+                            <img class="b-r-10" src="{{ asset('assets/images/defaultfoto.png') }}" alt="User"
+                                width="40px" height="40px">
                             <div class="media-body d-xxl-block d-none box-col-none">
                                 <div class="d-flex align-items-center gap-2">
                                     <span>User</span>
@@ -63,14 +66,14 @@
                             </div>
                         @endif
                     </div>
-                    <ul class="profile-dropdown onhover-show-div">
-                        {{-- <li><a href="{{ route('tenant.admin.settings') }}"><i data-feather="user"></i><span>My
+                    {{-- <ul class="profile-dropdown onhover-show-div">
+                        <li><a href="{{ route('tenant.admin.settings') }}"><i data-feather="user"></i><span>My
                                     Profile</span></a>
                         </li>
                         <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
                         <li> <a href="{{ route('tenant.admin.settings') }}"> <i
                                     data-feather="settings"></i><span>Settings</span></a>
-                        </li> --}}
+                        </li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
@@ -79,7 +82,7 @@
                                 </button>
                             </form>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </li>
             </ul>
         </div>

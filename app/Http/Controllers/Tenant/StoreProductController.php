@@ -15,9 +15,44 @@ use App\Models\ProductSubCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class StoreProductController extends Controller
 {
+    private function processAndStoreProductImage($imageFile, $slug, $folder, $position = null)
+    {
+        $manager = new ImageManager(new Driver());
+        $filename = $slug;
+        if ($position) {
+            $filename .= '-' . $position;
+        }
+        $filename .= '-' . \Illuminate\Support\Str::random(6) . '.webp'; // Add random string to ensure uniqueness
+        $path = $folder . '/' . $filename;
+
+        // Check if the uploaded file is already a WEBP
+        if ($imageFile->getClientMimeType() === 'image/webp') {
+            // If it's already WEBP, store it directly
+            $imageFile->storeAs($folder, $filename, 'public');
+        } else {
+            // For other formats (JPEG, PNG), process with Intervention Image
+            $img = $manager->read($imageFile->getRealPath());
+
+            // Resize to max 1350x1080 (5:4 aspect ratio), maintain aspect ratio, prevent upsizing
+            $img->resize(1080, 1350, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Encode to WEBP
+            $encodedWebp = $img->toWebp(80); // Quality 80
+
+            // Store the processed image
+            Storage::disk('public')->put($path, (string) $encodedWebp);
+        }
+        return $path;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -65,14 +100,14 @@ class StoreProductController extends Controller
 
         if ($userStore->products()->count() >= 200) {
             return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-                ->with('error', 'You have reached the maximum number of products (500).');
+                ->with('error', 'Anda telah mencapai jumlah produk maksimum (200).');
         }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:store_products,name,NULL,id,user_store_id,' . $userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:5120', // Removed jpg, as output is webp
             'product_category_id' => 'nullable|exists:product_categories,id,user_store_id,' . $userStore->id . ',is_active,1',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
@@ -88,7 +123,7 @@ class StoreProductController extends Controller
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3',
-            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'additional_images.*' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
 
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
@@ -104,20 +139,7 @@ class StoreProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            Log::info('File details:', [
-                'original_name' => $request->file('image')->getClientOriginalName(),
-                'size' => $request->file('image')->getSize(),
-                'mime_type' => $request->file('image')->getMimeType(),
-                'is_valid' => $request->file('image')->isValid(),
-            ]);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '-' . uniqid() . '.' . $extension;
-
-            $validated['image'] = $request->file('image')->storeAs(
-                'products', // folder
-                $fileName,    // nama file
-                'public'      // disk
-            );
+            $validated['image'] = $this->processAndStoreProductImage($request->file('image'), $validated['slug'], 'products');
         }
 
         // Process structured specification
@@ -156,7 +178,7 @@ class StoreProductController extends Controller
         }
 
         return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product created successfully!');
+            ->with('success', 'Produk berhasil dibuat!');
     }
 
     /**
@@ -169,7 +191,7 @@ class StoreProductController extends Controller
 
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         // Eager load images
         $product->load('images');
@@ -202,7 +224,7 @@ class StoreProductController extends Controller
             'name' => 'required|string|max:255|unique:store_products,name,' . $product->id . ',id,user_store_id,' . $userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:5120', // Removed jpg, as output is webp
             'product_category_id' => 'nullable|exists:product_categories,id',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
@@ -218,7 +240,7 @@ class StoreProductController extends Controller
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3', // Max 3 additional images
-            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'additional_images.*' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
             'existing_images_ids' => 'nullable|array', // IDs of images to keep
             'existing_images_ids.*' => 'exists:product_images,id',
         ]);
@@ -235,18 +257,11 @@ class StoreProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
+            // Delete old image if exists
             if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
-
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '-' . uniqid() . '.' . $extension;
-
-            $validated['image'] = $request->file('image')->storeAs(
-                'products',
-                $fileName,
-                'public'
-            );
+            $validated['image'] = $this->processAndStoreProductImage($request->file('image'), $validated['slug'], 'products');
         }
 
         // Process structured specification
@@ -296,7 +311,7 @@ class StoreProductController extends Controller
             }
         }
 
-        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])->with('success', 'Product updated successfully!');
+        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])->with('success', 'Produk berhasil diperbarui!');
     }
 
     /**
@@ -326,6 +341,6 @@ class StoreProductController extends Controller
         $product->delete();
 
         return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product deleted successfully!');
+            ->with('success', 'Produk berhasil dihapus!');
     }
 }

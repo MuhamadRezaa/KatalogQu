@@ -34,7 +34,7 @@ class StoreSetupController extends Controller
         // If UserStore exists and already completed, redirect to admin
         if ($userStore && $userStore->setup_status === 'completed' && $userStore->is_active) {
             $domain = $userStore->subdomain . '.' . config('app.domain', 'localhost');
-            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Store already set up. Welcome back!');
+            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Toko sudah diatur. Selamat datang kembali!');
         }
 
         // If UserStore exists and is pending validation, redirect to pending page
@@ -104,7 +104,7 @@ class StoreSetupController extends Controller
 
         // If neither UserStore nor Payment exists, redirect with error
         if (!$userStore && !$payment) {
-            return redirect()->route('home')->with('error', 'Payment not found. Please complete payment first.');
+            return redirect()->route('home')->with('error', 'Pembayaran tidak ditemukan. Harap selesaikan pembayaran terlebih dahulu.');
         }
 
         return view('payment.store-setup.form', compact('payment', 'userStore'));
@@ -131,7 +131,7 @@ class StoreSetupController extends Controller
         if (!$userStore && $payment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Store record not found. Please contact support.'
+                'message' => 'Catatan toko tidak ditemukan. Harap hubungi dukungan.'
             ], 404);
         }
 
@@ -139,7 +139,7 @@ class StoreSetupController extends Controller
         if (!$userStore) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid request. Store or payment information required.'
+                'message' => 'Permintaan tidak valid. Informasi toko atau pembayaran diperlukan.'
             ], 400);
         }
 
@@ -221,7 +221,7 @@ class StoreSetupController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Store setup completed! Your store is now under review.',
+                'message' => 'Pengaturan toko selesai! Toko Anda sekarang sedang ditinjau.',
                 'redirect_url' => route('store.setup.pending', ['store_id' => $userStore->id])
             ]);
         } catch (\Exception $e) {
@@ -229,7 +229,7 @@ class StoreSetupController extends Controller
             if ($request->hasFile('store_logo') && $logoPath && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
             }
-            return response()->json(['success' => false, 'message' => 'Failed to create store: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Gagal membuat toko: ' . $e->getMessage()], 500);
         }
     }
 
@@ -245,18 +245,18 @@ class StoreSetupController extends Controller
         $userStore = UserStore::where('id', $store_id)->first();
 
         if (!$userStore) {
-            return redirect()->route('home')->with('error', 'Store not found.');
+            return redirect()->route('home')->with('error', 'Toko tidak ditemukan.');
         }
 
         // If user is authenticated, ensure they own this store
         if (Auth::check() && $userStore->user_id !== Auth::id()) {
-            return redirect()->route('home')->with('error', 'Access denied.');
+            return redirect()->route('home')->with('error', 'Akses ditolak.');
         }
 
         // If store is already active, redirect to admin
         if ($userStore->is_active) {
             $domain = $userStore->subdomain . '.' . config('app.domain', 'localhost');
-            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Your store has been approved!');
+            return redirect(request()->getScheme() . '://' . $domain)->with('success', 'Toko Anda telah disetujui!');
         }
 
         return view('payment.store-setup.pending-validation', compact('userStore'));
@@ -289,30 +289,30 @@ class StoreSetupController extends Controller
         $excludeStoreId = $request->query('exclude_store_id'); // For editing existing stores
 
         if (empty($subdomain)) {
-            return response()->json(['available' => false, 'message' => 'Subdomain is required']);
+            return response()->json(['available' => false, 'message' => 'Subdomain wajib diisi']);
         }
 
         // Enhanced validation
         if (strlen($subdomain) < 3) {
-            return response()->json(['available' => false, 'message' => 'Subdomain must be at least 3 characters long']);
+            return response()->json(['available' => false, 'message' => 'Subdomain minimal 3 karakter']);
         }
 
         if (strlen($subdomain) > 50) {
-            return response()->json(['available' => false, 'message' => 'Subdomain must be no more than 50 characters long']);
+            return response()->json(['available' => false, 'message' => 'Subdomain maksimal 50 karakter']);
         }
 
         if (!preg_match('/^[a-zA-Z0-9-]+$/', $subdomain)) {
-            return response()->json(['available' => false, 'message' => 'Subdomain can only contain letters, numbers, and hyphens']);
+            return response()->json(['available' => false, 'message' => 'Subdomain hanya boleh mengandung huruf, angka, dan tanda hubung']);
         }
 
         if (preg_match('/^-|-$/', $subdomain)) {
-            return response()->json(['available' => false, 'message' => 'Subdomain cannot start or end with a hyphen']);
+            return response()->json(['available' => false, 'message' => 'Subdomain tidak boleh diawali atau diakhiri dengan tanda hubung']);
         }
 
         // Reserved subdomains check
         $reservedSubdomains = ['www', 'admin', 'api', 'app', 'mail', 'ftp', 'blog', 'shop', 'store', 'support', 'help'];
         if (in_array(strtolower($subdomain), $reservedSubdomains)) {
-            return response()->json(['available' => false, 'message' => 'This subdomain is reserved and cannot be used']);
+            return response()->json(['available' => false, 'message' => 'Subdomain ini dicadangkan dan tidak dapat digunakan']);
         }
 
         // Check availability in UserStores
@@ -330,7 +330,7 @@ class StoreSetupController extends Controller
 
         return response()->json([
             'available' => $available,
-            'message' => $available ? 'Subdomain is available' : 'Subdomain is already taken'
+            'message' => $available ? 'Subdomain tersedia' : 'Subdomain sudah digunakan'
         ]);
     }
 
@@ -343,13 +343,13 @@ class StoreSetupController extends Controller
         $orderId = $request->query('order_id');
 
         if (!$orderId) {
-            return response()->json(['error' => 'Order ID is required'], 400);
+            return response()->json(['error' => 'ID Pesanan wajib diisi'], 400);
         }
 
         $userStore = UserStore::where('payment_transaction_id', $orderId)->first();
 
         if (!$userStore) {
-            return response()->json(['error' => 'Store not found'], 404);
+            return response()->json(['error' => 'Toko tidak ditemukan'], 404);
         }
 
         return response()->json([

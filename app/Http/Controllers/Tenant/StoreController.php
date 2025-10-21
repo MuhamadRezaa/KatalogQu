@@ -654,41 +654,11 @@ class StoreController extends Controller
     }
 
     /**
-     * Show maintenance page
-     */
-    private function showMaintenancePage($userStore)
-    {
-        // Get the catalog template slug
-        $catalogTemplate = $userStore->catalogTemplate;
-
-        // Try to load template-specific maintenance page
-        if ($catalogTemplate) {
-            $maintenanceView = 'tenant.template.' . $catalogTemplate->slug . '.maintenance';
-
-            // Check if template maintenance view exists, fallback to default if not
-            if (view()->exists($maintenanceView)) {
-                return view($maintenanceView, compact('userStore'));
-            }
-        }
-
-        // Fallback to default maintenance template
-        $defaultMaintenanceView = 'tenant.template.default.maintenance';
-        if (view()->exists($defaultMaintenanceView)) {
-            return view($defaultMaintenanceView, compact('userStore'));
-        }
-
-        // Final fallback to original maintenance page
-        return view('tenant.store.maintenance', compact('userStore'));
-    }
-
-    /**
      * API endpoint to get products (for AJAX)
      */
     public function getProducts(Request $request)
     {
         $userStore = $this->getCurrentStore();
-
-
 
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -818,7 +788,7 @@ class StoreController extends Controller
         $catalogTemplate = $userStore->catalogTemplate;
 
         if (!$catalogTemplate || $catalogTemplate->slug !== $slug) {
-            abort(404, 'Template not found');
+            abort(404, 'Template tidak ditemukan');
         }
 
         // Load template-specific view based on catalog template slug

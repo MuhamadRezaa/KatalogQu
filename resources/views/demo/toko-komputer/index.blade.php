@@ -61,7 +61,7 @@
 
     <!-- Slider Banner -->
     <div class="mx-auto">
-        <div class="swiper-container h-56 md:h-[27rem] lg:h-[36rem] overflow-hidden">
+        <div class="swiper-container aspect-video overflow-hidden">
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
                 <div class="swiper-slide relative">

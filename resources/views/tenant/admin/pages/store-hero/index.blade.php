@@ -35,8 +35,8 @@
                                     <th scope="col">Image</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Subtitle</th>
-                                    <th scope="col">Link</th>
-                                    <th scope="col">Button Text</th>
+                                    <th scope="col">Nama Tombol</th>
+                                    <th scope="col">Tautan Tombol</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -62,8 +62,8 @@
                                             </div>
                                         </td>
                                         <td>{{ $hero->subtitle ?? '-' }}</td>
-                                        <td>{{ $hero->link ?? '-' }}</td>
                                         <td>{{ $hero->button_text ?? '-' }}</td>
+                                        <td>{{ $hero->link ?? '-' }}</td>
                                         <td>
                                             @if ($hero->is_active)
                                                 <span class="badge badge-light-success">Aktif</span>
@@ -110,27 +110,37 @@
                 <form id="addHeroForm"
                     action="{{ route('tenant.admin.store-heroes.store', ['tenant' => $userStore->tenant_id]) }}"
                     method="POST" enctype="multipart/form-data">
-                    @csrf
                     <div class="modal-body">
+                        {{-- Area untuk menampilkan error validasi --}}
+                        <div id="addHeroErrors" class="alert alert-danger" style="display: none;">
+                            <ul class="mb-0"></ul>
+                        </div>
                         <div class="mb-3">
                             <label for="add_image" class="form-label">Image <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="add_image" name="image"
                                 accept="image/jpeg,image/png,image/jpg" required>
+                            <div class="form-text">Rasio gambar direkomendasikan 16:9 (misal: 1920x1080 piksel). Format:
+                                JPG, PNG. Maks: 10MB.</div>
                         </div>
                         <div class="mb-3">
-                            <label for="add_title" class="form-label">Title</label>
+                            <label for="add_title" class="form-label">Judul</label>
                             <input type="text" class="form-control" id="add_title" name="title">
                         </div>
                         <div class="mb-3">
-                            <label for="add_subtitle" class="form-label">Subtitle</label>
+                            <label for="add_subtitle" class="form-label">Sub Judul</label>
                             <input type="text" class="form-control" id="add_subtitle" name="subtitle">
                         </div>
-                        <div class="mb-3">
-                            <label for="add_button_text" class="form-label">Teks Untuk Tombol</label>
+                        <hr class="my-3">
+                        <small>Tombol akan muncul di banner jika Anda mengisi kolom 'Nama Tombol'. Isi
+                            'Tautan Tombol' untuk
+                            menentukan tautan (Direct Link) pada tombol tersebut.</small>
+
+                        <div class="my-3">
+                            <label for="add_button_text" class="form-label">Nama Tombol</label>
                             <input type="text" class="form-control" id="add_button_text" name="button_text">
                         </div>
                         <div class="mb-3">
-                            <label for="add_link" class="form-label">Tautan Untuk Tombol</label>
+                            <label for="add_link" class="form-label">Tautan Tombol</label>
                             <input type="url" class="form-control" id="add_link" name="link">
                         </div>
                         <div class="mb-3">
@@ -167,6 +177,8 @@
                             <label for="edit_image" class="form-label">Ganti Image</label>
                             <input type="file" class="form-control" id="edit_image" name="image"
                                 accept="image/jpeg,image/png,image/jpg">
+                            <div class="form-text">Rasio gambar direkomendasikan 16:9 (misal: 1920x1080 piksel). Format:
+                                JPG, PNG. Maks: 10MB.</div>
                             <div class="form-text">Biarkan kosong jika tidak ingin mengubah gambar.</div>
                         </div>
                         <div id="currentImagePreview" class="mb-3">
@@ -175,19 +187,25 @@
                                     style="max-height: 100px;"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="edit_title" class="form-label">Title</label>
+                            <label for="edit_title" class="form-label">Judul</label>
                             <input type="text" class="form-control" id="edit_title" name="title">
                         </div>
                         <div class="mb-3">
-                            <label for="edit_subtitle" class="form-label">Subtitle</label>
+                            <label for="edit_subtitle" class="form-label">Sub Juduk</label>
                             <input type="text" class="form-control" id="edit_subtitle" name="subtitle">
                         </div>
-                        <div class="mb-3">
-                            <label for="edit_button_text" class="form-label">Teks Untuk Tombol</label>
+
+                        <hr class="my-3">
+                        <small>Tombol akan muncul di banner jika Anda mengisi kolom 'Nama Tombol'. Isi
+                            'Tautan Tombol' untuk
+                            menentukan tautan (Direct Link) pada tombol tersebut.</small>
+
+                        <div class="my-3">
+                            <label for="edit_button_text" class="form-label">Nama Tombol</label>
                             <input type="text" class="form-control" id="edit_button_text" name="button_text">
                         </div>
                         <div class="mb-3">
-                            <label for="edit_link" class="form-label">Tautan Untuk Tombol</label>
+                            <label for="edit_link" class="form-label">Tautan Tombol</label>
                             <input type="url" class="form-control" id="edit_link" name="link">
                         </div>
                         <div class="mb-3">
@@ -287,6 +305,18 @@
             e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
+            const errorContainer = document.getElementById('addHeroErrors');
+            const errorList = errorContainer.querySelector('ul');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonHtml = submitButton.innerHTML;
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sedang mengupload...';
+
+            // Sembunyikan error sebelum request baru
+            errorContainer.style.display = 'none';
+            errorList.innerHTML = '';
 
             fetch(form.action, {
                     method: 'POST',
@@ -298,30 +328,39 @@
                     }
                 })
                 .then(async (response) => {
-                    // robust handler: kalau bukan JSON (mis. salah config), jangan meledak
-                    const ct = response.headers.get('content-type') || '';
+                    const data = await response.json();
                     if (!response.ok) {
-                        const err = ct.includes('application/json') ? await response.json() : {
-                            message: await response.text()
-                        };
-                        throw new Error(err.message || 'Gagal memproses permintaan.');
+                        throw data;
                     }
-                    return ct.includes('application/json') ? response.json() : {
-                        success: true,
-                        message: 'OK'
-                    };
+                    return data;
                 })
                 .then(data => {
                     if (data.success) {
-                        alert(data.message);
+                        alert(data.message || 'Hero berhasil ditambahkan!');
                         location.reload();
-                    } else {
-                        alert('Error: ' + (data.message || 'Unknown'));
                     }
                 })
-                .catch(err => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                .catch(errorData => {
+                    if (errorData && errorData.errors) {
+                        Object.values(errorData.errors).forEach(messages => {
+                            messages.forEach(message => {
+                                const li = document.createElement('li');
+                                li.textContent = message;
+                                errorList.appendChild(li);
+                            });
+                        });
+                        errorContainer.style.display = 'block';
+                    } else {
+                        errorList.innerHTML =
+                            `<li>${errorData.message || 'Tidak dapat terhubung ke server. Silakan coba lagi.'}</li>`;
+                        errorContainer.style.display = 'block';
+                    }
+                    console.error('Error:', errorData);
+                })
+                .finally(() => {
+                    // Restore button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonHtml;
                 });
         });
 
@@ -330,12 +369,18 @@
             const form = e.target;
             const formData = new FormData(form);
             const heroId = form.querySelector('#edit_hero_id').value;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonHtml = submitButton.innerHTML;
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sedang mengupload...';
 
             // Append _method for PUT request
             formData.append('_method', 'PUT');
 
             fetch(form.action, {
-                    method: 'POST', // Use POST for FormData with _method spoofing
+                    method: 'POST',
                     body: formData,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -344,7 +389,6 @@
                     }
                 })
                 .then(async (response) => {
-                    // robust handler: kalau bukan JSON (mis. salah config), jangan meledak
                     const ct = response.headers.get('content-type') || '';
                     if (!response.ok) {
                         const err = ct.includes('application/json') ? await response.json() : {
@@ -368,6 +412,11 @@
                 .catch(err => {
                     console.error(err);
                     alert('Terjadi kesalahan. Silakan coba lagi.');
+                })
+                .finally(() => {
+                    // Restore button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonHtml;
                 });
         });
 

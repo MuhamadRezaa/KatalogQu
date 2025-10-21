@@ -123,16 +123,16 @@ class XenditController extends Controller
                         ]);
                         Log::info('User store ' . $userStore->id . ' expires_at updated successfully to ' . $newExpiryDate->toDateTimeString());
                     } else {
-                        Log::error('RENEWAL_WEBHOOK: UserStore not found', ['user_store_id' => $paymentDetails['user_store_id']]);
+                        Log::error('RENEWAL_WEBHOOK: Toko Pengguna tidak ditemukan', ['user_store_id' => $paymentDetails['user_store_id']]);
                     }
                 }
 
-                Log::info('Payment status updated to PAID for order: ' . $orderId);
+                Log::info('Status pembayaran diperbarui menjadi LUNAS untuk pesanan: ' . $orderId);
             } else {
-                Log::warning('Received Xendit notification for an unknown or already processed order: ' . $orderId);
+                Log::warning('Menerima notifikasi Xendit untuk pesanan yang tidak dikenal atau sudah diproses: ' . $orderId);
             }
         }
 
-        return response()->json(['status' => 'Notification received'], 200);
+        return response()->json(['status' => 'Notifikasi diterima'], 200);
     }
 }

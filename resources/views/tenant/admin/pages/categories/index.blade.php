@@ -122,11 +122,11 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="add_description" class="form-label">Deskripsi</label>
+                            <label for="add_description" class="form-label">Deskripsi (Opsional)</label>
                             <textarea class="form-control" id="add_description" name="description" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="add_image" class="form-label">Gambar</label>
+                            <label for="add_image" class="form-label">Gambar (Opsional)</label>
                             <input type="file" class="form-control" id="add_image" name="image"
                                 accept="image/jpeg,image/png,image/webp">
                         </div>
@@ -169,7 +169,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="edit_description" class="form-label">Deskripsi</label>
+                            <label for="edit_description" class="form-label">Deskripsi (Opsional)</label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
                             @error('description')
                                 <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>

@@ -82,7 +82,7 @@ class AdminController extends Controller
             if (!$purchase) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Order not found'
+                    'message' => 'Pesanan tidak ditemukan'
                 ], 404);
             }
 
@@ -105,8 +105,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving order details'
-            ], 500);
+                                    'message' => 'Terjadi kesalahan saat mengambil detail pesanan'            ], 500);
         }
     }
 
@@ -123,7 +122,7 @@ class AdminController extends Controller
             if (!$purchase) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Order not found or already processed'
+                    'message' => 'Pesanan tidak ditemukan atau sudah diproses'
                 ], 404);
             }
 
@@ -140,8 +139,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error confirming payment'
-            ], 500);
+                                    'message' => 'Terjadi kesalahan saat mengkonfirmasi pembayaran'            ], 500);
         }
     }
 
@@ -158,7 +156,7 @@ class AdminController extends Controller
             if (!$purchase) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Order not found or cannot be cancelled'
+                    'message' => 'Pesanan tidak ditemukan atau tidak dapat dibatalkan'
                 ], 404);
             }
 
@@ -174,8 +172,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error cancelling order'
-            ], 500);
+                                    'message' => 'Terjadi kesalahan saat membatalkan pesanan'            ], 500);
         }
     }
 
@@ -193,7 +190,7 @@ class AdminController extends Controller
             if (!$purchase) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Order not found or not paid'
+                    'message' => 'Pesanan tidak ditemukan atau belum dibayar'
                 ], 404);
             }
 
@@ -207,8 +204,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error sending template'
-            ], 500);
+                                    'message' => 'Terjadi kesalahan saat mengirim template'            ], 500);
         }
     }
 }

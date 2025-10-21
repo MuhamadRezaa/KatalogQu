@@ -9,6 +9,8 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductCategoryController extends Controller
 {
@@ -38,7 +40,7 @@ class ProductCategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:product_categories,name,NULL,id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -46,38 +48,39 @@ class ProductCategoryController extends Controller
         $validated['user_store_id'] = $userStore->id;
         $validated['is_active'] = $request->has('is_active');
 
-        Log::info('Category store request validated.');
-        Log::info('Request has file (image): ' . ($request->hasFile('image') ? 'yes' : 'no'));
-
         if ($request->hasFile('image')) {
-            Log::info('File details:', [
-                'original_name' => $request->file('image')->getClientOriginalName(),
-                'size' => $request->file('image')->getSize(),
-                'mime_type' => $request->file('image')->getMimeType(),
-                'is_valid' => $request->file('image')->isValid(),
-            ]);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $uploaded = $request->file('image');
+            $filename = $validated['slug'] . '.png';
+            $path = 'categories/' . $filename;
 
-            $validated['image'] = $request->file('image')->storeAs(
-                'categories', // folder
-                $fileName,    // nama file
-                'public'      // disk
-            );
+            // Check if the uploaded file is already a PNG
+            if ($uploaded->getClientMimeType() === 'image/png') {
+                // If it's already PNG, store it directly without re-encoding
+                $uploaded->storeAs('categories', $filename, 'public');
+            } else {
+                // For other formats (JPEG, WEBP), process with Intervention Image
+                $manager = new ImageManager(new Driver());
+                $img = $manager->read($uploaded->getRealPath());
+
+                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+                $img->resize(410, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Encode to PNG
+                $encodedPng = $img->toPng();
+
+                // Store the processed image
+                Storage::disk('public')->put($path, (string) $encodedPng);
+            }
+            $validated['image'] = $path;
         }
-
-        if (isset($validated['image'])) {
-            Log::info('Image path to be saved:', ['path' => $validated['image']]);
-        } else {
-            Log::info('No image path to be saved.');
-        }
-
-        Log::info('Data being passed to create():', $validated);
 
         ProductCategory::create($validated);
 
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Category created successfully!');
+            ->with('success', 'Kategori berhasil dibuat!');
     }
 
     /**
@@ -88,7 +91,7 @@ class ProductCategoryController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($category->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'category' => $category]);
     }
@@ -107,7 +110,7 @@ class ProductCategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:product_categories,name,' . $category->id . ',id,user_store_id,' . $userStore->id,
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -115,23 +118,42 @@ class ProductCategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
+            // Delete old image if exists
             if ($category->image && Storage::disk('public')->exists($category->image)) {
                 Storage::disk('public')->delete($category->image);
             }
 
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = $validated['slug'] . '.' . $extension;
+            $uploaded = $request->file('image');
+            $filename = $validated['slug'] . '.png';
+            $path = 'categories/' . $filename;
 
-            $validated['image'] = $request->file('image')->storeAs(
-                'categories',
-                $fileName,
-                'public'
-            );
+            // Check if the uploaded file is already a PNG
+            if ($uploaded->getClientMimeType() === 'image/png') {
+                // If it's already PNG, store it directly without re-encoding
+                $uploaded->storeAs('categories', $filename, 'public');
+            } else {
+                // For other formats (JPEG, WEBP), process with Intervention Image
+                $manager = new ImageManager(new Driver());
+                $img = $manager->read($uploaded->getRealPath());
+
+                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+                $img->resize(410, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Encode to PNG
+                $encodedPng = $img->toPng();
+
+                // Store the processed image
+                Storage::disk('public')->put($path, (string) $encodedPng);
+            }
+            $validated['image'] = $path;
         }
 
         $category->update($validated);
 
-        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Category updated successfully!');
+        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**
@@ -152,6 +174,6 @@ class ProductCategoryController extends Controller
         $category->delete();
 
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Category deleted successfully!');
+            ->with('success', 'Kategori berhasil dihapus!');
     }
 }

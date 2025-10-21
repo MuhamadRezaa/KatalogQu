@@ -221,7 +221,7 @@
                             @error('store_logo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Ukuran file maksimal: 2MB</div>
+                            <div class="form-text">Ukuran file maksimal: 2MB. Rekomendasi: Rasio 1:1 (persegi), ukuran maksimal 512x512 piksel, format PNG.</div>
                         </div>
 
                         <!-- Pratinjau Logo Baru -->

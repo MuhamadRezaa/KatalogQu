@@ -81,7 +81,7 @@ class CheckoutController extends Controller
     {
         $templatePurchase = \App\Models\TemplatePurchase::with('catalogTemplate')->where('transaction_id', $orderId)->first();
         if (!$templatePurchase) {
-            return response()->json(['status' => 'error', 'message' => 'Order not found.'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Pesanan tidak ditemukan.'], 404);
         }
         return response()->json([
             'status' => 'success',
@@ -296,7 +296,7 @@ class CheckoutController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Transaction successfully cancelled.',
+                'message' => 'Transaksi berhasil dibatalkan.',
             ]);
         } catch (\Exception $e) {
             if (DB::transactionLevel() > 0) {
@@ -309,7 +309,7 @@ class CheckoutController extends Controller
             ]);
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to cancel transaction.',
+                'message' => 'Gagal membatalkan transaksi.',
             ], 500);
         }
     }
@@ -520,7 +520,7 @@ class CheckoutController extends Controller
             $base_price = (float) $pricing->price;
 
             if (abs($base_price - (float)$request->input('price')) > 0.01) {
-                 throw new \Exception('Price mismatch detected.');
+                 throw new \Exception('Terdeteksi ketidaksesuaian harga.');
             }
 
             // Dapatkan tanggal kedaluwarsa terakhir
@@ -705,13 +705,13 @@ class CheckoutController extends Controller
                     return "SUCCESS: Renewal processed. New expiration: " . $newExpiryDate->toDateTimeString();
                 } else {
                     Log::error('TEST_RENEWAL_WEBHOOK: UserStore not found', ['user_store_id' => $paymentDetails['user_store_id']]);
-                    return "ERROR: UserStore not found.";
+                    return "ERROR: Toko Pengguna tidak ditemukan.";
                 }
             }
-            return "SUCCESS: Purchase status updated to paid, but this was not a renewal.";
+            return "SUKSES: Status pembelian diperbarui menjadi lunas, tetapi ini bukan perpanjangan.";
         } else {
             Log::warning('TEST_RENEWAL_WEBHOOK: Order not found or not pending: ' . $orderId);
-            return "ERROR: Order not found or not pending.";
+            return "ERROR: Pesanan tidak ditemukan atau tidak tertunda.";
         }
     }
 }

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class StoreHeroController extends Controller
 {
@@ -33,8 +35,19 @@ class StoreHeroController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
 
+        // Cek jumlah hero yang sudah ada
+        $heroCount = StoreHero::where('user_store_id', $userStore->id)->count();
+        if ($heroCount >= 3) {
+            $errorMessage = 'Anda hanya dapat memiliki maksimal 3 banner hero.';
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $errorMessage], 400);
+            }
+            return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])
+                ->with('error', $errorMessage);
+        }
+
         $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:10240',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -45,8 +58,31 @@ class StoreHeroController extends Controller
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            // Simpan dengan nama unik
-            $imagePath = $request->file('image')->store('store_heroes', 'public');
+            $manager   = new ImageManager(new Driver());
+            $uploaded  = $request->file('image');
+            $storeName = $userStore->subdomain;
+
+            // Baca gambar
+            $img = $manager->read($uploaded->getRealPath());
+
+            // Downscale-only ke maks 1920x1080, jaga rasio, cegah upsize
+            $img->resize(1920, 1080, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize(); // penting: jangan perbesar gambar kecil
+            });
+
+            // Encode ke JPG yang ringan
+            $encodedJpg = $img->toJpeg(80); // 75–85 biasanya ideal
+
+            // Nama & path simpan (pakai .jpg karena sudah di-encode JPG)
+            $filename = $storeName . '-BANNER-' . Str::uuid()->toString() . '.jpg';
+            $path     = 'store_heroes/' . $filename;
+
+            // Simpan HASIL OLAHAN ke disk 'public'
+            Storage::disk('public')->put($path, (string) $encodedJpg);
+
+            // Simpan path untuk DB
+            $imagePath = $path;
         }
 
         StoreHero::create([
@@ -60,10 +96,10 @@ class StoreHeroController extends Controller
         ]);
 
         if ($request->ajax() || $request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => 'Hero created successfully.']);
+            return response()->json(['success' => true, 'message' => 'Banner Hero Berhasil Dibuat.']);
         }
         return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Hero created successfully.');
+            ->with('success', 'Banner Hero Berhasil Dibuat.');
     }
 
     /**
@@ -74,7 +110,7 @@ class StoreHeroController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($storeHero->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'hero' => $storeHero]);
     }
@@ -91,7 +127,7 @@ class StoreHeroController extends Controller
         }
 
         $validatedData = $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'link' => 'nullable|url|max:255',
@@ -107,8 +143,31 @@ class StoreHeroController extends Controller
                 Storage::disk('public')->delete($imagePath);
             }
 
-            // Simpan file baru dengan nama unik
-            $imagePath = $request->file('image')->store('store_heroes', 'public');
+            $manager   = new ImageManager(new Driver());
+            $uploaded  = $request->file('image');
+            $storeName = $userStore->subdomain;
+
+            // Baca gambar
+            $img = $manager->read($uploaded->getRealPath());
+
+            // Downscale-only ke maks 1920x1080, jaga rasio, cegah upsize
+            $img->resize(1920, 1080, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize(); // penting: jangan perbesar gambar kecil
+            });
+
+            // Encode ke JPG yang ringan
+            $encodedJpg = $img->toJpeg(80);
+
+            // Nama & path simpan (pakai .jpg karena sudah di-encode JPG)
+            $filename = $storeName . '-BANNER-' . \Illuminate\Support\Str::uuid()->toString() . '.jpg';
+            $path     = 'store_heroes/' . $filename;
+
+            // Simpan HASIL OLAHAN ke disk 'public'
+            Storage::disk('public')->put($path, (string) $encodedJpg);
+
+            // Simpan path untuk DB
+            $imagePath = $path;
         }
 
         $storeHero->update([
@@ -121,10 +180,10 @@ class StoreHeroController extends Controller
         ]);
 
         if ($request->ajax() || $request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => 'Hero updated successfully.']);
+            return response()->json(['success' => true, 'message' => 'Banner Hero berhasil diperbarui.']);
         }
         return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Hero updated successfully.');
+            ->with('success', 'Banner Hero berhasil diperbarui.');
     }
 
     /**
@@ -143,7 +202,7 @@ class StoreHeroController extends Controller
         }
         $storeHero->delete();
 
-        return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])->with('success', 'Hero deleted successfully.');
+        return redirect()->route('tenant.admin.store-heroes.index', ['tenant' => $userStore->tenant_id])->with('success', 'Banner Hero berhasil dihapus.');
     }
 
     /**
@@ -168,7 +227,7 @@ class StoreHeroController extends Controller
     {
         $userStore = $this->getCurrentStore();
         if ($storeHero->user_store_id !== $userStore->id) {
-            abort(403, 'Unauthorized action.');
+            abort(403, 'Tindakan tidak sah.');
         }
     }
 }

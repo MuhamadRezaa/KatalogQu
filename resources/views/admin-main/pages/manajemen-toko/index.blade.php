@@ -29,6 +29,7 @@
                             <th>Status</th>
                             <th>Tanggal Toko Dibuat</th>
                             <th>Tanggal Toko Aktif</th>
+                            <th>Tanggal Toko Berakhir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -55,6 +56,13 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->created_at->format('d M Y') }}</td>
+                                <td>
+                                    @if ($item->activated_at)
+                                        {{ $item->activated_at->format('d M Y') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($item->expires_at)
                                         {{ $item->expires_at->format('d M Y') }}

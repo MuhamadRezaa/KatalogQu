@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\StoreCategory; // Add this import
 use Illuminate\Support\Facades\Log; // Gemini Added
 use Illuminate\Support\Facades\Cache;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class AdminController extends Controller
 {
@@ -106,14 +108,14 @@ class AdminController extends Controller
             'store_phone' => 'nullable|string|max:20',
             'store_email' => 'nullable|email|max:255',
             'store_address' => 'nullable|string|max:500',
-            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'store_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'store_settings' => 'nullable|array'
         ]);
 
         try {
             // Handle logo upload
             if ($request->hasFile('store_logo')) {
-                Log::info('UpdateSettings: store_logo file is present.');
+                Log::info('UpdateSettings: store_logo file is present. Applying Intervention Image compression.');
 
                 // Use the tenant-aware 'public' disk to store the logo
                 $disk = Storage::disk('public');
@@ -124,15 +126,32 @@ class AdminController extends Controller
                     $disk->delete($userStore->store_logo);
                 }
 
-                Log::info('UpdateSettings: Storing new logo on tenant-aware public disk...');
-                // Generate a custom filename based on store_name slug
-                $storeNameSlug = \Illuminate\Support\Str::slug($validated['store_name']);
-                $extension = $request->file('store_logo')->getClientOriginalExtension();
-                $filename = $storeNameSlug . '-' . time() . '.' . $extension;
+                $manager   = new ImageManager(new Driver());
+                $uploaded  = $request->file('store_logo');
+                $storeName = \Illuminate\Support\Str::slug($validated['store_name']);
 
-                $path = $request->file('store_logo')->storeAs('store-logos', $filename, 'public');
+                // Baca gambar
+                $img = $manager->read($uploaded->getRealPath());
+
+                // Resize logo: max 512x512, maintain aspect ratio, prevent upscaling
+                $img->resize(512, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Encode to a lightweight PNG
+                $encodedPng = $img->toPng();
+
+                // Nama & path simpan (pakai .png karena sudah di-encode PNG)
+                $filename = $storeName . '-logo-' . time() . '.png';
+                $path     = 'store-logos/' . $filename;
+
+                // Simpan HASIL OLAHAN ke disk 'public'
+                $disk->put($path, (string) $encodedPng);
+
+                // Simpan path untuk DB
                 $validated['store_logo'] = $path;
-                Log::info('UpdateSettings: New logo stored at path: ' . $path);
+                Log::info('UpdateSettings: New compressed logo stored at path: ' . $path);
             } else {
                 Log::info('UpdateSettings: No store_logo file in request.');
             }
@@ -152,83 +171,7 @@ class AdminController extends Controller
         }
 
         return redirect()->route('tenant.admin.settings', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Store settings updated successfully!');
+            ->with('success', 'Pengaturan Toko berhasil diperbarui!');
     }
 
-    /**
-     * Products management
-     */
-    public function products()
-    {
-        $tenant = tenant();
-        $userStore = UserStore::where('tenant_id', $tenant->id)->first();
-
-        if (!$userStore) {
-            abort(404, 'Store not found for this tenant');
-        }
-
-        $products = StoreProduct::where('user_store_id', $userStore->id)
-            ->with(['category', 'brand'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('tenant.admin.pages.products.index', compact('userStore', 'products'));
-    }
-
-    /**
-     * Create product form
-     */
-    public function createProduct()
-    {
-        $tenant = tenant();
-        $userStore = UserStore::where('tenant_id', $tenant->id)->first();
-
-        if (!$userStore) {
-            abort(404, 'Store not found for this tenant');
-        }
-
-        $categories = ProductCategory::where('is_active', true)
-            ->get();
-
-        return view('tenant.admin.products.create', compact('userStore', 'categories'));
-    }
-
-    /**
-     * Store product
-     */
-    public function storeProduct(Request $request)
-    {
-        $tenant = tenant();
-        $userStore = UserStore::where('tenant_id', $tenant->id)->first();
-
-        if (!$userStore) {
-            abort(404, 'Store not found for this tenant');
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'old_price' => 'nullable|numeric|min:0',
-            'store_category_id' => 'nullable|exists:product_categories,id',
-            'stock' => 'nullable|integer|min:0',
-            'sku' => 'nullable|string|max:100',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_active' => 'boolean',
-            'is_new' => 'boolean',
-            'specification' => 'nullable|array'
-        ]);
-
-        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
-        }
-
-        StoreProduct::create($validated);
-
-        return redirect()->route('tenant.admin.products')
-            ->with('success', 'Product created successfully!');
-    }
 }

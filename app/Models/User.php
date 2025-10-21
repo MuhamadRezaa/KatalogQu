@@ -27,6 +27,7 @@ class User extends Authenticatable
         'avatar',
         'role',
         'tenant_id',
+        'phone_number',
     ];
 
     /**

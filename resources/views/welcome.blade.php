@@ -399,25 +399,25 @@
                 </div>
             </div>
             <div class="row g-4 mt-5">
-                <div class="col-lg-3 col-md-6">
+                {{-- <div class="col-lg-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-number">{{ $templateCount }}</div>
                         <div class="stat-label">Katalog Dibuat</div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
+                </div> --}}
+                <div class="col-lg-4 col-md-6">
                     <div class="stat-card">
                         <div class="stat-number">{{ $user_stores }}</div>
                         <div class="stat-label">Bisnis Terdaftar</div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="stat-card">
                         <div class="stat-number">{{ $templateCount }}</div>
                         <div class="stat-label">Template Tersedia</div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="stat-card">
                         <div class="stat-number">100%</div>
                         <div class="stat-label">Uptime</div>

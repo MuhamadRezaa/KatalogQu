@@ -44,7 +44,7 @@ class ProductUnitController extends Controller
         ProductUnit::create($validated);
 
         return redirect()->route('tenant.admin.product-units.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product Unit created successfully!');
+            ->with('success', 'Unit Produk berhasil dibuat!');
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductUnitController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($productUnit->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'productUnit' => $productUnit]);
     }
@@ -79,7 +79,7 @@ class ProductUnitController extends Controller
 
         $productUnit->update($validated);
 
-        return redirect()->route('tenant.admin.product-units.index', ['tenant' => $userStore->tenant_id])->with('success', 'Product Unit updated successfully!');
+        return redirect()->route('tenant.admin.product-units.index', ['tenant' => $userStore->tenant_id])->with('success', 'Unit Produk berhasil diperbarui!');
     }
 
     /**
@@ -96,6 +96,6 @@ class ProductUnitController extends Controller
         $productUnit->delete();
 
         return redirect()->route('tenant.admin.product-units.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product Unit deleted successfully!');
+            ->with('success', 'Unit Produk berhasil dihapus!');
     }
 }
