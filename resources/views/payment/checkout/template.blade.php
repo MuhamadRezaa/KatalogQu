@@ -91,7 +91,8 @@
                                 Telepon *</label>
                             <input type="tel" id="customer-phone" name="customer_phone" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Masukkan nomor telepon Anda">
+                                placeholder="Masukkan nomor telepon Anda dengan format 628xxxxxx"
+                                value="{{ Auth::check() ? Auth::user()->phone_number : '' }}">
                         </div>
                     </form>
 
@@ -207,7 +208,8 @@
 
                     // Update static UI elements
                     document.getElementById('template-name').textContent = templateData.name;
-                    document.getElementById('template-category').textContent = templateData.category ? templateData.category.name : 'General';
+                    document.getElementById('template-category').textContent = templateData.category ? templateData
+                        .category.name : 'General';
                     document.getElementById('template-price').textContent = 'Pilih durasi'; // Placeholder
                     if (templateData.preview_image) {
                         document.getElementById('template-preview').src = '/storage/' + templateData.preview_image;
@@ -220,7 +222,8 @@
                     const durationContainer = document.getElementById('duration-options');
                     durationContainer.innerHTML = '';
                     if (templateData.prices && templateData.prices.length > 0) {
-                        templateData.prices.sort((a, b) => a.duration_months - b.duration_months).forEach((price, index) => {
+                        templateData.prices.sort((a, b) => a.duration_months - b.duration_months).forEach((price,
+                            index) => {
                             const div = document.createElement('div');
                             div.className = 'flex items-center justify-between p-3 border rounded-md';
                             const label = document.createElement('label');

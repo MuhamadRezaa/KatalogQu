@@ -16,7 +16,7 @@ class DemoAdminController extends Controller
      */
     public function testController()
     {
-        return response('Controller test works! Models available: ' . class_exists('App\Models\TemplatePurchase'));
+        return response('Tes controller berhasil! Model tersedia: ' . class_exists('App\Models\TemplatePurchase'));
     }
 
     /**
@@ -40,13 +40,13 @@ class DemoAdminController extends Controller
                     'user_count' => $userCount,
                     'template_count' => $templateCount,
                     'recent_purchases_count' => $recentPurchases->count(),
-                    'message' => 'Dashboard data loaded successfully'
+                    'message' => 'Data dashboard berhasil dimuat'
                 ]
             ]);
         } catch (\Exception $e) {
             Log::error('Dashboard error: ' . $e->getMessage());
             return response()->json([
-                'status' => 'error',
+                'status' => 'gagal',
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ], 500);

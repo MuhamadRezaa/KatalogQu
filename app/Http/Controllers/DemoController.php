@@ -27,7 +27,7 @@ class DemoController extends Controller
 
         // Check if the view file actually exists before trying to render it.
         if (!view()->exists($viewPath)) {
-            abort(404, 'Demo view for this template not found.');
+            abort(404, 'Tampilan demo untuk template ini tidak ditemukan.');
         }
 
         // Pass the template data to the view

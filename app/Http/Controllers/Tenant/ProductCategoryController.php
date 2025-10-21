@@ -77,8 +77,10 @@ class ProductCategoryController extends Controller
             $validated['image'] = $path;
         }
 
+        ProductCategory::create($validated);
+
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Category created successfully!');
+            ->with('success', 'Kategori berhasil dibuat!');
     }
 
     /**
@@ -89,7 +91,7 @@ class ProductCategoryController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($category->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'category' => $category]);
     }
@@ -151,7 +153,7 @@ class ProductCategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Category updated successfully!');
+        return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**
@@ -172,6 +174,6 @@ class ProductCategoryController extends Controller
         $category->delete();
 
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Category deleted successfully!');
+            ->with('success', 'Kategori berhasil dihapus!');
     }
 }

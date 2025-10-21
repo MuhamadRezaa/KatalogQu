@@ -80,7 +80,7 @@ class ProductSubCategoryController extends Controller
         ProductSubCategory::create($validated);
 
         return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Sub Category created successfully!');
+            ->with('success', 'Sub Kategori berhasil dibuat!');
     }
 
     /**
@@ -91,7 +91,7 @@ class ProductSubCategoryController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($subCategory->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'subCategory' => $subCategory]);
     }
@@ -153,7 +153,7 @@ class ProductSubCategoryController extends Controller
 
         $subCategory->update($validated);
 
-        return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Sub Category updated successfully!');
+        return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Sub Kategori berhasil diperbarui!');
     }
 
     /**
@@ -174,6 +174,6 @@ class ProductSubCategoryController extends Controller
         $subCategory->delete();
 
         return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Sub Category deleted successfully!');
+            ->with('success', 'Sub Kategori berhasil dihapus!');
     }
 }

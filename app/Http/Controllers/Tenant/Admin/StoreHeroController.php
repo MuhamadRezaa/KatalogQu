@@ -110,7 +110,7 @@ class StoreHeroController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($storeHero->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'hero' => $storeHero]);
     }
@@ -227,7 +227,7 @@ class StoreHeroController extends Controller
     {
         $userStore = $this->getCurrentStore();
         if ($storeHero->user_store_id !== $userStore->id) {
-            abort(403, 'Unauthorized action.');
+            abort(403, 'Tindakan tidak sah.');
         }
     }
 }

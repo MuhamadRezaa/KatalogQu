@@ -79,7 +79,7 @@ class ProductBrandController extends Controller
         StoreBrand::create($validated);
 
         return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Brand created successfully!');
+            ->with('success', 'Merek berhasil dibuat!');
     }
 
     /**
@@ -90,7 +90,7 @@ class ProductBrandController extends Controller
         tenancy()->initialize($tenant);
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($brand->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         return response()->json(['success' => true, 'brand' => $brand]);
     }
@@ -151,7 +151,7 @@ class ProductBrandController extends Controller
 
         $brand->update($validated);
 
-        return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])->with('success', 'Brand updated successfully!');
+        return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])->with('success', 'Merek berhasil diperbarui!');
     }
 
     /**
@@ -172,6 +172,6 @@ class ProductBrandController extends Controller
         $brand->delete();
 
         return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Brand deleted successfully!');
+            ->with('success', 'Merek berhasil dihapus!');
     }
 }

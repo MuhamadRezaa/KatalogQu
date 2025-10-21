@@ -100,7 +100,7 @@ class StoreProductController extends Controller
 
         if ($userStore->products()->count() >= 200) {
             return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-                ->with('error', 'You have reached the maximum number of products (200).');
+                ->with('error', 'Anda telah mencapai jumlah produk maksimum (200).');
         }
 
         $validated = $request->validate([
@@ -178,7 +178,7 @@ class StoreProductController extends Controller
         }
 
         return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product created successfully!');
+            ->with('success', 'Produk berhasil dibuat!');
     }
 
     /**
@@ -191,7 +191,7 @@ class StoreProductController extends Controller
 
         $userStore = UserStore::where('tenant_id', tenant('id'))->firstOrFail();
         if ($product->user_store_id !== $userStore->id) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'Tidak Sah'], 403);
         }
         // Eager load images
         $product->load('images');
@@ -311,7 +311,7 @@ class StoreProductController extends Controller
             }
         }
 
-        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])->with('success', 'Product updated successfully!');
+        return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])->with('success', 'Produk berhasil diperbarui!');
     }
 
     /**
@@ -341,6 +341,6 @@ class StoreProductController extends Controller
         $product->delete();
 
         return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Product deleted successfully!');
+            ->with('success', 'Produk berhasil dihapus!');
     }
 }
