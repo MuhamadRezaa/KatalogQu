@@ -22,6 +22,54 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
+
+    <style>
+        .fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            background: rgba(0, 0, 0, 0.95) !important;
+            padding: 2rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s ease-in-out !important;
+        }
+
+        .fullscreen img {
+            max-height: 90vh !important;
+            width: auto !important;
+            max-width: 90vw !important;
+            object-fit: contain !important;
+        }
+
+        .modal-img-container {
+            position: relative;
+            width: 100%;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .modal-img-container:hover .fullscreen-button {
+            opacity: 1;
+        }
+
+        .fullscreen-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+    </style>
 </head>
 
 <body class="bg-white text-[#1b0e0e]">
@@ -1583,49 +1631,6 @@
                 const modalId = `product-modal-${item.id}`;
                 if (!document.getElementById(modalId)) {
                     const modalHTML = `
-                        <style>
-                            .fullscreen {
-                                position: fixed !important;
-                                top: 0 !important;
-                                left: 0 !important;
-                                width: 100vw !important;
-                                height: 100vh !important;
-                                z-index: 9999 !important;
-                                background: rgba(0, 0, 0, 0.95) !important;
-                                padding: 2rem !important;
-                                display: flex !important;
-                                align-items: center !important;
-                                justify-content: center !important;
-                                transition: all 0.3s ease-in-out !important;
-                            }
-                            .fullscreen img {
-                                max-height: 90vh !important;
-                                width: auto !important;
-                                max-width: 90vw !important;
-                                object-fit: contain !important;
-                            }
-                            .modal-img-container {
-                                position: relative;
-                                width: 100%;
-                                cursor: pointer;
-                                overflow: hidden;
-                            }
-                            .modal-img-container:hover .fullscreen-button {
-                                opacity: 1;
-                            }
-                            .fullscreen-button {
-                                position: absolute;
-                                top: 10px;
-                                right: 10px;
-                                background: rgba(0, 0, 0, 0.5);
-                                color: white;
-                                padding: 8px;
-                                border-radius: 8px;
-                                cursor: pointer;
-                                opacity: 0;
-                                transition: opacity 0.2s ease-in-out;
-                            }
-                        </style>
                         <div id="${modalId}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
                             <div class="bg-white rounded-2xl p-6 max-w-5xl w-full mx-auto shadow-2xl relative">
                                 <button class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition duration-200 z-50">
@@ -1934,27 +1939,29 @@
                 sortAndRender();
                 addModalEventListeners();
 
-                // Event listener untuk tombol 'Pesan Sekarang' di semua modal produk
-                document.querySelectorAll('.order-btn').forEach(function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // Cari modal terdekat
-                        var modal = btn.closest('[id^="product-modal-"]');
-                        if (!modal) return;
-                        // Ambil nama produk dari modal
-                        var productName = modal.querySelector('h3') ? modal.querySelector('h3')
-                            .innerText.trim() : '';
-                        // Ambil harga produk
-                        var priceSpan = modal.querySelector('span.text-3xl') ? modal.querySelector(
-                            'span.text-3xl').innerText.trim() : '';
-                        // Format pesan WhatsApp
-                        var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
-                            productName + ' dengan harga ' + priceSpan + '.');
-                        // Nomor WhatsApp tujuan (ganti dengan nomor toko Anda)
-                        var waNumber = '6281572505989'; // Ganti dengan nomor WA toko
-                        var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
-                        window.open(waUrl, '_blank');
-                    });
+                // Delegated event listener untuk tombol 'Pesan Sekarang' —
+                // bekerja untuk tombol yang ada sekarang dan yang ditambahkan dinamis
+                document.addEventListener('click', function(e) {
+                    var btn = e.target.closest('.order-btn');
+                    if (!btn) return;
+                    e.preventDefault();
+
+                    // Cari modal terdekat yang memiliki id product-modal-*
+                    var modal = btn.closest('[id^="product-modal-"]') || document.getElementById(
+                        'universal-product-modal');
+                    if (!modal) return;
+
+                    var productNameEl = modal.querySelector('h3');
+                    var productName = productNameEl ? productNameEl.innerText.trim() : '';
+
+                    var priceEl = modal.querySelector('span.text-3xl');
+                    var priceSpan = priceEl ? priceEl.innerText.trim() : '';
+
+                    var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' + productName + (
+                        priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
+                    var waNumber = '6281572505989';
+                    var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
+                    window.open(waUrl, '_blank');
                 });
 
                 // Event listener untuk sort dropdown
@@ -2987,57 +2994,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Script Fungsi Tab dan Modal (Disederhanakan & Diperbaiki) -->
-        <script>
-            // Fungsi untuk menampilkan kategori
-            function showCategory(category) {
-                // Sembunyikan semua konten
-                document.querySelectorAll('[id^="content-"]').forEach(el => {
-                    el.classList.add('hidden');
-                });
-                // Reset semua tab
-                document.querySelectorAll('[id^="tab-"]').forEach(tab => {
-                    tab.classList.remove('border-[#994d51]', 'text-[#994d51]');
-                    tab.classList.add('border-transparent', 'text-gray-500');
-                });
-                // Tampilkan yang dipilih
-
-            }
-
-            // Inisialisasi saat halaman dimuat
-
-
-            // Fungsi untuk modal (dinamis)
-            document.querySelectorAll('.detail-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const modalId = button.getAttribute('data-modal');
-                    const modal = document.getElementById(modalId);
-                    if (modal) {
-                        modal.classList.remove('hidden');
-                    }
-                });
-            });
-
-            // Tutup modal
-            document.querySelectorAll('.close-modal').forEach(button => {
-                button.addEventListener('click', () => {
-                    const modal = button.closest('.fixed');
-                    if (modal) {
-                        modal.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Tutup modal saat klik luar
-            document.querySelectorAll('.fixed').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.add('hidden');
-                    }
-                });
-            });
-        </script>
     </main>
 
     <footer class="bg-white text-black py-2">
