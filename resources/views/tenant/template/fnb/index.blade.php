@@ -934,30 +934,29 @@
                 addModalEventListeners();
 
 
-                // Event listener untuk tombol 'Pesan Sekarang' di semua modal produk
-                document.querySelectorAll('.order-btn').forEach(function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // Cari modal terdekat yang memiliki id "product-modal-..." atau fallback ke universal modal
-                        var modal = btn.closest('[id^="product-modal-"]') || document.getElementById(
-                            'universal-product-modal');
-                        if (!modal) return;
-                        // Ambil nama produk dari modal (cari elemen yang sesuai)
-                        var productNameEl = modal.querySelector('#modal-product-name') || modal
-                            .querySelector('h3');
-                        var productName = productNameEl ? productNameEl.innerText.trim() : '';
-                        // Ambil harga produk
-                        var priceEl = modal.querySelector('#modal-product-price') || modal
-                            .querySelector('span.text-3xl');
-                        var priceSpan = priceEl ? priceEl.innerText.trim() : '';
-                        // Format pesan WhatsApp
-                        var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' +
-                            productName + (priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
-                        // Nomor WhatsApp tujuan (ambil dari data toko jika tersedia)
-                        var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '081572505989')) !!};
-                        var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
-                        window.open(waUrl, '_blank');
-                    });
+                // Delegated event listener untuk tombol 'Pesan Sekarang' — bekerja untuk tombol
+                // yang ada sekarang dan tombol yang ditambahkan secara dinamis
+                document.addEventListener('click', function(e) {
+                    var btn = e.target.closest('.order-btn');
+                    if (!btn) return;
+                    e.preventDefault();
+
+                    var modal = btn.closest('[id^="product-modal-"]') || document.getElementById(
+                        'universal-product-modal');
+                    if (!modal) return;
+
+                    var productNameEl = modal.querySelector('#modal-product-name') || modal.querySelector('h3');
+                    var productName = productNameEl ? productNameEl.innerText.trim() : '';
+
+                    var priceEl = modal.querySelector('#modal-product-price') || modal.querySelector(
+                        'span.text-3xl');
+                    var priceSpan = priceEl ? priceEl.innerText.trim() : '';
+
+                    var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' + productName + (
+                        priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
+                    var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '081572505989')) !!};
+                    var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
+                    window.open(waUrl, '_blank');
                 });
 
                 // Event listener untuk sort dropdown
