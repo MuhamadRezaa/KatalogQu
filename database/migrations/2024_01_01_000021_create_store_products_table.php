@@ -50,7 +50,6 @@ return new class extends Migration
             $table->index(['estimasi_waktu']);
             $table->index(['sku']); // For product code searches
             $table->index(['is_active', 'is_available']); // Common filter combination
-            $table->unique(['user_store_id']);
         });
     }
 
