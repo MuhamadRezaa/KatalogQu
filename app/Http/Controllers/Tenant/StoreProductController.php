@@ -47,8 +47,21 @@ class StoreProductController extends Controller
             // Encode to WEBP
             $encodedWebp = $img->toWebp(80); // Quality 80
 
-            // Store the processed image
-            Storage::disk('public')->put($path, (string) $encodedWebp);
+                    try {
+
+                        Storage::disk('public')->put($path, (string) $encodedWebp);
+
+                        Log::info('Image successfully stored at: ' . $path);
+
+                    } catch (\Exception $e) {
+
+                        Log::error('Failed to store processed image at ' . $path . ': ' . $e->getMessage());
+
+                        throw $e; // Re-throw the exception to propagate the error
+
+                    }
+
+            
         }
         return $path;
     }
@@ -153,26 +166,38 @@ class StoreProductController extends Controller
         }
         $validated['specification'] = $specifications;
 
-        $product = StoreProduct::create($validated);
+        try {
+            $product = StoreProduct::create($validated);
+            Log::info('Product created successfully: ' . $product->id);
+        } catch (\Exception $e) {
+            Log::error('Failed to create product: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Gagal membuat produk: ' . $e->getMessage());
+        }
 
         // Handle additional images
         if ($request->hasFile('additional_images')) {
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile) {
-                    $extension = $imageFile->getClientOriginalExtension();
-                    $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
+                    try {
+                        $extension = $imageFile->getClientOriginalExtension();
+                        $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
 
-                    $imagePath = $imageFile->storeAs(
-                        'product_gallery',
-                        $fileName,
-                        'public'
-                    );
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_url' => $imagePath,
-                        'position' => $position + 1, // 1-based position
-                        'alt' => $product->name . ' - ' . ($position + 1),
-                    ]);
+                        $imagePath = $imageFile->storeAs(
+                            'product_gallery',
+                            $fileName,
+                            'public'
+                        );
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_url' => $imagePath,
+                            'position' => $position + 1, // 1-based position
+                            'alt' => $product->name . ' - ' . ($position + 1),
+                        ]);
+                        Log::info('Additional image created successfully for product ' . $product->id . ': ' . $imagePath);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to create additional image for product ' . $product->id . ': ' . $e->getMessage());
+                        // Continue to process other images or handle as needed
+                    }
                 }
             }
         }

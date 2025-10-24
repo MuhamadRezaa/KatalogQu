@@ -568,6 +568,8 @@
                                                                     class="btn btn-primary btn-sm">
                                                                     Lanjutkan Setup
                                                                 </a>
+                                                            @else
+                                                                &nbsp;
                                                             @endif
                                                         </td>
                                                     </tr>
