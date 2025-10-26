@@ -25,6 +25,13 @@ class AuthController extends Controller
      */
             public function store(Request $request)
         {
+            // Transform phone number input
+            $phoneNumber = $request->input('phone_number');
+            if ($phoneNumber && substr($phoneNumber, 0, 1) === '0') {
+                $phoneNumber = '62' . substr($phoneNumber, 1);
+                $request->merge(['phone_number' => $phoneNumber]);
+            }
+
             $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],

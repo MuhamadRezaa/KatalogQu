@@ -165,18 +165,29 @@ class StoreSetupController extends Controller
                 Storage::disk('public')->delete($logoPath);
             }
 
-            // Ambil ekstensi file asli
-            $extension = $request->file('store_logo')->getClientOriginalExtension();
-
             // Buat nama file sesuai store_name (slug biar aman untuk nama file)
-            $fileName = Str::slug($request->store_name) . '.' . $extension;
+            $fileName = Str::slug($request->store_name) . '.webp'; // Changed to .webp
+            $path = 'store-logos/' . $fileName;
 
-            // Simpan file dengan nama khusus
-            $logoPath = $request->file('store_logo')->storeAs(
-                'store-logos',
-                $fileName,
-                'public'
-            );
+            // Process with Intervention Image for WebP conversion
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($request->file('store_logo')->getRealPath());
+
+            // Commented out: Resize to max 512x512, maintain aspect ratio, prevent upsizing
+            /*
+            $img->resize(512, 512, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            */
+
+            // Encode to WEBP
+            $encodedWebp = $img->toWebp(80); // Quality 80
+
+            // Store the processed image
+            Storage::disk('public')->put($path, (string) $encodedWebp);
+
+            $logoPath = $path;
         }
 
         try {
