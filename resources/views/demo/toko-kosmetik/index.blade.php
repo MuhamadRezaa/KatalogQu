@@ -681,10 +681,10 @@
                 const inner = document.getElementById('heroCarouselInner');
                 indicators.innerHTML = dummyBanners.map((_, i) =>
                     `<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}"></button>`
-                    ).join('');
+                ).join('');
                 inner.innerHTML = dummyBanners.map((b, i) =>
                     `<div class="carousel-item ${i === 0 ? 'active' : ''}"><div class="hero-slide"><img src="${b.image}" class="hero-background"><div class="hero-content"><h1 class="hero-title">${b.title}</h1><p class="hero-subtitle">${b.subtitle}</p></div></div></div>`
-                    ).join('');
+                ).join('');
             }
 
             function populateSwiper(containerId, products) {
@@ -739,7 +739,7 @@
                     'Tidak ada deskripsi.';
                 document.getElementById('modalCarouselInner').innerHTML = product.images.map((src, i) =>
                     `<div class="carousel-item ${i === 0 ? 'active' : ''}"><img src="${src}" class="d-block w-100 modal-carousel-image"></div>`
-                    ).join('');
+                ).join('');
 
                 const specsContainer = document.getElementById('modalProductSpecs');
                 specsContainer.innerHTML = (product.specs && Object.keys(product.specs).length > 0) ?
@@ -893,6 +893,11 @@
             setupEventListeners();
         });
     </script>
+
+    <!-- Universal Checkout Bubble -->
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'toko-kosmetik',
+    ])
 </body>
 
 </html>
