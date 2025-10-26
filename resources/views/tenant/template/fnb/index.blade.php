@@ -563,6 +563,7 @@
                             'primary_image_src' => $product->primary_image_src,
                             'is_new' => $product->is_new ?? false,
                             'is_available' => $product->is_available ?? true,
+                            'unit' => $product->unit ? ['unit_name' => $product->unit->unit_name] : null,
                         ];
                     })
                     ->values();
@@ -580,7 +581,8 @@
                     price: parseFloat(product.price) || 0,
                     image: product.primary_image_src || '{{ asset('assets/images/no-image-icon.png') }}',
                     isNew: product.is_new || false,
-                    isAvailable: product.is_available !== false
+                    isAvailable: product.is_available !== false,
+                    unit: product.unit ? product.unit.unit_name : ''
                 };
             });
 
@@ -884,7 +886,9 @@
                             document.getElementById('modal-product-name').textContent = product.name;
                             document.getElementById('modal-product-description').textContent = product
                                 .description || 'Deskripsi produk tidak tersedia.';
-                            document.getElementById('modal-product-price').textContent = product.price;
+                            document.getElementById('modal-product-price').textContent = formatRupiah(product
+                                .price) + (product.unit ? ' / ' + product.unit : '');
+                            document.getElementById('modal-product-unit').textContent = product.unit_name;
 
                             // Atur visibilitas overlay stok
                             const stockOverlay = document.getElementById('modal-stock-overlay');
@@ -1193,7 +1197,7 @@
                         <p id="modal-product-description" class="text-sm text-gray-700"></p>
                         <div class="flex items-center justify-center md:justify-start gap-2">
                             <span id="modal-product-price" class="text-3xl font-extrabold text-[#994d51]"></span>
-                            <span class="text-sm text-gray-500">/ porsi</span>
+                            <span id="modal-product-unit" class="text-sm text-gray-500">/ porsi</span>
                         </div>
 
                         <button
