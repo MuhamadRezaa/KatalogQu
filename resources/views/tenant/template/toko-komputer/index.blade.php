@@ -8,7 +8,7 @@
     <link rel="icon"
         href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
         type="image/x-icon">
-    <title>{{ $userStore->store_name ?? 'TechZone' }} - Modern Computer Store</title>
+    <title>{{ $userStore->store_name ?? 'TechZone' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -392,48 +392,6 @@
                                 <p class="text-blue-800 text-sm">
                                     Garansi resmi 2 tahun, free mouse gaming
                                 </p>
-                            </div>
-
-                            <!-- Features -->
-                            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-gray-200">
-                                <div class="text-center">
-                                    <div
-                                        class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                        <i data-lucide="shield" class="text-blue-600"></i>
-                                    </div>
-                                    <p class="text-sm font-medium text-gray-900">
-                                        Garansi Resmi
-                                    </p>
-                                    <p class="text-xs text-gray-600">
-                                        Bergaransi resmi
-                                    </p>
-                                </div>
-
-                                <div class="text-center">
-                                    <div
-                                        class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                        <i data-lucide="truck" class="text-green-600"></i>
-                                    </div>
-                                    <p class="text-sm font-medium text-gray-900">
-                                        Gratis Ongkir
-                                    </p>
-                                    <p class="text-xs text-gray-600">
-                                        Medan & sekitarnya
-                                    </p>
-                                </div>
-
-                                <div class="text-center">
-                                    <div
-                                        class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                        <i data-lucide="undo-2" class="text-orange-600"></i>
-                                    </div>
-                                    <p class="text-sm font-medium text-gray-900">
-                                        Retur Mudah
-                                    </p>
-                                    <p class="text-xs text-gray-600">
-                                        7 hari retur
-                                    </p>
-                                </div>
                             </div>
 
                             <!-- Chat Button -->

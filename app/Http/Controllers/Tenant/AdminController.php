@@ -133,21 +133,23 @@ class AdminController extends Controller
                 // Baca gambar
                 $img = $manager->read($uploaded->getRealPath());
 
-                // Resize logo: max 512x512, maintain aspect ratio, prevent upscaling
+                // Commented out: Resize logo: max 512x512, maintain aspect ratio, prevent upscaling
+                /*
                 $img->resize(512, 512, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
+                */
 
-                // Encode to a lightweight PNG
-                $encodedPng = $img->toPng();
+                // Encode to a lightweight WEBP
+                $encodedWebp = $img->toWebp(80); // Quality 80
 
-                // Nama & path simpan (pakai .png karena sudah di-encode PNG)
-                $filename = $storeName . '-logo-' . time() . '.png';
+                // Nama & path simpan (pakai .webp karena sudah di-encode WEBP)
+                $filename = $storeName . '-logo-' . time() . '.webp';
                 $path     = 'store-logos/' . $filename;
 
                 // Simpan HASIL OLAHAN ke disk 'public'
-                $disk->put($path, (string) $encodedPng);
+                $disk->put($path, (string) $encodedWebp);
 
                 // Simpan path untuk DB
                 $validated['store_logo'] = $path;

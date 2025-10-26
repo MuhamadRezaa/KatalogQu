@@ -38,11 +38,13 @@ class StoreProductController extends Controller
             // For other formats (JPEG, PNG), process with Intervention Image
             $img = $manager->read($imageFile->getRealPath());
 
-            // Resize to max 1350x1080 (5:4 aspect ratio), maintain aspect ratio, prevent upsizing
+            // Commented out: Resize to max 1350x1080 (5:4 aspect ratio), maintain aspect ratio, prevent upsizing
+            /*
             $img->resize(1080, 1350, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
+            */
 
             // Encode to WEBP
             $encodedWebp = $img->toWebp(80); // Quality 80
@@ -179,13 +181,11 @@ class StoreProductController extends Controller
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile) {
                     try {
-                        $extension = $imageFile->getClientOriginalExtension();
-                        $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
-
-                        $imagePath = $imageFile->storeAs(
+                        $imagePath = $this->processAndStoreProductImage(
+                            $imageFile,
+                            $product->slug,
                             'product_gallery',
-                            $fileName,
-                            'public'
+                            $position + 1
                         );
                         ProductImage::create([
                             'product_id' => $product->id,
@@ -317,13 +317,11 @@ class StoreProductController extends Controller
 
             foreach ($request->file('additional_images') as $position => $imageFile) {
                 if ($imageFile && $allowedNewImages > 0) {
-                    $extension = $imageFile->getClientOriginalExtension();
-                    $fileName = $product->slug . '-' . ($position + 1) . '-' . uniqid() . '.' . $extension;
-
-                    $imagePath = $imageFile->storeAs(
+                    $imagePath = $this->processAndStoreProductImage(
+                        $imageFile,
+                        $product->slug,
                         'product_gallery',
-                        $fileName,
-                        'public'
+                        $product->images()->max('position') + 1
                     );
                     ProductImage::create([
                         'product_id' => $product->id,

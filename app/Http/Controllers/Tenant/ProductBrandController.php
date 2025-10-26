@@ -49,30 +49,27 @@ class ProductBrandController extends Controller
 
         if ($request->hasFile('image')) {
             $uploaded = $request->file('image');
-            $filename = $validated['slug'] . '.png';
+            $filename = $validated['slug'] . '.webp';
             $path = 'brands/' . $filename;
 
-            // Check if the uploaded file is already a PNG
-            if ($uploaded->getClientMimeType() === 'image/png') {
-                // If it's already PNG, store it directly without re-encoding
-                $uploaded->storeAs('brands', $filename, 'public');
-            } else {
-                // For other formats (JPEG, WEBP), process with Intervention Image
-                $manager = new ImageManager(new Driver());
-                $img = $manager->read($uploaded->getRealPath());
+            // Process with Intervention Image for WebP conversion
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($uploaded->getRealPath());
 
-                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
-                $img->resize(410, 512, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+            // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+            /*
+            $img->resize(410, 512, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            */
 
-                // Encode to PNG
-                $encodedPng = $img->toPng();
+            // Encode to WEBP
+            $encodedWebp = $img->toWebp(80); // Quality 80
 
-                // Store the processed image
-                Storage::disk('public')->put($path, (string) $encodedPng);
-            }
+            // Store the processed image
+            Storage::disk('public')->put($path, (string) $encodedWebp);
+
             $validated['image'] = $path;
         }
 
@@ -122,30 +119,27 @@ class ProductBrandController extends Controller
             }
 
             $uploaded = $request->file('image');
-            $filename = $validated['slug'] . '.png';
+            $filename = $validated['slug'] . '.webp';
             $path = 'brands/' . $filename;
 
-            // Check if the uploaded file is already a PNG
-            if ($uploaded->getClientMimeType() === 'image/png') {
-                // If it's already PNG, store it directly without re-encoding
-                $uploaded->storeAs('brands', $filename, 'public');
-            } else {
-                // For other formats (JPEG, WEBP), process with Intervention Image
-                $manager = new ImageManager(new Driver());
-                $img = $manager->read($uploaded->getRealPath());
+            // Process with Intervention Image for WebP conversion
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($uploaded->getRealPath());
 
-                // Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
-                $img->resize(410, 512, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+            // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+            /*
+            $img->resize(410, 512, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            */
 
-                // Encode to PNG
-                $encodedPng = $img->toPng();
+            // Encode to WEBP
+            $encodedWebp = $img->toWebp(80); // Quality 80
 
-                // Store the processed image
-                Storage::disk('public')->put($path, (string) $encodedPng);
-            }
+            // Store the processed image
+            Storage::disk('public')->put($path, (string) $encodedWebp);
+
             $validated['image'] = $path;
         }
 

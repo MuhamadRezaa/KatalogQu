@@ -30,7 +30,6 @@
                                     <th scope="col">Gambar</th>
                                     <th scope="col">Nama Produk</th>
                                     <th scope="col">Kategori</th>
-                                    <th scope="col">Brand</th>
                                     <th scope="col">Harga</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Aksi</th>
@@ -60,9 +59,6 @@
                                         </td>
                                         <td>
                                             {{ $product->category->name ?? '-' }}
-                                        </td>
-                                        <td>
-                                            {{ $product->brand->name ?? '-' }}
                                         </td>
                                         <td>
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
@@ -148,7 +144,8 @@
                                             class="text-danger">*</span></label>
                                     <input type="file" class="form-control" id="add_image" name="image"
                                         accept="image/jpeg,image/png,image/webp">
-                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
+                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel).
+                                        Format: JPG, PNG, WEBP. Maks: 5MB.</div>
                                     <div id="add_image_preview_container" class="mt-2">
                                         <!-- Preview will be inserted here by JS -->
                                     </div>
@@ -157,7 +154,8 @@
                                 @if (in_array('gambartambahan', $menus))
                                     <div class="mb-3">
                                         <label class="form-label">Gambar Tambahan (Maks. 3) (Opsional)</label>
-                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
+                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel).
+                                            Format: JPG, PNG, WEBP. Maks: 5MB.</div>
                                         <div id="add_additional_images_fields">
                                             <!-- Dynamic inputs and previews will be added here by JS -->
                                         </div>
@@ -337,7 +335,8 @@
                                     <label for="edit_image" class="form-label">Ganti Gambar Utama Produk</label>
                                     <input type="file" class="form-control" id="edit_image" name="image"
                                         accept="image/jpeg,image/png,image/webp">
-                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
+                                    <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel).
+                                        Format: JPG, PNG, WEBP. Maks: 5MB.</div>
                                     @error('image')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
@@ -350,7 +349,8 @@
                                 @if (in_array('gambartambahan', $menus))
                                     <div class="mb-3">
                                         <label class="form-label">Gambar Tambahan (Maks. 3) (Opsional)</label>
-                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel). Format: JPG, PNG, WEBP (akan dikonversi ke WEBP). Maks: 5MB.</div>
+                                        <div class="form-text">Rasio gambar direkomendasikan 5:4 (misal: 1350x1080 piksel).
+                                            Format: JPG, PNG, WEBP. Maks: 5MB.</div>
                                         <div id="edit_additional_images_fields_existing">
                                             <!-- Existing images will be loaded here by JS -->
                                         </div>
