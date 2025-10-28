@@ -79,6 +79,41 @@
             color: var(--primary-color);
         }
 
+        /* [PERBARUAN] Perbaikan Navbar Toggler */
+        .navbar-toggler {
+            border: none;
+            font-size: 1.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* [BARU] Styling menu mobile */
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                padding: 1rem;
+                background-color: var(--white-bg);
+                border-radius: 10px;
+                margin-top: 0.5rem;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.5rem 0;
+            }
+        }
+
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
@@ -402,7 +437,12 @@
 
         .footer a {
             color: #fff;
-            font-weight: 600;
+            /* font-weight: 600; */ /* Dihapus agar link kontak tidak bold */
+            text-decoration: none; /* Hilangkan underline */
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: var(--secondary-color); /* Warna hover link */
         }
 
         .footer-title {
@@ -435,24 +475,56 @@
             /* Fallback untuk browser lama */
         }
 
-        /* * [DIHAPUS] Gaya Pagination Modern tidak diperlukan lagi
-         * karena kita menggunakan tombol "Lihat Selengkapnya"
-        */
+        /* [BARU] Styling untuk ikon kontak di footer */
+        .contact-info i {
+            width: 20px; /* Lebar tetap untuk ikon */
+            margin-right: 0.5rem;
+            text-align: center;
+        }
+        .contact-info p {
+            margin-bottom: 0.5rem; /* Jarak antar baris kontak */
+        }
+        /* [BARU] Styling untuk ikon media sosial */
+        .social-links a {
+            color: rgba(255, 255, 255, 0.8); /* Warna ikon sedikit transparan */
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: #fff; /* Warna ikon saat hover */
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="#">
+             <a class="navbar-brand d-flex align-items-center" href="#"> {{-- Menggunakan d-flex agar sejajar --}}
                 @if ($userStore->store_logo)
                     <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="Logo" class="brand-logo me-2">
                 @else
-                    <div class="brand-icon"><i class="fas fa-gem"></i></div>
+                    <div class="brand-icon me-2"><i class="fas fa-gem fs-2" style="color: var(--primary-color);"></i></div> {{-- Icon sedikit diperbesar --}}
                 @endif
                 <span class="brand-text">{{ $userStore->store_name ?? 'Beauty Store' }}</span>
             </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+             <div class="collapse navbar-collapse" id="navbarNav">
+                {{-- Anda bisa menambahkan link navigasi di sini jika diperlukan --}}
+                {{-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Produk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                </ul> --}}
+            </div>
         </div>
     </nav>
 
@@ -605,31 +677,43 @@
                 <h2 class="section-title">Semua Produk</h2>
                 <p class="section-subtitle">Pilih kategori produk yang sesuai dengan selera Anda</p>
             </div>
-            <div class="row align-items-center g-3 mt-3">
-                <div class="col-lg-3"><input type="text" id="searchInput" class="form-control filter-control"
-                        placeholder="Cari produk..." value="{{ request('search') }}"></div>
-                <div class="col-lg-2 col-md-3"><select id="categoryFilter" class="form-select filter-control">
+             {{-- [PERBARUAN] Grid Filter Dibuat Responsif --}}
+             <div class="row g-3 mt-3">
+                <div class="col-12">
+                    <input type="text" id="searchInput" class="form-control filter-control"
+                        placeholder="Cari produk..." value="{{ request('search') }}">
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <select id="categoryFilter" class="form-select form-select-sm filter-control">
                         <option value="">Semua Kategori</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}"
                                 {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
-                    </select></div>
-                <div class="col-lg-2 col-md-3"><select id="subcategoryFilter" class="form-select filter-control">
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <select id="subcategoryFilter" class="form-select form-select-sm filter-control" disabled>
                         <option value="">Semua Sub Kategori</option>
-                    </select></div>
-                <div class="col-lg-2 col-md-3"><select id="brandFilter" class="form-select filter-control">
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <select id="brandFilter" class="form-select form-select-sm filter-control">
                         <option value="">Semua Brand</option>
-                    </select></div>
-                <div class="col-lg-2 col-md-3"><select id="priceFilter" class="form-select filter-control">
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <select id="priceFilter" class="form-select form-select-sm filter-control">
                         <option value="">Semua Harga</option>
                         @foreach ($priceRanges as $range)
                             <option data-min="{{ $range->min ?? '' }}" data-max="{{ $range->max ?? '' }}"
                                 {{ request('price_min') == $range->min && request('price_max') == $range->max ? 'selected' : '' }}>
                                 {{ $range->name }}</option>
                         @endforeach
-                    </select></div>
-                <div class="col-lg-2 col-md-3"><select id="sortFilter" class="form-select filter-control">
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <select id="sortFilter" class="form-select form-select-sm filter-control">
                         <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>Terbaru
                         </option>
                         <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Harga
@@ -637,10 +721,14 @@
                         <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Harga
                             Tertinggi</option>
                         <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nama A-Z</option>
-                    </select></div>
-                <div class="col-lg-1 col-md-3"><a href="{{ url()->current() }}#products"
-                        class="btn btn-outline-secondary w-100">Reset</a></div>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <a href="{{ url()->current() }}#products"
+                        class="btn btn-outline-secondary btn-sm w-100">Reset</a>
+                </div>
             </div>
+            {{-- Akhir Perbaruan Grid Filter --}}
         </div>
     </section>
 
@@ -648,7 +736,8 @@
         <div class="container">
             <div class="row g-4" id="productsGrid">
                 @forelse ($products as $product)
-                    <div class="col-6 col-md-4 col-lg-4">
+                     {{-- [PERBARUAN] Kolom produk dibuat responsif (2 di HP, 3 di tablet, 4 di desktop) --}}
+                     <div class="col-6 col-md-4 col-lg-3">
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             @if ($product->discount_percentage)
                                 <div class="badge-promo">PROMO</div>
@@ -693,21 +782,69 @@
     </div>
     {{-- AKHIR PERBARUAN --}}
 
+    {{-- [PERBARUAN] Footer dengan Informasi Kontak dan Media Sosial --}}
     <footer id="contact" class="footer py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="footer-brand">
+            <div class="row gy-4"> {{-- gy-4 untuk spasi vertikal antar kolom di mobile --}}
+                {{-- Kolom Info Toko & Logo --}}
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-3">
                         @if ($userStore->store_logo)
                             <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="Logo" class="footer-logo mb-3" width="150"
                                 style="border-radius:10px; background: white; padding: 10px;">
-                        @else<h4 class="text-white">{{ $userStore->store_name }}</h4>
+                        @else
+                            <h4 class="text-white mb-3">{{ $userStore->store_name }}</h4>
                         @endif
-                        <p class="footer-description">{{ $userStore->store_description }}</p>
+                        @if($userStore->store_description)
+                            <p class="footer-description">{{ $userStore->store_description }}</p>
+                        @endif
                     </div>
                 </div>
+
+                {{-- Kolom Kontak --}}
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-title">Hubungi Kami</h5>
+                    <div class="contact-info">
+                        @if ($userStore->store_phone)
+                            <p><i class="fas fa-phone"></i>
+                                <a href="tel:{{ $userStore->store_phone }}">{{ $userStore->store_phone }}</a>
+                            </p>
+                        @endif
+                        @if ($userStore->store_email)
+                            <p><i class="fas fa-envelope"></i>
+                                <a href="mailto:{{ $userStore->store_email }}">{{ $userStore->store_email }}</a>
+                            </p>
+                        @endif
+                        @if ($userStore->store_address)
+                            <p><i class="fas fa-map-marker-alt"></i>
+                                {{ $userStore->store_address }}
+                            </p>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Kolom Media Sosial --}}
+                @if ($userStore->facebook_url || $userStore->instagram_url || $userStore->twitter_url)
+                    <div class="col-lg-4 col-md-12"> {{-- Kolom ini full width di bawah MD --}}
+                        <h5 class="footer-title">Ikuti Kami</h5>
+                        <div class="social-links">
+                            @if ($userStore->facebook_url)
+                                <a href="{{ $userStore->facebook_url }}" target="_blank" class="me-3 fs-4"><i class="fab fa-facebook"></i></a>
+                            @endif
+                            @if ($userStore->instagram_url)
+                                <a href="{{ $userStore->instagram_url }}" target="_blank" class="me-3 fs-4"><i class="fab fa-instagram"></i></a>
+                            @endif
+                            @if ($userStore->twitter_url)
+                                <a href="{{ $userStore->twitter_url }}" target="_blank" class="fs-4"><i class="fab fa-twitter"></i></a>
+                            @endif
+                            {{-- Anda bisa menambahkan ikon media sosial lain di sini (misal: TikTok, YouTube) jika datanya ada di $userStore --}}
+                        </div>
+                    </div>
+                @endif
             </div>
+
+            {{-- Copyright --}}
             <div class="row mt-4 pt-4 border-top border-secondary">
                 <div class="col-12 text-center">
                     <p class="mb-0 small">&copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by PT. Era
@@ -716,6 +853,8 @@
             </div>
         </div>
     </footer>
+    {{-- AKHIR PERBARUAN Footer --}}
+
 
     <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
         aria-hidden="true">
@@ -841,7 +980,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Data dari PHP
-            const allProductsData = @json($productsForJs);
+            let allProductsData = @json($productsForJs); // Menggunakan let agar bisa diupdate
             // [PERBAIKAN TOTAL] Menggunakan data kategori dan subkategori yang lengkap dari controller
             const categoriesData = @json($categoriesForFilterJs);
 
@@ -917,9 +1056,9 @@
 
                 new bootstrap.Carousel(document.getElementById('modalCarousel')).to(0);
 
-                const specsContainer = document.getElementById('modalProductSpecs');
+                 const specsContainer = document.getElementById('modalProductSpecs');
                 specsContainer.innerHTML = '';
-                if (product.specs && Object.keys(product.specs).length > 0) {
+                if (product.specs && typeof product.specs === 'object' && Object.keys(product.specs).length > 0) { // Check if specs is an object
                     let listHtml = '<ul class="list-unstyled">';
                     for (const [key, value] of Object.entries(product.specs)) {
                         listHtml += `<li><strong>${key}:</strong> ${value}</li>`;
@@ -928,6 +1067,7 @@
                 } else {
                     specsContainer.innerHTML = '<p>Tidak ada spesifikasi.</p>';
                 }
+
 
                 const message = `Halo, saya tertarik dengan produk "${product.name}".`;
                 document.getElementById('chatButton').href =
@@ -964,9 +1104,16 @@
 
                 event.stopPropagation();
                 const productId = parseInt(card.dataset.productId, 10);
-                const product = allProductsData.find(p => p.id === productId);
-                populateModal(product);
-                if (!productModal._isShown) productModal.show();
+                // Cari produk di allProductsData
+                let product = allProductsData.find(p => p.id === productId);
+
+                if (product) {
+                    populateModal(product);
+                    if (!productModal._isShown) productModal.show();
+                } else {
+                    console.error('Produk tidak ditemukan di data JS:', productId);
+                    // Anda bisa menambahkan fallback di sini jika diperlukan, misal fetch data produk
+                }
             }
 
             // Pasang listener di parent container. Ini akan menangani kartu yang ada sekarang DAN yang dimuat nanti.
@@ -1114,7 +1261,7 @@
 
             if (loadMoreBtn && productsGridContainer) {
                 loadMoreBtn.addEventListener('click', function() {
-                    const url = loadMoreBtn.dataset.nextPageUrl;
+                    let url = loadMoreBtn.dataset.nextPageUrl;
                     if (!url) return;
 
                     // Tampilkan status loading
@@ -1122,39 +1269,48 @@
                     loadMoreBtn.innerHTML =
                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat...';
 
+                     // Tambahkan parameter format=json agar controller bisa kirim data saja
+                     if (url.includes('?')) {
+                        url += '&format=json';
+                    } else {
+                        url += '?format=json';
+                    }
+
+
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
                             }
-                            return response.text();
+                            return response.json(); // Harapkan JSON
                         })
-                        .then(html => {
-                            // Parse HTML yang diterima
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
+                        .then(data => {
+                            // data.productsHTML berisi HTML untuk produk-produk baru
+                            // data.nextPageUrl berisi URL untuk halaman berikutnya (jika ada)
+                            // data.newProductsData berisi data JS untuk produk baru
 
-                            // Ambil produk baru dari grid di HTML yang diterima
-                            const newProducts = doc.querySelectorAll(
-                                '#productsGrid > .col-md-4');
+                            if (data.productsHTML) {
+                                // Buat div sementara untuk menampung HTML
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = data.productsHTML;
 
-                            if (newProducts.length > 0) {
-                                newProducts.forEach(product => {
-                                    productsGridContainer.appendChild(product);
+                                // Tambahkan produk baru ke grid
+                                Array.from(tempDiv.children).forEach(productElement => {
+                                    productsGridContainer.appendChild(productElement);
                                 });
-                            } else {
-                                // Jika tidak ada produk baru, mungkin ada masalah atau halaman kosong
-                                console.warn(
-                                    'Load more: No new products found on the next page.');
                             }
 
-                            // Cek apakah ada tombol "load more" di halaman berikutnya
-                            const newLoadMoreBtn = doc.getElementById('loadMoreBtn');
+                            // Tambahkan data produk baru ke allProductsData
+                             if (data.newProductsData && Array.isArray(data.newProductsData)) {
+                                allProductsData = allProductsData.concat(data.newProductsData);
+                                // [Opsional] Update filter brand jika ada brand baru
+                                // populateBrandFilter();
+                            }
 
-                            if (newLoadMoreBtn && newLoadMoreBtn.dataset.nextPageUrl) {
+
+                            if (data.nextPageUrl) {
                                 // Update URL di tombol yang ada
-                                loadMoreBtn.dataset.nextPageUrl = newLoadMoreBtn.dataset
-                                    .nextPageUrl;
+                                loadMoreBtn.dataset.nextPageUrl = data.nextPageUrl;
                                 // Kembalikan tombol ke status normal
                                 loadMoreBtn.disabled = false;
                                 loadMoreBtn.innerHTML = 'Lihat Selengkapnya';
@@ -1162,14 +1318,12 @@
                                 // Ini adalah halaman terakhir, sembunyikan tombol
                                 loadMoreBtn.style.display = 'none';
                             }
-
-                            // Kita tidak perlu memanggil setupProductCardListeners() lagi karena kita pakai event delegation
                         })
                         .catch(error => {
                             console.error('Error loading more products:', error);
-                            // Kembalikan tombol ke status normal jika terjadi error
-                            loadMoreBtn.disabled = false;
-                            loadMoreBtn.innerHTML = 'Gagal Memuat. Coba Lagi.';
+                           // Kembalikan tombol ke status normal jika terjadi error
+                           loadMoreBtn.disabled = false;
+                           loadMoreBtn.innerHTML = 'Gagal Memuat. Coba Lagi.';
                         });
                 });
             }
