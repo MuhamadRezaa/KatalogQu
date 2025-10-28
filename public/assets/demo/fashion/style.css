@@ -1142,6 +1142,93 @@ body {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
               }
 
+              .similar-products-section {
+                margin-top: 40px;
+                padding-top: 30px;
+                border-top: 2px solid #e0e0e0;
+              }
+
+              .similar-products-section h3 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+              }
+
+              .similar-products-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                margin-top: 20px;
+              }
+
+              .similar-product-card {
+                background: #f8f8f8;
+                border-radius: 12px;
+                overflow: hidden;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+              }
+
+              .similar-product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+                border-color: #999;
+              }
+
+              .similar-product-image {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+                background: #e0e0e0;
+              }
+
+              .similar-product-info {
+                padding: 12px;
+              }
+
+              .similar-product-name {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 5px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
+
+              .similar-product-price {
+                font-size: 0.85rem;
+                font-weight: 700;
+                color: #999;
+              }
+
+              @media (max-width: 768px) {
+                .similar-products-grid {
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 10px;
+                }
+
+                .similar-product-image {
+                  height: 120px;
+                }
+
+                .similar-product-info {
+                  padding: 8px;
+                }
+
+                .similar-product-name {
+                  font-size: 0.8rem;
+                }
+
+                .similar-product-price {
+                  font-size: 0.75rem;
+                }
+              }
+
 /* Loading Overlay */
 .loading-overlay {
     display: none;

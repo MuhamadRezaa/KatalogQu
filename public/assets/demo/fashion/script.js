@@ -710,6 +710,22 @@ const categoriesData = {
           priceHTML = `<span class="old-price">${formattedOldPrice}</span> ${priceHTML}`;
       }
 
+      const similarProducts = getSimilarProducts(product, 3);
+      const similarProductsHTML = similarProducts.length > 0 ? `
+          <div class="modal-section">
+              <h4>Produk Serupa:</h4>
+              <div class="similar-products-grid">
+                  ${similarProducts.map(similarProd => `
+                      <div class="similar-product-card" onclick="showProductDetails(${similarProd.id})">
+                          <img src="${ASSET_URL}/${similarProd.image}" alt="${similarProd.name}">
+                          <p class="similar-product-name">${similarProd.name}</p>
+                          <p class="similar-product-price">${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(similarProd.price)}</p>
+                      </div>
+                  `).join('')}
+              </div>
+          </div>
+      ` : '';
+
       modalContent.innerHTML = `
           <div class="modal-product-details">
               <div class="modal-product-image-wrapper">
@@ -736,6 +752,7 @@ const categoriesData = {
                   ` : ''}
                   ${sizesHTML}
                   <a href="https://wa.me/6281572505989?text=Halo,%20saya%20tertarik%20dengan%20produk%20${product.name}%20ini." target="_blank" class="contact-button">Hubungi</a>
+                  ${similarProductsHTML}
               </div>
           </div>
 
@@ -805,6 +822,49 @@ const categoriesData = {
               .stock-info.low-stock { color: #ffc107; }
               .stock-info.out-of-stock { color: #dc3545; }
 
+              .similar-products-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                  gap: 1rem;
+              }
+
+              .similar-product-card {
+                  cursor: pointer;
+                  text-align: center;
+                  border: 1px solid #eee;
+                  border-radius: 8px;
+                  padding: 0.5rem;
+                  transition: all 0.2s ease-in-out;
+              }
+
+              .similar-product-card:hover {
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                  transform: translateY(-2px);
+              }
+
+              .similar-product-card img {
+                  width: 100%;
+                  height: 80px;
+                  object-fit: cover;
+                  border-radius: 4px;
+                  margin-bottom: 0.5rem;
+              }
+
+              .similar-product-name {
+                  font-size: 0.8rem;
+                  font-weight: 600;
+                  color: #333;
+                  margin-bottom: 0.2rem;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+              }
+
+              .similar-product-price {
+                  font-size: 0.75rem;
+                  color: #999;
+              }
+
               @media (max-width: 768px) {
                   .modal-product-details {
                       grid-template-columns: 1fr;
@@ -846,6 +906,18 @@ const categoriesData = {
           closeModal();
       }
   });
+
+  // Function to get similar products
+  function getSimilarProducts(currentProduct, limit = 3) {
+      if (!currentProduct || !allProducts) return [];
+
+      const similar = allProducts.filter(p =>
+          p.category === currentProduct.category && p.id !== currentProduct.id
+      );
+
+      // Shuffle and take a limited number of similar products
+      return similar.sort(() => 0.5 - Math.random()).slice(0, limit);
+  }
 
   // Update statistics
   function updateStatistics() {
