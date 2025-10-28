@@ -379,6 +379,83 @@
             margin-bottom: 0;
             /* Hapus margin bawah default */
         }
+
+        .related-products-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .related-products-section h4 {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: left;
+            /* Sesuaikan jika perlu */
+        }
+
+        .related-products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            /* Grid responsif */
+            gap: 15px;
+            /* Jarak antar item */
+        }
+
+        .related-product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+
+        .related-product-card:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-product-image {
+            width: 100%;
+            height: 80px;
+            /* Tinggi gambar tetap */
+            object-fit: contain;
+            /* Tampilkan seluruh gambar */
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .related-product-name {
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #333;
+            /* Batasi teks agar tidak terlalu panjang */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .related-product-price {
+            font-size: 0.8em;
+            color: #e74c3c;
+            /* Warna harga */
+            font-weight: bold;
+        }
+
+        /* Placeholder jika tidak ada gambar */
+        .related-no-image {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            color: #aaa;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 
@@ -462,7 +539,7 @@
                 {{-- Tombol Semua Kategori
                 <div class="category-item" onclick="filterByCategory('all')">
                     {{-- [BARU] Tambahkan ikon generik untuk 'Semua Kategori' --}}
-                    {{-- <i class="fas fa-boxes category-icon"></i>
+                {{-- <i class="fas fa-boxes category-icon"></i>
                     <h3>Semua Kategori</h3>
                     <p>Lihat semua produk</p>
                 </div> --}}
@@ -685,6 +762,15 @@
                     </div>
                 @endif
 
+                {{-- [BARU] Bagian Produk Serupa --}}
+                <div class="related-products-section" id="related-products-section" style="display: none;">
+                    <h4>Produk Serupa</h4>
+                    <div class="related-products-container" id="related-products-container">
+                        {{-- Produk serupa akan dimuat di sini oleh JavaScript --}}
+                    </div>
+                </div>
+                {{-- Akhir Bagian Produk Serupa --}}
+
             </div>
             <div class="modal-actions">
                 <button class="modal-whatsapp" onclick="chatWhatsAppFromModal()">
@@ -742,14 +828,15 @@
     <script>
         let currentProductForModal = null;
         const productsGrid = document.getElementById('productsGrid');
+        // Ambil semua kartu produk SEKALI saat DOM siap, pastikan grid ada
         const allProductCards = productsGrid ? Array.from(productsGrid.getElementsByClassName('product-card')) : [];
         const noResultsMessage = document.getElementById('noResultsMessage');
 
-        // Cache elemen filter
+        // Cache elemen filter DENGAN pengecekan null
         const categoryFilterSelect = document.getElementById('categoryFilter');
         const subcategoryFilterSelect = document.getElementById('subcategoryFilter'); // Mungkin null
         const brandFilterSelect = document.getElementById('brandFilter'); // Mungkin null
-        const priceRangeFilterSelect = document.getElementById('priceRangeFilter'); // Mungkin null (jika dikontrol menu)
+        const priceRangeFilterSelect = document.getElementById('priceRangeFilter'); // Mungkin null
         const sortBySelect = document.getElementById('sortBy');
         const searchBoxInput = document.getElementById('searchBox');
 
@@ -767,72 +854,101 @@
         }
 
         function getCategoryName(categorySlug) {
-            const categoryElement = document.querySelector(`#categoryFilter option[value="${categorySlug}"]`);
+            // Cek dulu apakah categoryFilterSelect ada
+            if (!categoryFilterSelect) return categorySlug || 'Lainnya';
+            const categoryElement = categoryFilterSelect.querySelector(`option[value="${categorySlug}"]`);
             return categoryElement ? categoryElement.textContent : (categorySlug || 'Lainnya');
         }
 
         function getBrandName(brandSlug) {
-            if (!brandFilterSelect) return '';
+            // Cek dulu apakah brandFilterSelect ada
+            if (!brandFilterSelect || !brandSlug) return ''; // Tambahkan cek brandSlug
             const brandElement = brandFilterSelect.querySelector(`option[value="${brandSlug}"]`);
             return brandElement ? brandElement.textContent : '';
         }
 
         function getSubCategoryName(subCategorySlug) {
+            // Cari di antara opsi asli (originalSubcategoryOptions sudah handle null)
+            if (!subCategorySlug) return ''; // Tambahkan cek subCategorySlug
             const subCategoryOption = originalSubcategoryOptions.find(option => option.value === subCategorySlug);
             return subCategoryOption ? subCategoryOption.textContent : '';
         }
 
+        // Fungsi helper untuk render spesifikasi
         function renderSpecs(specsJsonString) {
             try {
+                // Coba parse JSON, fallback ke objek kosong jika tidak valid atau null
                 const specs = JSON.parse(specsJsonString || '{}');
                 let entries = [];
 
+                // Handle jika specs adalah array objek {key, value} atau objek langsung
                 if (Array.isArray(specs)) {
                     specs.forEach(item => {
                         if (item && typeof item === 'object') {
-                            if ('key' in item && 'value' in item) entries.push([item.key, item.value]);
-                            else Object.entries(item).forEach(([k, v]) => {
-                                if (v !== null && v !== undefined && String(v).trim() !== '') entries.push([
-                                    k, v
-                                ]);
-                            });
+                            if ('key' in item && 'value' in item) {
+                                entries.push([item.key, item.value]);
+                            } else {
+                                // Jika formatnya hanya objek tanpa key/value eksplisit
+                                Object.entries(item).forEach(([k, v]) => {
+                                    // Hanya tambahkan jika value tidak kosong/null/undefined
+                                    if (v !== null && v !== undefined && String(v).trim() !== '') {
+                                        entries.push([k, v]);
+                                    }
+                                });
+                            }
                         }
                     });
                 } else if (specs && typeof specs === 'object') {
+                    // Ambil entries dari objek dan filter yang value-nya kosong
                     entries = Object.entries(specs).filter(([_, v]) => v !== null && v !== undefined && String(v).trim() !==
                         '');
                 }
 
-                if (entries.length === 0) return '<li class="empty-spec">Tidak ada spesifikasi</li>';
+                // Jika setelah diproses tidak ada entri valid
+                if (entries.length === 0) {
+                    return '<li class="empty-spec">Tidak ada spesifikasi</li>';
+                }
 
+                // Format entri menjadi HTML list item
                 return entries.map(([k, v]) => {
+                    // Format key: Ubah underscore/dash menjadi spasi, kapitalisasi kata
                     const formattedKey = k ? String(k).replace(/_/g, ' ').replace(/-/g, ' ').replace(/\b\w/g, l => l
                         .toUpperCase()) : '';
-                    if (!formattedKey) return `<li><span>${v}</span></li>`;
+                    // Jika tidak ada key (mungkin dari array string lama), tampilkan value saja
+                    if (!formattedKey) {
+                        return `<li><span>${v}</span></li>`; // Value saja, tanpa strong
+                    }
+                    // Tampilkan key dan value
                     return `<li><strong>${formattedKey}</strong> <span>${v}</span></li>`;
                 }).join('');
 
             } catch (e) {
-                console.error("Error parsing specification JSON:", e);
-                return '<li class="empty-spec">Gagal memuat spesifikasi</li>';
+                // Tangani jika JSON tidak valid
+                console.error("Error parsing specification JSON:", e, "Input:", specsJsonString);
+                return '<li class="empty-spec">Gagal memuat spesifikasi (format data salah)</li>';
             }
         }
 
 
         // --- Fungsi Modal ---
         function showDetail(buttonElement) {
-            const card = buttonElement.closest('.product-card');
+            // Cari elemen card terdekat, bisa jadi button itu sendiri jika event delegation dipakai
+            const card = buttonElement.closest ? buttonElement.closest('.product-card, .related-product-card') :
+                buttonElement;
             if (!card || !card.dataset) {
                 console.error('Card or card data not found for detail view.');
                 return;
             }
             const productData = card.dataset;
+            const currentProductName = productData.name; // Simpan nama produk saat ini
+            const currentCategory = productData.category; // Simpan kategori produk saat ini
 
             currentProductForModal = {
-                name: productData.name || 'Produk',
+                name: currentProductName,
                 whatsapp: productData.whatsapp || '{{ $userStore->store_phone }}' // Fallback
             };
 
+            // Ambil elemen modal
             const modalTitle = document.getElementById('modalTitle');
             const modalImage = document.getElementById('modalImage');
             const modalCategory = document.getElementById('modalCategory');
@@ -847,16 +963,20 @@
             const modalBadgeNew = document.getElementById('modalBadgeNew');
             const modalBadgePromo = document.getElementById('modalBadgePromo');
             const productModal = document.getElementById('productModal');
+            const relatedSection = document.getElementById('related-products-section');
+            const relatedContainer = document.getElementById('related-products-container');
 
-            if (modalTitle) modalTitle.textContent = productData.name || 'Detail Produk';
+            // --- Isi modal dengan data produk utama ---
+            if (modalTitle) modalTitle.textContent = currentProductName || 'Detail Produk';
             if (modalImage) {
                 modalImage.src = productData.image || 'https://via.placeholder.com/400?text=No+Image';
-                modalImage.alt = productData.name || 'Gambar Produk';
+                modalImage.alt = currentProductName || 'Gambar Produk';
             }
             if (modalCategory) modalCategory.textContent = getCategoryName(productData.category);
             if (modalUnit) modalUnit.textContent = `Unit: ${productData.unit || 'N/A'}`;
             if (modalDescription) modalDescription.textContent = productData.description || 'Tidak ada deskripsi.';
 
+            // Tampilkan Brand jika elemen filter brand ada & data brand ada
             if (modalBrand && brandFilterSelect) {
                 const brandName = getBrandName(productData.brand);
                 if (brandName && productData.brand !== 'all' && productData.brand !== '') {
@@ -869,6 +989,7 @@
                 modalBrand.style.display = 'none';
             }
 
+            // Tampilkan Sub Kategori jika elemen filter subkategori ada & data subkategori ada
             if (modalSubCategory && subcategoryFilterSelect) {
                 const subCategoryName = getSubCategoryName(productData.subcategory);
                 if (subCategoryName && productData.subcategory !== 'all' && productData.subcategory !== '') {
@@ -881,6 +1002,7 @@
                 modalSubCategory.style.display = 'none';
             }
 
+            // Logika Harga dan Badge
             const price = parseFloat(productData.price);
             const oldPrice = productData.oldPrice ? parseFloat(productData.oldPrice) : null;
             const isNew = productData.isNew === 'true';
@@ -899,14 +1021,10 @@
                 }
             }
 
-            if (modalBadgePromo) {
-                modalBadgePromo.style.display = (showPromoBadge || isPromo) ? 'inline-block' : 'none';
-            }
+            if (modalBadgePromo) modalBadgePromo.style.display = (showPromoBadge || isPromo) ? 'inline-block' : 'none';
+            if (modalBadgeNew) modalBadgeNew.style.display = isNew ? 'inline-block' : 'none';
 
-            if (modalBadgeNew) {
-                modalBadgeNew.style.display = isNew ? 'inline-block' : 'none';
-            }
-
+            // Logika Spesifikasi (hanya jika elemen dan menu aktif)
             if (modalSpecsList && modalSpecsContainer) {
                 const specMenuActive = in_array('spesifikasi', {!! json_encode($activeMenuCodes ?? []) !!});
                 if (specMenuActive) {
@@ -916,6 +1034,50 @@
                     modalSpecsContainer.style.display = 'none';
                 }
             }
+
+            // --- Logika untuk Produk Serupa ---
+            if (relatedSection && relatedContainer) {
+                relatedContainer.innerHTML = '';
+                let relatedCount = 0;
+                const maxRelated = 4;
+
+                allProductCards.forEach(relatedCard => {
+                    const relatedData = relatedCard.dataset;
+                    if (relatedData.category === currentCategory &&
+                        relatedData.name !== currentProductName &&
+                        relatedCount < maxRelated) {
+                        const relatedName = relatedData.name;
+                        const relatedPrice = formatRupiah(relatedData.price);
+                        const relatedImage = relatedData.image || '';
+
+                        const cardElement = document.createElement('div');
+                        cardElement.className = 'related-product-card';
+                        // Salin semua data-*
+                        Object.keys(relatedData).forEach(key => {
+                            cardElement.dataset[key] = relatedData[key];
+                        });
+                        // Tambahkan event listener
+                        cardElement.onclick = function() {
+                            showDetail(this);
+                        };
+
+                        let imageHtml = relatedImage ?
+                            `<img src="${relatedImage}" alt="${relatedName}" class="related-product-image" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                           <div class="related-no-image" style="display: none;"><i class="fas fa-image"></i></div>` :
+                            `<div class="related-no-image"><i class="fas fa-image"></i></div>`;
+
+                        cardElement.innerHTML = `
+                        ${imageHtml}
+                        <div class="related-product-name">${relatedName}</div>
+                        <div class="related-product-price">${relatedPrice}</div>
+                    `;
+                        relatedContainer.appendChild(cardElement);
+                        relatedCount++;
+                    }
+                });
+                relatedSection.style.display = relatedCount > 0 ? 'block' : 'none';
+            }
+            // --- Akhir Logika Produk Serupa ---
 
             if (productModal) productModal.style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -950,36 +1112,29 @@
         // --- Fungsi Filter & Sort ---
         // [PERBARUAN] Fungsi untuk mengupdate opsi subkategori agar SELALU AKTIF
         function updateSubcategoryOptions() {
-            // Cek jika elemen ada
             if (!categoryFilterSelect || !subcategoryFilterSelect) return;
 
-            const currentSubcategoryValue = subcategoryFilterSelect.value; // Simpan nilai subkategori yg dipilih sebelumnya
+            const currentSubcategoryValue = subcategoryFilterSelect.value;
+            const firstOption = subcategoryFilterSelect.options[0]; // Opsi "Semua Sub Kategori"
 
-            // Simpan opsi "Semua Sub Kategori"
-            const firstOption = subcategoryFilterSelect.options[0];
-            subcategoryFilterSelect.innerHTML = ''; // Kosongkan semua opsi
-            subcategoryFilterSelect.appendChild(firstOption); // Tambahkan "Semua Sub Kategori" kembali
-            firstOption.selected = true; // Jadikan "Semua" sebagai default terpilih
+            subcategoryFilterSelect.innerHTML = ''; // Kosongkan
+            subcategoryFilterSelect.appendChild(firstOption); // Tambahkan "Semua" kembali
+            firstOption.selected = true; // Jadikan default
 
-            // SELALU AKTIFKAN dropdown subkategori
+            // Selalu aktifkan
             subcategoryFilterSelect.disabled = false;
 
-            // Tampilkan SEMUA subkategori dari data asli
+            // Tambahkan semua opsi asli (kecuali "Semua")
             originalSubcategoryOptions.forEach(option => {
-                // Lewati opsi "Semua Sub Kategori" agar tidak duplikat
                 if (option.value !== 'all') {
                     subcategoryFilterSelect.appendChild(option.cloneNode(true));
                 }
             });
 
-            // Coba setel kembali nilai sebelumnya jika masih valid di antara semua opsi
+            // Coba pulihkan pilihan sebelumnya
             const existingOption = Array.from(subcategoryFilterSelect.options).find(opt => opt.value ===
                 currentSubcategoryValue);
-            if (existingOption) {
-                subcategoryFilterSelect.value = currentSubcategoryValue;
-            } else {
-                subcategoryFilterSelect.value = 'all'; // Jika tidak, kembali ke "Semua"
-            }
+            subcategoryFilterSelect.value = existingOption ? currentSubcategoryValue : 'all';
         }
 
 
@@ -1027,30 +1182,25 @@
                 const matchesBrand = !brandFilterSelect || selectedBrand === 'all' || cardBrandSlug ===
                     selectedBrand;
 
-                // [PERBAIKAN] Jika kategori spesifik dipilih, subkategori HARUS cocok DENGAN KATEGORI ITU ATAU subkategori 'all'
-                let subcategoryInCategoryMatch = true;
-                if (selectedCategory !== 'all' && subcategoryFilterSelect && selectedSubcategory !== 'all') {
-                    // Cari opsi subkategori yang dipilih di dropdown
-                    const selectedSubOption = Array.from(subcategoryFilterSelect.options).find(opt => opt.value ===
-                        selectedSubcategory);
-                    // Cek apakah subkategori yang dipilih memang milik kategori yang dipilih
-                    if (selectedSubOption && selectedSubOption.dataset.categorySlug !== selectedCategory) {
-                        // Jika tidak cocok, produk ini tidak boleh ditampilkan KECUALI subkategori produknya KOSONG
-                        // Atau jika subkategori produknya cocok dengan yang dipilih
-                        subcategoryInCategoryMatch = (cardSubcategorySlug === '' || cardSubcategorySlug ===
-                            selectedSubcategory);
+                // [PERBAIKAN LOGIKA] Filter subkategori hanya berlaku jika kategori spesifik dipilih
+                let subcategoryMatchFinal = true;
+                if (subcategoryFilterSelect && selectedSubcategory !== 'all') {
+                    // Jika kategori BUKAN 'all' DAN subkategori BUKAN 'all'
+                    if (selectedCategory !== 'all') {
+                        // Produk harus cocok dengan subkategori DAN kategori
+                        subcategoryMatchFinal = (cardSubcategorySlug === selectedSubcategory && cardCategorySlug ===
+                            selectedCategory);
                     } else {
-                        // Jika subkategori milik kategori atau tidak ada data categorySlug, biarkan filter subkategori biasa
-                        subcategoryInCategoryMatch = matchesSubcategory;
+                        // Jika kategori 'all', cukup cocokkan subkategori saja
+                        subcategoryMatchFinal = (cardSubcategorySlug === selectedSubcategory);
                     }
-                } else {
-                    subcategoryInCategoryMatch =
-                        matchesSubcategory; // Jika kategori 'all' atau filter subkategori tidak aktif/all
                 }
+                // Jika filter subkategori 'all', maka selalu true (matchesSubcategory sudah 'all')
+                // Jika filter subkategori tidak ada, maka selalu true
 
 
-                if (matchesSearch && matchesPrice && matchesCategory && subcategoryInCategoryMatch &&
-                    matchesBrand) { // Gunakan subcategoryInCategoryMatch
+                if (matchesSearch && matchesPrice && matchesCategory && subcategoryMatchFinal &&
+                    matchesBrand) { // Gunakan subcategoryMatchFinal
                     visibleCards.push(card);
                 }
             });
@@ -1098,15 +1248,14 @@
 
         function filterByCategory(categorySlug) {
             if (categoryFilterSelect) categoryFilterSelect.value = categorySlug;
-            // [PERBARUAN] JANGAN reset subkategori di sini, biarkan nilainya
+            // [PERBARUAN] JANGAN reset subkategori saat kategori diubah dari tombol
             // if (subcategoryFilterSelect) subcategoryFilterSelect.value = 'all';
             if (brandFilterSelect) brandFilterSelect.value = 'all';
             if (priceRangeFilterSelect) priceRangeFilterSelect.value = '';
             if (sortBySelect) sortBySelect.value = '';
             if (searchBoxInput) searchBoxInput.value = '';
 
-            // [PERBARUAN] Panggil updateSubcategoryOptions (yang sekarang tidak disable)
-            updateSubcategoryOptions();
+            updateSubcategoryOptions(); // Tetap panggil untuk refresh jika perlu
             applyFiltersAndSort();
 
             if (productsGrid) {
@@ -1154,8 +1303,10 @@
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', function() {
             if (categoryFilterSelect) categoryFilterSelect.addEventListener('change', () => {
-                updateSubcategoryOptions(); // Tetap panggil untuk refresh opsi jika perlu
-                applyFiltersAndSort();
+                updateSubcategoryOptions(); // Refresh opsi subkategori
+                // [PERBARUAN] JANGAN reset subkategori di sini
+                // if (subcategoryFilterSelect) subcategoryFilterSelect.value = 'all';
+                applyFiltersAndSort(); // Terapkan filter setelah kategori berubah
             });
             if (subcategoryFilterSelect) subcategoryFilterSelect.addEventListener('change',
                 applyFiltersAndSort); // Listener tetap
@@ -1179,7 +1330,7 @@
                 if (event.key === 'Escape') closeModal();
             });
 
-            updateSubcategoryOptions(); // Panggil saat load
+            updateSubcategoryOptions(); // Panggil saat load untuk memastikan opsi terisi
             applyFiltersAndSort();
         });
 
