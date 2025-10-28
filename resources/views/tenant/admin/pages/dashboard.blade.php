@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="row">
-        <!-- Welcome Card -->
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header bg-primary">
@@ -43,7 +42,6 @@
                 </div>
             </div>
 
-            <!-- Baris Statistik -->
             @php
                 // Dua metrik ini selalu aktif
                 $metrics = collect([
@@ -78,6 +76,14 @@
 
                 // Mapping: 4→4 kolom, 3→3 kolom, 2→2 kolom (default minimal 2 biar rapi di desktop)
                 $lgCols = $count >= 4 ? 4 : ($count == 3 ? 3 : 2);
+
+                // Siapkan URL logo dengan aman, atau null jika tidak ada
+                $logoUrlForJs = $userStore->store_logo
+                    ? route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo])
+                    : null;
+
+                // Siapkan juga URL logo KatalogQu
+                $katalogquLogoUrlForJs = asset('assets/images/katalogqu_logo.png');
             @endphp
 
             <div class="row row-cols-2 row-cols-xl-{{ $lgCols }} g-3 mb-3">
@@ -97,12 +103,7 @@
                 @endforeach
             </div>
 
-            @push('scripts')
-                <script>
-                    feather.replace();
-                </script>
-            @endpush
-
+            {{-- Feather icons script diletakkan di dalam @push('scripts') --}}
 
         </div>
 
@@ -135,221 +136,291 @@
     <br>
 
 @endsection
-@push('scripts')
-    <script>
-        feather.replace();
-    </script>
-    <script>
-        $(document).ready(function() {
-            const storeUrl =
-                `${window.location.protocol}//{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}`;
-            const storeName = "{{ $userStore->store_name }}";
 
-            // 1. Buat QR Code untuk ditampilkan di halaman (ukuran kecil & simpel)
-            jQuery('#qrcode').qrcode({
-                width: 512, // Generate at higher resolution for better quality
-                height: 512,
-                text: storeUrl
+{{-- Kode JavaScript dipindahkan ke @push('scripts') --}}
+@push('scripts')
+{{-- Pastikan library Feather Icons dimuat (biasanya di layout utama) --}}
+{{-- <script src="path/to/feather.min.js"></script> --}}
+<script>
+    feather.replace(); // Jalankan Feather Icons
+</script>
+{{-- Pastikan library jQuery dan jQuery QRCode dimuat sebelum script ini --}}
+{{-- <script src="path/to/jquery.min.js"></script> --}}
+{{-- <script src="{{ asset('path/to/jquery.qrcode.min.js') }}"></script> --}}
+{{-- Atau dari CDN jika Anda menggunakan CDN --}}
+<script src="{{ asset('assets/js/vendors/jquery.qrcode.min.js') }}"></script> {{-- Pastikan path ini benar --}}
+<script>
+    $(document).ready(function() {
+        const storeUrl = `{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}`; // URL tanpa http
+        const fullStoreUrl = `${window.location.protocol}//${storeUrl}`; // URL lengkap
+        const storeName = "{{ $userStore->store_name }}";
+
+        // 1. Buat QR Code untuk ditampilkan di halaman (ukuran kecil & simpel)
+        const qrcodeElement = document.getElementById('qrcode');
+        if (qrcodeElement) {
+            jQuery(qrcodeElement).qrcode({
+                width: 256, // Ukuran display disesuaikan
+                height: 256,
+                text: fullStoreUrl // Gunakan URL lengkap
             });
-            // Apply responsive styling to the generated canvas
+            // Apply styling to the generated canvas if needed
             $('#qrcode canvas').css({
                 'width': '100%',
                 'height': 'auto',
-                'max-width': '256px' // Limit max size to keep it compact
+                'max-width': '256px'
             });
+        } else {
+            console.error("Elemen #qrcode tidak ditemukan.");
+        }
 
+        // Variabel URL logo disiapkan dari PHP
+        const storeLogoUrl = @json($logoUrlForJs);
+        const katalogquLogoUrl = @json($katalogquLogoUrlForJs);
 
-            $('#download-qrcode').on('click', function(e) {
-                e.preventDefault();
+        $('#download-qrcode').on('click', function(e) {
+            e.preventDefault();
 
-                try {
+            try {
+                const logo = new Image();
+                let logoLoaded = false; // Flag logo toko
+                let logoLoadPromise = Promise.resolve(); // Promise untuk logo toko
 
-                    const logo = new Image();
-                    logo.src =
-                        "{{ route('tenant.asset.path', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}";
-                    logo.crossOrigin = "anonymous";
-
-                    const logoKatalogqu = new Image();
-                    logoKatalogqu.src = "{{ asset('assets/images/katalogqu_logo.png') }}";
-                    logoKatalogqu.crossOrigin = "anonymous";
-
-                    logo.onload = function() {
-                        logoKatalogqu.onload =
-                            function() { // Ensure both logos are loaded before drawing
-                                // 2. Tentukan parameter desain untuk template
-                                const canvasWidth = 600;
-                                const canvasHeight = 900;
-                                const qrSize = 380; // --- PERUBAHAN: Ukuran QR disesuaikan
-                                const mainColor = '#478413'; // Warna Hijau dari branding
-                                const accentColor = '#f99a07'; // Warna Oranye untuk aksen
-                                const backgroundColor = '#ffffff';
-                                const textColor = '#212529';
-                                const lightTextColor = '#6c757d';
-                                const cardRadius = 35;
-
-                                // 3. Buat canvas utama untuk template
-                                const canvas = document.createElement('canvas');
-                                canvas.width = canvasWidth;
-                                canvas.height = canvasHeight;
-                                const ctx = canvas.getContext('2d');
-
-                                // Helper function untuk menggambar rounded rectangle
-                                function drawRoundRect(ctx, x, y, width, height, radius) {
-                                    ctx.beginPath();
-                                    ctx.moveTo(x + radius, y);
-                                    ctx.lineTo(x + width - radius, y);
-                                    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-                                    ctx.lineTo(x + width, y + height - radius);
-                                    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y +
-                                        height);
-                                    ctx.lineTo(x + radius, y + height);
-                                    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-                                    ctx.lineTo(x, y + radius);
-                                    ctx.quadraticCurveTo(x, y, x + radius, y);
-                                    ctx.closePath();
-                                    ctx.fill();
-                                }
-
-                                // 4. Gambar latar belakang dan kartu utama
-                                ctx.fillStyle = '#f0f2f5';
-                                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-                                ctx.fillStyle = backgroundColor;
-                                ctx.shadowColor = 'rgba(0,0,0,0.1)';
-                                ctx.shadowBlur = 15;
-                                drawRoundRect(ctx, 40, 40, canvasWidth - 80, canvasHeight - 80,
-                                    cardRadius);
-                                ctx.shadowColor = 'transparent';
-
-                                // 5. Gambar header hijau dengan sudut atas yang membulat
-                                const headerX = 40;
-                                const headerY = 40;
-                                const headerWidth = canvasWidth - 80;
-                                const headerHeight = 100;
-
-                                ctx.fillStyle = mainColor;
-                                ctx.beginPath();
-                                ctx.moveTo(headerX, headerY + headerHeight);
-                                ctx.lineTo(headerX, headerY + cardRadius);
-                                ctx.quadraticCurveTo(headerX, headerY, headerX + cardRadius, headerY);
-                                ctx.lineTo(headerX + headerWidth - cardRadius, headerY);
-                                ctx.quadraticCurveTo(headerX + headerWidth, headerY, headerX +
-                                    headerWidth,
-                                    headerY + cardRadius);
-                                ctx.lineTo(headerX + headerWidth, headerY + headerHeight);
-                                ctx.closePath();
-                                ctx.fill();
-
-                                // Gambar aksen oranye
-                                ctx.fillStyle = accentColor;
-                                ctx.fillRect(40, 140, canvasWidth - 80, 5);
-
-                                // 6. Gambar LOGO di header
-                                const logoHeight = 70; // Increased size
-                                const logoWidth = (logo.width / logo.height) * logoHeight;
-                                const logoX = (canvasWidth - logoWidth) / 2;
-                                const logoY = 40 + (100 - logoHeight) / 2;
-                                ctx.drawImage(logo, logoX, logoY, logoWidth, logoHeight);
-
-                                // 7. Tambahkan teks nama toko dan lainnya
-                                ctx.textAlign = 'center';
-                                ctx.fillStyle = textColor;
-                                ctx.font = 'bold 52px Arial';
-                                ctx.fillText(storeName, canvasWidth / 2, 240);
-
-                                ctx.fillStyle = lightTextColor;
-                                ctx.font = '30px Arial';
-                                ctx.fillText('Scan di Sini', canvasWidth / 2,
-                                    295); // --- PERUBAHAN: Menambah jarak
-
-                                // 8. Buat elemen sementara untuk generate QR code
-                                let tempContainer = $('<div>').hide().appendTo('body');
-                                tempContainer.qrcode({
-                                    render: 'canvas',
-                                    width: qrSize,
-                                    height: qrSize,
-                                    text: storeUrl
-                                });
-                                let qrCanvas = tempContainer.find('canvas')[0];
-
-                                // 9. Gambar QR code ke canvas utama
-                                const qrX = (canvasWidth - qrSize) / 2;
-                                const qrY = 320; // --- PERUBAHAN: Menambah jarak
-                                ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
-
-                                // 10. Tambahkan URL dan Footer
-                                ctx.fillStyle = lightTextColor;
-                                ctx.font = '22px Arial';
-                                ctx.fillText(storeUrl.replace(/^https?:\/\//, ''), canvasWidth / 2,
-                                    canvasHeight -
-                                    160); // --- PERUBAHAN: Menambah jarak
-
-                                // Gambar logo Katalogqu di footer
-                                const logoKHeight = 50;
-                                const logoKWidth = (logoKatalogqu.width / logoKatalogqu.height) *
-                                    logoKHeight;
-                                const logoKX = (canvasWidth - logoKWidth) / 2;
-                                const logoKY = canvasHeight - 140;
-                                ctx.drawImage(logoKatalogqu, logoKX, logoKY, logoKWidth, logoKHeight);
-
-                                ctx.font = 'bold 16px Arial';
-                                ctx.fillStyle = textColor;
-                                ctx.fillText('Powered by PT. Era Cipta Digital', canvasWidth / 2,
-                                    canvasHeight -
-                                    70); // --- PERUBAHAN: Menambah jarak
-
-                                // 11. Hapus elemen sementara
-                                tempContainer.remove();
-
-                                // 12. Trigger download
-                                let link = document.createElement('a');
-                                link.href = canvas.toDataURL("image/png");
-                                link.download = `QR_Code_${storeName.replace(/\s+/g, '_')}.png`;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                            };
-                        logoKatalogqu.onerror = function() {
-                            alert("Gagal memuat gambar logo 'Powered by'. Pastikan path benar.");
+                // Cek jika storeLogoUrl ada, baru coba muat
+                if (storeLogoUrl) {
+                    logoLoadPromise = new Promise((resolve) => { // Hapus 'reject' jika error dianggap non-fatal
+                        logo.src = storeLogoUrl; // Gunakan variabel JS
+                        logo.crossOrigin = "anonymous";
+                        logo.onload = () => { logoLoaded = true; resolve(); };
+                        logo.onerror = (err) => {
+                            console.error("Gagal memuat logo toko:", err);
+                            resolve(); // Tetap resolve agar proses lanjut tanpa logo toko
                         };
-                    };
-
-                    logo.onerror = function() {
-                        alert("Gagal memuat gambar logo utama. Pastikan path benar.");
-                    };
-
-                } catch (error) {
-                    console.error("Terjadi kesalahan saat mengunduh QR code:", error);
-                    alert("Terjadi kesalahan, tidak dapat mengunduh QR code.");
+                    });
+                } else {
+                     console.log("Tidak ada URL logo toko, skip pemuatan logo toko.");
                 }
-            });
-
-            // Logika untuk tombol Copy Link
-
-            $('#copy-link').on('click', async function() {
-
-                const button = $(this);
 
 
+                // Promise untuk logo KatalogQu
+                const logoKatalogqu = new Image();
+                let kqLogoLoaded = false;
+                let kqLogoLoadPromise = new Promise((resolve) => { // Hapus 'reject'
+                    logoKatalogqu.src = katalogquLogoUrl;
+                    logoKatalogqu.crossOrigin = "anonymous";
+                    logoKatalogqu.onload = () => { kqLogoLoaded = true; resolve(); };
+                    logoKatalogqu.onerror = (err) => {
+                         console.error("Gagal memuat logo KatalogQu:", err);
+                         resolve(); // Tetap resolve agar proses lanjut tanpa logo KQ
+                    };
+                });
 
-                try {
 
-                    await navigator.clipboard.writeText(storeUrl);
+                // Tunggu kedua logo (jika ada) selesai dimuat
+                Promise.all([logoLoadPromise, kqLogoLoadPromise]).then(() => {
+                     console.log("Semua promise logo selesai. Mulai menggambar canvas...");
+                     // Panggil fungsi gambar setelah semua siap
+                     drawQrCodeCanvas(
+                        logoLoaded ? logo : null,
+                        kqLogoLoaded ? logoKatalogqu : null
+                     );
+                });
 
-                    // Simpan teks asli
-                    const originalText = button.html();
+                // Fungsi utama untuk menggambar canvas QR Code
+                function drawQrCodeCanvas(storeLogoImage, katalogquLogoImage) {
+                    console.log("Menggambar canvas. Logo Toko:", storeLogoImage ? "Ada" : "Tidak Ada", "Logo KQ:", katalogquLogoImage ? "Ada" : "Tidak Ada");
+                    // ... (parameter desain canvas: canvasWidth, etc. tetap sama) ...
+                    const canvasWidth = 600;
+                    const canvasHeight = 900;
+                    const qrSize = 380;
+                    const mainColor = '#478413';
+                    const accentColor = '#f99a07';
+                    const backgroundColor = '#ffffff';
+                    const textColor = '#212529';
+                    const lightTextColor = '#6c757d';
+                    const cardRadius = 35;
 
-                    // Ubah teks tombol menjadi "Copied!"
-                    button.html('<i class="fa fa-check me-2"></i> Link Tersimpan!');
+                    const canvas = document.createElement('canvas');
+                    canvas.width = canvasWidth;
+                    canvas.height = canvasHeight;
+                    const ctx = canvas.getContext('2d');
 
-                    // Kembalikan ke teks asli setelah beberapa detik
-                    setTimeout(() => {
-                        button.html(originalText);
-                    }, 2000);
+                    // Helper rounded rectangle (tetap sama)
+                    function drawRoundRect(ctx, x, y, width, height, radius) {
+                        ctx.beginPath();
+                        ctx.moveTo(x + radius, y);
+                        ctx.lineTo(x + width - radius, y);
+                        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                        ctx.lineTo(x + width, y + height - radius);
+                        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                        ctx.lineTo(x + radius, y + height);
+                        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+                        ctx.lineTo(x, y + radius);
+                        ctx.quadraticCurveTo(x, y, x + radius, y);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
 
-                } catch (err) {
-                    alert('Gagal menyalin link.');
-                }
-            });
+                    // Gambar latar & kartu (tetap sama)
+                    ctx.fillStyle = '#f0f2f5';
+                    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                    ctx.fillStyle = backgroundColor;
+                    ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                    ctx.shadowBlur = 15;
+                    drawRoundRect(ctx, 40, 40, canvasWidth - 80, canvasHeight - 80, cardRadius);
+                    ctx.shadowColor = 'transparent';
+
+                    // Gambar header & aksen (tetap sama)
+                    const headerX = 40;
+                    const headerY = 40;
+                    const headerWidth = canvasWidth - 80;
+                    const headerHeight = 100;
+                    ctx.fillStyle = mainColor;
+                    ctx.beginPath();
+                    ctx.moveTo(headerX, headerY + headerHeight);
+                    ctx.lineTo(headerX, headerY + cardRadius);
+                    ctx.quadraticCurveTo(headerX, headerY, headerX + cardRadius, headerY);
+                    ctx.lineTo(headerX + headerWidth - cardRadius, headerY);
+                    ctx.quadraticCurveTo(headerX + headerWidth, headerY, headerX + headerWidth, headerY + cardRadius);
+                    ctx.lineTo(headerX + headerWidth, headerY + headerHeight);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = accentColor;
+                    ctx.fillRect(40, 140, canvasWidth - 80, 5);
+
+                    // Gambar LOGO TOKO di header (jika ada dan berhasil dimuat)
+                    if (storeLogoImage && storeLogoImage.complete && storeLogoImage.naturalWidth !== 0) {
+                         console.log("Menggambar logo toko...");
+                        const logoHeight = 70;
+                        const logoRatio = storeLogoImage.width / storeLogoImage.height;
+                        const logoWidth = logoHeight * logoRatio;
+                        const logoX = (canvasWidth - logoWidth) / 2;
+                        const logoY = 40 + (headerHeight - logoHeight) / 2;
+                        try {
+                             ctx.drawImage(storeLogoImage, logoX, logoY, logoWidth, logoHeight);
+                        } catch(drawErr) {
+                             console.error("Error saat menggambar logo toko:", drawErr);
+                             // Fallback jika drawImage gagal
+                             ctx.textAlign = 'center';
+                             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                             ctx.font = 'bold 24px Arial';
+                             const initials = storeName.substring(0,2).toUpperCase();
+                             ctx.fillText(initials, canvasWidth / 2, 40 + headerHeight/2 + 8);
+                        }
+                    } else {
+                         console.log("Logo toko tidak ada atau gagal dimuat, menggambar inisial...");
+                         // Fallback jika logo toko tidak ada atau gagal dimuat
+                         ctx.textAlign = 'center';
+                         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                         ctx.font = 'bold 24px Arial';
+                         // Ambil 2 huruf pertama dari nama toko
+                         const initials = storeName.substring(0,2).toUpperCase();
+                         ctx.fillText(initials, canvasWidth / 2, 40 + headerHeight/2 + 8); // Sesuaikan posisi vertikal
+                    }
+
+                    // Teks nama toko & scan (tetap sama)
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = textColor;
+                    ctx.font = 'bold 52px Arial';
+                    ctx.fillText(storeName, canvasWidth / 2, 240);
+                    ctx.fillStyle = lightTextColor;
+                    ctx.font = '30px Arial';
+                    ctx.fillText('Scan di Sini', canvasWidth / 2, 295);
+
+                    // Generate QR code (tetap sama)
+                    let tempContainer = $('<div>').hide().appendTo('body');
+                    // Buat QR Code di elemen sementara
+                    try {
+                         jQuery(tempContainer).qrcode({
+                              render: 'canvas', width: qrSize, height: qrSize, text: fullStoreUrl // Pakai URL lengkap
+                         });
+                    } catch (qrError) {
+                         console.error("Error saat generate QR Code:", qrError);
+                         alert("Gagal membuat QR code.");
+                         tempContainer.remove();
+                         return; // Hentikan proses jika QR gagal
+                    }
+
+                    let qrCanvas = tempContainer.find('canvas')[0];
+                    if (!qrCanvas) {
+                        console.error("Canvas QR code tidak ditemukan di elemen temporer.");
+                        alert("Gagal mendapatkan gambar QR code.");
+                        tempContainer.remove();
+                        return;
+                    }
+
+
+                    // Gambar QR code (tetap sama)
+                    const qrX = (canvasWidth - qrSize) / 2;
+                    const qrY = 320;
+                    try {
+                        ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
+                    } catch (drawQrErr) {
+                        console.error("Error saat menggambar QR code ke canvas utama:", drawQrErr);
+                        alert("Gagal menggambar QR code.");
+                        tempContainer.remove();
+                        return;
+                    }
+
+
+                    // Teks URL & Footer
+                    ctx.fillStyle = lightTextColor;
+                    ctx.font = '22px Arial';
+                    ctx.fillText(storeUrl, canvasWidth / 2, canvasHeight - 160); // Tampilkan URL tanpa http
+
+                    // Gambar logo KatalogQu di footer (jika ada dan berhasil dimuat)
+                    if (katalogquLogoImage && katalogquLogoImage.complete && katalogquLogoImage.naturalWidth !== 0) {
+                        console.log("Menggambar logo KatalogQu...");
+                        const logoKHeight = 50;
+                        const logoKRratio = katalogquLogoImage.width / katalogquLogoImage.height;
+                        const logoKWidth = logoKHeight * logoKRratio;
+                        const logoKX = (canvasWidth - logoKWidth) / 2;
+                        const logoKY = canvasHeight - 140;
+                        try {
+                            ctx.drawImage(katalogquLogoImage, logoKX, logoKY, logoKWidth, logoKHeight);
+                        } catch(drawKqErr) {
+                            console.error("Error saat menggambar logo KatalogQu:", drawKqErr);
+                        }
+
+                    } else {
+                        console.log("Logo KatalogQu tidak ada atau gagal dimuat.");
+                    }
+
+
+                    // Teks Powered by (tetap sama)
+                    ctx.font = 'bold 16px Arial';
+                    ctx.fillStyle = textColor;
+                    ctx.fillText('Powered by PT. Era Cipta Digital', canvasWidth / 2, canvasHeight - 70);
+
+                    // Hapus elemen sementara & trigger download (tetap sama)
+                    tempContainer.remove();
+                    let link = document.createElement('a');
+                    link.href = canvas.toDataURL("image/png");
+                    link.download = `QR_Code_${storeName.replace(/\s+/g, '_')}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    console.log("Proses download QR code selesai.");
+                } // Akhir fungsi drawQrCodeCanvas
+
+            } catch (error) {
+                console.error("Terjadi kesalahan saat mengunduh QR code:", error);
+                alert("Terjadi kesalahan, tidak dapat mengunduh QR code.");
+            }
         });
-    </script>
+
+        // Logika untuk tombol Copy Link
+        $('#copy-link').on('click', async function() {
+            const button = $(this);
+            try {
+                await navigator.clipboard.writeText(fullStoreUrl); // Gunakan URL lengkap
+                const originalText = button.html();
+                button.html('<i class="fa fa-check me-2"></i> Link Tersimpan!');
+                setTimeout(() => { button.html(originalText); }, 2000);
+            } catch (err) {
+                console.error('Gagal menyalin link:', err); // Tambahkan log error
+                alert('Gagal menyalin link.');
+            }
+        });
+    });
+</script>
 @endpush
