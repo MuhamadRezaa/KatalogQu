@@ -71,6 +71,15 @@ class ProductCategory extends Model
     }
 
     /**
+     * Get the subcategories for the category.
+     */
+    public function subcategories(): HasMany // Pastikan return type hint benar
+    {
+        // Sesuaikan 'product_category_id' jika nama foreign key berbeda
+        return $this->hasMany(ProductSubCategory::class, 'product_category_id');
+    }
+
+    /**
      * Get the category's active products count
      */
     public function getActiveProductsCountAttribute()

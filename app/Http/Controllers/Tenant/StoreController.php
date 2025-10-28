@@ -166,7 +166,6 @@ class StoreController extends Controller
         }
 
         // dd($subCategories);
-
         return view($templateView, compact(
             'userStore',
             'products',

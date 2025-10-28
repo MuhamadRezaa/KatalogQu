@@ -427,6 +427,17 @@
             font-size: 0.9rem;
             margin-bottom: 0.25rem;
         }
+
+        /* [PERBAIKAN] Memastikan deskripsi tidak overflow */
+        #modalProductDescription {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            /* Fallback untuk browser lama */
+        }
+
+        /* * [DIHAPUS] Gaya Pagination Modern tidak diperlukan lagi
+         * karena kita menggunakan tombol "Lihat Selengkapnya"
+        */
     </style>
 </head>
 
@@ -669,11 +680,20 @@
                     </div>
                 @endforelse
             </div>
-            <div class="mt-5 d-flex justify-content-center" id="paginationContainer"
-                style="display: none !important;">
-            </div>
         </div>
     </section>
+
+    {{-- [PERBARUAN] Tombol "Lihat Selengkapnya" menggantikan pagination --}}
+    <div class="my-5 d-flex justify-content-center" id="loadMoreContainer">
+        {{-- Pastikan $products adalah objek Paginator --}}
+        @if ($products instanceof \Illuminate\Pagination\AbstractPaginator && $products->hasMorePages())
+            <button class="btn btn-primary" id="loadMoreBtn"
+                data-next-page-url="{{ $products->appends(request()->query())->nextPageUrl() }}">
+                Lihat Selengkapnya
+            </button>
+        @endif
+    </div>
+    {{-- AKHIR PERBARUAN --}}
 
     <footer id="contact" class="footer py-5">
         <div class="container">
@@ -736,10 +756,14 @@
                                 <h5 class="text-muted text-decoration-line-through" id="modalProductOldPrice">Rp 0
                                 </h5>
                             </div>
-                            <h5>Deskripsi</h5>
-                            <p id="modalProductDescription">Deskripsi produk...</p>
+
+                            {{-- [PERBAIKAN] Menukar Posisi Spesifikasi dan Deskripsi --}}
                             <h5>Spesifikasi</h5>
                             <div id="modalProductSpecs"></div>
+                            <h5>Deskripsi</h5>
+                            <p id="modalProductDescription">Deskripsi produk...</p>
+                            {{-- Akhir Perbaikan Posisi --}}
+
                             <div class="d-grid mt-4">
                                 <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg">
                                     <i class="fab fa-whatsapp me-2"></i> Chat Toko</a>
@@ -934,29 +958,36 @@
                 }
             }
 
-            // Fungsi untuk menambahkan event listener ke semua kartu produk
-            function setupProductCardListeners() {
-                document.querySelectorAll('.product-card, .related-product-card').forEach(card => {
-                    card.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const productId = parseInt(this.dataset.productId, 10);
-                        const product = allProductsData.find(p => p.id === productId);
-                        populateModal(product);
-                        if (!productModal._isShown) productModal.show();
-                    });
-                });
-            }
-            setupProductCardListeners(); // Panggil saat halaman pertama kali dimuat
+            // [PERBARUAN] Menggunakan Event Delegation untuk klik produk
+            function handleProductClick(event) {
+                // Cari elemen kartu terdekat dari target yang diklik
+                const card = event.target.closest('.product-card, .related-product-card');
+                if (!card) return; // Klik tidak di dalam kartu yang valid
 
-            // Event listener untuk produk terkait di dalam modal
-            document.getElementById('related-products-container').addEventListener('click', function(e) {
-                const card = e.target.closest('.related-product-card');
-                if (card) {
-                    const productId = parseInt(card.dataset.productId, 10);
-                    const product = allProductsData.find(p => p.id === productId);
-                    populateModal(product);
-                }
+                event.stopPropagation();
+                const productId = parseInt(card.dataset.productId, 10);
+                const product = allProductsData.find(p => p.id === productId);
+                populateModal(product);
+                if (!productModal._isShown) productModal.show();
+            }
+
+            // Pasang listener di parent container. Ini akan menangani kartu yang ada sekarang DAN yang dimuat nanti.
+            const productsGrid = document.getElementById('productsGrid');
+            if(productsGrid) {
+                productsGrid.addEventListener('click', handleProductClick);
+            }
+
+            // Pasang juga di swiper (karena mereka di luar #productsGrid)
+            document.querySelectorAll('.featured-swiper').forEach(swiper => {
+                swiper.addEventListener('click', handleProductClick);
             });
+
+            // Pasang juga di related products di dalam modal
+            const relatedContainer = document.getElementById('related-products-container');
+            if(relatedContainer) {
+                relatedContainer.addEventListener('click', handleProductClick);
+            }
+            // AKHIR PERBARUAN Event Delegation
 
             // --- LOGIKA FILTER ---
             const filterControls = document.querySelectorAll('.filter-control');
@@ -981,7 +1012,7 @@
                         option.textContent = subName;
                         // Jika nilai sama dengan yang ada di URL, pilih opsi ini
                         if (subName === currentSubcategoryValue) {
-                           option.selected = true;
+                            option.selected = true;
                         }
                         subcategoryFilter.appendChild(option);
                     });
@@ -992,17 +1023,22 @@
             // Fungsi untuk mengisi filter brand secara dinamis
             function populateBrandFilter() {
                 const brandFilter = document.getElementById('brandFilter');
+                if (!brandFilter) return; // Pastikan elemen ada
+
                 const brands = [...new Set(allProductsData.map(p => p.brand).filter(b => b))];
                 brands.sort();
 
                 const currentBrandValue = new URLSearchParams(window.location.search).get('brand');
 
+                // Kosongkan opsi sebelumnya (kecuali yang pertama)
+                brandFilter.innerHTML = '<option value="">Semua Brand</option>';
+
                 brands.forEach(brand => {
                     const option = document.createElement('option');
                     option.value = brand;
                     option.textContent = brand;
-                    if(brand === currentBrandValue) {
-                       option.selected = true;
+                    if (brand === currentBrandValue) {
+                        option.selected = true;
                     }
                     brandFilter.appendChild(option);
                 });
@@ -1015,16 +1051,23 @@
                 const subcategory = document.getElementById('subcategoryFilter').value;
                 const brand = document.getElementById('brandFilter').value;
                 const sort = document.getElementById('sortFilter').value;
-                const priceFilter = document.getElementById('priceFilter').options[document.getElementById('priceFilter').selectedIndex];
+                const priceFilter = document.getElementById('priceFilter').options[document.getElementById(
+                    'priceFilter').selectedIndex];
                 const price_min = priceFilter.dataset.min || '';
                 const price_max = priceFilter.dataset.max || '';
 
                 const params = new URLSearchParams({
-                    search, category, subcategory, brand, sort, price_min, price_max
+                    search,
+                    category,
+                    subcategory,
+                    brand,
+                    sort,
+                    price_min,
+                    price_max
                 });
 
                 // Hapus parameter kosong
-                for(let [key, value] of params.entries()) {
+                for (let [key, value] of params.entries()) {
                     if (!value) {
                         params.delete(key);
                     }
@@ -1035,11 +1078,15 @@
             }
 
             // Event Listeners untuk semua kontrol filter
-            document.getElementById('categoryFilter').addEventListener('change', (e) => {
-                updateSubcategoryFilter();
-                // Langsung terapkan filter setelah mengganti kategori
-                applyFilters();
-            });
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', (e) => {
+                    updateSubcategoryFilter();
+                    // Langsung terapkan filter setelah mengganti kategori
+                    applyFilters();
+                });
+            }
+
 
             filterControls.forEach(control => {
                 // Jangan tambahkan event listener ganda ke categoryFilter
@@ -1048,15 +1095,87 @@
                 }
             });
 
-            document.getElementById('searchInput').addEventListener('input', () => {
-                clearTimeout(debounceTimer);
-                // Menunggu 500ms setelah user berhenti mengetik sebelum menerapkan filter
-                debounceTimer = setTimeout(applyFilters, 500);
-            });
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    clearTimeout(debounceTimer);
+                    // Menunggu 500ms setelah user berhenti mengetik sebelum menerapkan filter
+                    debounceTimer = setTimeout(applyFilters, 500);
+                });
+            }
+
 
             // Inisialisasi filter saat halaman dimuat
             updateSubcategoryFilter();
             populateBrandFilter();
+
+
+            // [PERBARUAN] Logika "Load More"
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const productsGridContainer = document.getElementById('productsGrid');
+
+            if (loadMoreBtn && productsGridContainer) {
+                loadMoreBtn.addEventListener('click', function() {
+                    const url = loadMoreBtn.dataset.nextPageUrl;
+                    if (!url) return;
+
+                    // Tampilkan status loading
+                    loadMoreBtn.disabled = true;
+                    loadMoreBtn.innerHTML =
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat...';
+
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            // Parse HTML yang diterima
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+
+                            // Ambil produk baru dari grid di HTML yang diterima
+                            const newProducts = doc.querySelectorAll(
+                                '#productsGrid > .col-md-4');
+
+                            if (newProducts.length > 0) {
+                                newProducts.forEach(product => {
+                                    productsGridContainer.appendChild(product);
+                                });
+                            } else {
+                                // Jika tidak ada produk baru, mungkin ada masalah atau halaman kosong
+                                console.warn(
+                                    'Load more: No new products found on the next page.');
+                            }
+
+                            // Cek apakah ada tombol "load more" di halaman berikutnya
+                            const newLoadMoreBtn = doc.getElementById('loadMoreBtn');
+
+                            if (newLoadMoreBtn && newLoadMoreBtn.dataset.nextPageUrl) {
+                                // Update URL di tombol yang ada
+                                loadMoreBtn.dataset.nextPageUrl = newLoadMoreBtn.dataset
+                                    .nextPageUrl;
+                                // Kembalikan tombol ke status normal
+                                loadMoreBtn.disabled = false;
+                                loadMoreBtn.innerHTML = 'Lihat Selengkapnya';
+                            } else {
+                                // Ini adalah halaman terakhir, sembunyikan tombol
+                                loadMoreBtn.style.display = 'none';
+                            }
+
+                            // Kita tidak perlu memanggil setupProductCardListeners() lagi karena kita pakai event delegation
+                        })
+                        .catch(error => {
+                            console.error('Error loading more products:', error);
+                            // Kembalikan tombol ke status normal jika terjadi error
+                            loadMoreBtn.disabled = false;
+                            loadMoreBtn.innerHTML = 'Gagal Memuat. Coba Lagi.';
+                        });
+                });
+            }
+            // AKHIR PERBARUAN "Load More"
 
         });
     </script>

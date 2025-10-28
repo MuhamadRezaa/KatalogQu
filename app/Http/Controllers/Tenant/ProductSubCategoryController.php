@@ -24,8 +24,9 @@ class ProductSubCategoryController extends Controller
 
         $subCategories = ProductSubCategory::where('user_store_id', $userStore->id)
             ->orderBy('name')
-            ->get();
+            ->get(); // Pastikan data diambil
 
+        // Pastikan variabel 'subCategories' dikirim ke view
         return view('tenant.admin.pages.sub-categories.index', compact('userStore', 'subCategories'));
     }
 
@@ -45,29 +46,29 @@ class ProductSubCategoryController extends Controller
         ]);
 
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-            $uploaded = $request->file('image');
-            $filename = $validated['slug'] . '.webp';
-            $path = 'sub-categories/' . $filename;
+        $uploaded = $request->file('image');
+        $filename = $validated['slug'] . '.webp';
+        $path = 'sub-categories/' . $filename;
 
-            // Process with Intervention Image for WebP conversion
-            $manager = new ImageManager(new Driver());
-            $img = $manager->read($uploaded->getRealPath());
+        // Process with Intervention Image for WebP conversion
+        $manager = new ImageManager(new Driver());
+        $img = $manager->read($uploaded->getRealPath());
 
-            // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
-            /*
+        // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+        /*
             $img->resize(410, 512, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
             */
 
-            // Encode to WEBP
-            $encodedWebp = $img->toWebp(80); // Quality 80
+        // Encode to WEBP
+        $encodedWebp = $img->toWebp(80); // Quality 80
 
-            // Store the processed image
-            Storage::disk('public')->put($path, (string) $encodedWebp);
+        // Store the processed image
+        Storage::disk('public')->put($path, (string) $encodedWebp);
 
-            $validated['image'] = $path;
+        $validated['image'] = $path;
 
         ProductSubCategory::create($validated);
 
