@@ -563,6 +563,7 @@
                             'primary_image_src' => $product->primary_image_src,
                             'is_new' => $product->is_new ?? false,
                             'is_available' => $product->is_available ?? true,
+                            'sub_category' => $product->subCategory ? ['id' => $product->subCategory->id, 'name' => $product->subCategory->name] : null,
                             'unit' => $product->unit ? ['unit_name' => $product->unit->unit_name] : null,
                         ];
                     })
@@ -576,13 +577,15 @@
                 return {
                     id: product.id.toString(),
                     category: product.category ? product.category.name.toLowerCase() : 'uncategorized',
+                    categoryName: product.category ? product.category.name : '',
                     name: product.name,
                     description: product.description || '',
                     price: parseFloat(product.price) || 0,
                     image: product.primary_image_src || '{{ asset('assets/images/no-image-icon.png') }}',
                     isNew: product.is_new || false,
                     isAvailable: product.is_available !== false,
-                    unit: product.unit ? product.unit.unit_name : ''
+                    unit: product.unit ? product.unit.unit_name : '',
+                    subCategoryName: product.sub_category ? product.sub_category.name : ''
                 };
             });
 
@@ -886,6 +889,34 @@
                             document.getElementById('modal-product-name').textContent = product.name;
                             document.getElementById('modal-product-description').textContent = product
                                 .description || 'Deskripsi produk tidak tersedia.';
+
+                            // --- Bagian yang Diubah (Kategori dan Subkategori) ---
+
+                            // 1. Ambil nilai kategori dan subkategori
+                            const categoryText = product.categoryName || '';
+                            const subCategoryText = product.subCategoryName || '';
+
+                            let combinedText = '';
+
+                            if (categoryText && subCategoryText) {
+                                // Jika keduanya ada, gunakan pemisah |
+                                combinedText = categoryText + ' | ' + subCategoryText;
+                            } else if (categoryText) {
+                                // Hanya kategori yang ada
+                                combinedText = categoryText;
+                            } else if (subCategoryText) {
+                                // Hanya subkategori yang ada
+                                combinedText = subCategoryText;
+                            }
+
+                            // 2. Tampilkan teks gabungan ke elemen kategori (dan kosongkan subkategori)
+                            document.getElementById('modal-product-category').textContent = combinedText;
+                            document.getElementById('modal-product-subcategory').textContent =
+                            ''; // Kosongkan elemen subcategory
+
+                            // --- Akhir Bagian yang Diubah ---
+
+                            // Price and unit
                             document.getElementById('modal-product-price').textContent = formatRupiah(product
                                 .price) + (product.unit ? ' / ' + product.unit : '');
                             document.getElementById('modal-product-unit').textContent = product.unit_name;
@@ -1194,6 +1225,10 @@
 
                     <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
                         <h3 id="modal-product-name" class="font-bold text-xl md:text-2xl text-[#994d51]"></h3>
+                        <div class="mb-1 text-muted">
+                            <span id="modal-product-category" class="text-sm text-gray-500 mr-3"></span>
+                            <span id="modal-product-subcategory" class="text-sm text-gray-500"></span>
+                        </div>
                         <p id="modal-product-description" class="text-sm text-gray-700"></p>
                         <div class="flex items-center justify-center md:justify-start gap-2">
                             <span id="modal-product-price" class="text-3xl font-extrabold text-[#994d51]"></span>
