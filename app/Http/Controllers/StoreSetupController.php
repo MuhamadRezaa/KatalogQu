@@ -161,56 +161,28 @@ class StoreSetupController extends Controller
             return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        $logoPath = $userStore->store_logo ?? null; // Pertahankan logo lama jika tidak ada yang baru
-        if ($request->hasFile('store_logo')) {
-            if ($logoPath && Storage::disk('public')->exists($logoPath)) {
-                Storage::disk('public')->delete($logoPath);
-            }
-
-            // Buat nama file sesuai store_name (slug biar aman untuk nama file)
-            $fileName = Str::slug($request->store_name) . '.webp'; // Changed to .webp
-            $path = 'store-logos/' . $fileName;
-
-            // Process with Intervention Image for WebP conversion
-            $manager = new ImageManager(new Driver());
-            $img = $manager->read($request->file('store_logo'));
-
-            // Commented out: Resize to max 512x512, maintain aspect ratio, prevent upsizing
-            /*
-            $img->resize(512, 512, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-            */
-
-            // Encode to WEBP
-            $encodedWebp = $img->toWebp(80); // Quality 80
-
-            // Store the processed image
-            Storage::disk('public')->put($path, (string) $encodedWebp);
-
-            $logoPath = $path;
-        }
+        $logoPath = null;
+        $tempLogoPath = null;
 
         try {
             DB::beginTransaction();
 
-            // SECURITY ENHANCEMENT: Update the existing UserStore record instead of creating new one
+            // 1. Update UserStore with non-file data first
             $userStore->update([
-                'store_name' => $request->store_name,
-                'subdomain' => $request->subdomain,
-                'store_description' => $request->store_description,
-                'store_logo' => $logoPath,
-                'store_phone' => $request->store_phone,
-                'store_email' => $request->store_email,
-                'store_address' => $request->store_address,
-                'setup_status' => 'pending_validation', // Move from 'pending' to 'pending_validation'
-                'setup_completed_at' => now(),
-                'is_active' => false, // Still not active until admin approval
+                'store_name'          => $request->store_name,
+                'subdomain'           => $request->subdomain,
+                'store_description'   => $request->store_description,
+                'store_phone'         => $request->store_phone,
+                'store_email'         => $request->store_email,
+                'store_address'       => $request->store_address,
+                'setup_status'        => 'pending_validation',
+                'setup_completed_at'  => now(),
+                'is_active'           => false,
             ]);
 
-            // Create tenant and admin records if not already created
-            if (!$userStore->tenant_created) {
+            // 2. Create tenant if it doesn't exist
+            $tenant = $userStore->tenant;
+            if (!$tenant) {
                 $tenant = $this->createTenant($userStore);
                 $userStore->update(['tenant_id' => $tenant->id, 'tenant_created' => true]);
 
@@ -219,29 +191,57 @@ class StoreSetupController extends Controller
 
                 // Create store admin record
                 StoreAdmin::create([
-                    'user_id' => $userStore->user_id,
-                    'store_id' => $userStore->id,
-                    'tenant_id' => $tenant->id,
-                    'role' => 'owner',
+                    'user_id'             => $userStore->user_id,
+                    'store_id'            => $userStore->id,
+                    'tenant_id'           => $tenant->id,
+                    'role'                => 'owner',
                     'can_manage_products' => true,
-                    'can_manage_orders' => true,
+                    'can_manage_orders'   => true,
                     'can_manage_settings' => true,
-                    'can_manage_admins' => true,
+                    'can_manage_admins'   => true,
                 ]);
+            }
+
+            // 3. Initialize tenancy to use tenant's filesystem
+            tenancy()->initialize($tenant);
+
+            // 4. Now, handle the file upload within the tenant's context
+            if ($request->hasFile('store_logo')) {
+                $disk = Storage::disk('public');
+
+                // Delete old logo if it exists
+                if ($userStore->store_logo && $disk->exists($userStore->store_logo)) {
+                    $disk->delete($userStore->store_logo);
+                }
+
+                $fileName = Str::slug($request->store_name) . '-' . time() . '.webp';
+                $logoPath = 'store-logos/' . $fileName;
+
+                $manager = new ImageManager(new Driver());
+                $img = $manager->read($request->file('store_logo'));
+                $encodedWebp = $img->toWebp(80);
+
+                $disk->put($logoPath, (string) $encodedWebp);
+
+                // 5. Update the userStore with the new logo path
+                $userStore->update(['store_logo' => $logoPath]);
             }
 
             DB::commit();
 
             return response()->json([
-                'success' => true,
-                'message' => 'Pengaturan toko selesai! Toko Anda sekarang sedang ditinjau.',
+                'success'      => true,
+                'message'      => 'Pengaturan toko selesai! Toko Anda sekarang sedang ditinjau.',
                 'redirect_url' => route('store.setup.pending', ['store_id' => $userStore->id])
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            if ($request->hasFile('store_logo') && $logoPath && Storage::disk('public')->exists($logoPath)) {
+
+            // Rollback file upload if it happened
+            if ($logoPath && tenancy()->initialized && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
             }
+
             return response()->json(['success' => false, 'message' => 'Gagal membuat toko: ' . $e->getMessage()], 500);
         }
     }
