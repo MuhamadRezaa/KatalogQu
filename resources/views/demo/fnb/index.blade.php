@@ -1630,6 +1630,49 @@
             function createDynamicModal(item) {
                 const modalId = `product-modal-${item.id}`;
                 if (!document.getElementById(modalId)) {
+                    // Helper mappings for demo (static)
+                    function getCategoryName(slug) {
+                        const map = {
+                            'minuman': 'Minuman',
+                            'makanan': 'Makanan',
+                            'cemilan': 'Cemilan',
+                            'dessert': 'Dessert',
+                            'paket': 'Paket Hemat',
+                            'promo': 'Promo',
+                            'uncategorized': 'Lainnya'
+                        };
+                        return map[slug] || slug || '';
+                    }
+
+                    function getSubcategoryName(slug) {
+                        // Static subcategory per category for demo purposes
+                        const sub = {
+                            'minuman': 'Kopi & Minuman Panas',
+                            'makanan': 'Hidangan Utama',
+                            'cemilan': 'Snack Ringan',
+                            'dessert': 'Pencuci Mulut',
+                            'paket': 'Combo Hemat',
+                            'promo': 'Penawaran Spesial'
+                        };
+                        return sub[slug] || '';
+                    }
+
+                    function getUnitForCategory(slug) {
+                        // Default units per category
+                        const units = {
+                            'minuman': 'porsi',
+                            'makanan': 'porsi',
+                            'cemilan': 'porsi',
+                            'dessert': 'porsi',
+                            'paket': 'paket'
+                        };
+                        return units[slug] || 'porsi';
+                    }
+
+                    const catName = getCategoryName(item.category);
+                    const subName = getSubcategoryName(item.category);
+                    const unitName = getUnitForCategory(item.category);
+
                     const modalHTML = `
                         <div id="${modalId}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 md:p-8 lg:p-12">
                             <div class="bg-white rounded-2xl p-6 max-w-5xl w-full mx-auto shadow-2xl relative">
@@ -1652,10 +1695,14 @@
                                     </div>
                                     <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
                                         <h3 class="font-bold text-xl md:text-2xl text-[#994d51]">${item.name}</h3>
+                                        <div class="mb-1 text-muted">
+                                            <span class="text-sm text-gray-500 mr-3">${catName}</span>
+                                            <span class="text-sm text-gray-500">${subName}</span>
+                                        </div>
                                         <p class="text-sm text-gray-700">${item.description}</p>
                                         <div class="flex items-center justify-center md:justify-start gap-2">
                                             <span class="text-3xl font-extrabold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</span>
-                                            <span class="text-sm text-gray-500">/ porsi</span>
+                                            <span class="text-3xl font-extrabold text-[#994d51]">${unitName ? ' / ' + unitName : ''}</span>
                                         </div>
                                         <button class="order-btn w-full md:w-auto mt-6 bg-[#994d51] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[#7a3c3f] transition duration-200">
                                             Pesan Sekarang
