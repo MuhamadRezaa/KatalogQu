@@ -10,6 +10,117 @@
     <!-- Font Awesome untuk icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <style>
+        .related-products {
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .related-products h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .related-products h4 i {
+            color: #2B6CB0;
+            margin-right: 0.5rem;
+        }
+
+        .related-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .related-product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #2B6CB0;
+        }
+
+        .related-product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-product-card h5 {
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            color: #333;
+            line-height: 1.3;
+            max-height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .related-product-card p {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #2B6CB0;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .related-products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Style untuk Subcategory Dropdown */
+        .subcategory-wrapper {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .subcategory-select {
+            padding: 8px 16px;
+            border: 2px solid #2B6CB0;
+            border-radius: 20px;
+            background-color: white;
+            color: #000000;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .subcategory-select:hover {
+            background-color: #EBF8FF;
+        }
+
+        .subcategory-select:focus {
+            border-color: #4299E1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+    </style>
+
 </head>
 
 <body>
@@ -94,6 +205,8 @@
             <button class="category-btn" data-category="pemotong">
                 Pemotong Kertas
             </button>
+
+
         </div>
 
         <!-- Search and Filter Section -->
@@ -109,6 +222,13 @@
                     <input type="text" id="search-input" placeholder="Ketik nama produk yang dicari..."
                         onkeyup="searchProducts()">
                 </div>
+            </div>
+
+            <!-- Dropdown Subcategory -->
+            <div class="subcategory-wrapper">
+                <select id="subcategory-select" class="subcategory-select" style="display: none;">
+                    <option value="all">Semua Sub Kategori</option>
+                </select>
             </div>
 
             <div class="filter-container">
@@ -140,7 +260,7 @@
         <!-- Grid Produk -->
         <div class="products-grid" id="products-grid">
             <!-- Alat Tulis -->
-            <div class="product-card" data-category="alat-tulis">
+            <div class="product-card" data-category="alat-tulis" data-subcategory="pulpen">
                 <div class="product-image">
                     <img src="https://down-id.img.susercontent.com/file/sg-11134201-22120-x9646mj3swkv99"
                         alt="Pulpen Standard">
@@ -578,6 +698,7 @@
                 pulpen: {
                     name: 'Pulpen Standard',
                     price: 'Rp 3.000',
+                    category: 'alat-tulis',
                     image: 'https://down-id.img.susercontent.com/file/sg-11134201-22120-x9646mj3swkv99',
                     description: 'Pulpen berkualitas dengan tinta yang lancar dan tahan lama. Cocok untuk kebutuhan sehari-hari kantor maupun sekolah.',
                     specs: [
@@ -590,6 +711,7 @@
                 pensil: {
                     name: 'Pensil 2B Faber-Castell',
                     price: 'Rp 2.500',
+                    category: 'alat-tulis',
                     image: 'https://ecs7.tokopedia.net/img/cache/700/product-1/2017/11/16/14804937/14804937_ba9679e5-ce11-4477-b3d6-1e986af7f137_550_550.jpg',
                     description: 'Pensil 2B dari Faber-Castell dengan kualitas premium. Grafit berkualitas tinggi menghasilkan goresan yang halus.',
                     specs: [
@@ -816,6 +938,113 @@
                 }
             };
 
+            // Data subcategories
+            const categorySubcategories = {
+                'alat-tulis': [{
+                        id: 'pulpen',
+                        name: 'Pulpen'
+                    },
+                    {
+                        id: 'pensil',
+                        name: 'Pensil'
+                    },
+                    {
+                        id: 'spidol',
+                        name: 'Spidol'
+                    },
+                    {
+                        id: 'correction',
+                        name: 'Correction'
+                    }
+                ],
+                'penjilidan': [{
+                        id: 'stapler',
+                        name: 'Stapler'
+                    },
+                    {
+                        id: 'ordner',
+                        name: 'Ordner'
+                    },
+                    {
+                        id: 'map',
+                        name: 'Map'
+                    }
+                ],
+                'kertas': [{
+                        id: 'hvs',
+                        name: 'Kertas HVS'
+                    },
+                    {
+                        id: 'notes',
+                        name: 'Sticky Notes'
+                    },
+                    {
+                        id: 'warna',
+                        name: 'Kertas Warna'
+                    }
+                ],
+                'label': [{
+                        id: 'lem',
+                        name: 'Lem'
+                    },
+                    {
+                        id: 'tape',
+                        name: 'Double Tape'
+                    },
+                    {
+                        id: 'lakban',
+                        name: 'Lakban'
+                    }
+                ],
+                'pemotong': [{
+                        id: 'cutter',
+                        name: 'Cutter'
+                    },
+                    {
+                        id: 'gunting',
+                        name: 'Gunting'
+                    },
+                    {
+                        id: 'trimmer',
+                        name: 'Paper Trimmer'
+                    }
+                ]
+            };
+
+            // Update subcategory dropdown based on selected category
+            function updateSubcategoryDropdown(category) {
+                const subcategorySelect = document.getElementById('subcategory-select');
+                const subcategories = categorySubcategories[category] || [];
+
+                // Reset dropdown
+                subcategorySelect.innerHTML = '<option value="all">Semua Sub Kategori</option>';
+
+                // Add new options
+                subcategories.forEach(sub => {
+                    subcategorySelect.innerHTML += `<option value="${sub.id}">${sub.name}</option>`;
+                });
+
+                // Show/hide dropdown based on category
+                subcategorySelect.style.display = category === 'all' ? 'none' : 'block';
+            }
+
+            // Filter products based on category and subcategory
+            function filterProducts(category, subcategory) {
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const cardCategory = card.dataset.category;
+                    const cardSubcategory = card.dataset.subcategory;
+
+                    const categoryMatch = category === 'all' || cardCategory === category;
+                    const subcategoryMatch = subcategory === 'all' || cardSubcategory === subcategory;
+
+                    if (categoryMatch && (category === 'all' || subcategoryMatch)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
             // Filter kategori
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -825,21 +1054,44 @@
                     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
 
+                    // Update subcategory dropdown
+                    updateSubcategoryDropdown(category);
+
                     // Filter products
-                    document.querySelectorAll('.product-card').forEach(card => {
-                        if (category === 'all' || card.dataset.category === category) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    filterProducts(category, 'all');
                 });
             });
 
+            // Listen for subcategory changes
+            document.getElementById('subcategory-select').addEventListener('change', function() {
+                const category = document.querySelector('.category-btn.active').dataset.category;
+                const subcategory = this.value;
+                filterProducts(category, subcategory);
+            });
+
             // Show product detail
+            // Fungsi untuk mendapatkan produk terkait
+            function getRelatedProducts(currentProduct) {
+                if (!currentProduct || !currentProduct.category) return [];
+
+                return Object.entries(productDetails)
+                    .filter(([id, product]) => {
+                        return id !== currentProduct.id && // Bukan produk yang sedang dilihat
+                            product.category === currentProduct.category; // Kategori sama
+                    })
+                    .map(([id, product]) => ({
+                        id,
+                        ...product
+                    }))
+                    .slice(0, 3); // Ambil maksimal 3 produk
+            }
+
             function showDetail(productId) {
                 const product = productDetails[productId];
                 if (!product) return;
+
+                // Dapatkan produk terkait
+                const relatedProducts = getRelatedProducts(product);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
@@ -859,8 +1111,21 @@
                                 Chat via WhatsApp
                             </button>
                         </div>
-                    </div>
-                </div>
+
+                        ${relatedProducts.length > 0 ? `
+                                                                    <div class="related-products">
+                                                                        <h4><i class="fas fa-project-diagram"></i> Produk Terkait</h4>
+                                                                        <div class="related-products-grid">
+                                                                            ${relatedProducts.map(rp => `
+                                        <div class="related-product-card" onclick="showDetail('${rp.id}')">
+                                            <img src="${rp.image}" alt="${rp.name}">
+                                            <h5>${rp.name}</h5>
+                                            <p>${rp.price}</p>
+                                        </div>
+                                    `).join('')}
+                                                                        </div>
+                                                                    </div>
+                                                                ` : ''}
             `;
 
                 document.getElementById('product-modal').style.display = 'block';
