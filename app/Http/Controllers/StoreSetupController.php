@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class StoreSetupController extends Controller
@@ -171,7 +173,7 @@ class StoreSetupController extends Controller
 
             // Process with Intervention Image for WebP conversion
             $manager = new ImageManager(new Driver());
-            $img = $manager->read($request->file('store_logo')->getRealPath());
+            $img = $manager->read($request->file('store_logo'));
 
             // Commented out: Resize to max 512x512, maintain aspect ratio, prevent upsizing
             /*

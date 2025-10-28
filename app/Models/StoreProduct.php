@@ -29,6 +29,7 @@ class StoreProduct extends Model
         'product_unit_id',
         'estimasi_waktu',
         'sku',
+        'is_promo', // Add this line
     ];
 
     protected $casts = [
@@ -37,7 +38,8 @@ class StoreProduct extends Model
         'is_new' => 'boolean',
         'is_available' => 'boolean',
         'price' => 'decimal:2',
-        'old_price' => 'decimal:2'
+        'old_price' => 'decimal:2',
+        'is_promo' => 'boolean' // Add this line
     ];
 
     /**

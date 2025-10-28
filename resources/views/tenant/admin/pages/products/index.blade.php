@@ -73,9 +73,9 @@
                                             @else
                                                 <span class="badge badge-light-secondary">Nonaktif</span>
                                             @endif
-                                            {{-- @if ($product->is_promo)
+                                            @if ($product->is_promo)
                                                 <span class="badge badge-light-warning">Promo</span>
-                                            @endif --}}
+                                            @endif
                                             {{-- @if ($product->is_new)
                                                 <span class="badge badge-light-info">Baru</span>
                                             @endif --}}
@@ -267,6 +267,13 @@
                                         <input class="form-check-input" type="checkbox" id="add_is_new" name="is_new"
                                             value="1">
                                         <label class="form-check-label" for="add_is_new">Baru</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="add_is_promo" name="is_promo"
+                                            value="1">
+                                        <label class="form-check-label" for="add_is_promo">Promo</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -494,6 +501,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="edit_is_promo" name="is_promo"
+                                            value="1">
+                                        <label class="form-check-label" for="edit_is_promo">Promo</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="edit_is_available"
                                             name="is_available" value="1">
                                         <label class="form-check-label" for="edit_is_available">Tersedia</label>
@@ -663,6 +677,7 @@
 
                     setInputChecked('#edit_is_active', !!product.is_active);
                     setInputChecked('#edit_is_new', !!product.is_new);
+                    setInputChecked('#edit_is_promo', !!product.is_promo);
                     setInputChecked('#edit_is_available', !!product.is_available);
                     setInputChecked('#edit_is_featured', !!product.is_featured);
 
@@ -798,6 +813,10 @@
                 addAdditionalImages.innerHTML = ''; // Clear additional images fields
             }
             addAdditionalImageIndex = 0; // Reset index
+            const addIsPromo = document.getElementById('add_is_promo');
+            if (addIsPromo) {
+                addIsPromo.checked = false;
+            }
             const addIsFeatured = document.getElementById('add_is_featured');
             if (addIsFeatured) {
                 addIsFeatured.checked = false;
@@ -836,6 +855,10 @@
             if (editImagePreview) {
                 editImagePreview.innerHTML = '';
                 editImagePreview.style.display = 'none';
+            }
+            const editIsPromo = document.getElementById('edit_is_promo');
+            if (editIsPromo) {
+                editIsPromo.checked = false;
             }
             const editIsFeatured = document.getElementById('edit_is_featured');
             if (editIsFeatured) {
