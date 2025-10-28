@@ -183,42 +183,10 @@
             <!-- Category and Price Range Filters - Side by side on tablet -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                 <!-- Category & Sub-category Wrapper -->
-                <!-- Category Filter -->
-                <div>
-                    <h3 class="font-semibold mb-2 text-gray-700">
-                        Category
-                    </h3>
-                    <select id="category-filter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-cyan-500 focus:border-cyan-500 transition">
-                        <option value="all">All</option>
-                        <option value="Laptop">Laptops</option>
-                        <option value="Processor">Processor</option>
-                        <option value="GPU">GPU</option>
-                        <option value="Motherboard">Motherboard</option>
-                        <option value="RAM">RAM</option>
-                        <option value="SSD">SSD</option>
-                        <option value="HDD">HDD</option>
-                        <option value="PSU">PSU</option>
-                        <option value="Casing">Casing</option>
-                        <option value="Monitor">Monitor</option>
-                        <option value="Keyboard">Keyboard</option>
-                        <option value="Headset">Headset</option>
-                        <option value="Speaker">Speaker</option>
-                        <option value="UPS">UPS</option>
-                        <option value="Gaming Chair">Gaming Chair</option>
-                    </select>
-                </div>
+                <select id="category-filter" class="hidden">
+                    <option value="all" selected>Semua Kategori</option>
+                </select>
 
-                <!-- Sub-Category Filter -->
-                <div id="subcategory-filter-container" class="hidden">
-                    <h3 class="font-semibold mb-2 text-gray-700">
-                        Sub-Category
-                    </h3>
-                    <select id="subcategory-filter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-cyan-500 focus:border-cyan-500 transition">
-                        <!-- Options populated by JS -->
-                    </select>
-                </div>
             </div>
 
 
@@ -315,16 +283,14 @@
             <div class="grid grid-cols-2 gap-4">
                 <button id="reset-filters"
                     class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">
-                    Reset Filters
+                    Reset
                 </button>
                 <button id="apply-filters"
                     class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                    Terapkan Filter
+                    Terapkan
                 </button>
             </div>
         </div>
-
-
 
         <!-- Sub-Category Display Section -->
         <div id="subcategory-display-container" class="mb-8 hidden">
@@ -335,7 +301,7 @@
             </div>
             <template id="subcategory-checkbox-template">
                 <div>
-                    <input type="checkbox" id="" name="subcategory" value="" class="hidden peer">
+                    <input type="radio" id="" name="subcategory" value="" class="hidden peer">
                     <label for=""
                         class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer text-gray-700 bg-white hover:bg-gray-100 hover:text-gray-900 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 peer-checked:text-cyan-700 transition-colors">
                         <span class="text-sm font-medium"></span>
@@ -346,7 +312,7 @@
 
         <!-- Product Grid -->
         <!-- ADDED: toolbar sorting -->
-        <div class="flex items-center justify-between mb-4">
+        <div id="product-grid-toolbar" class="flex items-center justify-between mb-4">
             <div class="text-sm text-gray-600">
                 <span id="result-count">Menampilkan produk</span>
             </div>
@@ -375,10 +341,10 @@
                         <img class="product-image w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
                             loading="lazy" decoding="async" src="" alt="" />
 
-                        <!-- Discount badge -->
+                        <!-- Promo badge -->
                         <span
-                            class="discount-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full hidden">
-                            -0%
+                            class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full hidden">
+                            Promo
                         </span>
 
                         <!-- Out of stock overlay -->
@@ -395,6 +361,10 @@
                             <div class="flex flex-wrap items-baseline gap-x-1">
                                 <span class="product-price font-bold text-gray-900"></span>
                                 <span class="product-old-price text-gray-500 line-through hidden"></span>
+                            </div>
+                            <div class="savings-badge-container mt-1">
+                                <span
+                                    class="savings-badge text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-md hidden"></span>
                             </div>
                         </div>
                     </div>
@@ -583,6 +553,14 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Similar Products Section -->
+                            <div class="pt-6 border-t border-gray-200 mt-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-3">Produk Serupa</h3>
+                                <div id="similar-products-container" class="grid grid-cols-3 gap-3">
+                                    <!-- Similar products will be dynamically inserted here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -728,8 +706,10 @@
             },
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM fully loaded and parsed");
             const products = [{
                     id: 1,
                     name: "ASUS ROG Strix G15",
@@ -738,6 +718,7 @@
                     brand: "ASUS",
                     price: 18990000,
                     oldPrice: 21990000,
+                    isPromo: true, // ADDED
                     images: [
                         "{{ asset('assets/demo/toko-komputer/img/product/laptop/GamingLaptopROGStrix.png') }}",
                         "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800",
@@ -855,6 +836,7 @@
                     brand: "ASUS",
                     price: 12000000,
                     oldPrice: 13500000,
+                    isPromo: true, // ADDED
                     images: [
                         "{{ asset('assets/demo/toko-komputer/img/product/laptop/ASUSROGSwift27.png') }}",
                     ],
@@ -884,8 +866,7 @@
                         "Focus": "Autofocus",
                         "Features": "Background Replacement",
                     },
-                },
-                {
+                }, {
                     id: 9,
                     name: "Corsair RM850x PSU",
                     category: "PSU",
@@ -902,8 +883,7 @@
                         "Modularity": "Fully Modular",
                         "Fan Mode": "Zero RPM Fan Mode",
                     },
-                },
-                {
+                }, {
                     id: 10,
                     name: "ASUS TUF Gaming F15",
                     category: "Laptop",
@@ -911,7 +891,7 @@
                     brand: "ASUS",
                     price: 15500000,
                     oldPrice: 16000000,
-                    images: ["{{ asset('assets/demo/toko-komputer/img/product/laptop/1000.png') }}"],
+                    isPromo: true, // ADDED
                     url: "product-detail.html",
                     description: "Geared for serious gaming and real-world durability, the TUF Gaming F15 is a fully-loaded Windows 10 Pro gaming laptop that can carry you to victory.",
                     specs: {
@@ -921,8 +901,7 @@
                         "Storage": "1TB NVMe SSD",
                         "Display": '15.6" 144Hz Display',
                     },
-                },
-                {
+                }, {
                     id: 11,
                     name: "NVIDIA GeForce RTX 4090",
                     category: "GPU",
@@ -939,8 +918,7 @@
                         "Features 1": "DLSS 3",
                         "Features 2": "8K Gaming",
                     },
-                },
-                {
+                }, {
                     id: 12,
                     name: "Logitech G502 HERO",
                     category: "Mouse",
@@ -957,8 +935,7 @@
                         "Customization": "Adjustable Weights",
                         "Lighting": "LIGHTSYNC RGB",
                     },
-                },
-                {
+                }, {
                     id: 13,
                     name: "Razer BlackWidow V3 Pro",
                     category: "Keyboard",
@@ -975,8 +952,7 @@
                         "Connectivity": "Three Connectivity Modes",
                         "Build Material": "Durable Aluminum Construction",
                     },
-                },
-                {
+                }, {
                     id: 14,
                     name: "Samsung Odyssey G7",
                     category: "Monitor",
@@ -993,8 +969,7 @@
                         "Curvature": "1000R",
                         "Sync Technology": "G-Sync Compatible",
                     },
-                },
-                {
+                }, {
                     id: 15,
                     name: "Intel Core i9-13900K",
                     category: "Processor",
@@ -1011,8 +986,7 @@
                         "Socket": "LGA 1700 Socket",
                         "Memory Support": "DDR5 Support",
                     },
-                },
-                {
+                }, {
                     id: 16,
                     name: "ASUS ROG Maximus Z790 Hero",
                     category: "Motherboard",
@@ -1029,8 +1003,7 @@
                         "Memory Support": "DDR5 Support",
                         "PCIe Version": "PCIe 5.0",
                     },
-                },
-                {
+                }, {
                     id: 17,
                     name: "Western Digital Black SN850X 1TB",
                     category: "SSD",
@@ -1047,8 +1020,7 @@
                         "Read Speed": "up to 7300MB/s",
                         "Features": "Heatsink Included",
                     },
-                },
-                {
+                }, {
                     id: 18,
                     name: "Seagate Barracuda 4TB HDD",
                     category: "HDD",
@@ -1065,8 +1037,7 @@
                         "RPM": "5400",
                         "Cache": "256MB",
                     },
-                },
-                {
+                }, {
                     id: 19,
                     name: "Corsair iCUE H150i ELITE CAPELLIX",
                     category: "Cooling",
@@ -1083,8 +1054,7 @@
                         "Lighting": "Dynamic RGB Lighting",
                         "Software": "iCUE Software Control",
                     },
-                },
-                {
+                }, {
                     id: 20,
                     name: "NZXT H5 Flow",
                     category: "Casing",
@@ -1101,8 +1071,7 @@
                         "Cooling": "Excellent Airflow",
                         "Features": "Cable Management Bar",
                     },
-                },
-                {
+                }, {
                     id: 21,
                     name: "HyperX QuadCast S",
                     category: "Audio",
@@ -1119,8 +1088,7 @@
                         "Lighting": "Vibrant RGB Lighting",
                         "Accessories": "Built-in Pop Filter",
                     },
-                },
-                {
+                }, {
                     id: 22,
                     name: "ASUS ROG Zephyrus G14",
                     category: "Laptop",
@@ -1138,8 +1106,7 @@
                         "Storage": "1TB NVMe SSD",
                         "Display": '14" QHD 120Hz Display',
                     },
-                },
-                {
+                }, {
                     id: 23,
                     name: "Gigabyte AORUS FO48U",
                     category: "Monitor",
@@ -1156,8 +1123,7 @@
                         "Refresh Rate": "120Hz",
                         "Sync Technology": "FreeSync Premium",
                     },
-                },
-                {
+                }, {
                     id: 24,
                     name: "Logitech G915 TKL",
                     category: "Keyboard",
@@ -1174,8 +1140,7 @@
                         "Lighting": "LIGHTSYNC RGB",
                         "Material": "Aircraft-grade Aluminum",
                     },
-                },
-                {
+                }, {
                     id: 25,
                     name: "AMD Ryzen 7 7700X",
                     category: "Processor",
@@ -1192,8 +1157,7 @@
                         "Socket": "AM5 Socket",
                         "Memory Support": "DDR5 Support",
                     },
-                },
-                {
+                }, {
                     id: 26,
                     name: "MSI MAG B650 TOMAHAWK WIFI",
                     category: "Motherboard",
@@ -1210,8 +1174,7 @@
                         "Memory Support": "DDR5 Support",
                         "Wireless": "Wi-Fi 6E",
                     },
-                },
-                {
+                }, {
                     id: 27,
                     name: "Crucial P3 Plus 2TB",
                     category: "SSD",
@@ -1228,8 +1191,7 @@
                         "Read Speed": "up to 5000MB/s",
                         "Technology": "Micron Advanced 3D NAND",
                     },
-                },
-                {
+                }, {
                     id: 28,
                     name: "Fractal Design Meshify C",
                     category: "Casing",
@@ -1246,8 +1208,7 @@
                         "Cooling": "High Airflow Design",
                         "Size": "Compact Footprint",
                     },
-                },
-                {
+                }, {
                     id: 29,
                     name: "Razer DeathAdder V3 Pro",
                     category: "Mouse",
@@ -1264,8 +1225,7 @@
                         "Switches": "Razer Optical Mouse Switches Gen-3",
                         "Design": "Ergonomic Form",
                     },
-                },
-                {
+                }, {
                     id: 30,
                     name: "Corsair Vengeance RGB Pro 16GB",
                     category: "RAM",
@@ -1276,14 +1236,13 @@
                     images: ["{{ asset('assets/demo/toko-komputer/img/temp/computer-store.png') }}"],
                     url: "product-detail.html",
                     description: "Illuminate your system with vivid, animated lighting from ten individually addressable RGB LEDs per module.",
-                    specs: [
-                        "16GB (2x8GB)",
-                        "DDR4 3200MHz",
-                        "Intel XMP 2.0",
-                        "Dynamic Multi-Zone RGB Lighting",
-                    ],
-                },
-                {
+                    specs: {
+                        "Capacity": "16GB (2x8GB)",
+                        "Type": "DDR4 3200MHz",
+                        "Compatibility": "Intel XMP 2.0",
+                        "Lighting": "Dynamic Multi-Zone RGB Lighting",
+                    },
+                }, {
                     id: 31,
                     name: "ASUS TUF Gaming A15",
                     category: "Laptop",
@@ -1301,8 +1260,7 @@
                         "Storage": "512GB NVMe SSD",
                         "Display": '15.6" 144Hz Display',
                     },
-                },
-                {
+                }, {
                     id: 32,
                     name: "LG UltraGear 27GN950-B",
                     category: "Monitor",
@@ -1319,8 +1277,7 @@
                         "Panel Type": "Nano IPS Display",
                         "HDR": "VESA DisplayHDR 600",
                     },
-                },
-                {
+                }, {
                     id: 33,
                     name: "SteelSeries Arctis 7+",
                     category: "Headset",
@@ -1337,8 +1294,7 @@
                         "Microphone": "ClearCast Microphone",
                         "Battery Life": "24-hour",
                     },
-                },
-                {
+                }, {
                     id: 34,
                     name: "Razer Huntsman Mini",
                     category: "Keyboard",
@@ -1355,8 +1311,7 @@
                         "Keycaps": "Doubleshot PBT",
                         "Connectivity": "Detachable USB-C Cable",
                     },
-                },
-                {
+                }, {
                     id: 35,
                     name: "Intel Core i7-13700K",
                     category: "Processor",
@@ -1373,8 +1328,7 @@
                         "Socket": "LGA 1700 Socket",
                         "Memory Support": "DDR5 Support",
                     },
-                },
-                {
+                }, {
                     id: 36,
                     name: "EVGA SuperNOVA 1000 G6",
                     category: "PSU",
@@ -1391,8 +1345,7 @@
                         "Modularity": "Fully Modular",
                         "Features": "Eco Mode",
                     },
-                },
-                {
+                }, {
                     id: 37,
                     name: "Samsung 980 Pro 2TB",
                     category: "SSD",
@@ -1409,8 +1362,7 @@
                         "Read Speed": "up to 7000MB/s",
                         "Features": "Heatsink Version Available",
                     },
-                },
-                {
+                }, {
                     id: 38,
                     name: "NZXT Kraken X63",
                     category: "Cooling",
@@ -1427,8 +1379,7 @@
                         "Lighting": "RGB Infinity Mirror",
                         "Software": "CAM Software Control",
                     },
-                },
-                {
+                }, {
                     id: 39,
                     name: "Custom Build PC - Intel i7",
                     category: "PC Desktop",
@@ -1446,8 +1397,7 @@
                         "Storage": "1TB NVMe SSD",
                         "Cooling": "AIO Liquid Cooling",
                     },
-                },
-                {
+                }, {
                     id: 40,
                     name: "Logitech G PRO X Headset",
                     category: "Headset",
@@ -1464,8 +1414,7 @@
                         "Comfort": "Memory Foam Earpads",
                         "Build Material": "Durable Steel and Aluminum Construction",
                     },
-                },
-                {
+                }, {
                     id: 41,
                     name: "ASUS ROG Swift PG32UQX",
                     category: "Monitor",
@@ -1484,8 +1433,7 @@
                         "Refresh Rate": "144Hz",
                         "Sync Technology": "G-Sync Ultimate",
                     },
-                },
-                {
+                }, {
                     id: 42,
                     name: "Corsair K100 RGB",
                     category: "Keyboard",
@@ -1502,8 +1450,7 @@
                         "Lighting": "44-Zone RGB LightEdge",
                         "Ergonomics": "Detachable Magnetic Palm Rest",
                     },
-                },
-                {
+                }, {
                     id: 43,
                     name: "NVIDIA GeForce RTX 4070 Ti",
                     category: "GPU",
@@ -1511,6 +1458,7 @@
                     brand: "NVIDIA",
                     price: 12000000,
                     oldPrice: 13500000,
+                    isPromo: true, // ADDED
                     images: ["{{ asset('assets/demo/toko-komputer/img/temp/computer-store.png') }}"],
                     url: "product-detail.html",
                     description: "The NVIDIA GeForce RTX 4070 Ti delivers incredible performance for gamers and creators, with DLSS 3 and real-time ray tracing.",
@@ -1520,8 +1468,7 @@
                         "Features 1": "DLSS 3",
                         "Features 2": "Ray Tracing",
                     },
-                },
-                {
+                }, {
                     id: 44,
                     name: "Kingston Fury Beast 64GB",
                     category: "RAM",
@@ -1538,8 +1485,7 @@
                         "Compatibility": "Intel XMP 3.0",
                         "Features": "Plug N Play",
                     },
-                },
-                {
+                }, {
                     id: 45,
                     name: "Lian Li PC-O11 Dynamic",
                     category: "Casing",
@@ -1556,8 +1502,7 @@
                         "Panels": "Tempered Glass",
                         "Cooling Support": "Excellent Water Cooling",
                     },
-                },
-                {
+                }, {
                     id: 46,
                     name: "Logitech G203 LIGHTSYNC",
                     category: "Mouse",
@@ -1574,8 +1519,7 @@
                         "Lighting": "LIGHTSYNC RGB",
                         "Design": "Classic",
                     },
-                },
-                {
+                }, {
                     id: 47,
                     name: "AMD Ryzen 5 7600X",
                     category: "Processor",
@@ -1592,8 +1536,7 @@
                         "Socket": "AM5 Socket",
                         "Memory Support": "DDR5 Support",
                     },
-                },
-                {
+                }, {
                     id: 48,
                     name: "MSI GeForce RTX 3060 VENTUS 2X 12G",
                     category: "GPU",
@@ -1610,8 +1553,7 @@
                         "Cooling": "Twin Fan Thermal Design",
                         "Features": "Ray Tracing",
                     },
-                },
-                {
+                }, {
                     id: 49,
                     name: "Corsair K70 RGB PRO",
                     category: "Keyboard",
@@ -1628,8 +1570,7 @@
                         "Technology": "AXON Hyper-Processing",
                         "Features": "Tournament Switch",
                     },
-                },
-                {
+                }, {
                     id: 50,
                     name: "HP OMEN 27c",
                     category: "Monitor",
@@ -1648,1426 +1589,641 @@
                     },
                 }
             ];
+            console.log('Products array:', products);
 
             // ADDED: stok default via mapping (tanpa mengubah array products)
-            const
-                productStock = {
-                    2: 0,
-                    7: 12,
-                    10: 0,
-                    22: 5
-                }; // contoh; sisakan yang lain default
-            products
-                .forEach(
-                    (p) => {
-                        p.stock =
-                            productStock[
-                                p
-                                .id
-                            ] ??
-                            p
-                            .stock ??
-                            20;
-                    }
-                );
+            const productStock = {
+                2: 0,
+                7: 12,
+                10: 0,
+                22: 5
+            }; // contoh; sisakan yang lain default
+            products.forEach((p) => {
+                p.stock = productStock[p.id] ?? p.stock ?? 20;
+            });
 
             // ADDED: Category display functionality
-            const
-                setupCategoryDisplay =
-                () => {
-                    const
-                        categoryDisplay =
-                        document
-                        .getElementById(
-                            "category-display"
-                        );
-                    if (!
-                        categoryDisplay
-                    )
-                        return;
+            const setupCategoryDisplay = () => {
+                console.log('setupCategoryDisplay function called');
+                const categoryDisplay = document.getElementById("category-display");
+                if (!categoryDisplay)
+                    return;
+                // Count products by category
+                const categoryCounts = {};
+                products.forEach(
+                    (product) => {
+                        const category = product.category;
+                        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+                    }
+                );
 
-                    // Count products by category
-                    const
-                        categoryCounts = {};
-                    products
-                        .forEach(
-                            (
-                                product
-                            ) => {
-                                const
-                                    category =
-                                    product
-                                    .category;
-                                categoryCounts
-                                    [
-                                        category
-                                    ] =
-                                    (categoryCounts[
-                                            category
-                                        ] ||
-                                        0
-                                    ) +
-                                    1;
+                // Sort categories by product count (descending) then alphabetically
+                const sortedCategories = Object.entries(categoryCounts).sort((a, b) => {
+                    if (b[1] !== a[1])
+                        return b[1] - a[1]; // Sort by count descending
+                    return a[0].localeCompare(b[0]); // Then alphabetically
+                });
+
+                const categoryFilter = document.getElementById('category-filter');
+                if (categoryFilter) {
+                    // Clear existing options except the first one ("All")
+                    while (categoryFilter.options.length > 1) {
+                        categoryFilter.remove(1);
+                    }
+
+                    sortedCategories.forEach(([category, count]) => {
+                        const option = document.createElement('option');
+                        option.value = category;
+                        option.textContent = `${category}`;
+                        categoryFilter.appendChild(option);
+                    });
+                }
+
+                // Create category cards using template
+                categoryDisplay.innerHTML = "";
+                const categoryTemplate = document.getElementById("category-card-template");
+
+                // Map to store the first image for each category
+                const categoryImages = {};
+                products.forEach(product => {
+                    if (!categoryImages[product.category] && product.images && product.images.length >
+                        0) {
+                        categoryImages[product.category] = product.images[0];
+                    }
+                });
+
+                sortedCategories.forEach(([category, count], index) => {
+                    const categoryCard = categoryTemplate.content.cloneNode(true);
+                    const cardElement = categoryCard.querySelector(".category-card");
+                    const categoryImage = categoryCard.querySelector(".category-image");
+                    const categoryName = categoryCard.querySelector(".category-name");
+                    const categoryCount = categoryCard.querySelector(".category-count");
+
+                    // Populate template with data
+                    categoryName.textContent = category;
+                    categoryCount.textContent = `${count} produk`;
+
+                    // Set category image
+                    categoryImage.src = categoryImages[category] ||
+                        "{{ asset('assets/images/no-image-icon.png') }}";
+                    categoryImage.alt = category;
+
+                    // Hide cards beyond the 11th one initially
+                    if (index >= 12) {
+                        cardElement.classList.add('hidden', 'category-hidden');
+                    }
+
+                    // Add click handler to filter by category
+                    cardElement.addEventListener("click", () => {
+                        const categoryFilter = document.getElementById("category-filter");
+                        let activeCategory = category;
+
+                        // Deselect if clicking the same card again
+                        if (cardElement.classList.contains('category-active')) {
+                            cardElement.classList.remove('category-active');
+                            document.querySelectorAll('.category-card').forEach(c => c.classList
+                                .remove('category-active'));
+                            activeCategory = 'all';
+                            document.getElementById("subcategory-display-container").classList
+                                .add('hidden');
+                            if (categoryFilter) {
+                                categoryFilter.value = 'all';
                             }
-                        );
-
-                    // Sort categories by product count (descending) then alphabetically
-                    const
-                        sortedCategories =
-                        Object
-                        .entries(
-                            categoryCounts
-                        )
-                        .sort(
-                            (a,
-                                b
-                            ) => {
-                                if (b[
-                                        1
-                                    ] !==
-                                    a[
-                                        1
-                                    ]
-                                )
-                                    return b[
-                                            1
-                                        ] -
-                                        a[
-                                            1
-                                        ]; // Sort by count descending
-                                return a[
-                                        0
-                                    ]
-                                    .localeCompare(
-                                        b[
-                                            0
-                                        ]
-                                    ); // Then alphabetically
-                            }
-                        );
-
-                    // Create category cards using template
-
-                    categoryDisplay
-
-                        .innerHTML = "";
-
-                    const
-
-                        categoryTemplate = document.getElementById("category-card-template");
-
-
-
-                    // Map to store the first image for each category
-
-                    const categoryImages = {};
-
-                    products.forEach(product => {
-
-                        if (!categoryImages[product.category] && product.images && product.images.length >
-                            0) {
-
-                            categoryImages[product.category] = product.images[0];
-
+                        } else {
+                            // Remove active state from other cards and add to current
+                            document.querySelectorAll('.category-card').forEach(c => c.classList
+                                .remove('category-active'));
+                            cardElement.classList.add('category-active');
                         }
 
+
+                        if (categoryFilter) {
+                            categoryFilter.value = activeCategory;
+                        }
+
+                        updateSubcategoryDisplay(activeCategory);
+                        applyFilters();
+                        document.getElementById('product-grid-toolbar').scrollIntoView({
+                            behavior: 'smooth'
+                        });
                     });
-
-
-
-                    sortedCategories
-
-
-
-                        .forEach(
-
-
-
-                            ([category, count], index) => {
-
-
-
-                                const
-
-
-
-                                    categoryCard = categoryTemplate.content.cloneNode(true);
-
-
-
-                                const
-
-
-
-                                    cardElement = categoryCard.querySelector(".category-card");
-
-
-
-                                const
-
-
-
-                                    categoryImage = categoryCard.querySelector(".category-image");
-
-
-
-                                const
-
-
-
-                                    categoryName = categoryCard.querySelector(".category-name");
-
-
-
-                                const
-
-
-
-                                    categoryCount = categoryCard.querySelector(".category-count");
-
-
-
-
-
-
-
-                                // Populate template with data
-
-
-
-                                categoryName.textContent = category;
-
-
-
-                                categoryCount.textContent = `${count} produk`;
-
-
-
-
-
-
-
-                                // Set category image
-
-
-
-                                categoryImage.src = categoryImages[category] ||
-                                    "{{ asset('assets/images/no-image-icon.png') }}";
-
-
-
-                                categoryImage.alt = category;
-
-
-
-
-
-
-
-                                // Hide cards beyond the 11th one initially
-
-
-
-                                if (index >= 12) {
-
-
-
-                                    cardElement.classList.add('hidden', 'category-hidden');
-
-
-
-                                }
-
-                                // Add click handler to filter by category
-                                cardElement.addEventListener("click", () => {
-                                    const categoryFilter = document.getElementById("category-filter");
-                                    let activeCategory = category;
-
-                                    // Deselect if clicking the same card again
-                                    if (cardElement.classList.contains('category-active')) {
-                                        cardElement.classList.remove('category-active');
-                                        document.querySelectorAll('.category-card').forEach(c => c.classList
-                                            .remove('category-active'));
-                                        activeCategory = 'all';
-                                        document.getElementById("subcategory-display-container").classList
-                                            .add('hidden');
-                                        if (categoryFilter) categoryFilter.value = 'all';
-                                        applyFilters();
-                                        return;
-                                    }
-
-                                    // Remove active state from other cards and add to current
-                                    document.querySelectorAll('.category-card').forEach(c => c.classList
-                                        .remove('category-active'));
-                                    cardElement.classList.add('category-active');
-
-
-                                    if (categoryFilter) {
-                                        categoryFilter.value = activeCategory;
-                                    }
-
-                                    const subcategoryContainer = document.getElementById(
-                                        "subcategory-display-container");
-                                    const subcategoryDisplay = document.getElementById(
-                                        "subcategory-display");
-                                    const selectedCategoryName = document.getElementById(
-                                        "selected-category-name");
-                                    const subcategoryTemplate = document.getElementById(
-                                        "subcategory-checkbox-template");
-
-                                    const subcategories = [...new Set(products.filter(p => p.category ===
-                                        activeCategory).map(p => p.subcategory))].sort();
-
-                                    subcategoryDisplay.innerHTML = '';
-
-                                    if (subcategories.length > 1) {
-                                        selectedCategoryName.textContent = activeCategory;
-
-                                        subcategories.forEach((subcategory, index) => {
-                                            const checkboxClone = subcategoryTemplate.content
-                                                .cloneNode(true);
-                                            const div = checkboxClone.querySelector('div');
-                                            const input = div.querySelector('input');
-                                            const label = div.querySelector('label');
-                                            const span = label.querySelector('span');
-                                            const inputId =
-                                                `subcat-${activeCategory.replace(/\s+/g, '-')}-${index}`;
-
-                                            input.id = inputId;
-                                            input.value = subcategory;
-                                            input.addEventListener('change', applyFilters);
-                                            label.htmlFor = inputId;
-                                            span.textContent = subcategory;
-
-                                            subcategoryDisplay.appendChild(div);
-                                        });
-
-                                        subcategoryContainer.classList.remove('hidden');
-                                        subcategoryContainer.scrollIntoView({
-                                            behavior: 'smooth',
-                                            block: 'start'
-                                        });
-                                    } else {
-                                        subcategoryContainer.classList.add('hidden');
-                                        document.getElementById("product-grid").scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "start"
-                                        });
-                                    }
-
-                                    applyFilters();
-                                });
-
-
-
-
-
-
-
-                                categoryDisplay.appendChild(categoryCard);
-
-
-
-                            }
-
-
-
-                        );
-
-
-
-
-
-
-
-                    // Add 'Show More' button if there are more than 11 categories
-
-
-
-                    if (sortedCategories.length > 11) {
-
-
-
-                        const showMoreButtonContainer = document.createElement('div');
-
-
-
-                        showMoreButtonContainer.className = 'col-span-full text-center mt-4';
-
-
-
-                        showMoreButtonContainer.innerHTML = `
-
-
-
-                                                <button id="show-more-categories-btn"
-
-
-
-                                                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-
-
-
-                                                    <span id="show-more-text">Lihat lainnya</span>
-
-
-
-                                                    <i data-lucide="chevron-down" class="h-4 w-4 ml-2 transition-transform duration-300" id="show-more-icon"></i>
-
-
-
-                                                </button>
-
-
-
-                                            `;
-
-
-
-                        categoryDisplay.appendChild(showMoreButtonContainer);
-
-
-
-
-
-
-
-                        // Re-render lucide icons for the new button
-
-
-
-                        lucide.createIcons();
-
-
-
-
-
-
-
-                        const showMoreBtn = document.getElementById('show-more-categories-btn');
-
-
-
-                        let isExpanded = false;
-
-
-
-
-
-
-
-                        showMoreBtn.addEventListener('click', () => {
-
-
-
-                            isExpanded = !isExpanded;
-
-
-
-                            document.querySelectorAll('.category-hidden').forEach(card => {
-
-
-
-                                card.classList.toggle('hidden');
-
-
-
-                            });
-
-
-
-
-
-
-
-                            const showMoreText = document.getElementById('show-more-text');
-
-
-
-                            const showMoreIcon = document.getElementById('show-more-icon');
-
-
-
-
-
-
-
-                            if (isExpanded) {
-
-
-
-                                showMoreText.textContent = 'Sembunyikan';
-
-
-
-                                showMoreIcon.style.transform = 'rotate(180deg)';
-
-
-
-                            } else {
-
-
-
-                                showMoreText.textContent = 'Lihat lainnya';
-
-
-
-                                showMoreIcon.style.transform = 'rotate(0deg)';
-
-
-
-                            }
-
-
-
+                    categoryDisplay.appendChild(categoryCard);
+                });
+
+                // Add 'Show More' button if there are more than 11 categories
+                if (sortedCategories.length > 11) {
+                    const showMoreButtonContainer = document.createElement('div');
+                    showMoreButtonContainer.className = 'col-span-full text-center mt-4';
+                    showMoreButtonContainer.innerHTML =
+                        `
+                            <button id="show-more-categories-btn"
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+                                <span id="show-more-text">Lihat lainnya</span>
+                                <i data-lucide="chevron-down" class="h-4 w-4 ml-2 transition-transform duration-300" id="show-more-icon"></i>
+                            </button>
+                        `;
+                    categoryDisplay.appendChild(showMoreButtonContainer);
+
+                    // Re-render lucide icons for the new button
+                    lucide.createIcons();
+
+                    const showMoreBtn = document.getElementById('show-more-categories-btn');
+                    let isExpanded = false;
+                    showMoreBtn.addEventListener('click', () => {
+                        isExpanded = !isExpanded;
+                        document.querySelectorAll('.category-hidden').forEach(card => {
+                            card.classList.toggle('hidden');
                         });
 
+                        const showMoreText = document.getElementById('show-more-text');
+                        const showMoreIcon = document.getElementById('show-more-icon');
 
-
-                    }
-                };
+                        if (isExpanded) {
+                            showMoreText.textContent = 'Sembunyikan';
+                            showMoreIcon.style.transform = 'rotate(180deg)';
+                        } else {
+                            showMoreText.textContent = 'Lihat lainnya';
+                            showMoreIcon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                }
+            };
 
             // ADDED: ref elemen sorting & counter
-            const
-                sortSelect =
-                document
-                .getElementById(
-                    "sort-select"
-                );
-            const
-                resultCount =
-                document
-                .getElementById(
-                    "result-count"
-                );
-
-            // ADDED: helper diskon persen
-            const
-                getDiscountPercent =
-                (
-                    product
-                ) => {
-                    if (
-                        !
-                        product
-                        .oldPrice ||
-                        !
-                        product
-                        .price ||
-                        product
-                        .oldPrice <=
-                        product
-                        .price
-                    )
-                        return 0;
-                    return Math
-                        .round(
-                            ((product
-                                    .oldPrice -
-                                    product
-                                    .price
-                                ) /
-                                product
-                                .oldPrice
-                            ) *
-                            100
-                        );
-                };
+            const categoryFilter = document.getElementById("category-filter");
+            const sortSelect = document.getElementById("sort-select");
+            const resultCount = document.getElementById("result-count");
 
             // ADDED: fungsi sorting dengan prioritas stok
-            const
-                sortProducts =
-                (
-                    arr
-                ) => {
-                    const
-                        mode =
-                        sortSelect
-                        ?.value ||
-                        "relevance";
-                    const
-                        a = [
-                            ...
-                            arr
-                        ];
+            const sortProducts = (arr) => {
+                const mode = sortSelect?.value || "relevance";
+                const a = [...arr];
 
-                    // Fungsi untuk sorting berdasarkan mode yang dipilih
-                    const
-                        applySortMode =
-                        (
-                            products
-                        ) => {
-                            switch (
-                                mode
-                            ) {
-                                case "price-asc":
-                                    return products
-                                        .sort(
-                                            (x,
-                                                y
-                                            ) =>
-                                            x
-                                            .price -
-                                            y
-                                            .price
-                                        );
-                                case "price-desc":
-                                    return products
-                                        .sort(
-                                            (x,
-                                                y
-                                            ) =>
-                                            y
-                                            .price -
-                                            x
-                                            .price
-                                        );
-                                case "name-asc":
-                                    return products
-                                        .sort(
-                                            (x,
-                                                y
-                                            ) =>
-                                            x
-                                            .name
-                                            .localeCompare(
-                                                y
-                                                .name
-                                            )
-                                        );
-                                case "name-desc":
-                                    return products
-                                        .sort(
-                                            (x,
-                                                y
-                                            ) =>
-                                            y
-                                            .name
-                                            .localeCompare(
-                                                x
-                                                .name
-                                            )
-                                        );
-                                case "newest":
-                                    return products
-                                        .sort(
-                                            (x,
-                                                y
-                                            ) =>
-                                            y
-                                            .id -
-                                            x
-                                            .id
-                                        ); // asumsi id naik = lebih baru
-                                default:
-                                    return products; // relevansi = hasil filter apa adanya
-                            }
-                        };
-
-                    // Pisahkan produk berdasarkan stok
-                    const
-                        inStock =
-                        a
-                        .filter(
-                            (
-                                product
-                            ) =>
-                            product
-                            .stock >
-                            0
-                        );
-                    const
-                        outOfStock =
-                        a
-                        .filter(
-                            (
-                                product
-                            ) =>
-                            product
-                            .stock <=
-                            0
-                        );
-
-                    // Terapkan sorting pada masing-masing grup
-                    const
-                        sortedInStock =
-                        applySortMode(
-                            inStock
-                        );
-                    const
-                        sortedOutOfStock =
-                        applySortMode(
-                            outOfStock
-                        );
-
-                    // Gabungkan: produk berstock di depan, stok habis di belakang
-                    return [...
-                        sortedInStock,
-                        ...
-                        sortedOutOfStock
-                    ];
+                // Fungsi untuk sorting berdasarkan mode yang dipilih
+                const applySortMode = (products) => {
+                    switch (mode) {
+                        case "price-asc":
+                            return products.sort((x, y) => x.price - y.price);
+                        case "price-desc":
+                            return products.sort((x, y) => y.price - x.price);
+                        case "name-asc":
+                            return products.sort((x, y) => x.name.localeCompare(y.name));
+                        case "name-desc":
+                            return products.sort((x, y) => y.name.localeCompare(x.name));
+                        case "newest":
+                            return products.sort((x, y) => y.id - x.id); // asumsi id naik = lebih baru
+                        default:
+                            return products; // relevansi = hasil filter apa adanya
+                    }
                 };
 
-            const
-                productGrid =
-                document
-                .getElementById(
-                    "product-grid"
-                );
-            const
-                noResults =
-                document
-                .getElementById(
-                    "no-results"
-                );
-            const
-                categoryFilter =
-                document
-                .getElementById(
-                    "category-filter"
-                );
+                // Pisahkan produk berdasarkan stok
+                const inStock = a.filter((product) => product.stock > 0);
+                const outOfStock = a.filter((product) => product.stock <= 0);
+
+                // Terapkan sorting pada masing-masing grup
+                const sortedInStock = applySortMode(inStock);
+                const sortedOutOfStock = applySortMode(outOfStock);
+
+                // Gabungkan: produk berstock di depan, stok habis di belakang
+                return [...sortedInStock, ...sortedOutOfStock];
+            };
+
+            const productGrid = document.getElementById("product-grid");
+            const noResults = document.getElementById("no-results");
             const subcategoryFilterContainer = document.getElementById('subcategory-filter-container');
             const subcategoryFilter = document.getElementById('subcategory-filter');
-            const
-                minPriceFilter =
-                document
-                .getElementById(
-                    "min-price-filter"
-                );
-            const
-                maxPriceFilter =
-                document
-                .getElementById(
-                    "max-price-filter"
-                );
-            const
-                brandFilter =
-                document
-                .getElementById(
-                    "brand-filter"
-                );
-            const
-                resetFiltersBtn =
-                document
-                .getElementById(
-                    "reset-filters"
-                );
-            const
-                searchInput =
-                document
-                .getElementById(
-                    "search-input"
-                );
-            const
-                modal =
-                document
-                .getElementById(
-                    "product-modal"
-                );
-            const
-                modalClose =
-                document
-                .getElementById(
-                    "modal-close"
-                );
-            const
-                mainImage =
-                document
-                .getElementById(
-                    "main-image"
-                );
-            const
-                productTitle =
-                document
-                .getElementById(
-                    "product-title"
-                );
-            const
-                productCategory =
-                document
-                .getElementById(
-                    "product-category-text"
-                );
-            const
-                currentPrice =
-                document
-                .getElementById(
-                    "current-price"
-                );
-            const
-                originalPrice =
-                document
-                .getElementById(
-                    "original-price"
-                );
-            const
-                productDescription =
-                document
-                .getElementById(
-                    "product-description"
-                );
-            const
-                productSpecs =
-                document
-                .getElementById(
-                    "product-specs"
-                );
-            const
-                thumbnailContainer =
-                document
-                .getElementById(
-                    "thumbnail-container"
-                );
-            const
-                paginationContainer =
-                document
-                .getElementById(
-                    "pagination-container"
-                );
-            const
-                minPriceDisplay =
-                document
-                .getElementById(
-                    "min-price-display"
-                );
-            const
-                maxPriceDisplay =
-                document
-                .getElementById(
-                    "max-price-display"
-                );
+            const minPriceFilter = document.getElementById("min-price-filter");
+            const maxPriceFilter = document.getElementById("max-price-filter");
+            const brandFilter = document.getElementById("brand-filter");
+            const resetFiltersBtn = document.getElementById("reset-filters");
+            const searchInput = document.getElementById("search-input");
+            const modal = document.getElementById("product-modal");
+            const modalClose = document.getElementById("modal-close");
+            const mainImage = document.getElementById("main-image");
+            const productTitle = document.getElementById("product-title");
+            const productCategory = document.getElementById("product-category-text");
+            const currentPrice = document.getElementById("current-price");
+            const originalPrice = document.getElementById("original-price");
+            const productDescription = document.getElementById("product-description");
+            const productSpecs = document.getElementById("product-specs");
+            const thumbnailContainer = document.getElementById("thumbnail-container");
+            const paginationContainer = document.getElementById("pagination-container");
+            const minPriceDisplay = document.getElementById("min-price-display");
+            const maxPriceDisplay = document.getElementById("max-price-display");
 
-            let currentPage =
-                1;
-            const
-                productsPerPage =
-                18;
+            let currentPage = 1;
+            const productsPerPage = 18;
+            let filteredProducts = [];
+            const formatNumberInput = (event) => {
+                const input = event.target;
+                let cursorPosition = input.selectionStart;
+                const originalValue = input.value;
+                const rawValue = input.value.replace(/[^0-9]/g, "");
+                const hiddenInput = document.getElementById(input.id.replace("-display", "-filter"));
+                if (hiddenInput) {
+                    hiddenInput.value = rawValue;
+                }
 
-            let
-                filteredProducts = [];
+                if (rawValue) {
+                    const formattedValue = new Intl.NumberFormat("id-ID").format(rawValue);
+                    input.value = formattedValue;
+                } else {
+                    input.value = "";
+                }
 
-            const
-                formatNumberInput =
-                (
-                    event
-                ) => {
-                    const
-                        input =
-                        event
-                        .target;
-                    let cursorPosition =
-                        input
-                        .selectionStart;
-                    const
-                        originalValue =
-                        input
-                        .value;
+                const newLength = input.value.length;
+                const originalLength = originalValue.length;
+                if (newLength > originalLength) {
+                    cursorPosition = cursorPosition + (newLength - originalLength);
+                }
+                input.setSelectionRange(cursorPosition, cursorPosition);
+            };
 
-                    const
-                        rawValue =
-                        input
-                        .value
-                        .replace(
-                            /[^0-9]/g,
-                            ""
-                        );
+            const formatPrice = (price) => {
+                if (!price)
+                    return "";
+                return new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                    })
+                    .format(price)
+                    .replace(
+                        "IDR",
+                        "Rp"
+                    );
+            };
 
-                    const
-                        hiddenInput =
-                        document
-                        .getElementById(
-                            input
-                            .id
-                            .replace(
-                                "-display",
-                                "-filter"
-                            )
-                        );
-                    if (
-                        hiddenInput
-                    ) {
-                        hiddenInput
-                            .value =
-                            rawValue;
+            const openModal = (product) => {
+                // Set up lightbox images array for this product
+                currentLightboxImages = product.images;
+                currentLightboxIndex = 0;
+                mainImage.src = product.images[0];
+                productTitle.textContent = product.name;
+                productCategory.textContent = product.subcategory ?
+                    `${product.category} > ${product.subcategory}` : product.category;
+                currentPrice.textContent = formatPrice(product.price);
+                if (product.oldPrice) {
+                    originalPrice.textContent = formatPrice(product.oldPrice);
+                    originalPrice.classList.remove("hidden");
+                } else {
+                    originalPrice.classList.add("hidden");
+                }
+
+                // ADDED: promo badge & stok overlay
+                const promoBadgeEl = document.getElementById("promo-badge");
+
+                // Get the span inside the promo-badge div
+                const promoBadgeSpan = promoBadgeEl.querySelector("span");
+                const stockOverlayEl = document.getElementById("stock-overlay");
+
+                // Always hide by default
+                promoBadgeEl.classList.add("hidden");
+                if (product.isPromo) {
+                    promoBadgeEl.classList.remove("hidden");
+                    promoBadgeSpan.textContent = "Promo";
+                }
+
+                if (product.stock <= 0) {
+                    stockOverlayEl.classList.remove("hidden");
+                } else {
+                    stockOverlayEl.classList.add("hidden");
+                }
+
+                if (product.stock <= 0) {
+                    stockOverlayEl.classList.remove("hidden");
+                } else {
+                    stockOverlayEl.classList.add("hidden");
+                }
+
+                // ADDED: share handlers
+                const shareBtn = document.getElementById("share-button");
+                const copyBtn = document.getElementById("copy-link-button");
+                const productUrl =
+                    `${location.origin}${location.pathname}?product=${encodeURIComponent(product.id)}`;
+
+                shareBtn?.addEventListener("click", async () => {
+                    try {
+                        if (navigator.share) {
+                            await navigator.share({
+                                title: product.name,
+                                text: `${product.name} - ${formatPrice(product.price)}`,
+                                url: productUrl,
+                            });
+                        } else {
+                            await navigator.clipboard.writeText(productUrl);
+                            alert("Link produk disalin ke clipboard.");
+                        }
+                    } catch (e) {
+                        console.error(e);
                     }
+                });
 
-                    if (
-                        rawValue
-                    ) {
-                        const
-                            formattedValue =
-                            new Intl
-                            .NumberFormat(
-                                "id-ID"
-                            )
-                            .format(
-                                rawValue
-                            );
-                        input
-                            .value =
-                            formattedValue;
-                    } else {
-                        input
-                            .value =
-                            "";
+                copyBtn?.addEventListener("click", async () => {
+                    try {
+                        await navigator.clipboard.writeText(productUrl);
+                        alert("Link produk disalin ke clipboard.");
+                    } catch (e) {
+                        console.error(e);
                     }
+                });
 
-                    const
-                        newLength =
-                        input
-                        .value
-                        .length;
-                    const
-                        originalLength =
-                        originalValue
-                        .length;
-                    if (newLength >
-                        originalLength
-                    ) {
-                        cursorPosition
-                            =
-                            cursorPosition +
-                            (newLength -
-                                originalLength
-                            );
-                    }
-                    input
-                        .setSelectionRange(
-                            cursorPosition,
-                            cursorPosition
-                        );
+                productDescription.textContent = product.description;
+                productSpecs.innerHTML = "";
 
-                    applyFilters
-                        ();
+                // Similar Products Logic
+                const similarProductsContainer = document.getElementById('similar-products-container');
+                similarProductsContainer.innerHTML = ''; // Clear previous similar products
+
+                const similarProducts = products.filter(p =>
+                    p.category === product.category && p.id !== product.id
+                );
+
+                // Shuffle and take up to 3
+                const shuffledSimilar = similarProducts.sort(() => 0.5 - Math.random());
+                const selectedSimilar = shuffledSimilar.slice(0, 3);
+
+                if (selectedSimilar.length > 0) {
+                    selectedSimilar.forEach(similarProd => {
+                        const similarProdCard = document.createElement('div');
+                        similarProdCard.className = 'cursor-pointer';
+                        similarProdCard.innerHTML = `
+                            <img src="${similarProd.images[0]}" alt="${similarProd.name}" class="w-full h-auto object-cover rounded-lg mb-1">
+                            <p class="text-xs font-medium text-gray-800 line-clamp-2">${similarProd.name}</p>
+                            <p class="text-xs text-gray-600">${formatPrice(similarProd.price)}</p>
+                        `;
+                        similarProdCard.addEventListener('click', () => {
+                            openModal(similarProd); // Open modal for similar product
+                        });
+                        similarProductsContainer.appendChild(similarProdCard);
+                    });
+                } else {
+                    similarProductsContainer.innerHTML =
+                        '<p class="text-sm text-gray-500">Tidak ada produk serupa.</p>';
+                }
+
+                const hasContent = (val) => {
+                    if (val === null || val === undefined)
+                        return false;
+                    if (typeof val === "string")
+                        return val.trim() !== "";
+                    return true;
                 };
 
-            const
-                formatPrice =
-                (
-                    price
-                ) => {
-                    if (!
-                        price
-                    )
-                        return "";
-                    return new Intl
-                        .NumberFormat(
-                            "id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                minimumFractionDigits: 0,
+                const specsEntries = [];
+                const specsData = product.specs;
+                if (Array.isArray(specsData)) {
+                    specsData.forEach((item) => {
+                        if (typeof item === "string") {
+                            if (hasContent(item)) {
+                                specsEntries.push([null, item.trim()]);
                             }
-                        )
-                        .format(
-                            price
-                        )
-                        .replace(
-                            "IDR",
-                            "Rp"
-                        );
-                };
+                            return;
+                        }
 
-            const
-                openModal =
-                (
-                    product
-                ) => {
-                    // Set up lightbox images array for this product
-                    currentLightboxImages
-                        =
-                        product
-                        .images;
-                    currentLightboxIndex
-                        =
-                        0;
-
-                    mainImage.src = product.images[0];
-                    productTitle.textContent = product.name;
-                    productCategory.textContent = product.subcategory ?
-                        `${product.category} > ${product.subcategory}` : product.category;
-                    currentPrice.textContent = formatPrice(product.price);
-                    if (product
-                        .oldPrice
-                    ) {
-                        originalPrice
-                            .textContent =
-                            formatPrice(
-                                product
-                                .oldPrice
-                            );
-                        originalPrice
-                            .classList
-                            .remove(
-                                "hidden"
-                            );
-                    } else {
-                        originalPrice
-                            .classList
-                            .add(
-                                "hidden"
-                            );
-                    }
-
-                    // ADDED: promo badge & stok overlay
-                    const
-                        promoBadgeEl =
-                        document
-                        .getElementById(
-                            "promo-badge"
-                        );
-                    const
-                        stockOverlayEl =
-                        document
-                        .getElementById(
-                            "stock-overlay"
-                        );
-
-                    const
-                        modalDiscount =
-                        getDiscountPercent(
-                            product
-                        );
-                    if (modalDiscount >
-                        0
-                    ) {
-                        promoBadgeEl
-                            .classList
-                            .remove(
-                                "hidden"
-                            );
-                        promoBadgeEl
-                            .querySelector(
-                                "span"
-                            )
-                            .textContent =
-                            `-${modalDiscount}%`;
-                    } else {
-                        promoBadgeEl
-                            .classList
-                            .add(
-                                "hidden"
-                            );
-                    }
-
-                    if (product
-                        .stock <=
-                        0
-                    ) {
-                        stockOverlayEl
-                            .classList
-                            .remove(
-                                "hidden"
-                            );
-                    } else {
-                        stockOverlayEl
-                            .classList
-                            .add(
-                                "hidden"
-                            );
-                    }
-
-                    // ADDED: share handlers
-                    const
-                        shareBtn =
-                        document
-                        .getElementById(
-                            "share-button"
-                        );
-                    const
-                        copyBtn =
-                        document
-                        .getElementById(
-                            "copy-link-button"
-                        );
-                    const
-                        productUrl = `${location.origin}${
-                        location.pathname
-                    }?product=${encodeURIComponent(product.id)}`;
-
-                    shareBtn
-                        ?.addEventListener(
-                            "click",
-                            async () => {
-                                try {
-                                    if (navigator
-                                        .share
-                                    ) {
-                                        await navigator
-                                            .share({
-                                                title: product
-                                                    .name,
-                                                text: `${product.name} - ${formatPrice(
-                                        product.price
-                                    )}`,
-                                                url: productUrl,
-                                            });
-                                    } else {
-                                        await navigator
-                                            .clipboard
-                                            .writeText(
-                                                productUrl
-                                            );
-                                        alert
-                                            (
-                                                "Link produk disalin ke clipboard."
-                                            );
-                                    }
-                                } catch (
-                                    e
-                                ) {
-                                    console
-                                        .error(
-                                            e
-                                        );
+                        if (item && typeof item === "object") {
+                            if ("key" in item && "value" in item) {
+                                if (hasContent(item.value)) {
+                                    specsEntries.push([item.key, item.value]);
                                 }
-                            });
+                                return;
+                            }
 
-                    copyBtn
-                        ?.addEventListener(
-                            "click",
-                            async () => {
-                                try {
-                                    await navigator
-                                        .clipboard
-                                        .writeText(
-                                            productUrl
-                                        );
-                                    alert
-                                        (
-                                            "Link produk disalin ke clipboard."
-                                        );
-                                } catch (
-                                    e
-                                ) {
-                                    console
-                                        .error(
-                                            e
-                                        );
-                                }
-                            });
-
-                    productDescription
-                        .textContent =
-                        product
-                        .description;
-                    productSpecs
-                        .innerHTML =
-                        "";
-
-                    const
-                        hasContent =
-                        (
-                            val
-                        ) => {
-                            if (val ===
-                                null ||
-                                val ===
-                                undefined
-                            )
-                                return false;
-                            if (typeof val ===
-                                "string"
-                            )
-                                return val
-                                    .trim() !==
-                                    "";
-                            return true;
-                        };
-
-                    const
-                        specsEntries = [];
-                    const
-                        specsData =
-                        product
-                        .specs;
-
-                    if (Array
-                        .isArray(
-                            specsData
-                        )
-                    ) {
-                        specsData
-                            .forEach(
-                                (
+                            Object
+                                .entries(
                                     item
-                                ) => {
-                                    if (typeof item ===
-                                        "string"
-                                    ) {
+                                )
+                                .forEach(
+                                    ([entryKey,
+                                        entryValue
+                                    ]) => {
                                         if (hasContent(
-                                                item
+                                                entryValue
                                             )) {
                                             specsEntries
                                                 .push(
-                                                    [null,
-                                                        item
-                                                        .trim()
+                                                    [entryKey,
+                                                        entryValue
                                                     ]
                                                 );
                                         }
-                                        return;
                                     }
-
-                                    if (item &&
-                                        typeof item ===
-                                        "object"
-                                    ) {
-                                        if ("key" in
-                                            item &&
-                                            "value" in
-                                            item
-                                        ) {
-                                            if (hasContent(
-                                                    item
-                                                    .value
-                                                )) {
-                                                specsEntries
-                                                    .push(
-                                                        [item
-                                                            .key,
-                                                            item
-                                                            .value
-                                                        ]
-                                                    );
-                                            }
-                                            return;
-                                        }
-
-                                        Object
-                                            .entries(
-                                                item
-                                            )
-                                            .forEach(
-                                                ([entryKey,
-                                                    entryValue
-                                                ]) => {
-                                                    if (hasContent(
-                                                            entryValue
-                                                        )) {
-                                                        specsEntries
-                                                            .push(
-                                                                [entryKey,
-                                                                    entryValue
-                                                                ]
-                                                            );
-                                                    }
-                                                }
-                                            );
-                                    }
-                                }
-                            );
-                    } else if (
-                        specsData &&
-                        typeof specsData ===
-                        "object"
-                    ) {
-                        Object
-                            .entries(
-                                specsData
-                            )
-                            .forEach(
-                                ([entryKey,
-                                    entryValue
-                                ]) => {
-                                    if (hasContent(
-                                            entryValue
-                                        )) {
-                                        specsEntries
-                                            .push(
-                                                [entryKey,
-                                                    entryValue
-                                                ]
-                                            );
-                                    }
-                                }
-                            );
-                    } else if (
-                        typeof specsData ===
-                        "string" &&
-                        hasContent(
+                                );
+                        }
+                    });
+                } else if (
+                    specsData &&
+                    typeof specsData ===
+                    "object"
+                ) {
+                    Object
+                        .entries(
                             specsData
                         )
-                    ) {
-                        specsEntries
-                            .push(
-                                [null,
-                                    specsData
-                                    .trim()
-                                ]
-                            );
-                    }
-
-                    if (specsEntries
-                        .length >
-                        0
-                    ) {
-                        specsEntries
-                            .forEach(
-                                ([label,
-                                    value
-                                ]) => {
-                                    const
-                                        li =
-                                        document
-                                        .createElement(
-                                            "li"
-                                        );
-                                    li.className =
-                                        "flex justify-between py-1";
-
-                                    const
-                                        labelSpan =
-                                        document
-                                        .createElement(
-                                            "span"
-                                        );
-                                    labelSpan
-                                        .className =
-                                        "text-gray-600";
-                                    labelSpan
-                                        .textContent =
-                                        label &&
-                                        hasContent(
-                                            label
-                                        ) ?
-                                        String(
-                                            label
-                                        ) :
-                                        String
-                                        .fromCharCode(
-                                            8226
-                                        );
-
-                                    const
-                                        valueSpan =
-                                        document
-                                        .createElement(
-                                            "span"
-                                        );
-                                    valueSpan
-                                        .className =
-                                        "font-medium";
-                                    valueSpan
-                                        .textContent =
-                                        String(
-                                            value
-                                        );
-
-                                    li.appendChild(
-                                        labelSpan
-                                    );
-                                    li.appendChild(
-                                        valueSpan
-                                    );
-                                    productSpecs
-                                        .appendChild(
-                                            li
-                                        );
-                                }
-                            );
-                    } else {
-                        productSpecs
-                            .innerHTML =
-                            '<li class="text-gray-500 italic">Tidak ada spesifikasi</li>';
-                    }
-                    thumbnailContainer
-                        .innerHTML =
-                        "";
-                    const
-                        thumbnailTemplate =
-                        document
-                        .getElementById(
-                            "thumbnail-template"
-                        );
-
-                    product
-                        .images
                         .forEach(
-                            (image,
-                                index
-                            ) => {
-                                const
-                                    thumbnailElement =
-                                    thumbnailTemplate
-                                    .content
-                                    .cloneNode(
-                                        true
-                                    );
-                                const
-                                    button =
-                                    thumbnailElement
-                                    .querySelector(
-                                        ".thumbnail"
-                                    );
-                                const
-                                    thumbnailImage =
-                                    thumbnailElement
-                                    .querySelector(
-                                        ".thumbnail-image"
-                                    );
-
-                                // Populate template with data
-                                thumbnailImage
-                                    .src =
-                                    image;
-                                thumbnailImage
-                                    .alt =
-                                    `Image ${index + 1}`;
-
-                                if (index ===
-                                    0
-                                ) {
-                                    button
-                                        .classList
-                                        .add(
-                                            "border-blue-600"
+                            ([entryKey,
+                                entryValue
+                            ]) => {
+                                if (hasContent(
+                                        entryValue
+                                    )) {
+                                    specsEntries
+                                        .push(
+                                            [entryKey,
+                                                entryValue
+                                            ]
                                         );
                                 }
+                            }
+                        );
+                } else if (
+                    typeof specsData ===
+                    "string" &&
+                    hasContent(
+                        specsData
+                    )
+                ) {
+                    specsEntries
+                        .push(
+                            [null,
+                                specsData
+                                .trim()
+                            ]
+                        );
+                }
 
-                                button
-                                    .addEventListener(
-                                        "click",
-                                        () => {
-                                            mainImage
-                                                .src =
-                                                image;
-                                            document
-                                                .querySelectorAll(
-                                                    ".thumbnail"
-                                                )
-                                                .forEach(
-                                                    (
-                                                        thumb
-                                                    ) =>
-                                                    thumb
-                                                    .classList
-                                                    .remove(
-                                                        "border-blue-600"
-                                                    )
-                                                );
-                                            button
-                                                .classList
-                                                .add(
-                                                    "border-blue-600"
-                                                );
-                                        }
+                if (specsEntries
+                    .length >
+                    0
+                ) {
+                    specsEntries
+                        .forEach(
+                            ([label,
+                                value
+                            ]) => {
+                                const
+                                    li =
+                                    document
+                                    .createElement(
+                                        "li"
+                                    );
+                                li.className =
+                                    "flex justify-between py-1";
+
+                                const
+                                    labelSpan =
+                                    document
+                                    .createElement(
+                                        "span"
+                                    );
+                                labelSpan
+                                    .className =
+                                    "text-gray-600";
+                                labelSpan
+                                    .textContent =
+                                    label &&
+                                    hasContent(
+                                        label
+                                    ) ?
+                                    String(
+                                        label
+                                    ) :
+                                    String
+                                    .fromCharCode(
+                                        8226
                                     );
 
-                                thumbnailContainer
+                                const
+                                    valueSpan =
+                                    document
+                                    .createElement(
+                                        "span"
+                                    );
+                                valueSpan
+                                    .className =
+                                    "font-medium";
+                                valueSpan
+                                    .textContent =
+                                    String(
+                                        value
+                                    );
+
+                                li.appendChild(
+                                    labelSpan
+                                );
+                                li.appendChild(
+                                    valueSpan
+                                );
+                                productSpecs
                                     .appendChild(
-                                        thumbnailElement
+                                        li
                                     );
                             }
                         );
+                } else {
+                    productSpecs
+                        .innerHTML =
+                        '<li class="text-gray-500 italic">Tidak ada spesifikasi</li>';
+                }
+                thumbnailContainer
+                    .innerHTML =
+                    "";
+                const
+                    thumbnailTemplate =
+                    document
+                    .getElementById(
+                        "thumbnail-template"
+                    );
 
-                    modal
-                        .classList
-                        .remove(
-                            "hidden"
-                        );
-                    lucide
-                        .createIcons();
-                };
+                product
+                    .images
+                    .forEach(
+                        (image,
+                            index
+                        ) => {
+                            const
+                                thumbnailElement =
+                                thumbnailTemplate
+                                .content
+                                .cloneNode(
+                                    true
+                                );
+                            const
+                                button =
+                                thumbnailElement
+                                .querySelector(
+                                    ".thumbnail"
+                                );
+                            const
+                                thumbnailImage =
+                                thumbnailElement
+                                .querySelector(
+                                    ".thumbnail-image"
+                                );
+
+                            // Populate template with data
+                            thumbnailImage
+                                .src =
+                                image;
+                            thumbnailImage
+                                .alt =
+                                `Image ${index + 1}`;
+
+                            if (index ===
+                                0
+                            ) {
+                                button
+                                    .classList
+                                    .add(
+                                        "border-blue-600"
+                                    );
+                            }
+
+                            button
+                                .addEventListener(
+                                    "click",
+                                    () => {
+                                        mainImage
+                                            .src =
+                                            image;
+                                        document
+                                            .querySelectorAll(
+                                                ".thumbnail"
+                                            )
+                                            .forEach(
+                                                (
+                                                    thumb
+                                                ) =>
+                                                thumb
+                                                .classList
+                                                .remove(
+                                                    "border-blue-600"
+                                                )
+                                            );
+                                        button
+                                            .classList
+                                            .add(
+                                                "border-blue-600"
+                                            );
+                                    }
+                                );
+
+                            thumbnailContainer
+                                .appendChild(
+                                    thumbnailElement
+                                );
+                        }
+                    );
+
+                modal
+                    .classList
+                    .remove(
+                        "hidden"
+                    );
+                lucide
+                    .createIcons();
+            };
 
             const
                 closeModal =
@@ -3105,6 +2261,7 @@
                 (
                     productsToRender
                 ) => {
+                    console.log('renderProducts function called with:', productsToRender);
                     // Clear existing products but keep template
                     const
                         existingCards =
@@ -3220,10 +2377,10 @@
                                         ".product-image"
                                     );
                                 const
-                                    discountBadge =
+                                    promoBadge = // ADDED
                                     productCard
                                     .querySelector(
-                                        ".discount-badge"
+                                        ".promo-badge"
                                     );
                                 const
                                     stockOverlay =
@@ -3258,11 +2415,6 @@
 
                                 // Calculate discount and stock status
                                 const
-                                    discount =
-                                    getDiscountPercent(
-                                        product
-                                    );
-                                const
                                     isOut =
                                     product
                                     .stock <=
@@ -3293,35 +2445,26 @@
                                         .price
                                     );
 
-                                // Handle discount badge
-                                if (discount >
-                                    0
-                                ) {
-                                    discountBadge
-                                        .textContent =
-                                        `-${discount}%`;
-                                    discountBadge
-                                        .classList
-                                        .remove(
-                                            "hidden"
-                                        );
+                                // Handle promo badge // ADDED
+                                if (product.isPromo) {
+                                    promoBadge.classList.remove("hidden");
+                                } else {
+                                    promoBadge.classList.add("hidden");
                                 }
 
-                                // Handle old price
-                                if (product
-                                    .oldPrice
-                                ) {
-                                    productOldPrice
-                                        .textContent =
-                                        formatPrice(
-                                            product
-                                            .oldPrice
-                                        );
-                                    productOldPrice
-                                        .classList
-                                        .remove(
-                                            "hidden"
-                                        );
+                                // Handle old price and savings badge
+                                const savingsBadge = productCard.querySelector('.savings-badge');
+
+                                if (product.oldPrice && product.oldPrice > product.price) {
+                                    productOldPrice.textContent = formatPrice(product.oldPrice);
+                                    productOldPrice.classList.remove("hidden");
+
+                                    const savings = product.oldPrice - product.price;
+                                    savingsBadge.textContent = `Hemat ${formatPrice(savings)}`;
+                                    savingsBadge.classList.remove('hidden');
+                                } else {
+                                    productOldPrice.classList.add("hidden");
+                                    savingsBadge.classList.add('hidden');
                                 }
 
                                 // Handle out of stock
@@ -3341,14 +2484,17 @@
                                 }
 
                                 // Add click event
-                                cardElement
-                                    .addEventListener(
-                                        "click",
-                                        () =>
-                                        openModal(
-                                            product
-                                        )
-                                    );
+
+                                cardElement.addEventListener("click", () => {
+
+                                    console.log('Product card clicked. Product ID:', product
+                                    .id); // Debugging line
+
+                                    console.log('Product data:', product); // Debugging line
+
+                                    openModal(product);
+
+                                });
 
                                 // Append to grid
                                 productGrid
@@ -3538,8 +2684,7 @@
                                 1 <
                                 maxVisible
                             ) {
-                                start
-                                    =
+                                start =
                                     Math
                                     .max(
                                         1,
@@ -3661,8 +2806,7 @@
                                         .addEventListener(
                                             "click",
                                             () => {
-                                                currentPage
-                                                    =
+                                                currentPage =
                                                     page;
                                                 renderProducts
                                                     (
@@ -3719,62 +2863,64 @@
                         );
                 };
 
-            const updateSubcategoryFilter = () => {
-
-                const selectedCategory = categoryFilter.value;
-
-                subcategoryFilter.innerHTML =
-                    '<option value="all">All Sub-Categories</option>'; // Reset with a default option
 
 
 
-                if (selectedCategory === 'all') {
-
-                    subcategoryFilterContainer.classList.add('hidden');
-
-                    return;
-
-                }
 
 
 
-                const subcategories = [...new Set(
+            const updateSubcategoryDisplay = (activeCategory) => {
+                const subcategoryContainer = document.getElementById("subcategory-display-container");
+                const subcategoryDisplay = document.getElementById("subcategory-display");
+                const selectedCategoryName = document.getElementById("selected-category-name");
+                const subcategoryTemplate = document.getElementById("subcategory-checkbox-template");
 
-                    products
+                const subcategories = [...new Set(products.filter(p => p.category === activeCategory && p
+                    .subcategory).map(p => p.subcategory))].sort();
 
-                    .filter(p => p.category === selectedCategory && p.subcategory)
-
-                    .map(p => p.subcategory)
-
-                )];
-
-
+                subcategoryDisplay.innerHTML = '';
 
                 if (subcategories.length > 0) {
+                    selectedCategoryName.textContent = activeCategory;
 
-                    subcategories.forEach(sub => {
+                    // Add an "All" radio button
+                    const allRadioClone = subcategoryTemplate.content.cloneNode(true);
+                    const allDiv = allRadioClone.querySelector('div');
+                    const allInput = allDiv.querySelector('input');
+                    const allLabel = allDiv.querySelector('label');
+                    const allSpan = allLabel.querySelector('span');
+                    const allInputId = `subcat-${activeCategory.replace(/\s+/g, '-')}-all`;
 
-                        const option = document.createElement('option');
+                    allInput.id = allInputId;
+                    allInput.value = 'all';
+                    allInput.checked = true;
+                    allInput.addEventListener('change', applyFilters);
+                    allLabel.htmlFor = allInputId;
+                    allSpan.textContent = 'All';
+                    subcategoryDisplay.appendChild(allDiv);
 
-                        option.value = sub;
+                    subcategories.forEach((subcategory, index) => {
+                        const radioClone = subcategoryTemplate.content.cloneNode(true);
+                        const div = radioClone.querySelector('div');
+                        const input = div.querySelector('input');
+                        const label = div.querySelector('label');
+                        const span = label.querySelector('span');
+                        const inputId = `subcat-${activeCategory.replace(/\s+/g, '-')}-${index}`;
 
-                        option.textContent = sub;
+                        input.id = inputId;
+                        input.value = subcategory;
+                        input.addEventListener('change', applyFilters);
+                        label.htmlFor = inputId;
+                        span.textContent = subcategory;
 
-                        subcategoryFilter.appendChild(option);
-
+                        subcategoryDisplay.appendChild(div);
                     });
 
-                    subcategoryFilterContainer.classList.remove('hidden');
-
+                    subcategoryContainer.classList.remove('hidden');
                 } else {
-
-                    subcategoryFilterContainer.classList.add('hidden');
-
+                    subcategoryContainer.classList.add('hidden');
                 }
-
             };
-
-
 
             const applyFilters = () => {
                 const
@@ -3784,12 +2930,9 @@
                     .toLowerCase();
                 const
                     selectedCategory =
-                    categoryFilter
-                    .value;
-                const
-                    selectedSubcategory =
-                    subcategoryFilter
-                    .value;
+                    categoryFilter ? categoryFilter.value : 'all';
+
+
                 const
                     minPrice =
                     parseFloat(
@@ -3807,15 +2950,10 @@
                 const
                     brandSelections =
                     getBrandSelections();
-                const
-                    isSubcategoryVisible = !subcategoryFilterContainer
-                    .classList
-                    .contains(
-                        'hidden'
-                    );
+                const isSubcategoryVisible = !document.getElementById('subcategory-display-container').classList
+                    .contains('hidden');
 
-                filteredProducts
-                    =
+                filteredProducts =
                     products
                     .filter(
                         (
@@ -3837,18 +2975,12 @@
                                 .category ===
                                 selectedCategory;
 
-                            let
-                                subcategoryMatch =
-                                true;
-                            if (isSubcategoryVisible &&
-                                selectedSubcategory !==
-                                'all'
-                            ) {
-                                subcategoryMatch
-                                    =
-                                    product
-                                    .subcategory ===
-                                    selectedSubcategory;
+                            let subcategoryMatch = true;
+                            const selectedSubcategory = document.querySelector(
+                                '#subcategory-display input[name="subcategory"]:checked')?.value;
+
+                            if (isSubcategoryVisible && selectedSubcategory && selectedSubcategory !== 'all') {
+                                subcategoryMatch = product.subcategory === selectedSubcategory;
                             }
 
                             const
@@ -3885,8 +3017,7 @@
                     sortProducts(
                         filteredProducts
                     );
-                currentPage
-                    =
+                currentPage =
                     1;
                 renderProducts
                     (
@@ -3907,113 +3038,68 @@
             };
 
             const
-                resetFilters =
-                () => {
-                    searchInput
-                        .value =
-                        "";
-                    categoryFilter
-                        .value =
-                        "all";
-                    minPriceFilter
-                        .value =
-                        "";
-                    maxPriceFilter
-                        .value =
-                        "";
+                resetFilters = () => {
+                    searchInput.value = "";
+                    if (categoryFilter) {
+                        categoryFilter.value = "all";
+                    }
+                    minPriceFilter.value = "";
+                    maxPriceFilter.value = "";
 
-                    // Reset price range dropdown
-                    const
-                        priceRangeSelect =
-                        document
-                        .getElementById(
-                            "price-range"
-                        );
-                    if (
-                        priceRangeSelect
-                    ) {
-                        priceRangeSelect
-                            .value =
-                            "";
+                    const priceRangeSelect = document.getElementById("price-range");
+                    if (priceRangeSelect) {
+                        priceRangeSelect.value = "";
                     }
 
-                    // Reset brand dropdown
-                    selectedBrands
-                        = [];
-                    const
-                        brandSearch =
-                        document
-                        .getElementById(
-                            "brand-search"
-                        );
-                    const
-                        brandDropdown =
-                        document
-                        .getElementById(
-                            "brand-dropdown"
-                        );
-                    const
-                        selectedBrandsContainer =
-                        document
-                        .getElementById(
-                            "selected-brands"
-                        );
+                    // Reset brand selections and UI
+                    selectedBrands = [];
+                    const brandSearch = document.getElementById("brand-search");
+                    if (brandSearch) {
+                        brandSearch.value = "";
+                    }
 
-                    if (
-                        brandSearch
-                    )
-                        brandSearch
-                        .value =
-                        "";
-                    if (
-                        brandDropdown
-                    )
-                        brandDropdown
-                        .classList
-                        .add(
-                            "hidden"
-                        );
-                    if (
-                        selectedBrandsContainer
-                    )
-                        selectedBrandsContainer
-                        .classList
-                        .add(
-                            "hidden"
-                        );
-
-                    // Re-render brand options and selected brands
-                    filteredBrands
-                        = [...
-                            allBrands
-                        ];
-                    const
-                        brandOptions =
-                        document
-                        .getElementById(
-                            "brand-options"
-                        );
+                    // This logic to re-render brand options is based on the original code structure
+                    const brandOptions = document.getElementById("brand-options");
                     if (brandOptions) {
                         brandOptions.innerHTML = "";
-                        const brandOptionTemplate = document.getElementById(
-                            "brand-option-template"
-                        );
-                        allBrands.forEach((brand) => {
-                            const optionElement =
-                                brandOptionTemplate.content.cloneNode(true);
-                            const option = optionElement.querySelector(".brand-option");
-                            const brandName = optionElement.querySelector(".brand-name");
+                        const brandOptionTemplate = document.getElementById("brand-option-template");
+                        if (brandOptionTemplate) {
+                            allBrands.forEach((brand) => {
+                                const optionElement = brandOptionTemplate.content.cloneNode(true);
+                                const option = optionElement.querySelector(".brand-option");
+                                const brandName = optionElement.querySelector(".brand-name");
+                                const brandCheck = optionElement.querySelector(".brand-check");
 
-                            brandName.textContent = brand;
-                            option.addEventListener("click", () => {
-                                if (window.toggleBrand) window.toggleBrand(brand);
+                                if (brandName) brandName.textContent = brand;
+                                if (brandCheck) brandCheck.classList.add("hidden");
+
+                                if (option) {
+                                    option.addEventListener("click", () => {
+                                        if (window.toggleBrand) window.toggleBrand(brand);
+                                    });
+                                }
+                                brandOptions.appendChild(optionElement);
                             });
-                            brandOptions.appendChild(optionElement);
-                        });
-                        lucide.createIcons();
+                            lucide.createIcons();
+                        }
+                    }
+                    const selectedBrandsContainer = document.getElementById("selected-brands");
+                    if (selectedBrandsContainer) {
+                        selectedBrandsContainer.innerHTML = '';
+                        selectedBrandsContainer.classList.add('hidden');
                     }
 
-                    updateSubcategoryFilter();
+
+                    // Hide subcategory display
+                    const subcategoryContainer = document.getElementById("subcategory-display-container");
+                    if (subcategoryContainer) {
+                        subcategoryContainer.classList.add('hidden');
+                    }
+
+                    // Deselect all category cards
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('category-active'));
+
+                    // Finally, apply the reset filters to update the product grid
                     applyFilters();
                 };
 
@@ -4029,8 +3115,7 @@
                 setupBrandDropdown =
                 () => {
                     // Get all unique brands from products
-                    allBrands
-                        = [
+                    allBrands = [
                             ...
                             new Set(
                                 products
@@ -4050,10 +3135,9 @@
                             ),
                         ]
                         .sort();
-                    filteredBrands
-                        = [...
-                            allBrands
-                        ];
+                    filteredBrands = [...
+                        allBrands
+                    ];
 
                     // Get DOM elements
                     const
@@ -4087,8 +3171,7 @@
                             "selected-brands"
                         );
 
-                    if (
-                        !
+                    if (!
                         brandSearch ||
                         !
                         brandDropdownToggle ||
@@ -4278,8 +3361,7 @@
                                             .addEventListener(
                                                 "click",
                                                 () => {
-                                                    selectedBrands
-                                                        =
+                                                    selectedBrands =
                                                         selectedBrands
                                                         .filter(
                                                             (
@@ -4291,8 +3373,6 @@
                                                     renderBrandOptions
                                                         ();
                                                     renderSelectedBrands
-                                                        ();
-                                                    applyFilters
                                                         ();
                                                 }
                                             );
@@ -4322,8 +3402,7 @@
                                     .target
                                     .value
                                     .toLowerCase();
-                                filteredBrands
-                                    =
+                                filteredBrands =
                                     allBrands
                                     .filter(
                                         (
@@ -4370,20 +3449,22 @@
                                 chevron =
                                 brandDropdownToggle
                                 .querySelector(
-                                    "i"
+                                    "svg"
                                 );
-                            if (
-                                isOpen
-                            ) {
-                                chevron
-                                    .style
-                                    .transform =
-                                    "rotate(180deg)";
-                            } else {
-                                chevron
-                                    .style
-                                    .transform =
-                                    "rotate(0deg)";
+                            if (chevron) {
+                                if (
+                                    isOpen
+                                ) {
+                                    chevron
+                                        .style
+                                        .transform =
+                                        "rotate(180deg)";
+                                } else {
+                                    chevron
+                                        .style
+                                        .transform =
+                                        "rotate(0deg)";
+                                }
                             }
                         };
 
@@ -4438,8 +3519,7 @@
                                     .closest(
                                         ".relative"
                                     );
-                                if (
-                                    !
+                                if (!
                                     brandFilterContainer ||
                                     !
                                     brandFilterContainer
@@ -4467,6 +3547,8 @@
                         ();
                 };
 
+
+
             // Update getBrandSelections function for new dropdown
             const
                 getBrandSelections =
@@ -4474,9 +3556,30 @@
                     return selectedBrands;
                 };
 
-            categoryFilter.addEventListener("change", updateSubcategoryFilter);
+
             // subcategoryFilter.addEventListener("change", applyFilters); // Disabled for manual apply
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', () => {
+                    const selectedCategory = categoryFilter.value;
+                    updateSubcategoryDisplay(selectedCategory);
+
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove(
+                        'category-active'));
+                    document.querySelectorAll('.category-card').forEach(card => {
+                        const cardCategoryName = card.querySelector('.category-name').textContent;
+                        if (cardCategoryName === selectedCategory) {
+                            card.classList.add('category-active');
+                        }
+                    });
+                });
+            }
+
             resetFiltersBtn.addEventListener("click", resetFilters);
+
+            const applyFiltersBtn = document.getElementById("apply-filters");
+            if (applyFiltersBtn) {
+                applyFiltersBtn.addEventListener("click", applyFilters);
+            }
             // searchInput.addEventListener("input", applyFilters); // Disabled for manual apply
 
             // ADDED: trigger sort
@@ -4503,9 +3606,13 @@
             }
 
             setupBrandDropdown();
+
             setupCategoryDisplay();
-            updateSubcategoryFilter(); // Initial call to set state
-            applyFilters();
+
+            // updateSubcategoryFilter(); // Initial call to set state
+
+            applyFilters(); // Initial call to show all products
+
             // === LIGHTBOX GALLERY ===
             let
                 currentLightboxImages = [];
@@ -4591,8 +3698,7 @@
                                 .length
                             )
                                 return;
-                            currentLightboxIndex
-                                =
+                            currentLightboxIndex =
                                 (currentLightboxIndex -
                                     1 +
                                     currentLightboxImages
@@ -4622,8 +3728,7 @@
                                 .length
                             )
                                 return;
-                            currentLightboxIndex
-                                =
+                            currentLightboxIndex =
                                 (currentLightboxIndex +
                                     1
                                 ) %
@@ -4668,8 +3773,7 @@
                                 .length
                             )
                                 return;
-                            currentLightboxIndex
-                                =
+                            currentLightboxIndex =
                                 currentLightboxImages
                                 .findIndex(
                                     (
@@ -4712,8 +3816,7 @@
                                 .length
                             )
                                 return;
-                            currentLightboxIndex
-                                =
+                            currentLightboxIndex =
                                 currentLightboxImages
                                 .findIndex(
                                     (
@@ -4785,8 +3888,7 @@
                                     currentLightboxImages
                                     .length
                                 ) {
-                                    currentLightboxIndex
-                                        =
+                                    currentLightboxIndex =
                                         idx;
                                     showLightboxImage
                                         ();
@@ -4832,8 +3934,7 @@
                     function(
                         e
                     ) {
-                        if (
-                            !
+                        if (!
                             imageLightbox ||
                             imageLightbox
                             .classList
@@ -4871,62 +3972,6 @@
                         }
                     }
                 );
-
-            // Checkout Bubble Functionality
-            const
-                checkoutBubble =
-                document
-                .getElementById(
-                    'checkout-bubble'
-                );
-            const
-                checkoutBtn =
-                document
-                .getElementById(
-                    'checkout-btn'
-                );
-
-            // Show checkout bubble immediately when page loads
-            function showCheckoutBubble() {
-                checkoutBubble
-                    .classList
-                    .remove(
-                        'hidden'
-                    );
-                checkoutBubble
-                    .classList
-                    .add(
-                        'animate-bounce'
-                    );
-                setTimeout
-                    (() => {
-                            checkoutBubble
-                                .classList
-                                .remove(
-                                    'animate-bounce'
-                                );
-                        },
-                        2000
-                    );
-            }
-
-            // Show bubble immediately on page load
-            showCheckoutBubble();
-
-            // Checkout button click handler
-            checkoutBtn
-                .addEventListener(
-                    'click',
-                    function() {
-                        window
-                            .location
-                            .href =
-                            '/checkout/template';
-                    }
-                );
-
-
-
 
         });
 
@@ -5072,44 +4117,41 @@
                 );
 
             // Animate in
-            setTimeout
-                (() => {
-                        notification
-                            .removeClass(
-                                'translate-x-full'
-                            );
-                    },
-                    100
-                );
+            setTimeout(
+                () => {
+                    notification
+                        .removeClass(
+                            'translate-x-full'
+                        );
+                },
+                100
+            );
 
             // Remove after 5 seconds
-            setTimeout
-                (() => {
-                        notification
-                            .addClass(
-                                'translate-x-full'
-                            );
-                        setTimeout
-                            (() => {
-                                    notification
-                                        .remove();
-                                },
-                                300
-                            );
-                    },
-                    5000
-                );
+            setTimeout(
+                () => {
+                    notification
+                        .addClass(
+                            'translate-x-full'
+                        );
+                    setTimeout(
+                        () => {
+                            notification
+                                .remove();
+                        },
+                        300
+                    );
+                },
+                5000
+            );
         }
 
 
-        $(
-                document
-            )
-            .ready(
-                function() {
-                    // Page initialization
-                }
-            );
+        $(document).ready(
+            function() {
+                // Page initialization
+            }
+        );
     </script>
 
     <!-- Universal Checkout Bubble -->

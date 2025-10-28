@@ -87,8 +87,21 @@
                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 @if (isset($categories) && $categories->isNotEmpty())
                     @foreach ($categories as $category)
-                        <div
-                            class="category-card bg-white rounded-xl p-4 border border-gray-200 hover:border-cyan-300 hover:shadow-lg transition-all duration-300 cursor-pointer group">
+                        <div class="category-card bg-white rounded-xl p-2 border border-gray-200 hover:border-cyan-300 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                            data-category-id="{{ $category->id }}">
+                            <div class="relative w-full overflow-hidden rounded-lg mb-2" style="aspect-ratio: 5 / 4;">
+                                @if ($category->image)
+                                    <img class="category-image w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                                        loading="lazy" decoding="async"
+                                        src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $category->image]) }}"
+                                        alt="{{ $category->name }}" />
+                                @else
+                                    <img class="category-image w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                                        loading="lazy" decoding="async"
+                                        src="{{ asset('assets/images/no-image-icon.png') }}"
+                                        alt="{{ $category->name }}" />
+                                @endif
+                            </div>
                             <div class="text-center">
                                 <h3
                                     class="category-name font-semibold text-gray-800 group-hover:text-cyan-600 transition-colors mb-2">
@@ -122,21 +135,16 @@
 
             <h2 class="text-xl font-bold text-gray-800 mb-4">Filters</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-                <div>
-                    <h3 class="font-semibold mb-2 text-gray-700">
-                        Kategori
-                    </h3>
-                    <select id="category-filter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-cyan-500 focus:border-cyan-500 transition">
-                        <option value="all">Semua</option>
-                        @if (isset($categories) && $categories->isNotEmpty())
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+            <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+                <!-- Hidden Category Filter (needed for JS state management) -->
+                <select id="category-filter" class="hidden">
+                    <option value="all" selected>Semua Kategori</option>
+                    @if (isset($categories) && $categories->isNotEmpty())
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    @endif
+                </select>
                 <div>
                     <h3 class="font-semibold mb-2 text-gray-700">
                         Rentang Harga
@@ -153,6 +161,9 @@
                             @endforeach
                         @endif
                     </select>
+                    <!-- Hidden inputs for price range to be compatible with filtering logic -->
+                    <input type="hidden" id="min-price-filter" name="min_price" />
+                    <input type="hidden" id="max-price-filter" name="max_price" />
                 </div>
             </div>
             <div class="mb-6">
@@ -200,6 +211,24 @@
             </div>
         </div>
 
+        <!-- Sub-Category Display Section -->
+        <div id="subcategory-display-container" class="mb-8 hidden">
+            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Sub-Kategori untuk <span
+                    id="selected-category-name"></span></h3>
+            <div id="subcategory-display" class="flex flex-wrap justify-center gap-3">
+                <!-- Sub-category buttons/checkboxes will be populated here -->
+            </div>
+            <template id="subcategory-checkbox-template">
+                <div>
+                    <input type="radio" id="" name="subcategory" value="" class="hidden peer">
+                    <label for=""
+                        class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer text-gray-700 bg-white hover:bg-gray-100 hover:text-gray-900 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 peer-checked:text-cyan-700 transition-colors">
+                        <span class="text-sm font-medium"></span>
+                    </label>
+                </div>
+            </template>
+        </div>
+
         <div class="flex items-center justify-between mb-4">
             <div class="text-sm text-gray-600">
                 <span id="result-count">
@@ -231,7 +260,7 @@
                 {{-- Kartu produk menggunakan style dari kode pertama, tetapi harus punya data-product-id --}}
                 <div class="product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer"
                     data-product-id="{{ $product->id }}">
-                    <div class="relative overflow-hidden aspect-square bg-gray-100">
+                    <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
                         {{-- Logika gambar disesuaikan agar bisa menangani koleksi 'productimgs' --}}
                         @php $src = $product->primary_image_src; @endphp
                         @if ($src)
@@ -243,20 +272,34 @@
                                 <span class="text-gray-500">No Image</span>
                             </div>
                         @endif
-                        @if ($product->discount_percentage)
+                        @if ($product->is_promo)
                             <span
-                                class="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                                -{{ $product->discount_percentage }}%
+                                class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                                Promo
                             </span>
                         @endif
                     </div>
                     <div class="p-4">
                         <h3 class="text-base font-semibold text-gray-800 line-clamp-2">{{ $product->name }}</h3>
                         <p class="text-xs text-gray-500 mb-2">{{ $product->category->name ?? 'Uncategorized' }}</p>
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-gray-900">{{ $product->price_idr }}</span>
-                            @if ($product->old_price_idr)
-                                <span class="text-sm text-gray-500 line-through">{{ $product->old_price_idr }}</span>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex flex-wrap items-baseline gap-x-1">
+                                <span class="text-lg font-bold text-gray-900">{{ $product->price_idr }}</span>
+                                @if ($product->old_price && $product->old_price > $product->price)
+                                    <span
+                                        class="text-sm text-gray-500 line-through">{{ $product->old_price_idr }}</span>
+                                @endif
+                            </div>
+                            @if ($product->old_price && $product->old_price > $product->price)
+                                @php
+                                    $savings = $product->old_price - $product->price;
+                                @endphp
+                                <div class="savings-badge-container mt-1">
+                                    <span
+                                        class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-md">
+                                        Hemat {{ 'Rp ' . number_format($savings, 0, ',', '.') }}
+                                    </span>
+                                </div>
                             @endif
                         </div>
                     </div>
@@ -297,8 +340,8 @@
                                 </button>
 
                                 <div id="promo-badge" class="absolute top-2 left-2 hidden">
-                                    <span id="promo-badge-text"
-                                        class="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                                    <span class="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                                        Promo
                                     </span>
                                 </div>
 
@@ -638,8 +681,10 @@
                             'notes' => $product->notes,
                             'stock' => $product->stock,
                             'discount_percentage' => $product->discount_percentage,
+                            'is_promo' => $product->is_promo, // Add this line
                             'specs' => $specs,
                             'category' => $cat ? ['id' => $cat->id, 'name' => $cat->name] : null,
+                            'subcategory' => $product->subcategory ? ['id' => $product->subcategory->id, 'name' => $product->subcategory->name] : null, // ADDED
                             'productimgs' => $imgs, // sekarang index 0 pasti foto utama
                         ];
                     })
@@ -652,6 +697,12 @@
             const modal = document.getElementById('product-modal');
             const modalClose = document.getElementById('modal-close');
             const productGrid = document.getElementById('product-grid');
+
+            // Elemen subkategori
+            const subcategoryDisplayContainer = document.getElementById('subcategory-display-container');
+            const subcategoryDisplay = document.getElementById('subcategory-display');
+            const selectedCategoryNameSpan = document.getElementById('selected-category-name');
+            const subcategoryCheckboxTemplate = document.getElementById('subcategory-checkbox-template');
 
             // Elemen modal detail
             const mainImage = document.getElementById('main-image');
@@ -704,6 +755,63 @@
                 return tenantAssetBase + encodeURI(path);
             };
 
+            // --- Subcategory Display Logic ---
+            function updateSubcategoryDisplay(selectedCategoryId) {
+                subcategoryDisplay.innerHTML = ''; // Clear previous subcategories
+                subcategoryDisplayContainer.classList.add('hidden'); // Hide by default
+
+                if (selectedCategoryId === 'all') {
+                    return; // No subcategories for 'all'
+                }
+
+                const subcategories = [...new Set(window.productsData
+                    .filter(p => p.category && p.category.id == selectedCategoryId && p.subcategory)
+                    .map(p => p.subcategory.name)
+                )].sort();
+
+                if (subcategories.length > 0) {
+                    selectedCategoryNameSpan.textContent = window.productsData.find(p => p.category && p.category
+                        .id == selectedCategoryId)?.category.name || '';
+                    subcategoryDisplayContainer.classList.remove('hidden');
+
+                    // Add an "All" radio button for subcategories
+                    const allRadioClone = subcategoryCheckboxTemplate.content.cloneNode(true);
+                    const allDiv = allRadioClone.querySelector('div');
+                    const allInput = allDiv.querySelector('input');
+                    const allLabel = allDiv.querySelector('label');
+                    const allSpan = allLabel.querySelector('span');
+                    const allInputId = `subcat-${selectedCategoryId}-all`;
+
+                    allInput.id = allInputId;
+                    allInput.value = 'all';
+                    allInput.name = 'subcategory'; // Ensure all subcategory radios have the same name
+                    allInput.checked = true; // Default to 'All' selected
+                    allInput.addEventListener('change', applyFilters);
+                    allLabel.htmlFor = allInputId;
+                    allSpan.textContent = 'Semua Sub-Kategori';
+                    subcategoryDisplay.appendChild(allDiv);
+
+                    subcategories.forEach((subcatName, index) => {
+                        const radioClone = subcategoryCheckboxTemplate.content.cloneNode(true);
+                        const div = radioClone.querySelector('div');
+                        const input = div.querySelector('input');
+                        const label = div.querySelector('label');
+                        const span = label.querySelector('span');
+                        const inputId = `subcat-${selectedCategoryId}-${index}`;
+
+                        input.id = inputId;
+                        input.value = subcatName;
+                        input.name = 'subcategory'; // Ensure all subcategory radios have the same name
+                        input.addEventListener('change', applyFilters);
+                        label.htmlFor = inputId;
+                        span.textContent = subcatName;
+
+                        subcategoryDisplay.appendChild(div);
+                    });
+                    lucide.createIcons(); // Re-render lucide icons for new buttons
+                }
+            }
+
             productGrid.addEventListener('click', function(event) {
                 const card = event.target.closest('[data-product-id]');
                 if (!card) return;
@@ -729,8 +837,7 @@
                     originalPrice.classList.add('hidden');
                 }
 
-                if (product.discount_percentage && product.discount_percentage > 0) {
-                    promoBadgeText.textContent = `-${product.discount_percentage}%`;
+                if (product.is_promo) {
                     promoBadge.classList.remove('hidden');
                 } else {
                     promoBadge.classList.add('hidden');
@@ -774,9 +881,8 @@
                         thumbnailContainer.appendChild(node);
                     });
                 } else {
-                    // seharusnya tidak masuk sini karena ada fallback,
-                    // tapi tetap aman kalau sampai kosong
-                    mainImage.src = '';
+                    // Use a placeholder image if no product images are available
+                    mainImage.src = "{{ asset('assets/images/no-image-icon.png') }}";
                     fullscreenButton.classList.add('hidden');
                 }
 
@@ -920,11 +1026,16 @@
             // ==================================================
 
             const searchInput = document.getElementById('search-input');
-            const categoryFilter = document.getElementById('category-filter');
+            const categoryFilter = document.getElementById('category-filter'); // Now hidden, but still referenced
             const priceRangeFilter = document.getElementById('price-range');
             const sortSelect = document.getElementById('sort-select');
             const applyFiltersButton = document.getElementById('apply-filters');
             const resetFiltersButton = document.getElementById('reset-filters');
+
+            const minPriceFilter = document.getElementById("min-price-filter"); // Declared
+            const maxPriceFilter = document.getElementById("max-price-filter"); // Declared
+
+            let currentSelectedCategoryId = 'all'; // New state variable for selected category
 
             // Brand filter elements
             const brandSearchInput = document.getElementById('brand-search');
@@ -949,12 +1060,15 @@
                 searchInput.value = currentUrl.searchParams.get('search') || '';
 
                 // Category
-                categoryFilter.value = currentUrl.searchParams.get('category') || 'all';
+                currentSelectedCategoryId = currentUrl.searchParams.get('category') || 'all';
+                updateSubcategoryDisplay(currentSelectedCategoryId); // Call to update subcategories
 
                 // Price Range
                 const minPrice = currentUrl.searchParams.get('price_min');
                 const maxPrice = currentUrl.searchParams.get('price_max');
                 if (minPrice || maxPrice) {
+                    minPriceFilter.value = minPrice || '';
+                    maxPriceFilter.value = maxPrice || '';
                     for (const option of priceRangeFilter.options) {
                         if (option.dataset.min == minPrice && option.dataset.max == maxPrice) {
                             option.selected = true;
@@ -970,9 +1084,84 @@
                 updateBrandSelectionUI();
             }
 
+            // --- Client-side Filtering and Rendering ---
+            function filterAndRenderProducts(page = 1) {
+                let productsToFilter = [...window.productsData]; // Start with all products
+
+                // Apply Search Filter
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm) {
+                    productsToFilter = productsToFilter.filter(product =>
+                        product.name.toLowerCase().includes(searchTerm) ||
+                        (product.description && product.description.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                // Apply Category Filter
+                if (currentSelectedCategoryId !== 'all') {
+                    productsToFilter = productsToFilter.filter(product =>
+                        product.category && product.category.id == currentSelectedCategoryId
+                    );
+                }
+
+                // Apply Subcategory Filter
+                const selectedSubcategoryRadio = subcategoryDisplay.querySelector(
+                    'input[name="subcategory"]:checked');
+                if (selectedSubcategoryRadio && selectedSubcategoryRadio.value !== 'all') {
+                    productsToFilter = productsToFilter.filter(product =>
+                        product.subcategory && product.subcategory.name === selectedSubcategoryRadio.value
+                    );
+                }
+
+                // Apply Price Range Filter
+                const minPrice = parseFloat(minPriceFilter.value) || 0;
+                const maxPrice = parseFloat(maxPriceFilter.value) || Infinity;
+                productsToFilter = productsToFilter.filter(product =>
+                    product.price >= minPrice && product.price <= maxPrice
+                );
+
+                // Apply Brand Filter
+                if (selectedBrandIds.size > 0) {
+                    productsToFilter = productsToFilter.filter(product =>
+                        product.brand && selectedBrandIds.has(product.brand.id
+                    .toString()) // Assuming brand.id is used
+                    );
+                }
+
+                // Apply Sorting
+                productsToFilter.sort((a, b) => {
+                    if (a.stock <= 0 && b.stock > 0) return 1; // Out of stock last
+                    if (a.stock > 0 && b.stock <= 0) return -1; // In stock first
+
+                    switch (sortValue) {
+                        case 'price_low':
+                            return a.price - b.price;
+                        case 'price_high':
+                            return b.price - a.price;
+                        case 'name':
+                            return a.name.localeCompare(b.name);
+                        case 'name_desc':
+                            return b.name.localeCompare(a.name);
+                        case 'oldest':
+                            return a.id - b.id; // Assuming lower ID is older
+                        case 'newest':
+                            return b.id - a.id; // Assuming higher ID is newer
+                        default:
+                            return 0;
+                    }
+                });
+
+                // Update result count
+                $('#result-count').text(`Menampilkan ${productsToFilter.length} produk`);
+
+                // Render products for the current page
+                renderProductGrid(productsToFilter, page);
+                renderPagination(productsToFilter.length, page);
+            }
+
             // --- Update URL and Reload ---
-            function applyFilters() {
-                const params = new URLSearchParams(); // Start fresh
+            function applyFilters(page = 1) {
+                const params = new URLSearchParams();
 
                 // Set search
                 if (searchInput.value) {
@@ -982,6 +1171,13 @@
                 // Set category
                 if (categoryFilter.value && categoryFilter.value !== 'all') {
                     params.set('category', categoryFilter.value);
+                }
+
+                // Set subcategory
+                const selectedSubcategoryRadio = subcategoryDisplay.querySelector(
+                    'input[name="subcategory"]:checked');
+                if (selectedSubcategoryRadio && selectedSubcategoryRadio.value !== 'all') {
+                    params.set('subcategory', selectedSubcategoryRadio.value);
                 }
 
                 // Set price
@@ -1010,7 +1206,9 @@
                 // Keep other existing params
                 const oldParams = new URLSearchParams(window.location.search);
                 oldParams.forEach((value, key) => {
-                    if (!['search', 'category', 'price_min', 'price_max', 'brands', 'sort', 'page']
+                    if (!['search', 'category', 'subcategory', 'price_min', 'price_max', 'brands', 'sort',
+                            'page'
+                        ]
                         .includes(key)) {
                         params.set(key, value);
                     }
@@ -1099,11 +1297,15 @@
             const categoryCards = document.querySelectorAll('.category-card');
             categoryCards.forEach(card => {
                 card.addEventListener('click', () => {
+                    const categoryId = card.dataset
+                        .categoryId; // Assuming category cards have data-category-id
                     const categoryName = card.querySelector('.category-name').textContent.trim();
                     const categoryOption = Array.from(categoryFilter.options).find(opt => opt
                         .text === categoryName);
                     if (categoryOption) {
                         categoryFilter.value = categoryOption.value;
+                        updateSubcategoryDisplay(categoryOption
+                            .value); // Update subcategories when category changes
                         applyFilters(); // Clicking a category card is an immediate action
                     }
                 });
@@ -1111,6 +1313,67 @@
 
             // Initialize filters on page load
             initializeFilters();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired for category show more logic.');
+            const categoryContainer = document.getElementById('category-display');
+            if (!categoryContainer) {
+                console.log('categoryContainer not found.');
+                return;
+            }
+
+            const categoryCards = categoryContainer.querySelectorAll('.category-card');
+            const limit = 12;
+
+            console.log('Number of category cards found:', categoryCards.length);
+            console.log('Limit for showing more button:', limit);
+
+            if (categoryCards.length > limit) {
+                console.log('Condition categoryCards.length > limit is TRUE. Attempting to show more button.');
+                // Hide categories after the limit
+                for (let i = limit; i < categoryCards.length; i++) {
+                    categoryCards[i].classList.add('hidden', 'category-hidden');
+                }
+
+                // Create and add "Show More" button
+                const showMoreButtonContainer = document.createElement('div');
+                showMoreButtonContainer.className = 'col-span-full text-center mt-4';
+                showMoreButtonContainer.innerHTML = `
+                    <button id="show-more-categories-btn"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+                        <span id="show-more-text">Lihat lainnya</span>
+                        <i data-lucide="chevron-down" class="h-4 w-4 ml-2 transition-transform duration-300" id="show-more-icon"></i>
+                    </button>
+                `;
+                categoryContainer.appendChild(showMoreButtonContainer);
+                lucide.createIcons();
+
+                // Add event listener to the button
+                const showMoreBtn = document.getElementById('show-more-categories-btn');
+                let isExpanded = false;
+                showMoreBtn.addEventListener('click', () => {
+                    isExpanded = !isExpanded;
+                    document.querySelectorAll('.category-hidden').forEach(card => {
+                        card.classList.toggle('hidden');
+                    });
+
+                    const showMoreText = document.getElementById('show-more-text');
+                    const showMoreIcon = document.getElementById('show-more-icon');
+
+                    if (isExpanded) {
+                        showMoreText.textContent = 'Sembunyikan';
+                        showMoreIcon.style.transform = 'rotate(180deg)';
+                    } else {
+                        showMoreText.textContent = 'Lihat lainnya';
+                        showMoreIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            } else {
+                console.log(
+                    'Condition categoryCards.length > limit is FALSE. Show more button will not be displayed.');
+            }
         });
     </script>
 </body>
