@@ -47,33 +47,49 @@ class ProductSubCategoryController extends Controller
 
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
         $uploaded = $request->file('image');
-        $filename = $validated['slug'] . '.webp';
-        $path = 'sub-categories/' . $filename;
 
-        // Process with Intervention Image for WebP conversion
-        $manager = new ImageManager(new Driver());
-        $img = $manager->read($uploaded->getRealPath());
+        if ($uploaded) { // Check if file was uploaded
+            $filename = $validated['slug'] . '.webp';
+            $path = 'sub-categories/' . $filename;
 
-        // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
-        /*
-            $img->resize(410, 512, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-            */
+            // Process with Intervention Image for WebP conversion
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($uploaded);
 
-        // Encode to WEBP
-        $encodedWebp = $img->toWebp(80); // Quality 80
+            // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
+            /*
+                $img->resize(410, 512, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                */
 
-        // Store the processed image
-        Storage::disk('public')->put($path, (string) $encodedWebp);
+            // Encode to WEBP
+            $encodedWebp = $img->toWebp(80); // Quality 80
 
-        $validated['image'] = $path;
+            // Store the processed image
+            Storage::disk('public')->put($path, (string) $encodedWebp);
 
-        ProductSubCategory::create($validated);
+            $validated['image'] = $path;
+        } else {
+            $validated['image'] = null; // Ensure image path is null if no file uploaded
+        }
 
-        return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
-            ->with('success', 'Sub Kategori berhasil dibuat!');
+        $validated['user_store_id'] = $userStore->id; // Add this line
+
+        try {
+            ProductSubCategory::create($validated);
+            Log::info('SubCategory created successfully: ' . $validated['name']);
+            return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
+                ->with('success', 'Sub Kategori berhasil dibuat!');
+        } catch (\Exception $e) {
+            Log::error('Failed to create SubCategory: ' . $e->getMessage());
+            // If image was uploaded and saved, attempt to delete it to prevent orphaned files
+            if (isset($path) && Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            return redirect()->back()->withInput()->with('error', 'Gagal membuat Sub Kategori: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -111,18 +127,19 @@ class ProductSubCategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
+            $uploaded = $request->file('image');
+            // No need for if ($uploaded) here, as hasFile('image') already ensures it's not null
             // Delete old image if exists
             if ($subCategory->image && Storage::disk('public')->exists($subCategory->image)) {
                 Storage::disk('public')->delete($subCategory->image);
             }
 
-            $uploaded = $request->file('image');
             $filename = $validated['slug'] . '.webp';
             $path = 'sub-categories/' . $filename;
 
             // Process with Intervention Image for WebP conversion
             $manager = new ImageManager(new Driver());
-            $img = $manager->read($uploaded->getRealPath());
+            $img = $manager->read($uploaded);
 
             // Commented out: Resize to max 410x512 (4:5 aspect ratio), maintain aspect ratio, prevent upsizing
             /*
@@ -139,6 +156,9 @@ class ProductSubCategoryController extends Controller
             Storage::disk('public')->put($path, (string) $encodedWebp);
 
             $validated['image'] = $path;
+        } else {
+            // If no new image is uploaded, retain the existing image path
+            $validated['image'] = $subCategory->image;
         }
 
         $subCategory->update($validated);
