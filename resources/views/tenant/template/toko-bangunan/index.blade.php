@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"
-        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-        type="image/x-icon">
+    {{-- Hanya tampilkan link icon jika $userStore->store_logo ada isinya --}}
+    @if ($userStore->store_logo)
+        <link rel="icon"
+            href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+            type="image/x-icon">
+    @else
+        {{-- Opsional: Tampilkan favicon default jika logo toko tidak ada --}}
+        {{-- <link rel="icon" href="{{ asset('assets/images/default-favicon.ico') }}" type="image/x-icon"> --}}
+    @endif
+
+    <title>{{ $userStore->store_name }}</title>
     <title>{{ $userStore->store_name }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-bangunan/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -75,9 +83,19 @@
     <div class="header-section">
         <div class="header-container">
             <div class="header-top">
+                {{-- Logo di Header --}}
                 <div class="logo">
-                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                        alt="Logo Toko" class="logo-image" style="width: 50px; height: 50px; background: transparent;">
+                    @if ($userStore->store_logo)
+                        <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                            alt="Logo Toko" class="logo-image"
+                            style="width: 50px; height: 50px; background: transparent;">
+                    @else
+                        {{-- Opsional: Tampilkan placeholder jika logo tidak ada --}}
+                        <div class="logo-placeholder"
+                            style="width: 50px; height: 50px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                            <span style="font-size: 10px; color: #aaa;">No Logo</span>
+                        </div>
+                    @endif
                     <div class="logo-text">{{ $userStore->store_name }}</div>
                 </div>
             </div>
@@ -87,25 +105,50 @@
     <div class="carousel-section">
         <div class="carousel">
             <div class="carousel-inner" id="carouselInner">
+                {{-- Carousel Banner --}}
                 @forelse ($banners as $banner)
-                    <div class="carousel-item">
-                        <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
-                            alt="{{ $banner->title ?? 'Banner' }}">
+                    {{-- Menampilkan banner dari database jika $banners tidak kosong --}}
+                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                        @if ($banner->image_url)
+                            <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
+                                alt="{{ $banner->title ?? 'Banner' }}">
+                        @else
+                            <img src="https://via.placeholder.com/1200x400?text=Banner+Image+Not+Available"
+                                alt="Placeholder Banner">
+                        @endif
                         <div class="carousel-caption">
                             <h3>{{ $banner->title ?? 'Banner Title' }}</h3>
                             <p>{{ $banner->subtitle ?? 'Banner Sub Title' }}</p>
                         </div>
                     </div>
                 @empty
+                    {{-- Menampilkan banner statis jika $banners kosong --}}
+                    <div class="carousel-item active"> {{-- Pastikan ada class 'active' di fallback pertama --}}
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                            alt="Material Bangunan">
+                        <div class="carousel-caption">
+                            <h3>Material Bangunan Berkualitas</h3>
+                            <p>Temukan berbagai pilihan material bangunan terbaik untuk proyek konstruksi Anda</p>
+                        </div>
+                    </div>
                     <div class="carousel-item">
                         <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                            alt="Peralatan Konstruksi">
+                            alt="Peralatan Kebersihan Modern">
                         <div class="carousel-caption">
                             <h3>Peralatan Kebersihan Modern</h3>
                             <p>Tingkatkan efisiensi pekerjaan dengan peralatan kebersihan yang modern dan handal</p>
                         </div>
                     </div>
-                @endforelse
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                            alt="Instalasi Listrik Handal">
+                        <div class="carousel-caption">
+                            <h3>Instalasi Listrik Handal</h3>
+                            <p>Dilengkapi peralatan standar tinggi untuk menjamin kualitas instalasi</p>
+                        </div>
+                    </div>
+                    {{-- Tambahkan fallback banner statis lainnya jika perlu --}}
+                @endforelse {{-- Ini @endforelse penutup untuk @forelse luar --}}
             </div>
             {{-- PERBAIKAN: Tombol carousel dipindah ke luar loop agar tidak terduplikasi --}}
             @if (isset($banners) && $banners->count() > 1)
@@ -262,13 +305,21 @@
     </div>
 
     <footer class="footer">
-        {{-- Footer content remains the same --}}
         <div class="footer-container">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                        alt="Logo Toko" class="footer-logo-image"
-                        style="width: 150px; height: 150px; background: transparent;">
+                    {{-- Cek jika $userStore->store_logo ada --}}
+                    @if ($userStore->store_logo)
+                        <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                            alt="Logo Toko" class="footer-logo-image"
+                            style="width: 150px; height: 150px; background: transparent;">
+                    @else
+                        {{-- Fallback jika logo tidak ada --}}
+                        <div class="footer-logo-placeholder"
+                            style="width: 150px; height: 150px; background: #555; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                            <span style="font-size: 14px; color: #ccc;">No Logo</span>
+                        </div>
+                    @endif
                     <h3 class="footer-logo-text">{{ $userStore->store_name }}</h3>
                 </div>
             </div>

@@ -134,7 +134,8 @@ class StoreProductController extends Controller
             'is_active' => 'boolean',
             'is_new' => 'boolean',
             'is_available' => 'boolean',
-            'is_featured' => 'boolean', // Add this line
+            'is_featured' => 'boolean',
+            'is_promo' => 'boolean', // Add this line
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3',
@@ -147,6 +148,7 @@ class StoreProductController extends Controller
         $validated['is_new'] = $request->has('is_new');
         $validated['is_available'] = $request->has('is_available');
         $validated['is_featured'] = $request->has('is_featured');
+        $validated['is_promo'] = $request->has('is_promo');
 
         // Generate SKU if not provided or empty
         if (empty($validated['sku'])) {
@@ -262,6 +264,7 @@ class StoreProductController extends Controller
             'is_new' => 'boolean',
             'is_available' => 'boolean',
             'is_featured' => 'boolean',
+            'is_promo' => 'boolean', // Add this line
             'estimasi_waktu' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|max:255',
             'additional_images' => 'array|max:3', // Max 3 additional images
@@ -275,6 +278,7 @@ class StoreProductController extends Controller
         $validated['is_new'] = $request->has('is_new');
         $validated['is_available'] = $request->has('is_available');
         $validated['is_featured'] = $request->has('is_featured');
+        $validated['is_promo'] = $request->has('is_promo');
 
         // Generate SKU if not provided or empty
         if (empty($validated['sku'])) {
