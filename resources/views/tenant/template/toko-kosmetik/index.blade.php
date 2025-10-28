@@ -453,8 +453,6 @@
                 @endif
                 <span class="brand-text">{{ $userStore->store_name ?? 'Beauty Store' }}</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span
-                    class="navbar-toggler-icon"></span></button>
         </div>
     </nav>
 
@@ -650,7 +648,7 @@
         <div class="container">
             <div class="row g-4" id="productsGrid">
                 @forelse ($products as $product)
-                    <div class="col-md-4 col-lg-3">
+                    <div class="col-6 col-md-4 col-lg-4">
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             @if ($product->discount_percentage)
                                 <div class="badge-promo">PROMO</div>
