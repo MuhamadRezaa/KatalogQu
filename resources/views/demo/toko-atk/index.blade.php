@@ -10,117 +10,6 @@
     <!-- Font Awesome untuk icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        .related-products {
-            margin-top: 2rem;
-            border-top: 1px solid #eee;
-            padding-top: 1.5rem;
-        }
-
-        .related-products h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-
-        .related-products h4 i {
-            color: #2B6CB0;
-            margin-right: 0.5rem;
-        }
-
-        .related-products-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .related-product-card {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
-
-        .related-product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: #2B6CB0;
-        }
-
-        .related-product-card img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-        }
-
-        .related-product-card h5 {
-            font-size: 0.9rem;
-            margin: 0.5rem 0;
-            color: #333;
-            line-height: 1.3;
-            max-height: 2.6em;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .related-product-card p {
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #2B6CB0;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .related-products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .related-products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Style untuk Subcategory Dropdown */
-        .subcategory-wrapper {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .subcategory-select {
-            padding: 8px 16px;
-            border: 2px solid #2B6CB0;
-            border-radius: 20px;
-            background-color: white;
-            color: #000000;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            outline: none;
-            max-width: 200px;
-            margin: 0 auto;
-        }
-
-        .subcategory-select:hover {
-            background-color: #EBF8FF;
-        }
-
-        .subcategory-select:focus {
-            border-color: #4299E1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-        }
-    </style>
-
 </head>
 
 <body>
@@ -205,8 +94,9 @@
             <button class="category-btn" data-category="pemotong">
                 Pemotong Kertas
             </button>
-
-
+        </div>
+        <div class="subcategory-chips" id="subcategoryChips">
+            <!-- Chips akan dirender dinamis sesuai kategori -->
         </div>
 
         <!-- Search and Filter Section -->
@@ -222,13 +112,6 @@
                     <input type="text" id="search-input" placeholder="Ketik nama produk yang dicari..."
                         onkeyup="searchProducts()">
                 </div>
-            </div>
-
-            <!-- Dropdown Subcategory -->
-            <div class="subcategory-wrapper">
-                <select id="subcategory-select" class="subcategory-select" style="display: none;">
-                    <option value="all">Semua Sub Kategori</option>
-                </select>
             </div>
 
             <div class="filter-container">
@@ -260,13 +143,15 @@
         <!-- Grid Produk -->
         <div class="products-grid" id="products-grid">
             <!-- Alat Tulis -->
-            <div class="product-card" data-category="alat-tulis" data-subcategory="pulpen">
+            <div class="product-card" data-category="alat-tulis" data-subcategory="pulpen" data-brand="Standard" data-promo="true">
+                <div class="promo-badge">Promo</div>
                 <div class="product-image">
                     <img src="https://down-id.img.susercontent.com/file/sg-11134201-22120-x9646mj3swkv99"
                         alt="Pulpen Standard">
                 </div>
                 <div class="product-info">
                     <h3>Pulpen Standard</h3>
+                    <div class="brand-chip">Standard</div>
                     <p class="price">Rp 3.000</p>
                     <div class="product-actions">
                         <button class="btn-detail" onclick="showDetail('pulpen')">
@@ -281,13 +166,14 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="alat-tulis">
+            <div class="product-card" data-category="alat-tulis" data-subcategory="pensil" data-brand="Faber-Castell" data-promo="false">
                 <div class="product-image">
                     <img src="https://ecs7.tokopedia.net/img/cache/700/product-1/2017/11/16/14804937/14804937_ba9679e5-ce11-4477-b3d6-1e986af7f137_550_550.jpg"
                         alt="Pensil 2B Faber-Castell">
                 </div>
                 <div class="product-info">
                     <h3>Pensil 2B Faber-Castell</h3>
+                    <div class="brand-chip">Faber-Castell</div>
                     <p class="price">Rp 2.500</p>
                     <div class="product-actions">
                         <button class="btn-detail" onclick="showDetail('pensil')">
@@ -302,13 +188,15 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="alat-tulis">
+            <div class="product-card" data-category="alat-tulis" data-subcategory="spidol" data-brand="Snowman" data-promo="true">
+                <div class="promo-badge">Promo</div>
                 <div class="product-image">
                     <img src="https://down-id.img.susercontent.com/file/sg-11134201-23020-7ejr1jcczcnv2e"
                         alt="Spidol Snowman">
                 </div>
                 <div class="product-info">
                     <h3>Spidol Snowman</h3>
+                    <div class="brand-chip">Snowman</div>
                     <p class="price">Rp 7.000</p>
                     <div class="product-actions">
                         <button class="btn-detail" onclick="showDetail('spidol')">
@@ -323,13 +211,14 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="alat-tulis">
+            <div class="product-card" data-category="alat-tulis" data-subcategory="correction" data-brand="Kenko" data-promo="false">
                 <div class="product-image">
                     <img src="https://siplahtelkom.com/public/products/172981/3165338/correction-tape.1640252042.jpg"
                         alt="Correction Tape Kenko">
                 </div>
                 <div class="product-info">
                     <h3>Correction Tape Kenko</h3>
+                    <div class="brand-chip">Kenko</div>
                     <p class="price">Rp 8.500</p>
                     <div class="product-actions">
                         <button class="btn-detail" onclick="showDetail('correction')">
@@ -345,13 +234,14 @@
             </div>
 
             <!-- Penjilidan & Penyimpanan -->
-            <div class="product-card" data-category="penjilidan">
+            <div class="product-card" data-category="penjilidan" data-subcategory="stapler" data-brand="Kenko" data-promo="false">
                 <div class="product-image">
                     <img src="https://img.mbizmarket.co.id/products/thumbs/800x800/2023/02/22/bda9f2e8f40a7ed0b71ff944102149d2.jpg"
                         alt="Stapler Kenko HD-10">
                 </div>
                 <div class="product-info">
                     <h3>Stapler Kenko HD-10</h3>
+                    <div class="brand-chip">Kenko</div>
                     <p class="price">Rp 15.000</p>
                     <div class="product-actions">
                         <button class="btn-detail" onclick="showDetail('staplerKenkoHD10')">
@@ -366,7 +256,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="penjilidan">
+            <div class="product-card" data-category="penjilidan" data-subcategory="map">
                 <div class="product-image">
                     <img src="https://siplahtelkom.com/public/products/177340/3709436/mapplastik.1659042409.jpg"
                         alt="Map Plastik A4">
@@ -387,7 +277,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="penjilidan">
+            <div class="product-card" data-category="penjilidan" data-subcategory="ordner">
                 <div class="product-image">
                     <img src="https://cdn-images.otto-office.com/oode/b2b/deu/mediadatacat/art/1200/OODE_ART_288/OODE_ART_288280HT_01.jpg"
                         alt="Ordner Besar A4">
@@ -408,7 +298,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="penjilidan">
+            <div class="product-card" data-category="penjilidan" data-subcategory="sheet">
                 <div class="product-image">
                     <img src="https://m.media-amazon.com/images/S/aplus-media/sota/371f59f9-8062-4839-b959-203f2e332085.__CR0,0,300,300_PT0_SX300_V1___.png"
                         alt="Sheet Protector A4">
@@ -430,7 +320,7 @@
             </div>
 
             <!-- Produk Kertas -->
-            <div class="product-card" data-category="kertas">
+            <div class="product-card" data-category="kertas" data-subcategory="hvs">
                 <div class="product-image">
                     <img src="https://img.mbizmarket.co.id/products/thumbs/800x800/2022/06/01/af2a84879a3206a9e90517f1d52a5290.jpg"
                         alt="Kertas HVS A4">
@@ -451,7 +341,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="kertas">
+            <div class="product-card" data-category="kertas" data-subcategory="sticky">
                 <div class="product-image">
                     <img src="https://i5.walmartimages.com/asr/af9eba15-4297-4bf4-b58c-527f317ead58.a904b07756f5d5ed53aeba6935e9567e.jpeg"
                         alt="Sticky Notes 3x3">
@@ -472,7 +362,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="kertas">
+            <div class="product-card" data-category="kertas" data-subcategory="kertas-warna">
                 <div class="product-image">
                     <img src="https://siplahtelkom.com/public/products/196935/4176520/277697.f6c2d839-2aab-4319-af5f-26ff475f9125.IMG_202304.jpg"
                         alt="Kertas Warna A4 Campuran">
@@ -493,7 +383,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="kertas">
+            <div class="product-card" data-category="kertas" data-subcategory="memo">
                 <div class="product-image">
                     <img src="https://m.media-amazon.com/images/I/71At1Mi7mCL._AC_.jpg" alt="Memo Pad Spiral Kecil">
                 </div>
@@ -514,7 +404,7 @@
             </div>
 
             <!-- Label & Perekat -->
-            <div class="product-card" data-category="label">
+            <div class="product-card" data-category="label" data-subcategory="lem">
                 <div class="product-image">
                     <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llabjnr2sgp028"
                         alt="Lem Kertas UHU Stick 21gr">
@@ -535,7 +425,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="label">
+            <div class="product-card" data-category="label" data-subcategory="label">
                 <div class="product-image">
                     <img src="https://www.crownlabels.com/wp-content/uploads/2017/11/A4-65.jpg"
                         alt="Label Nama A4 65 Label">
@@ -556,7 +446,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="label">
+            <div class="product-card" data-category="label" data-subcategory="double-tape">
                 <div class="product-image">
                     <img src="https://cf.shopee.co.id/file/2d756bd6d10f107e153c3c38d91aed50" alt="Double Tape 1 Inch">
                 </div>
@@ -576,7 +466,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="label">
+            <div class="product-card" data-category="label" data-subcategory="lakban">
                 <div class="product-image">
                     <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98x-lm8ajqbvs87i17"
                         alt="Lakban Bening 2 Inch">
@@ -598,7 +488,7 @@
             </div>
 
             <!-- Pemotong Kertas -->
-            <div class="product-card" data-category="pemotong">
+            <div class="product-card" data-category="pemotong" data-subcategory="cutter">
                 <div class="product-image">
                     <img src="https://atkqita.com/wp-content/uploads/Cutter-kecil-JOYKO-A300.jpg"
                         alt="Cutter Kecil Joyko">
@@ -619,7 +509,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="pemotong">
+            <div class="product-card" data-category="pemotong" data-subcategory="gunting">
                 <div class="product-image">
                     <img src="https://lzd-img-global.slatic.net/g/p/598ef8b6d52d3d918b68dd8d89686657.jpg_720x720q80.jpg"
                         alt="Gunting Kertas Stainless">
@@ -640,7 +530,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="pemotong">
+            <div class="product-card" data-category="pemotong" data-subcategory="trimmer">
                 <div class="product-image">
                     <img src="https://images.nexusapp.co/assets/f4/61/79/164903640.jpg" alt="Paper Trimmer A4">
                 </div>
@@ -660,7 +550,7 @@
                 </div>
             </div>
 
-            <div class="product-card" data-category="pemotong">
+            <div class="product-card" data-category="pemotong" data-subcategory="cutter">
                 <div class="product-image">
                     <img src="https://id-test-11.slatic.net/p/0b0995e37dcdf81614a96c7c660829c7.jpg"
                         alt="Pisau Cutter Besar">
@@ -681,6 +571,9 @@
                 </div>
             </div>
         </div>
+        <div class="show-more-container">
+            <button id="atkShowMoreBtn" class="show-more-button" onclick="atkShowMore()">Lihat Selengkapnya</button>
+        </div>
 
         <!-- Modal Detail Produk -->
         <div id="product-modal" class="modal">
@@ -698,9 +591,10 @@
                 pulpen: {
                     name: 'Pulpen Standard',
                     price: 'Rp 3.000',
-                    category: 'alat-tulis',
                     image: 'https://down-id.img.susercontent.com/file/sg-11134201-22120-x9646mj3swkv99',
                     description: 'Pulpen berkualitas dengan tinta yang lancar dan tahan lama. Cocok untuk kebutuhan sehari-hari kantor maupun sekolah.',
+                    brand: 'Standard',
+                    subcategory: 'pulpen',
                     specs: [
                         'Warna tinta: Biru, Hitam, Merah',
                         'Ujung ballpoint 0.7mm',
@@ -711,9 +605,10 @@
                 pensil: {
                     name: 'Pensil 2B Faber-Castell',
                     price: 'Rp 2.500',
-                    category: 'alat-tulis',
                     image: 'https://ecs7.tokopedia.net/img/cache/700/product-1/2017/11/16/14804937/14804937_ba9679e5-ce11-4477-b3d6-1e986af7f137_550_550.jpg',
                     description: 'Pensil 2B dari Faber-Castell dengan kualitas premium. Grafit berkualitas tinggi menghasilkan goresan yang halus.',
+                    brand: 'Faber-Castell',
+                    subcategory: 'pensil',
                     specs: [
                         'Tingkat kekerasan: 2B',
                         'Body kayu cedar berkualitas',
@@ -726,6 +621,8 @@
                     price: 'Rp 7.000',
                     image: 'https://down-id.img.susercontent.com/file/sg-11134201-23020-7ejr1jcczcnv2e',
                     description: 'Spidol khusus untuk papan tulis putih dengan tinta yang mudah dihapus dan tidak meninggalkan noda.',
+                    brand: 'Snowman',
+                    subcategory: 'spidol',
                     specs: [
                         'Cocok untuk whiteboard',
                         'Tinta mudah dihapus',
@@ -738,6 +635,8 @@
                     price: 'Rp 8.500',
                     image: 'https://siplahtelkom.com/public/products/172981/3165338/correction-tape.1640252042.jpg',
                     description: 'Correction tape berkualitas untuk mengoreksi kesalahan tulisan dengan hasil yang rapi dan bersih.',
+                    brand: 'Kenko',
+                    subcategory: 'correction',
                     specs: [
                         'Lebar tape: 5mm',
                         'Panjang: 12 meter',
@@ -750,6 +649,8 @@
                     price: 'Rp 15.000',
                     image: 'https://img.mbizmarket.co.id/products/thumbs/800x800/2023/02/22/bda9f2e8f40a7ed0b71ff944102149d2.jpg',
                     description: 'Stapler mini berkualitas yang mampu menjilid hingga 20 lembar kertas.',
+                    brand: 'Kenko',
+                    subcategory: 'stapler',
                     specs: [
                         'Mampu menjilid hingga 20 lembar kertas',
                         'Desain mini dan mudah digunakan',
@@ -761,6 +662,7 @@
                     price: 'Rp 22.000',
                     image: 'https://cdn-images.otto-office.com/oode/b2b/deu/mediadatacat/art/1200/OODE_ART_288/OODE_ART_288280HT_01.jpg',
                     description: 'Ordner kuat dengan tuas pengunci logam, cocok untuk arsip volume besar.',
+                    subcategory: 'ordner',
                     specs: [
                         'Tuas pengunci logam yang kokoh',
                         'Bahan kuat dan tahan lama',
@@ -773,6 +675,7 @@
                     price: 'Rp 1.200',
                     image: 'https://m.media-amazon.com/images/S/aplus-media/sota/371f59f9-8062-4839-b959-203f2e332085.__CR0,0,300,300_PT0_SX300_V1___.png',
                     description: 'Plastik pelindung lembaran dokumen, mencegah kertas rusak atau sobek.',
+                    subcategory: 'sheet',
                     specs: [
                         'Bahan plastik transparan berkualitas tinggi',
                         'Ukuran A4, cocok untuk dokumen standar',
@@ -785,6 +688,7 @@
                     price: 'Rp 5.000',
                     image: 'https://siplahtelkom.com/public/products/177340/3709436/mapplastik.1659042409.jpg',
                     description: 'Map plastik transparan ukuran A4 untuk menyimpan dan melindungi dokumen penting.',
+                    subcategory: 'map',
                     specs: [
                         'Ukuran: A4',
                         'Material: PP berkualitas',
@@ -797,6 +701,7 @@
                     price: 'Rp 45.000',
                     image: 'https://img.mbizmarket.co.id/products/thumbs/800x800/2022/06/01/af2a84879a3206a9e90517f1d52a5290.jpg',
                     description: 'Kertas HVS A4 berkualitas tinggi, cocok untuk fotokopi, print, dan berbagai kebutuhan kantor.',
+                    subcategory: 'hvs',
                     specs: [
                         'Ukuran: A4 (21 x 29.7 cm)',
                         'Gramatur: 70 gsm',
@@ -809,6 +714,7 @@
                     price: 'Rp 6.000',
                     image: 'https://i5.walmartimages.com/asr/af9eba15-4297-4bf4-b58c-527f317ead58.a904b07756f5d5ed53aeba6935e9567e.jpeg',
                     description: 'Kertas tempel warna-warni untuk catatan cepat dan pengingat.',
+                    subcategory: 'sticky',
                     specs: [
                         'Ukuran 3x3 inci, cocok untuk catatan singkat',
                         'Warna-warni untuk membedakan catatan',
@@ -821,6 +727,7 @@
                     price: 'Rp 18.000',
                     image: 'https://siplahtelkom.com/public/products/196935/4176520/277697.f6c2d839-2aab-4319-af5f-26ff475f9125.IMG_202304.jpg',
                     description: 'Kertas warna-warni untuk keperluan kreatif atau presentasi.',
+                    subcategory: 'kertas-warna',
                     specs: [
                         'Ukuran A4, cocok untuk berbagai aplikasi kreatif',
                         'Berbagai warna yang menarik untuk membuat presentasi atau karya seni lebih hidup',
@@ -833,6 +740,7 @@
                     price: 'Rp 4.000',
                     image: 'https://m.media-amazon.com/images/I/71At1Mi7mCL._AC_.jpg',
                     description: 'Buku catatan kecil spiral, praktis dibawa untuk mencatat ide cepat.',
+                    subcategory: 'memo',
                     specs: [
                         'Ukuran kecil dan praktis dibawa kemana saja',
                         'Spiral di bagian atas untuk memudahkan pembukaan',
@@ -845,6 +753,7 @@
                     price: 'Rp 12.000',
                     image: 'https://down-id.img.susercontent.com/file/id-11134207-7r98u-llabjnr2sgp028',
                     description: 'Lem stik berkualitas untuk menempelkan kertas tanpa berantakan.',
+                    subcategory: 'lem',
                     specs: [
                         'Kemasan praktis dalam bentuk stik',
                         'Mudah digunakan dan tidak berantakan',
@@ -857,6 +766,7 @@
                     price: 'Rp 15.000',
                     image: 'https://www.crownlabels.com/wp-content/uploads/2017/11/A4-65.jpg',
                     description: 'Label stiker ukuran kecil yang dapat dicetak untuk keperluan pengarsipan.',
+                    subcategory: 'label',
                     specs: [
                         'Ukuran A4 dengan 65 label per lembar',
                         'Cocok untuk keperluan pengarsipan atau pemberian label pada berbagai produk',
@@ -869,6 +779,7 @@
                     price: 'Rp 8.000',
                     image: 'https://cf.shopee.co.id/file/2d756bd6d10f107e153c3c38d91aed50',
                     description: 'Perekat dua sisi untuk proyek seni atau kebutuhan tempel kuat.',
+                    subcategory: 'double-tape',
                     specs: [
                         'Ukuran 1 inch, ideal untuk berbagai keperluan tempel',
                         'Perekat dua sisi untuk menempelkan berbagai material dengan kuat',
@@ -881,6 +792,7 @@
                     price: 'Rp 10.000',
                     image: 'https://down-id.img.susercontent.com/file/id-11134207-7r98x-lm8ajqbvs87i17',
                     description: 'Selotip bening kuat untuk pengemasan atau pelindung dokumen.',
+                    subcategory: 'lakban',
                     specs: [
                         'Ukuran 2 inch, cocok untuk pengemasan dan pelindung dokumen',
                         'Transparan dan kuat untuk menempelkan berbagai jenis material',
@@ -893,6 +805,7 @@
                     price: 'Rp 5.000',
                     image: 'https://atkqita.com/wp-content/uploads/Cutter-kecil-JOYKO-A300.jpg',
                     description: 'Cutter kecil dengan pisau tajam, cocok untuk kebutuhan kantor dan sekolah.',
+                    subcategory: 'cutter',
                     specs: [
                         'Pisau tajam yang mudah digunakan untuk memotong kertas dan bahan tipis lainnya',
                         'Desain kecil dan ergonomis, nyaman digunakan',
@@ -905,6 +818,7 @@
                     price: 'Rp 8.000',
                     image: 'https://lzd-img-global.slatic.net/g/p/598ef8b6d52d3d918b68dd8d89686657.jpg_720x720q80.jpg',
                     description: 'Gunting presisi dengan pegangan nyaman dan mata pisau tahan lama.',
+                    subcategory: 'gunting',
                     specs: [
                         'Mata pisau stainless yang tajam dan tahan lama',
                         'Pegangan ergonomis untuk kenyamanan saat digunakan',
@@ -917,6 +831,7 @@
                     price: 'Rp 125.000',
                     image: 'https://images.nexusapp.co/assets/f4/61/79/164903640.jpg',
                     description: 'Alat pemotong kertas presisi dengan penggaris ukuran, cocok untuk dokumen.',
+                    subcategory: 'trimmer',
                     specs: [
                         'Pemotong kertas dengan ukuran A4',
                         'Dilengkapi dengan penggaris presisi untuk pemotongan yang akurat',
@@ -929,6 +844,7 @@
                     price: 'Rp 9.000',
                     image: 'https://id-test-11.slatic.net/p/0b0995e37dcdf81614a96c7c660829c7.jpg',
                     description: 'Cutter besar untuk potong kardus atau kertas tebal dengan aman.',
+                    subcategory: 'cutter',
                     specs: [
                         'Pisau besar yang tajam, ideal untuk memotong kardus atau bahan tebal lainnya',
                         'Pegangan ergonomis yang nyaman digunakan',
@@ -938,195 +854,100 @@
                 }
             };
 
-            // Data subcategories
-            const categorySubcategories = {
-                'alat-tulis': [{
-                        id: 'pulpen',
-                        name: 'Pulpen'
-                    },
-                    {
-                        id: 'pensil',
-                        name: 'Pensil'
-                    },
-                    {
-                        id: 'spidol',
-                        name: 'Spidol'
-                    },
-                    {
-                        id: 'correction',
-                        name: 'Correction'
-                    }
-                ],
-                'penjilidan': [{
-                        id: 'stapler',
-                        name: 'Stapler'
-                    },
-                    {
-                        id: 'ordner',
-                        name: 'Ordner'
-                    },
-                    {
-                        id: 'map',
-                        name: 'Map'
-                    }
-                ],
-                'kertas': [{
-                        id: 'hvs',
-                        name: 'Kertas HVS'
-                    },
-                    {
-                        id: 'notes',
-                        name: 'Sticky Notes'
-                    },
-                    {
-                        id: 'warna',
-                        name: 'Kertas Warna'
-                    }
-                ],
-                'label': [{
-                        id: 'lem',
-                        name: 'Lem'
-                    },
-                    {
-                        id: 'tape',
-                        name: 'Double Tape'
-                    },
-                    {
-                        id: 'lakban',
-                        name: 'Lakban'
-                    }
-                ],
-                'pemotong': [{
-                        id: 'cutter',
-                        name: 'Cutter'
-                    },
-                    {
-                        id: 'gunting',
-                        name: 'Gunting'
-                    },
-                    {
-                        id: 'trimmer',
-                        name: 'Paper Trimmer'
-                    }
-                ]
-            };
-
-            // Update subcategory dropdown based on selected category
-            function updateSubcategoryDropdown(category) {
-                const subcategorySelect = document.getElementById('subcategory-select');
-                const subcategories = categorySubcategories[category] || [];
-
-                // Reset dropdown
-                subcategorySelect.innerHTML = '<option value="all">Semua Sub Kategori</option>';
-
-                // Add new options
-                subcategories.forEach(sub => {
-                    subcategorySelect.innerHTML += `<option value="${sub.id}">${sub.name}</option>`;
-                });
-
-                // Show/hide dropdown based on category
-                subcategorySelect.style.display = category === 'all' ? 'none' : 'block';
-            }
-
-            // Filter products based on category and subcategory
-            function filterProducts(category, subcategory) {
-                document.querySelectorAll('.product-card').forEach(card => {
-                    const cardCategory = card.dataset.category;
-                    const cardSubcategory = card.dataset.subcategory;
-
-                    const categoryMatch = category === 'all' || cardCategory === category;
-                    const subcategoryMatch = subcategory === 'all' || cardSubcategory === subcategory;
-
-                    if (categoryMatch && (category === 'all' || subcategoryMatch)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-
             // Filter kategori
+            // Peta subkategori per kategori ATK
+            const atkSubcategoryMap = {
+                'alat-tulis': ['pulpen','pensil','spidol','correction'],
+                'penjilidan': ['stapler','map','ordner','sheet'],
+                'kertas': ['hvs','sticky','kertas-warna','memo'],
+                'label': ['lem','label','double-tape','lakban'],
+                'pemotong': ['cutter','gunting','trimmer']
+            };
+            const atkSubcategoryLabels = {
+                'pulpen':'Pulpen','pensil':'Pensil','spidol':'Spidol','correction':'Correction Tape',
+                'stapler':'Stapler','map':'Map','ordner':'Ordner','sheet':'Sheet Protector',
+                'hvs':'Kertas HVS','sticky':'Sticky Notes','kertas-warna':'Kertas Warna','memo':'Memo Pad',
+                'lem':'Lem','label':'Label','double-tape':'Double Tape','lakban':'Lakban',
+                'cutter':'Cutter','gunting':'Gunting','trimmer':'Paper Trimmer'
+            };
+            // Helper: smooth scroll to element by id with header offset
+            function smoothScrollToId(id) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+
+            // Helper: find ATK category by subcategory for related fallback
+            function getAtkCategoryBySubcategory(subcat) {
+                for (const [cat, subs] of Object.entries(atkSubcategoryMap)) {
+                    if (subs.includes(subcat)) return cat;
+                }
+                return null;
+            }
+
+            function renderAtkSubcategoryChips(category) {
+                const container = document.getElementById('subcategoryChips');
+                const list = category === 'all'
+                    ? Object.keys(atkSubcategoryLabels)
+                    : (atkSubcategoryMap[category] || []);
+                container.innerHTML = list.map(sc => `<button class="chip" onclick="filterBySubcategory('${sc}')">${atkSubcategoryLabels[sc] || sc}</button>`).join('');
+            }
+
+            // Filter kategori + render chips
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const category = this.dataset.category;
-
-                    // Update active button
                     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
 
-                    // Update subcategory dropdown
-                    updateSubcategoryDropdown(category);
+                    document.querySelectorAll('.product-card').forEach(card => {
+                        card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+                    });
 
-                    // Filter products
-                    filterProducts(category, 'all');
+                    renderAtkSubcategoryChips(category);
+                    // Smooth scroll: ke chips untuk kategori spesifik, ke produk untuk "all"
+                    if (category === 'all') {
+                        smoothScrollToId('products-grid');
+                    } else {
+                        smoothScrollToId('subcategoryChips');
+                    }
                 });
             });
 
-            // Listen for subcategory changes
-            document.getElementById('subcategory-select').addEventListener('change', function() {
-                const category = document.querySelector('.category-btn.active').dataset.category;
-                const subcategory = this.value;
-                filterProducts(category, subcategory);
-            });
-
-            // Show product detail
-            // Fungsi untuk mendapatkan produk terkait
-            function getRelatedProducts(currentProduct) {
-                if (!currentProduct || !currentProduct.category) return [];
-
-                return Object.entries(productDetails)
-                    .filter(([id, product]) => {
-                        return id !== currentProduct.id && // Bukan produk yang sedang dilihat
-                            product.category === currentProduct.category; // Kategori sama
-                    })
-                    .map(([id, product]) => ({
-                        id,
-                        ...product
-                    }))
-                    .slice(0, 3); // Ambil maksimal 3 produk
-            }
-
+            // Show product detail with brand and related products
             function showDetail(productId) {
                 const product = productDetails[productId];
                 if (!product) return;
 
-                // Dapatkan produk terkait
-                const relatedProducts = getRelatedProducts(product);
-
                 const modalBody = document.getElementById('modal-body');
+                const currentPrice = product.price;
+                const oldPrice = getOldPrice(currentPrice);
                 modalBody.innerHTML = `
                 <div class="modal-product">
                     <img src="${product.image}" alt="${product.name}" class="modal-image">
                     <div class="modal-info">
                         <h2><i class="fas fa-box"></i> ${product.name}</h2>
-                        <p class="modal-price"><i class="fas fa-tag"></i> ${product.price}</p>
+                        <p class="modal-price"><i class="fas fa-tag"></i> ${oldPrice ? `<span class='old-price'>${oldPrice}</span>` : ''} <span>${currentPrice}</span></p>
+                        ${product.brand ? '<div class="brand-chip">' + product.brand + '</div>' : ''}
                         <p class="modal-description">${product.description}</p>
                         <h4><i class="fas fa-list"></i> Spesifikasi:</h4>
                         <ul class="modal-specs">
                             ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
                         </ul>
+                        <div class="related-title">Produk Serupa</div>
+                        <div id="atkRelatedGrid" class="related-products-grid"></div>
                         <div class="modal-actions">
                             <button class="btn-whatsapp" onclick="chatWhatsApp('${product.name}', '${product.price}')">
                                 <i class="fab fa-whatsapp"></i>
                                 Chat via WhatsApp
                             </button>
                         </div>
-
-                        ${relatedProducts.length > 0 ? `
-                                                                    <div class="related-products">
-                                                                        <h4><i class="fas fa-project-diagram"></i> Produk Terkait</h4>
-                                                                        <div class="related-products-grid">
-                                                                            ${relatedProducts.map(rp => `
-                                        <div class="related-product-card" onclick="showDetail('${rp.id}')">
-                                            <img src="${rp.image}" alt="${rp.name}">
-                                            <h5>${rp.name}</h5>
-                                            <p>${rp.price}</p>
-                                        </div>
-                                    `).join('')}
-                                                                        </div>
-                                                                    </div>
-                                                                ` : ''}
+                    </div>
+                </div>
             `;
+
+                buildAtkRelated(product);
 
                 document.getElementById('product-modal').style.display = 'block';
             }
@@ -1235,6 +1056,106 @@
                 });
             }
 
+            // Filter by subcategory
+            function filterBySubcategory(subcat) {
+                const cards = document.querySelectorAll('.product-card');
+                cards.forEach(card => {
+                    const sc = card.dataset.subcategory || '';
+                    card.style.display = (sc === subcat) ? 'block' : 'none';
+                });
+                smoothScrollToId('products-grid');
+            }
+
+            // Build related products grid based on subcategory
+            function buildAtkRelated(product) {
+                const entries = Object.entries(productDetails);
+                const related = entries
+                    .filter(([key, p]) => (p.subcategory && product.subcategory && p.subcategory === product.subcategory) && p.name !== product.name)
+                    .slice(0, 6);
+                // Fallback: jika tidak ada produk serupa dalam subkategori yang sama
+                if (!related.length) {
+                    const cat = getAtkCategoryBySubcategory(product.subcategory);
+                    if (cat) {
+                        const inCat = entries.filter(([key, p]) => p.subcategory && (atkSubcategoryMap[cat] || []).includes(p.subcategory) && p.name !== product.name);
+                        related.push(...inCat.slice(0, 6));
+                    }
+                }
+                const grid = document.getElementById('atkRelatedGrid');
+                if (!grid) return;
+                grid.innerHTML = '';
+                related.forEach(([key, r]) => {
+                    const div = document.createElement('div');
+                    div.className = 'related-card';
+                    div.innerHTML = `
+                        <img src="${r.image}" alt="${r.name}" class="related-image" onerror="this.style.display='none';">
+                        <div class="related-name">${r.name}</div>
+                        <div class="related-price">${r.price}</div>
+                    `;
+                    div.style.cursor = 'pointer';
+                    div.addEventListener('click', () => showDetail(key));
+                    grid.appendChild(div);
+                });
+            }
+
+            // Harga lama untuk promo (estimasi 15% lebih tinggi)
+            function getOldPrice(priceStr) {
+                const num = parseInt((priceStr || '').replace(/[^0-9]/g, ''));
+                if (!num || num <= 0) return '';
+                const old = Math.round(num * 1.15);
+                return 'Rp ' + old.toLocaleString('id-ID');
+            }
+
+            // Terapkan harga coret pada kartu produk yang promo
+            function applyOldPriceToCards() {
+                document.querySelectorAll('.product-card[data-promo="true"]').forEach(card => {
+                    const priceEl = card.querySelector('.price');
+                    if (!priceEl) return;
+                    if (priceEl.dataset.enhanced === 'true') return;
+                    const current = priceEl.textContent.trim();
+                    const old = getOldPrice(current);
+                    if (old) {
+                        priceEl.innerHTML = `<span class="old-price">${old}</span> <span class="current-price">${current}</span>`;
+                        priceEl.dataset.enhanced = 'true';
+                    }
+                });
+            }
+
+            // Show more with dummy: clone cards to reach 50 and reveal gradually
+            let atkVisibleCount = 20;
+            function setupAtkShowMoreWithDummy() {
+                const grid = document.getElementById('products-grid');
+                if (!grid) return;
+                const currentCards = Array.from(grid.querySelectorAll('.product-card'));
+                // Clone until 50
+                let i = 0;
+                while (grid.querySelectorAll('.product-card').length < 50) {
+                    const base = currentCards[i % currentCards.length].cloneNode(true);
+                    grid.appendChild(base);
+                    i++;
+                }
+                // Hide beyond visibleCount
+                const allCards = Array.from(grid.querySelectorAll('.product-card'));
+                allCards.forEach((card, idx) => {
+                    card.style.display = (idx < atkVisibleCount) ? 'block' : 'none';
+                });
+                // Toggle button
+                const btn = document.getElementById('atkShowMoreBtn');
+                if (btn) btn.style.display = 'inline-block';
+            }
+
+            function atkShowMore() {
+                const grid = document.getElementById('products-grid');
+                const cards = Array.from(grid.querySelectorAll('.product-card'));
+                atkVisibleCount = Math.min(atkVisibleCount + 10, cards.length);
+                cards.forEach((card, idx) => {
+                    card.style.display = (idx < atkVisibleCount) ? 'block' : 'none';
+                });
+                if (atkVisibleCount >= cards.length) {
+                    const btn = document.getElementById('atkShowMoreBtn');
+                    if (btn) btn.style.display = 'none';
+                }
+            }
+
             // Carousel Functionality
             let currentSlideIndex = 0;
             const slides = document.querySelectorAll('.carousel-slide');
@@ -1295,6 +1216,9 @@
             // Initialize carousel
             document.addEventListener('DOMContentLoaded', function() {
                 showSlide(0);
+                setupAtkShowMoreWithDummy();
+                renderAtkSubcategoryChips('all');
+                applyOldPriceToCards();
             });
         </script>
 </body>

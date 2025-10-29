@@ -300,41 +300,41 @@ header {
         padding: 25px 20px;
         border-radius: 15px;
     }
-    
+
     .section-header h3 {
         font-size: 20px;
     }
-    
+
     .section-header p {
         font-size: 14px;
     }
-    
+
     .filter-container {
         flex-direction: column;
         gap: 15px;
         align-items: stretch;
     }
-    
+
     .filter-group {
         min-width: auto;
         width: 100%;
     }
-    
+
     .filter-group select {
         width: 100%;
         padding: 16px 20px;
         font-size: 16px;
     }
-    
+
     .search-box {
         max-width: 100%;
     }
-    
+
     .search-box input {
         padding: 18px 60px 18px 25px;
         font-size: 16px;
     }
-    
+
     .search-box .search-icon {
         right: 22px;
         font-size: 20px;
@@ -516,6 +516,118 @@ header {
     animation: slideIn 0.3s ease;
     max-height: 90vh;
     overflow-y: auto;
+}
+
+/* Promo badge */
+.promo-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #e53935;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+/* Brand chip */
+.brand-chip {
+  display: inline-block;
+  margin: 6px 0 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #1e88e5;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 999px;
+}
+
+/* Subcategory chips */
+.subcategory-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 18px;
+}
+.subcategory-chips .chip {
+  border: 1px solid #ddd;
+  background: #fafafa;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.subcategory-chips .chip:hover {
+  background: #f0f0f0;
+}
+
+/* Related products grid in modal */
+.related-title {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.related-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.related-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+}
+.related-image {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+.related-name {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+.related-price {
+  font-size: 12px;
+  color: #1e88e5;
+}
+
+/* Old price & current price styling */
+.old-price {
+  text-decoration: line-through;
+  color: #8a8a8a;
+  margin-right: 6px;
+  font-weight: normal;
+}
+.current-price {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* Make related card clickable with subtle hover */
+.related-card { cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+.related-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+/* Show more button */
+.show-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 26px;
+}
+.show-more-button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+.show-more-button:hover {
+  background: #f7f7f7;
 }
 
 .close {
@@ -877,25 +989,25 @@ header {
         height: 300px;
         margin-bottom: 1.5rem;
     }
-    
+
     .carousel-content h3 {
         font-size: 1.8rem;
     }
-    
+
     .carousel-content p {
         font-size: 1rem;
     }
-    
+
     .carousel-btn {
         width: 40px;
         height: 40px;
         font-size: 1rem;
     }
-    
+
     .carousel-btn.prev {
         left: 10px;
     }
-    
+
     .carousel-btn.next {
         right: 10px;
     }
@@ -905,97 +1017,97 @@ header {
     .container {
         padding: 0 15px;
     }
-    
+
     header {
         padding: 1.5rem 0;
     }
-    
+
     header h1 {
         font-size: 1.7rem;
     }
-    
+
     .category-filter {
         gap: 0.5rem;
     }
-    
+
     .category-btn {
         padding: 0.6rem 1rem;
         font-size: 0.8rem;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.2rem;
     }
-    
+
     .product-info {
         padding: 1rem;
     }
-    
+
     /* Footer responsive */
     .footer {
         padding: 0;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr;
         gap: 30px;
         padding: 30px 15px;
         text-align: center;
     }
-    
+
     .footer-brand {
         justify-content: center;
     }
-    
+
     .footer-logo {
         height: 60px;
     }
-    
+
     .footer-section h4 {
         font-size: 1.1rem;
         margin-bottom: 15px;
     }
-    
+
     .footer-links a {
         font-size: 0.9rem;
     }
-    
+
     .contact-info p {
         font-size: 0.85rem;
     }
-    
+
     .social-icons {
         justify-content: center;
         gap: 20px;
     }
-    
+
     .social-icons a {
         font-size: 1.4rem;
     }
-    
+
     .product-info h3 {
         font-size: 1rem;
         min-height: 2.2rem;
     }
-    
+
     .price {
         font-size: 1.1rem;
     }
-    
+
     .modal-content {
         margin: 5% auto;
         width: 95%;
     }
-    
+
     .modal-info {
         padding: 1.2rem;
     }
-    
+
     .modal-info h2 {
         font-size: 1.4rem;
     }
-    
+
     .modal-price {
         font-size: 1.2rem;
     }
@@ -1007,51 +1119,51 @@ header {
         overflow-x: auto;
         padding-bottom: 0.5rem;
     }
-    
+
     .category-btn {
         white-space: nowrap;
         flex-shrink: 0;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-    
+
     .product-card {
         min-width: 0;
     }
-    
+
     .product-image {
         height: 100px;
         padding: 8px;
     }
-    
+
     .product-info {
         padding: 0.6rem;
     }
-    
+
     .product-info h3 {
         font-size: 0.85rem;
         min-height: 1.8rem;
         line-height: 1.1;
     }
-    
+
     .price {
         font-size: 0.95rem;
         margin-bottom: 0.6rem;
     }
-    
+
     .product-actions {
         gap: 0.3rem;
     }
-    
+
     .btn-detail, .btn-whatsapp {
         padding: 0.5rem 0.3rem;
         font-size: 0.7rem;
         gap: 0.2rem;
     }
-    
+
     .btn-detail i, .btn-whatsapp i {
         font-size: 0.8rem;
     }
@@ -1159,24 +1271,24 @@ header {
         min-width: 270px;
         border-radius: 30px;
     }
-    
+
     .bubble-content {
         gap: 12px;
         min-height: 22px;
     }
-    
+
     .bubble-content i {
         font-size: 15px;
         width: 30px;
         height: 30px;
         padding: 6px;
     }
-    
+
     .bubble-text {
         font-size: 14px;
         line-height: 1.2;
     }
-    
+
     .bubble-price {
         font-size: 14px;
         padding: 5px 12px;
@@ -1194,24 +1306,24 @@ header {
         min-width: 250px;
         border-radius: 25px;
     }
-    
+
     .bubble-content {
         gap: 10px;
         min-height: 20px;
     }
-    
+
     .bubble-content i {
         font-size: 14px;
         width: 28px;
         height: 28px;
         padding: 5px;
     }
-    
+
     .bubble-text {
         font-size: 13px;
         line-height: 1.2;
     }
-    
+
     .bubble-price {
         font-size: 13px;
         padding: 4px 10px;
@@ -1229,24 +1341,24 @@ header {
         min-width: 230px;
         border-radius: 20px;
     }
-    
+
     .bubble-content {
         gap: 8px;
         min-height: 18px;
     }
-    
+
     .bubble-content i {
         font-size: 12px;
         width: 24px;
         height: 24px;
         padding: 4px;
     }
-    
+
     .bubble-text {
         font-size: 12px;
         line-height: 1.2;
     }
-    
+
     .bubble-price {
         font-size: 12px;
         padding: 3px 8px;
@@ -1255,4 +1367,4 @@ header {
     }
 }
 
-```
+
