@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"
-        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-        type="image/x-icon">
+    @if ($userStore && $userStore->store_logo)
+        <link rel="icon" href="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}">
+        <link rel="shortcut icon" href="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}">
+    @else
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    @endif
     <title>{{ $userStore->store_name ?? 'E-Katalog Fashion' }}</title>
 
     <meta name="description" content="Demo katalog fashion dengan koleksi lengkap pakaian dan aksesoris terkini">
@@ -19,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="images/og-image.jpg">
 
-    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fashion/style.css') }}">
@@ -36,7 +40,7 @@
                 <div class="brand-icon">
                     @if ($userStore && $userStore->store_logo)
                         <img class="brand-logo"
-                            src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                            src="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}"
                             alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
                     @else
                         <img class="brand-logo" src="{{ asset('assets/images/no-image-icon.png') }}"
@@ -1037,8 +1041,9 @@
                         $oldPrice = $product->old_price ? ('Rp ' . number_format($product->old_price, 0, ',', '.')) : null;
                         $showOldPrice = $product->old_price && $product->old_price > $product->price;
                         $isPromo = (bool) $product->is_promo;
+                        $brandName = optional($product->brand)->name;
                     @endphp
-                    <div class="product-card" data-product-id="{{ $product->id }}"
+                    <div class="product-card" data-product-id="{{ $product->id }}" data-brand="{{ $brandName }}"
                         onclick="showProductDetails({{ $product->id }})">
                         <div class="product-image" style="position: relative;">
                             @if ($isPromo)
@@ -1051,6 +1056,9 @@
                         <div class="product-info">
                             <div class="product-category">{{ $product->category->name ?? 'Uncategorized' }}</div>
                             <div class="product-name">{{ $product->name }}</div>
+                            @if(!empty($brandName))
+                                <div class="product-brand" style="font-size: 0.85rem; color: #6b7280; margin-top: 2px;">Brand: {{ $brandName }}</div>
+                            @endif
                             <div class="product-price">
                                 @if ($showOldPrice)
                                     <span class="product-old-price">{{ $oldPrice }}</span>
@@ -1087,7 +1095,7 @@
                     <div class="footer-brand-container">
                         @if ($userStore && $userStore->store_logo)
                             <img id="footerStoreLogo" class="footer-logo"
-                                src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                                src="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}"
                                 alt="{{ $userStore->store_name ?? 'Store Logo' }}" loading="lazy" decoding="async">
                         @else
                             <img id="footerStoreLogo" class="footer-logo"
@@ -1829,7 +1837,14 @@
                 const material = product.specification?.material || product.material || '';
                 const sizes = product.specification?.sizes || product.sizes || [];
                 const colors = product.specification?.colors || product.colors || [];
-                const brand = product.brand?.name || product.brand || '';
+                let brand = product.brand?.name || product.brand || '';
+                // Fallback: ambil brand dari atribut data pada kartu produk jika tidak tersedia dari API
+                if (!brand) {
+                    const cardEl = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+                    if (cardEl && cardEl.dataset && cardEl.dataset.brand) {
+                        brand = cardEl.dataset.brand;
+                    }
+                }
                 const sku = product.sku || '';
 
                 // Generate image gallery HTML

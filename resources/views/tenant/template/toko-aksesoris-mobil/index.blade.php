@@ -22,8 +22,17 @@
         <nav>
             <div class="logo">
                 <div class="logo-icon">
-                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                        alt="AutoParts Pro Logo">
+                    @if ($userStore && $userStore->store_logo)
+                        <img src="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}"
+                             alt="{{ $userStore->store_name }}"
+                             loading="lazy" decoding="async"
+                             style="width:50px;height:50px;object-fit:contain;background:transparent;">
+                    @else
+                        <div class="logo-placeholder"
+                             style="width:50px;height:50px;background:#eee;display:flex;align-items:center;justify-content:center;border-radius:5px;">
+                            <span style="font-size:10px;color:#aaa;">No Logo</span>
+                        </div>
+                    @endif
                 </div>
                 <div class="logo-text">
                     <span class="logo-main">{{ $userStore->store_name }}</span>
@@ -141,7 +150,8 @@
                         data-category="{{ strtolower($product->category->name ?? 'general') }}"
                         data-price="{{ $product->price }}" data-description="{{ $product->description }}"
                         data-image="{{ $src }}" data-old-price="{{ $product->old_price ?? '' }}"
-                        data-is-promo="{{ ($product->is_promo ?? false) || (($product->old_price ?? 0) > ($product->price ?? 0)) ? 1 : 0 }}">
+                        data-is-promo="{{ ($product->is_promo ?? false) || (($product->old_price ?? 0) > ($product->price ?? 0)) ? 1 : 0 }}"
+                        data-brand="{{ optional($product->brand)->name }}">
                         <div class="product-image">
                             <img src="{{ $src }}" alt="{{ $product->name }}" class="product-img">
                             @if(($product->is_promo ?? false) || (($product->old_price ?? 0) > ($product->price ?? 0)))
@@ -151,6 +161,9 @@
                         <div class="product-info">
                             <div class="product-category">{{ $product->category->name ?? 'General' }}</div>
                             <h4>{{ $product->name }}</h4>
+                            @if(optional($product->brand)->name)
+                                <div class="product-brand" style="font-size:0.85rem;color:#6b7280;margin-top:2px;">Brand: {{ optional($product->brand)->name }}</div>
+                            @endif
                             <div class="product-price-wrapper">
                                 @if(($product->old_price ?? 0) > ($product->price ?? 0))
                                     <div class="product-price-original">{{ $product->old_price_idr }}</div>
@@ -199,8 +212,17 @@
                 <div class="footer-section">
                     <div class="footer-logo">
                         <div class="footer-logo-icon">
-                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                                alt="{{ $userStore->store_name }}">
+                            @if ($userStore && $userStore->store_logo)
+                                <img src="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}"
+                                     alt="{{ $userStore->store_name }}"
+                                     loading="lazy" decoding="async"
+                                     style="width:60px;height:60px;object-fit:contain;background:transparent;border-radius:6px;">
+                            @else
+                                <div class="logo-placeholder"
+                                     style="width:60px;height:60px;background:#eee;display:flex;align-items:center;justify-content:center;border-radius:6px;">
+                                    <span style="font-size:10px;color:#aaa;">No Logo</span>
+                                </div>
+                            @endif
                         </div>
                         <div class="footer-logo-text">
                             <span class="footer-logo-main">{{ $userStore->store_name }}</span>
@@ -404,6 +426,7 @@
                     description: productCard.getAttribute('data-description'),
                     category: productCard.getAttribute('data-category'),
                     image: productCard.getAttribute('data-image'),
+                    brand: productCard.getAttribute('data-brand') || '',
                     oldPrice: parseInt(productCard.getAttribute('data-old-price')) || null,
                     isPromo: productCard.getAttribute('data-is-promo') === '1'
                 };
@@ -431,6 +454,7 @@
                         </div>
                         <div class="product-basic-info">
                             <div class="product-detail-category" style="background-color: ${categoryColor};"><i class="fas fa-tag"></i> ${data.category}</div>
+                            ${data.brand ? `<div class="product-detail-brand" style="font-size:.9rem;color:#666;margin-top:6px;"><i class="fas fa-industry"></i> Brand: ${data.brand}</div>` : ''}
                             <h3 class="product-detail-title">${data.name}</h3>
                             <div class="product-detail-price">
                                 ${formattedOldPrice ? `<span class=\"product-price-original\" style=\"margin-right:8px;\">${formattedOldPrice}</span>` : ''}
