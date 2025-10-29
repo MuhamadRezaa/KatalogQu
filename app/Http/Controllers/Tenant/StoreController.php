@@ -42,11 +42,7 @@ class StoreController extends Controller
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-<<<<<<< HEAD
-            ->with(['category', 'subCategory', 'brand', 'images']); // Include brand for modal details
-=======
             ->with(['category', 'subCategory', 'images']); // Add 'subCategory' here
->>>>>>> bfda3b24f9a005bedbefa22ee33a028240500898
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -170,6 +166,7 @@ class StoreController extends Controller
         }
 
         // dd($subCategories);
+
         return view($templateView, compact(
             'userStore',
             'products',
@@ -193,7 +190,7 @@ class StoreController extends Controller
         $product = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('id', $productId)
-            ->with(['category', 'subCategory', 'brand', 'images'])
+            ->with(['category', 'subCategory', 'images'])
             ->firstOrFail();
 
         return response()->json(['success' => true, 'product' => $product]);
@@ -215,7 +212,7 @@ class StoreController extends Controller
                 $query->where('slug', $productSlug)
                     ->orWhere('id', $productSlug);
             })
-            ->with(['category', 'subCategory', 'brand', 'images']) // Include brand for product page
+            ->with(['category', 'subCategory', 'images']) // Add subCategory
             ->firstOrFail();
 
         // Get related products (same category, maybe same sub-category is better)
@@ -293,7 +290,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('product_category_id', $category->id)
-            ->with(['category', 'brand', 'images']);
+            ->with(['category', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -433,7 +430,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('sub_category_id', $subCategory->id)
-            ->with(['category', 'brand', 'images']);
+            ->with(['category', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -566,7 +563,7 @@ class StoreController extends Controller
                         ->orWhere('description', 'like', "%{$searchTerm}%")
                         ->orWhere('sku', 'like', "%{$searchTerm}%");
                 })
-                ->with(['category', 'brand', 'images'])
+                ->with(['category', 'images'])
                 ->paginate(12);
         }
 
@@ -657,15 +654,45 @@ class StoreController extends Controller
     }
 
     /**
+     * Show maintenance page
+     */
+    private function showMaintenancePage($userStore)
+    {
+        // Get the catalog template slug
+        $catalogTemplate = $userStore->catalogTemplate;
+
+        // Try to load template-specific maintenance page
+        if ($catalogTemplate) {
+            $maintenanceView = 'tenant.template.' . $catalogTemplate->slug . '.maintenance';
+
+            // Check if template maintenance view exists, fallback to default if not
+            if (view()->exists($maintenanceView)) {
+                return view($maintenanceView, compact('userStore'));
+            }
+        }
+
+        // Fallback to default maintenance template
+        $defaultMaintenanceView = 'tenant.template.default.maintenance';
+        if (view()->exists($defaultMaintenanceView)) {
+            return view($defaultMaintenanceView, compact('userStore'));
+        }
+
+        // Final fallback to original maintenance page
+        return view('tenant.store.maintenance', compact('userStore'));
+    }
+
+    /**
      * API endpoint to get products (for AJAX)
      */
     public function getProducts(Request $request)
     {
         $userStore = $this->getCurrentStore();
 
+
+
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with(['category', 'subCategory', 'brand', 'images']);
+            ->with(['category', 'subCategory', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -791,7 +818,7 @@ class StoreController extends Controller
         $catalogTemplate = $userStore->catalogTemplate;
 
         if (!$catalogTemplate || $catalogTemplate->slug !== $slug) {
-            abort(404, 'Template tidak ditemukan');
+            abort(404, 'Template not found');
         }
 
         // Load template-specific view based on catalog template slug
@@ -811,7 +838,7 @@ class StoreController extends Controller
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with(['category', 'brand', 'images'])
+            ->with(['category', 'images'])
             ->take(8)
             ->get();
 
@@ -819,14 +846,14 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with(['category', 'brand', 'images'])
+            ->with(['category', 'images'])
             ->take(8)
             ->get();
 
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with(['category', 'brand', 'images']);
+            ->with(['category', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {
