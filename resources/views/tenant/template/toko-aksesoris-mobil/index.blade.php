@@ -140,14 +140,26 @@
                     <div class="product-card" data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                         data-category="{{ strtolower($product->category->name ?? 'general') }}"
                         data-price="{{ $product->price }}" data-description="{{ $product->description }}"
-                        data-image="{{ $src }}">
+                        data-image="{{ $src }}" data-old-price="{{ $product->old_price ?? '' }}"
+                        data-is-promo="{{ ($product->is_promo ?? false) || (($product->old_price ?? 0) > ($product->price ?? 0)) ? 1 : 0 }}">
                         <div class="product-image">
                             <img src="{{ $src }}" alt="{{ $product->name }}" class="product-img">
+                            @if(($product->is_promo ?? false) || (($product->old_price ?? 0) > ($product->price ?? 0)))
+                                <div class="promo-flag"><span class="promo-text">PROMO</span></div>
+                            @endif
                         </div>
                         <div class="product-info">
                             <div class="product-category">{{ $product->category->name ?? 'General' }}</div>
                             <h4>{{ $product->name }}</h4>
-                            <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                            <div class="product-price-wrapper">
+                                @if(($product->old_price ?? 0) > ($product->price ?? 0))
+                                    <div class="product-price-original">{{ $product->old_price_idr }}</div>
+                                    <div class="product-price">{{ $product->price_idr }}</div>
+                                    <div class="product-savings"><i class="fas fa-tag"></i> Hemat {{ 'Rp ' . number_format((int)(($product->old_price ?? 0) - ($product->price ?? 0)), 0, ',', '.') }}</div>
+                                @else
+                                    <div class="product-price">{{ $product->price_idr }}</div>
+                                @endif
+                            </div>
                             <p>{{ Str::limit($product->description, 150) }}</p>
                             <div class="product-buttons">
                                 <button class="btn btn-detail" onclick="showProductDetail({{ $product->id }})">
@@ -391,10 +403,15 @@
                     price: parseInt(productCard.getAttribute('data-price')),
                     description: productCard.getAttribute('data-description'),
                     category: productCard.getAttribute('data-category'),
-                    image: productCard.getAttribute('data-image')
+                    image: productCard.getAttribute('data-image'),
+                    oldPrice: parseInt(productCard.getAttribute('data-old-price')) || null,
+                    isPromo: productCard.getAttribute('data-is-promo') === '1'
                 };
 
                 const formattedPrice = `Rp ${new Intl.NumberFormat('id-ID').format(data.price)}`;
+                const formattedOldPrice = data.oldPrice && data.oldPrice > data.price ? `Rp ${new Intl.NumberFormat('id-ID').format(data.oldPrice)}` : null;
+                const savings = (data.oldPrice && data.oldPrice > data.price) ? (data.oldPrice - data.price) : 0;
+                const formattedSavings = savings > 0 ? `Rp ${new Intl.NumberFormat('id-ID').format(savings)}` : null;
                 const categoryColors = {
                     'interior': '#8e44ad',
                     'exterior': '#e74c3c',
@@ -408,13 +425,18 @@
 
                 let detailHTML = `
                     <div class="product-detail-container">
-                        <div class="product-detail-image">
+                        <div class="product-detail-image" style="position:relative;">
                             ${data.image ? `<img src="${data.image}" alt="${data.name}" class="detail-product-img">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
+                            ${data.isPromo ? `<div class=\"promo-flag\" style=\"position:absolute;top:12px;left:12px;right:auto;\"><span class=\"promo-text\">PROMO</span></div>` : ''}
                         </div>
                         <div class="product-basic-info">
                             <div class="product-detail-category" style="background-color: ${categoryColor};"><i class="fas fa-tag"></i> ${data.category}</div>
                             <h3 class="product-detail-title">${data.name}</h3>
-                            <div class="product-detail-price">${formattedPrice}</div>
+                            <div class="product-detail-price">
+                                ${formattedOldPrice ? `<span class=\"product-price-original\" style=\"margin-right:8px;\">${formattedOldPrice}</span>` : ''}
+                                <span class=\"product-price\">${formattedPrice}</span>
+                                ${formattedSavings ? `<span class=\"product-savings\" style=\"margin-left:10px;\"><i class=\"fas fa-tag\"></i> Hemat ${formattedSavings}</span>` : ''}
+                            </div>
                         </div>
                         <div class="product-detail-info">
                             <div class="product-detail-description"><h4>Deskripsi Produk</h4><p>${data.description}</p></div>
@@ -424,6 +446,39 @@
                                     <div class="feature-item"><i class="fas fa-tools"></i><span>Mudah Dipasang</span></div>
                                     <div class="feature-item"><i class="fas fa-clock"></i><span>Tahan Lama</span></div>
                                     <div class="feature-item"><i class="fas fa-award"></i><span>Bergaransi</span></div>
+                                </div>
+                            </div>
+                            <div class="similar-products" style="margin-top:24px;">
+                                <h4><i class="fas fa-star"></i> Produk Serupa</h4>
+                                <div class="similar-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+                                    ${(() => {
+                                        const similar = Array.from(allProducts)
+                                            .filter(c => c.getAttribute('data-category') === data.category && c.getAttribute('data-id') !== String(productId))
+                                            .slice(0, 4);
+                                        return similar.map(c => {
+                                            const sid = c.getAttribute('data-id');
+                                            const sname = c.getAttribute('data-name');
+                                            const sprice = parseInt(c.getAttribute('data-price')) || 0;
+                                            const sold = parseInt(c.getAttribute('data-old-price')) || null;
+                                            const simg = c.getAttribute('data-image');
+                                            const sPriceStr = `Rp ${new Intl.NumberFormat('id-ID').format(sprice)}`;
+                                            const sOldStr = sold && sold > sprice ? `Rp ${new Intl.NumberFormat('id-ID').format(sold)}` : null;
+                                            return `
+                                                <div class=\"similar-item\" onclick=\"showProductDetail(${sid})\" style=\"cursor:pointer;border:1px solid #eee;border-radius:12px;padding:10px;background:#fff;\">
+                                                    <div class=\"similar-image\" style=\"width:100%;height:120px;overflow:hidden;border-radius:8px;background:#f6f6f6;display:flex;align-items:center;justify-content:center;\">
+                                                        ${simg ? `<img src='${simg}' alt='${sname}' style='width:100%;height:100%;object-fit:cover;'>` : `<i class='fas fa-image' style='color:#999;'></i>`}
+                                                    </div>
+                                                    <div class=\"similar-info\" style=\"margin-top:8px;\">
+                                                        <div class=\"similar-name\" style=\"font-weight:600;font-size:.95rem;\">${sname}</div>
+                                                        <div class=\"similar-price\" style=\"font-size:.9rem;\">
+                                                            ${sOldStr ? `<span class='product-price-original' style='margin-right:6px;'>${sOldStr}</span>` : ''}
+                                                            <span class='product-price'>${sPriceStr}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('');
+                                    })()}
                                 </div>
                             </div>
                             <div class="product-detail-action">
