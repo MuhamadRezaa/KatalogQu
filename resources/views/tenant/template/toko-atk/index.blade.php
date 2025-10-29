@@ -11,6 +11,86 @@
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-atk/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <style>
+        .related-products {
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .related-products h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .related-products h4 i {
+            color: #2b6cb0;
+            margin-right: 0.5rem;
+        }
+
+        .related-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .related-product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #2b6cb0;
+        }
+
+        .related-product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-product-card h5 {
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            color: #333;
+            line-height: 1.3;
+            max-height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .related-product-card p {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .related-products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
 
 </head>
 
@@ -87,6 +167,38 @@
             </div>
             <div class="filter-container">
                 <div class="filter-group">
+                    <label for="subcategory-filter">Filter Sub Kategori:</label>
+                    <select id="subcategory-filter">
+                        <option value="all">Semua Sub Kategori</option>
+                        @php
+                            if (isset($subCategories)) {
+                                echo '<!-- Debug: ' . count($subCategories) . " subcategories found -->\n";
+                            } else {
+                                echo "<!-- Debug: subCategories variable is not set -->\n";
+                            }
+                        @endphp
+                        @if (isset($subCategories) && $subCategories->isNotEmpty())
+                            @foreach ($subCategories as $subcategory)
+                                <option value="{{ $subcategory->slug }}">{{ $subcategory->name }}</option>
+                            @endforeach
+                        @else
+                            @php
+                                if (isset($subCategories)) {
+                                    echo '<!-- Debug: subCategories is set but empty -->';
+                                } else {
+                                    echo '<!-- Debug: subCategories is not set -->';
+                                }
+                                if (isset($subcategories)) {
+                                    echo '<!-- Debug: lowercase subcategories is set with ' .
+                                        count($subcategories) .
+                                        ' items -->';
+                                }
+                            @endphp
+                            <option value="all">Semua Sub Kategori</option>
+                        @endif
+                    </select>
+                </div>
+                <div class="filter-group">
                     <label for="sort-filter">Urutkan Berdasarkan:</label>
                     <select id="sort-filter">
                         <option value="default">Default</option>
@@ -117,8 +229,10 @@
             @forelse ($products as $product)
                 @php $src = $product->primary_image_src; @endphp
                 <div class="product-card" data-product-id="{{ $product->id }}"
-                    data-category="{{ $product->category->slug ?? 'lainnya' }}" data-name="{{ $product->name }}"
-                    data-price="{{ $product->price }}" data-image="{{ $src }}">
+                    data-category="{{ $product->category->slug ?? 'lainnya' }}"
+                    data-subcategory="{{ optional($product->subCategory)->slug ?? 'none' }}"
+                    data-name="{{ $product->name }}" data-price="{{ $product->price }}"
+                    data-image="{{ $src }}">
                     <div class="product-image">
                         <img src="{{ $src }}" alt="{{ $product->name }}">
                     </div>
@@ -224,6 +338,7 @@
                 }
 
                 $cat = $product->category;
+                $subcat = $product->sub_category;
 
                 return [
                     'id' => $product->id,
@@ -237,6 +352,9 @@
                     'discount_percentage' => $product->discount_percentage,
                     'specs' => $specs, // ← penting
                     'category' => $cat ? ['id' => $cat->id, 'name' => $cat->name, 'slug' => $cat->slug] : null,
+                    'subcategory' => $subcat
+                        ? ['id' => $subcat->id, 'name' => $subcat->name, 'slug' => $subcat->slug]
+                        : null,
                     'productimgs' => $imgs,
                 ];
             })
@@ -252,8 +370,35 @@
             const productsGrid = document.getElementById('products-grid');
             const ALL_CARDS = Array.from(productsGrid.querySelectorAll('.product-card'));
             // --- FUNGSI INTERAKSI ---
-            function renderSpecs(specs) {
+            function renderRelatedProducts(product) {
+                if (!product || !product.category) return '';
 
+                // Find products in the same category, excluding the current product
+                const related = (window.productsData || [])
+                    .filter(p =>
+                        p.id !== product.id &&
+                        p.category &&
+                        p.category.id === product.category.id
+                    )
+                    .slice(0, 3); // Get up to 3 related products
+
+                if (related.length === 0) return '';
+
+                return related.map(p => {
+                    const image = (p.productimgs && p.productimgs.length) ? p.productimgs[0].image_url : '';
+                    const harga = (p.price != null) ? Number(p.price).toLocaleString('id-ID') : '0';
+
+                    return `
+                        <div class="related-product-card" onclick="showDetail(this)" data-product-id="${p.id}">
+                            <img src="${image}" alt="${p.name}">
+                            <h5>${p.name}</h5>
+                            <p>Rp ${harga}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderSpecs(specs) {
                 let entries = [];
 
                 if (Array.isArray(specs)) {
@@ -305,18 +450,25 @@
                 <div class="modal-product">
                     <img src="${image}" alt="${p.name}" class="modal-image">
                     <div class="modal-info">
-                    <h2><i class="fas fa-box"></i> ${p.name}</h2>
-                    <p class="modal-price"><i class="fas fa-tag"></i> Rp ${harga}</p>
-                    <p class="modal-description">${p.description || ''}</p>
-                    <h4><i class="fas fa-list"></i> Spesifikasi:</h4>
-                    <ul class="modal-specs">
-                        ${renderSpecs(p.specs)}
-                    </ul>
-                    <div class="modal-actions">
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('${p.name}', '${harga}')">
-                        <i class="fab fa-whatsapp"></i> Chat via WhatsApp
-                        </button>
-                    </div>
+                        <h2><i class="fas fa-box"></i> ${p.name}</h2>
+                        <p class="modal-price"><i class="fas fa-tag"></i> Rp ${harga}</p>
+                        <p class="modal-description">${p.description || ''}</p>
+                        <h4><i class="fas fa-list"></i> Spesifikasi:</h4>
+                        <ul class="modal-specs">
+                            ${renderSpecs(p.specs)}
+                        </ul>
+                        <div class="modal-actions">
+                            <button class="btn-whatsapp" onclick="chatWhatsApp('${p.name}', '${harga}')">
+                            <i class="fab fa-whatsapp"></i> Chat via WhatsApp
+                            </button>
+                        </div>
+
+                        <div class="related-products" id="related-products">
+                            <h4><i class="fas fa-project-diagram"></i> Produk Terkait</h4>
+                            <div class="related-products-grid" id="related-products-grid">
+                                ${renderRelatedProducts(p)}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 `;
@@ -342,6 +494,7 @@
                 const categoryBtnActive = document.querySelector('.category-btn.active');
                 const category = categoryBtnActive ? categoryBtnActive.dataset.category : 'all';
 
+                const subcategory = document.getElementById('subcategory-filter').value;
                 const searchTerm = document.getElementById('search-input').value.toLowerCase();
                 const priceFilterSelect = document.getElementById('price-filter');
                 const selectedOption = (priceFilterSelect && priceFilterSelect.selectedOptions[0]) ?
@@ -356,10 +509,20 @@
                 // 1) Filter
                 let visibleCards = productCards.filter(card => {
                     const cardCategory = card.dataset.category || 'lainnya';
+                    const cardSubcategory = card.dataset.subcategory || 'none';
                     const cardName = (card.dataset.name || '').toLowerCase();
                     const cardPrice = parseInt(card.dataset.price || '0', 10);
 
+                    // Debug log for subcategory filtering
+                    console.log('Card:', {
+                        name: cardName,
+                        category: cardCategory,
+                        subcategory: cardSubcategory,
+                        selectedSubcategory: subcategory
+                    });
+
                     const categoryMatch = category === 'all' || cardCategory === category;
+                    const subcategoryMatch = subcategory === 'all' || cardSubcategory === subcategory;
                     const searchMatch = cardName.includes(searchTerm);
 
                     let priceMatch = true;
@@ -372,7 +535,7 @@
                             max);
                     }
 
-                    return categoryMatch && searchMatch && priceMatch;
+                    return categoryMatch && subcategoryMatch && searchMatch && priceMatch;
                 });
 
                 // 2) Sort
@@ -422,6 +585,7 @@
             document.getElementById('search-input').addEventListener('keyup', applyFilters);
             document.getElementById('sort-filter').addEventListener('change', applyFilters);
             document.getElementById('price-filter').addEventListener('change', applyFilters);
+            document.getElementById('subcategory-filter').addEventListener('change', applyFilters);
 
             // Initialize filters on page load
             applyFilters();

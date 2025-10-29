@@ -42,7 +42,11 @@ class StoreController extends Controller
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
+<<<<<<< HEAD
             ->with(['category', 'subCategory', 'brand', 'images']); // Include brand for modal details
+=======
+            ->with(['category', 'subCategory', 'images']); // Add 'subCategory' here
+>>>>>>> bfda3b24f9a005bedbefa22ee33a028240500898
 
         // Apply filters
         if ($request->has('category') && $request->category) {
