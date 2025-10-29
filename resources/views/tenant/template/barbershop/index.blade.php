@@ -146,12 +146,179 @@
         .service-price+.service-old-price {
             margin-top: -5px;
         }
+
+        /* PERBAIKAN GRID PRODUK V2 (FLEXBOX) */
+        .services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            /* Pusatkan item untuk baris yang tidak penuh */
+        }
+
+        .services-grid .service-card {
+            flex: 1 1 280px;
+            /* Izinkan item untuk tumbuh dan menyusut dari basis 280px */
+            max-width: 420px;
+            /* Cegah kartu menjadi terlalu lebar */
+            width: 100%;
+            /* Pastikan kartu mengisi ruang yang tersedia */
+        }
+    </style>
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar.scrolled {
+            background-color: #121212;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            padding: 0.5rem 2rem;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            object-fit: cover; /* Use cover to fill the space */
+            border-radius: 50%; /* Make it circular */
+            background-color: #333; /* Fallback background */
+            border: 2px solid #f39c12;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #f39c12;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #f39c12;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .navbar-toggler {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 992px) {
+            .navbar {
+                padding: 1rem;
+            }
+            .navbar.scrolled {
+                padding: 0.75rem 1rem;
+            }
+            .navbar-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #1c1c1c;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out, padding 0.3s ease-in-out;
+                padding: 0;
+            }
+
+            .navbar-nav.active {
+                max-height: 500px;
+                padding: 1rem 0;
+                border-top: 1px solid #333;
+            }
+
+            .nav-link {
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-link:hover::after,
+            .nav-link.active::after {
+                width: 0;
+            }
+
+            .navbar-toggler {
+                display: block;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <header class="navbar">
+        <a href="#home" class="navbar-brand">
+            <img src="{{ $userStore->store_logo ? route('tenant.asset.domain', ['path' => $userStore->store_logo]) : asset('assets/demo/barbershop/img/klasik.png') }}"
+                alt="{{ $userStore->store_name ?? 'Logo' }}">
+            <span>{{ $userStore->store_name ?? 'Barbershop' }}</span>
+        </a>
+        <nav class="navbar-nav">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#services-and-styles" class="nav-link">Layanan</a>
+            <a href="#contact" class="nav-link">Kontak</a>
+        </nav>
+        <button class="navbar-toggler" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
     {{-- Bagian Hero (Slider Banner) --}}
-    <section id="home" class="hero">
+    <section id="home" class="hero" style="padding-top: 80px;">
         <div class="hero-overlay"></div>
         <div class="hero-background-slider">
             @forelse ($banners as $banner)
@@ -217,7 +384,7 @@
     <section id="services-and-styles" class="services">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Layanan & Gaya Rambut</h2>
+                <h2 class="section-title">Kategori</h2>
                 <p class="section-subtitle">
                     Pilih layanan atau temukan inspirasi gaya rambut yang paling cocok untuk Anda.
                 </p>
@@ -253,13 +420,9 @@
                 /* Gaya untuk wadah kartu utama */
                 .category-cards-container {
                     display: flex;
-                    /* Kunci untuk membuat kartu-kartu berjejer horizontal */
                     flex-wrap: wrap;
-                    /* Agar kartu turun ke baris baru pada layar kecil */
                     gap: 1.5rem;
-                    /* Jarak antara setiap kartu */
                     justify-content: center;
-                    /* Memusatkan kartu-kartu di tengah */
                     padding: 1.5rem 0;
                 }
 
@@ -267,9 +430,7 @@
                 .card-category {
                     display: flex;
                     flex-direction: column;
-                    /* Mengatur konten di dalam kartu secara vertikal */
                     align-items: center;
-                    /* Memusatkan konten secara horizontal */
                     text-align: center;
                     cursor: pointer;
                     border: 2px solid transparent;
@@ -279,15 +440,12 @@
                     color: #ecf0f1;
                     transition: all 0.3s ease;
                     width: 150px;
-                    /* Lebar tetap untuk setiap kartu */
                     min-height: 180px;
-                    /* Tinggi minimum agar semua kartu seragam */
                     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
                 }
 
                 .card-category:hover {
                     transform: translateY(-5px);
-                    /* Efek mengangkat saat di-hover */
                     background-color: #34495e;
                     border-color: #f39c12;
                 }
@@ -309,8 +467,8 @@
                     width: 100%;
                     max-width: 120px;
                     height: 100px;
-                    /* Tinggi gambar tetap */
-                    object-fit: cover;
+                    object-fit: contain;
+                    /* Corrected value */
                     border-radius: 10px;
                     margin-bottom: 0.5rem;
                 }
@@ -333,13 +491,42 @@
                 /* Gaya untuk gambar yang menggantikan ikon */
                 .card-image-icon {
                     width: 60px;
-                    /* Atur lebar gambar sesuai ukuran ikon yang Anda inginkan */
                     height: 60px;
-                    /* Atur tinggi gambar agar sama dengan lebarnya */
                     object-fit: contain;
-                    /* Memastikan gambar pas tanpa terpotong */
                     margin-bottom: 0.5rem;
-                    /* Memberi jarak di bawah gambar, sesuai dengan jarak yang ada */
+                }
+            </style>
+
+            {{-- Container for Sub-Category Filters (will be populated by JS) --}}
+            <div id="sub-category-filters" class="sub-category-container" style="display: none;"></div>
+
+            <style>
+                .sub-category-container {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    gap: 0.75rem;
+                    margin-top: 1.5rem;
+                    padding: 1rem 0;
+                    transition: all 0.5s ease-in-out;
+                }
+
+                .sub-category-btn {
+                    background-color: #3e3d3b;
+                    color: #e0e0e0;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid #575757;
+                    border-radius: 20px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .sub-category-btn.active,
+                .sub-category-btn:hover {
+                    background-color: #f39c12;
+                    color: #121212;
+                    border-color: #f39c12;
                 }
             </style>
 
@@ -348,17 +535,6 @@
                 <input type="text" id="search-input" placeholder="Cari nama layanan..."
                     class="search-input service-btn" />
 
-
-
-                <select id="price-filter" class="filter-dropdown service-btn">
-                    <option value="all">Semua Harga</option>
-                    @isset($priceRanges)
-                        @foreach ($priceRanges as $range)
-                            <option value="{{ $range->min ?? '0' }}-{{ $range->max ?? '99999999' }}">{{ $range->name }}
-                            </option>
-                        @endforeach
-                    @endisset
-                </select>
 
                 <select id="sort-filter" class="filter-dropdown service-btn">
                     <option value="default">Urutkan</option>
@@ -529,295 +705,15 @@
         /* ... kode CSS yang sudah ada ... */
     </style>
 
-    {{-- Our Service (Dynamic from Database) --}}
-    <section class="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Service</h2>
-                <p class="section-subtitle">
-                    Dapatkan pelayanan terbaik dengan standar internasional
-                    dan teknik modern
-                </p>
-            </div>
-
-            <div class="services-grid">
-                @forelse ($featuredProducts ?? $products->take(4) as $product)
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ $product->primary_image_src ?? asset('assets/demo/barbershop/img/klasik.png') }}"
-                                alt="{{ $product->name }}" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>{{ $product->estimasi_waktu ?? '45 min' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">{{ $product->name }}</h3>
-                            <div class="service-price">{{ $product->price_idr }}</div>
-                            @if ($product->old_price && $product->old_price > $product->price)
-                                <div class="service-old-price">{{ $product->old_price_idr }}</div>
-                            @endif
-                            <button class="service-btn" onclick="showDynamicModal({{ $product->id }})">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                @empty
-                    {{-- Fallback to static content if no products available --}}
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/klasik.png') }}" alt="Classic Cut" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>45 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Classic Cut</h3>
-                            <div class="service-price">Rp 75,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Classic Cut', 'Classic Cut adalah potongan rambut klasik yang cocok untuk semua usia.', '{{ asset('assets/demo/barbershop/img/klasik.png') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/moderncut.jpg') }}" alt="Modern Fade" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>50 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Modern Fade</h3>
-                            <div class="service-price">Rp 85,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Modern Fade', 'Potongan rambut stylish dengan gradasi rapi dari tipis ke tebal, memberi tampilan modern dan segar.', '{{ asset('assets/demo/barbershop/img/moderncut.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/beardtrim.jpg') }}" alt="Beard Trim" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>30 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Beard Trim</h3>
-                            <div class="service-price">Rp 45,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Beard Trim', 'Perapian jenggot agar tampak rapi, bersih, dan sesuai bentuk wajah untuk tampilan yang maskulin.', '{{ asset('assets/demo/barbershop/img/beardtrim.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="{{ asset('assets/demo/barbershop/img/premiun.jpg') }}" alt="Premium Package" />
-                            <div class="service-overlay">
-                                <div class="service-duration">
-                                    <i class="fas fa-clock"></i>
-                                    <span>90 min</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-name">Premium Package</h3>
-                            <div class="service-price">Rp 150,000</div>
-                            <button class="service-btn"
-                                onclick="showStaticModal('Premium Package', 'Paket perawatan lengkap mulai dari potong rambut, perapian jenggot, hingga styling premium untuk tampilan maksimal.', '{{ asset('assets/demo/barbershop/img/premiun.jpg') }}')">
-                                Detail Layanan
-                            </button>
-                        </div>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
-        <style>
-            /* --- General Section Styles --- */
-            .services {
-                padding: 60px 0;
-                background-color: #121212;
-                /* Warna background gelap yang solid */
-                color: #e0e0e0;
-            }
-
-            /* --- Section Header Styles --- */
-            .section-header {
-                text-align: center;
-                margin-bottom: 3rem;
-                position: relative;
-            }
-
-            .section-header::after {
-                content: '';
-                display: block;
-                width: 60px;
-                height: 3px;
-                background-color: #f39c12;
-                /* Garis pemisah oranye di bawah judul */
-                margin: 1rem auto 0;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: #ffffff;
-                margin-bottom: 0.5rem;
-            }
-
-            .section-subtitle {
-                font-size: 1rem;
-                color: #b0b0b0;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-
-            /* --- Services Grid & Card Styles --- */
-            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                /* Menggunakan grid responsif */
-                gap: 2rem;
-                justify-content: center;
-                align-items: stretch;
-            }
-
-            .service-card {
-                background-color: #1c1c1c;
-                /* Warna kartu lebih terang dari background section */
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .service-card:hover {
-                transform: translateY(-10px);
-                /* Efek mengangkat saat di-hover */
-                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-            }
-
-            .service-image {
-                position: relative;
-                height: 200px;
-                /* Tinggi gambar tetap */
-                overflow: hidden;
-            }
-
-            .service-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.5s ease;
-            }
-
-            .service-card:hover .service-image img {
-                transform: scale(1.1);
-                /* Efek zoom saat di-hover */
-            }
-
-            .service-overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-                /* Gradien transparan di bagian bawah gambar */
-                padding: 1rem;
-                display: flex;
-                justify-content: flex-end;
-                /* Memindahkan durasi ke pojok kanan bawah */
-            }
-
-            .service-duration {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                background-color: rgba(0, 0, 0, 0.5);
-                padding: 0.3rem 0.8rem;
-                border-radius: 20px;
-                color: #ffffff;
-                font-size: 0.875rem;
-            }
-
-            .service-content {
-                padding: 1.5rem;
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                flex-grow: 1;
-                /* Konten mengisi sisa ruang */
-            }
-
-            .service-name {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #f39c12;
-                /* Warna judul layanan oranye */
-                margin-bottom: 0.5rem;
-            }
-
-            .service-price {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: #e0e0e0;
-                margin-top: 0.5rem;
-            }
-
-            .service-old-price {
-                font-size: 1rem;
-                color: #888888;
-                text-decoration: line-through;
-                margin-top: -0.25rem;
-            }
-
-            .service-btn {
-                background-color: #f39c12;
-                color: #121212;
-                padding: 0.75rem 1.5rem;
-                border: none;
-                border-radius: 50px;
-                font-weight: 600;
-                text-transform: uppercase;
-                cursor: pointer;
-                margin-top: 1rem;
-                transition: background-color 0.3s ease, transform 0.2s ease;
-            }
-
-            .service-btn:hover {
-                background-color: #e67e22;
-                transform: translateY(-2px);
-            }
-        </style>
-    </section>
-
-
-
     {{-- Footer --}}
-    <footer class="footer">
+    <footer id="contact" class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
+                <div class="footer-brand" style="display: flex; align-items: center;">
                     <div class="hero-icon">
-                        <i class="fas fa-cut"></i>
+                        <img src="{{ $userStore->store_logo ? route('tenant.asset.domain', ['path' => $userStore->store_logo]) : asset('assets/demo/barbershop/img/klasik.png') }}"
+                             alt="{{ $userStore->store_name ?? 'Logo' }}"
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; background-color: #333; border: 2px solid #f39c12; margin-right: 15px;">
                     </div>
                     <h1>{{ $userStore->store_name ?? 'Classic Cuts Barbershop' }}</h1>
                 </div>
@@ -917,6 +813,7 @@
                     }
 
                     $category = $product->category ?? null;
+                    $subCategory = $product->subCategory ?? null;
                     $specs = $product->specification ?? ($product->specs ?? []);
                     if (is_string($specs)) {
                         $specs = json_decode($specs, true) ?? [];
@@ -931,6 +828,8 @@
                         'description' => $product->description ?? 'Layanan berkualitas tinggi untuk penampilan terbaik Anda.',
                         'category_slug' => $category->slug ?? ($category->id ?? 'uncategorized'),
                         'category_name' => $category->name ?? 'Uncategorized',
+                        'sub_category_slug' => $subCategory->slug ?? null,
+                        'sub_category_name' => $subCategory->name ?? null,
                         'images' => $allImages,
                         'specs' => (object) $specs,
                     ];
@@ -967,6 +866,53 @@
 
             // Elemen Filter Kategori (menggunakan card)
             const categoryCards = document.querySelectorAll('.card-category');
+            const subCategoryContainer = document.getElementById('sub-category-filters');
+
+            function updateSubCategoryFilters(selectedCategorySlug) {
+                if (!subCategoryContainer) return;
+                subCategoryContainer.innerHTML = '';
+                subCategoryContainer.style.display = 'none';
+
+                if (selectedCategorySlug === 'all') {
+                    return;
+                }
+
+                const productsInCat = window.productsData.filter(p => p.category_slug === selectedCategorySlug);
+                const subCategories = {};
+                productsInCat.forEach(p => {
+                    if (p.sub_category_slug && p.sub_category_name) {
+                        subCategories[p.sub_category_slug] = p.sub_category_name;
+                    }
+                });
+
+                const subCategoryEntries = Object.entries(subCategories);
+
+                if (subCategoryEntries.length > 0) {
+                    const allBtn = document.createElement('button');
+                    allBtn.className = 'sub-category-btn active';
+                    allBtn.dataset.filter = 'all';
+                    allBtn.textContent = 'Semua';
+                    subCategoryContainer.appendChild(allBtn);
+
+                    subCategoryEntries.forEach(([slug, name]) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'sub-category-btn';
+                        btn.dataset.filter = slug;
+                        btn.textContent = name;
+                        subCategoryContainer.appendChild(btn);
+                    });
+                    subCategoryContainer.style.display = 'flex';
+                } else {
+                    // Display a helpful message if no sub-categories are found
+                    const activeCategoryCard = document.querySelector(
+                        `.card-category[data-filter="${selectedCategorySlug}"]`);
+                    const categoryName = activeCategoryCard ? activeCategoryCard.querySelector('.card-title')
+                        .textContent : selectedCategorySlug;
+                    subCategoryContainer.innerHTML =
+                        `<p style="color: #ffc107; text-align: center; width: 100%;">Tidak ada sub-kategori untuk "${categoryName}". <br>Mohon tambahkan produk ke dalam sub-kategori terlebih dahulu.</p>`;
+                    subCategoryContainer.style.display = 'flex';
+                }
+            }
 
             function formatRupiah(angka) {
                 if (angka === null || typeof angka === 'undefined' || isNaN(Number(angka))) return 'Hubungi Kami';
@@ -1025,11 +971,11 @@
             // Fungsi utama untuk filter dan sorting
             function applyFiltersAndSort() {
                 const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-
-                // Mengambil filter dari kartu kategori yang aktif
                 const activeCategoryCard = document.querySelector('.card-category.active');
                 const selectedCategory = activeCategoryCard ? activeCategoryCard.dataset.filter : 'all';
-
+                const activeSubCategoryBtn = subCategoryContainer ? subCategoryContainer.querySelector(
+                    '.sub-category-btn.active') : null;
+                const selectedSubCategory = activeSubCategoryBtn ? activeSubCategoryBtn.dataset.filter : 'all';
                 const priceRange = priceFilter ? priceFilter.value.split('-') : ['all'];
                 const minPrice = priceRange[0] !== 'all' ? parseFloat(priceRange[0]) : 0;
                 const maxPrice = priceRange[0] !== 'all' ? parseFloat(priceRange[1]) : Infinity;
@@ -1039,8 +985,10 @@
                     const nameMatch = p.name.toLowerCase().includes(searchTerm);
                     const categoryMatch = selectedCategory === 'all' || p.category_slug ===
                         selectedCategory;
+                    const subCategoryMatch = selectedSubCategory === 'all' || p.sub_category_slug ===
+                        selectedSubCategory;
                     const priceMatch = p.price >= minPrice && p.price <= maxPrice;
-                    return nameMatch && categoryMatch && priceMatch;
+                    return nameMatch && categoryMatch && subCategoryMatch && priceMatch;
                 });
 
                 // Sorting
@@ -1070,15 +1018,46 @@
             if (categoryCards) {
                 categoryCards.forEach(card => {
                     card.addEventListener('click', function() {
-                        // Hapus kelas 'active' dari semua kartu
                         categoryCards.forEach(c => c.classList.remove('active'));
-
-                        // Tambahkan kelas 'active' ke kartu yang sedang diklik
                         this.classList.add('active');
-
-                        // Panggil fungsi filter utama untuk memperbarui tampilan
+                        const categorySlug = this.dataset.filter;
+                        updateSubCategoryFilters(categorySlug);
                         applyFiltersAndSort();
+
+                        // Scroll ke grid produk setelah filter
+                        const productGrid = document.getElementById('product-grid');
+                        if (productGrid) {
+                            setTimeout(() => {
+                                productGrid.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 300);
+                        }
                     });
+                });
+            }
+
+            // Tambahkan event listener untuk tombol sub-kategori
+            if (subCategoryContainer) {
+                subCategoryContainer.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('sub-category-btn')) {
+                        subCategoryContainer.querySelector('.sub-category-btn.active')?.classList.remove(
+                            'active');
+                        e.target.classList.add('active');
+                        applyFiltersAndSort();
+
+                        // Scroll ke grid produk setelah filter
+                        const productGrid = document.getElementById('product-grid');
+                        if (productGrid) {
+                            setTimeout(() => {
+                                productGrid.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 300);
+                        }
+                    }
                 });
             }
 
@@ -1217,6 +1196,96 @@
 
             // Panggil filter saat pertama kali halaman dimuat
             applyFiltersAndSort();
+
+            // Navbar scroll effect and mobile toggle
+            const navbar = document.querySelector('.navbar');
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarNav = document.querySelector('.navbar-nav');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+
+                    // Active link highlighting on scroll
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        if (pageYOffset >= sectionTop - 100) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').includes(current)) {
+                            link.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            if (navbarToggler && navbarNav) {
+                navbarToggler.addEventListener('click', () => {
+                    navbarNav.classList.toggle('active');
+                    const icon = navbarToggler.querySelector('i');
+                    if (navbarNav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                // Close menu when a link is clicked
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetEl = document.querySelector(link.getAttribute('href'));
+                        if (targetEl) {
+                            targetEl.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                        if (navbarNav.classList.contains('active')) {
+                            navbarNav.classList.remove('active');
+                            navbarToggler.querySelector('i').classList.remove('fa-times');
+                            navbarToggler.querySelector('i').classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+
+            // Tab functionality for Our Service section
+            const tabContainer = document.querySelector('.category-tabs');
+            if (tabContainer) {
+                const tabButtons = tabContainer.querySelectorAll('.category-tab-btn');
+                const contentPanes = document.querySelectorAll('.category-pane');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Deactivate all buttons and panes
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        contentPanes.forEach(pane => pane.classList.remove('active'));
+
+                        // Activate the clicked button
+                        this.classList.add('active');
+
+                        // Activate the corresponding content pane
+                        const targetId = this.dataset.target;
+                        const targetPane = document.getElementById(targetId);
+                        if (targetPane) {
+                            targetPane.classList.add('active');
+                        }
+                    });
+                });
+            }
 
             // Hero slider
             class HeroSlider {
