@@ -24,20 +24,10 @@ class StoreController extends Controller
         // Get current store info
         $userStore = $this->getCurrentStore();
 
-        // --- Start: Fetch active menus ---
-        $activeMenuCodes = [];
-        // Eager load relasi yang dibutuhkan: catalogTemplate -> category -> menus
-        $userStoreWithRelations = UserStore::with('catalogTemplate.category.menus')->find($userStore->id);
-        if ($userStoreWithRelations && $userStoreWithRelations->catalogTemplate && $userStoreWithRelations->catalogTemplate->category) {
-            // Ambil array berisi kode menu yang aktif (e.g., ['subkategoriproduk', 'brandproduk'])
-            $activeMenuCodes = $userStoreWithRelations->catalogTemplate->category->menus->pluck('code')->toArray();
-        }
-        // --- End: Fetch active menus ---
-
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with(['category', 'subCategory', 'brand', 'images', 'unit']) // Tambah 'unit'
+            ->with(['category', 'subCategory', 'brand', 'images'])
             ->take(8)
             ->get();
 
@@ -45,14 +35,14 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with(['category', 'subCategory', 'brand', 'images', 'unit']) // Tambah 'unit'
+            ->with(['category', 'subCategory', 'brand', 'images'])
             ->take(8)
             ->get();
 
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with(['category', 'subCategory', 'brand', 'images', 'unit']); // Tambah 'brand' & 'unit'
+            ->with(['category', 'subCategory', 'brand', 'images']); // Include brand for modal details
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -176,18 +166,16 @@ class StoreController extends Controller
         }
 
         // dd($subCategories);
-        // Kirim semua data + $activeMenuCodes ke view
         return view($templateView, compact(
             'userStore',
             'products',
             'featuredProducts',
             'newProducts',
             'categories',
-            'subCategories',
+            'subCategories', // Add this
             'brands',
             'priceRanges',
-            'banners',
-            'activeMenuCodes' // <-- Tambahkan ini
+            'banners'
         ));
     }
 
@@ -201,7 +189,7 @@ class StoreController extends Controller
         $product = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('id', $productId)
-            ->with(['category', 'subCategory', 'images'])
+            ->with(['category', 'subCategory', 'brand', 'images'])
             ->firstOrFail();
 
         return response()->json(['success' => true, 'product' => $product]);
@@ -223,7 +211,7 @@ class StoreController extends Controller
                 $query->where('slug', $productSlug)
                     ->orWhere('id', $productSlug);
             })
-            ->with(['category', 'subCategory', 'images']) // Add subCategory
+            ->with(['category', 'subCategory', 'brand', 'images']) // Include brand for product page
             ->firstOrFail();
 
         // Get related products (same category, maybe same sub-category is better)
@@ -301,7 +289,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('product_category_id', $category->id)
-            ->with(['category', 'images']);
+            ->with(['category', 'brand', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -441,7 +429,7 @@ class StoreController extends Controller
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('sub_category_id', $subCategory->id)
-            ->with(['category', 'images']);
+            ->with(['category', 'brand', 'images']);
 
         // Apply additional filters
         if ($request->has('search') && $request->search) {
@@ -574,7 +562,7 @@ class StoreController extends Controller
                         ->orWhere('description', 'like', "%{$searchTerm}%")
                         ->orWhere('sku', 'like', "%{$searchTerm}%");
                 })
-                ->with(['category', 'images'])
+                ->with(['category', 'brand', 'images'])
                 ->paginate(12);
         }
 
@@ -652,16 +640,15 @@ class StoreController extends Controller
      */
     private function getCurrentStore()
     {
+        // Get the current tenant's subdomain
         $subdomain = request()->getHost();
-        $subdomain = explode('.', $subdomain)[0];
+        $subdomain = explode('.', $subdomain)[0]; // Get subdomain part
 
-        // Cache store info including relationships needed for menu check
-        return Cache::remember("store_info_{$subdomain}", 3600, function () use ($subdomain) {
-            return UserStore::with('catalogTemplate.category.menus') // Eager load necessary relations here
-                ->where('subdomain', $subdomain)
+        // Cache store info for performance
+        return Cache::remember("store_{$subdomain}", 3600, function () use ($subdomain) {
+            return UserStore::where('subdomain', $subdomain)
                 ->where('tenant_created', true)
-                // ->where('is_active', true) // Mungkin perlu dihapus jika admin bisa preview
-                ->firstOrFail(); // Use firstOrFail to handle not found case
+                ->first();
         });
     }
 
@@ -674,7 +661,7 @@ class StoreController extends Controller
 
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with(['category', 'subCategory', 'images']);
+            ->with(['category', 'subCategory', 'brand', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {
@@ -820,7 +807,7 @@ class StoreController extends Controller
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->with(['category', 'images'])
+            ->with(['category', 'brand', 'images'])
             ->take(8)
             ->get();
 
@@ -828,14 +815,14 @@ class StoreController extends Controller
         $newProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('is_new', true)
-            ->with(['category', 'images'])
+            ->with(['category', 'brand', 'images'])
             ->take(8)
             ->get();
 
         // Get all products for main listing
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
-            ->with(['category', 'images']);
+            ->with(['category', 'brand', 'images']);
 
         // Apply filters
         if ($request->has('category') && $request->category) {

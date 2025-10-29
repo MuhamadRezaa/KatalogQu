@@ -265,6 +265,7 @@ const categoriesData = {
   let allCategories = [];
   let currentFilter = 'all';
   let currentSubcategory = null;
+  let visibleLimit = 20; // jumlah produk awal yang ditampilkan
 
   // DOM Elements
   const loadingOverlay = document.getElementById('loadingOverlay');
@@ -303,8 +304,54 @@ const categoriesData = {
           allCategories = categoriesData.categories;
           allProducts = productsData.products;
 
+          // Tambahkan data dummy untuk mencapai total 40 produk
+          const targetCount = 40;
+          if (allProducts.length < targetCount) {
+              const extras = [];
+              const categories = [
+                  { name: 'Pakaian Pria', subs: ['Kemeja','Celana','Kaos'] },
+                  { name: 'Pakaian Wanita', subs: ['Blouse','Dress','Rok'] },
+                  { name: 'Aksesoris', subs: ['Tas','Kacamata','Perhiasan'] },
+              ];
+              const baseImages = [
+                  'images/KaosPria.jpeg',
+                  'images/KemejaWanita.jpeg',
+                  'images/CelanaPendekPria.jpg',
+                  'images/TasWanita.jpeg',
+                  'images/Kacamata.jpg',
+                  'images/BatikPria.jpeg',
+                  'images/CasualPria.jpeg',
+              ];
+              const brands = ['Fashion Elite','Bella Fashion','Casual Wear','Elegant Bags','Style Vision','Heritage Style','Office Chic'];
+              let nextId = Math.max(...allProducts.map(p => p.id)) + 1;
+              while (allProducts.length + extras.length < targetCount) {
+                  const cat = categories[(nextId) % categories.length];
+                  const sub = cat.subs[(nextId) % cat.subs.length];
+                  const img = baseImages[(nextId) % baseImages.length];
+                  const price = 99000 + ((nextId * 137) % 250000);
+                  const oldPrice = (nextId % 3 === 0) ? price + 30000 : undefined;
+                  const promoTag = (nextId % 5 === 0) ? 'PROMO' : undefined;
+                  extras.push({
+                      id: nextId,
+                      name: `${sub} ${cat.name.split(' ')[1]} ${nextId}`,
+                      description: `Produk dummy untuk demo fashion #${nextId}. Desain simple dan nyaman dipakai sehari-hari.`,
+                      price,
+                      oldPrice,
+                      promoTag,
+                      category: cat.name,
+                      subcategory: sub,
+                      image: img,
+                      brand: brands[(nextId) % brands.length],
+                      colors: ['Hitam','Putih','Abu-abu'],
+                  });
+                  nextId++;
+              }
+              allProducts = allProducts.concat(extras);
+          }
+
           // Initialize the UI
           renderCategories();
+          visibleLimit = 20; // reset limit pada load pertama
           renderProducts(allProducts);
           updateStatistics();
 
@@ -370,8 +417,8 @@ const categoriesData = {
       }
 
       noResults.style.display = 'none';
-
-      products.forEach(product => {
+      const toRender = products.slice(0, visibleLimit);
+      toRender.forEach(product => {
           const productCard = document.createElement('div');
           productCard.className = 'product-card';
           productCard.setAttribute('data-category', product.category.toLowerCase());
@@ -433,6 +480,27 @@ const categoriesData = {
 
           productsGrid.appendChild(productCard);
       });
+
+      // Tambah/atur tombol Lihat Selengkapnya
+      let showMoreBtn = document.getElementById('showMoreBtn');
+      if (!showMoreBtn) {
+          showMoreBtn = document.createElement('button');
+          showMoreBtn.id = 'showMoreBtn';
+          showMoreBtn.textContent = 'Lihat Selengkapnya →';
+          showMoreBtn.style.cssText = 'margin: 16px auto; display: none; padding: 10px 16px; border-radius: 999px; background:#111; color:#fff; border:none; cursor:pointer;';
+          productsGrid.parentElement.appendChild(showMoreBtn);
+      }
+      if (products.length > visibleLimit) {
+          showMoreBtn.style.display = 'inline-flex';
+          showMoreBtn.onclick = () => {
+              visibleLimit += 20;
+              renderProducts(products);
+              // Scroll ringan untuk menjaga fokus di grid
+              productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          };
+      } else {
+          showMoreBtn.style.display = 'none';
+      }
   }
 
   // Filter products by category
@@ -668,18 +736,7 @@ const categoriesData = {
           minimumFractionDigits: 0
       }).format(product.price);
 
-      // Generate sizes HTML
-      let sizesHTML = '';
-      if (product.sizes && product.sizes.length > 0) {
-          sizesHTML = `
-              <div class="modal-section">
-                  <h4>Ukuran Tersedia:</h4>
-                  <div class="sizes-list">
-                      ${product.sizes.map(size => `<span class="size-tag">${size}</span>`).join('')}
-                  </div>
-              </div>
-          `;
-      }
+      // Ukuran dihapus sesuai permintaan (belum ada di database)
 
       // Generate colors HTML
       let colorsHTML = '';
@@ -750,7 +807,7 @@ const categoriesData = {
                           <p>${product.brand}</p>
                       </div>
                   ` : ''}
-                  ${sizesHTML}
+
                   <a href="https://wa.me/6281572505989?text=Halo,%20saya%20tertarik%20dengan%20produk%20${product.name}%20ini." target="_blank" class="contact-button">Hubungi</a>
                   ${similarProductsHTML}
               </div>

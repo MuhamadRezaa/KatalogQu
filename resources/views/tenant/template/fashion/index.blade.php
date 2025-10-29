@@ -24,6 +24,9 @@
 
     <link rel="stylesheet" href="{{ asset('assets/demo/fashion/style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -61,7 +64,6 @@
             }
         }
 
-        /* Hero Content Styling - Sesuai Demo Fashion */
         .hero-tagline {
             font-size: 1.2rem;
             font-weight: 500;
@@ -107,7 +109,6 @@
             }
         }
 
-        /* Hero Section Styling - Fashion Theme */
         .hero {
             position: relative;
             height: 100vh;
@@ -117,7 +118,6 @@
             justify-content: center;
         }
 
-        /* Swiper Banner Styles */
         .swiper-container {
             width: 100%;
             height: 100vh;
@@ -141,7 +141,6 @@
             object-fit: cover;
         }
 
-        /* Hero Content Positioning */
         .hero-content {
             position: absolute;
             top: 50%;
@@ -155,21 +154,6 @@
             padding: 2rem;
         }
 
-        /* Hero text styling untuk banner */
-        .hero-title {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        .hero-subtitle {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            font-weight: 400;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-
-        /* Custom pagination styling untuk tema fashion */
         .swiper-pagination {
             position: absolute;
             bottom: 2rem;
@@ -191,7 +175,6 @@
             transform: scale(1.2);
         }
 
-        /* Navigation buttons styling */
         .swiper-button-prev,
         .swiper-button-next {
             color: white !important;
@@ -229,7 +212,6 @@
             right: 20px !important;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .swiper-container {
                 height: 60vh;
@@ -239,7 +221,6 @@
                 padding: 1rem;
             }
 
-            /* Hide navigation buttons on mobile */
             .swiper-button-prev,
             .swiper-button-next {
                 display: none;
@@ -251,9 +232,7 @@
                 height: 80vh;
             }
         }
-        }
 
-        /* Hero Background dan Overlay Styles */
         .hero-overlay {
             position: absolute;
             inset: 0;
@@ -280,7 +259,6 @@
             opacity: 0.8;
         }
 
-        /* Konfigurasi Kategori - Styling yang Dapat Dikustomisasi */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(var(--max-categories-per-row, 4), 1fr);
@@ -313,7 +291,6 @@
             aspect-ratio: 1;
         }
 
-        /* Konfigurasi Produk - Styling yang Dapat Dikustomisasi */
         .product-image-rounded {
             border-radius: 12px;
         }
@@ -328,7 +305,6 @@
             object-fit: cover;
         }
 
-        /* Responsive untuk kategori */
         @media (max-width: 768px) {
             .category-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -338,6 +314,592 @@
         @media (max-width: 480px) {
             .category-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        .pagination-links {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination li a,
+        .pagination li span {
+            display: block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .pagination li.active span {
+            background-color: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .pagination li.disabled span {
+            color: #aaa;
+            background-color: #f5f5f5;
+        }
+
+        .footer-brand-container {
+            height: 50px;
+            width: 50px;
+        }
+
+        .footer-logo {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .product-image {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .no-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            color: #666;
+            font-size: 1rem;
+            border-radius: 8px;
+        }
+
+        .modal-product-image {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #f8f9fa;
+        }
+
+        .modal-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .modal-product-image .no-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            color: #999;
+            font-size: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .product-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+            padding: 2rem;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .product-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .modal-container {
+            position: fixed;
+            background-color: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin: auto;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-modal {
+                padding: 1rem;
+            }
+
+            .modal-container {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .modal-close {
+                top: 10px;
+                right: 15px;
+                font-size: 24px;
+            }
+        }
+
+        .modal-product-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .modal-product-category {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .subcategory-name {
+            color: #888;
+            font-weight: 400;
+        }
+
+        .modal-product-sku {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-product-brand {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-product-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        /* Promo badge di area harga */
+        .promo-badge {
+            display: inline-block;
+            background: #ff6f00;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Promo badge di pojok kiri atas modal */
+        .modal-promo-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff6f00;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .modal-product-old-price {
+            font-size: 1.2rem;
+            color: #999;
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        /* Harga di kartu produk */
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .product-old-price {
+            color: #999;
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+
+        .product-current-price {
+            color: #333;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-section p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .sizes-list, .colors-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* Animasi ringan untuk konten modal */
+        .modal-product-details,
+        .modal-product-image,
+        .modal-product-info,
+        .similar-card {
+            animation: slideIn 0.45s ease both;
+        }
+        .similar-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .similar-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .size-tag, .color-tag {
+            background: #f0f0f0;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid #ddd;
+        }
+
+        .stock-info.in-stock { color: #28a745; }
+        .stock-info.low-stock { color: #ffc107; }
+        .stock-info.out-of-stock { color: #dc3545; }
+
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .gallery-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .gallery-thumb:hover {
+            border-color: #007bff;
+            opacity: 0.8;
+        }
+
+        .gallery-thumb.active {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .modal-error {
+            text-align: center;
+            padding: 3rem 2rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-error h3 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .modal-error p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-retry {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-retry:hover {
+            background: #0056b3;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-contact {
+            flex: 1;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-contact:hover {
+            background: linear-gradient(135deg, #128c7e, #25d366);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-contact i {
+            font-size: 1.2rem;
+        }
+
+        .modal-product-actions {
+            margin-top: 2rem;
+        }
+
+        /* Produk Serupa (Modal) */
+        .modal-similar-section {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed #e6e6e6;
+        }
+
+        .modal-similar-section h3 {
+            font-size: 1.1rem;
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .similar-card {
+            cursor: pointer;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .similar-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .similar-image {
+            height: 100px;
+            background: #f8f8f8;
+        }
+
+        .similar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .similar-info {
+            padding: 8px;
+        }
+
+        .similar-name {
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .similar-price {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-product-details {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .modal-product-name {
+                font-size: 1.5rem;
+            }
+
+            .modal-product-price {
+                font-size: 1.4rem;
+            }
+
+            .main-image {
+                height: 250px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -415,7 +977,7 @@
                     <p>Pilih sub kategori untuk filter lebih spesifik</p>
                 </div>
                 <div class="subcategory-grid" id="subcategoryGrid">
-                    {{-- Subkategori akan dimuat di sini oleh JavaScript --}}
+                    {{-- Subkategori akan dimuat di sini oleh jQuery --}}
                 </div>
             </div>
 
@@ -463,8 +1025,8 @@
                 <p id="productSubtitle">Jelajahi koleksi lengkap kami</p>
             </div>
 
-            {{-- PERBAIKAN: Menggunakan Blade untuk render produk dari server --}}
-            <div class="products-grid" id="productsGrid">
+            {{-- Menggunakan Blade untuk render produk dari server --}}
+            <div class="products-grid" id="productsGrid" style="transition: opacity 0.25s ease;">
                 @forelse ($products as $product)
                     @php
                         $imagePath = $product->image ?? ($product->productImages->first()->image_path ?? null);
@@ -472,10 +1034,16 @@
                             ? url('tenancy/assets') . '/' . trim($imagePath, '/')
                             : 'https://via.placeholder.com/200?text=No+Image';
                         $formattedPrice = 'Rp ' . number_format($product->price, 0, ',', '.');
+                        $oldPrice = $product->old_price ? ('Rp ' . number_format($product->old_price, 0, ',', '.')) : null;
+                        $showOldPrice = $product->old_price && $product->old_price > $product->price;
+                        $isPromo = (bool) $product->is_promo;
                     @endphp
                     <div class="product-card" data-product-id="{{ $product->id }}"
                         onclick="showProductDetails({{ $product->id }})">
-                        <div class="product-image">
+                        <div class="product-image" style="position: relative;">
+                            @if ($isPromo)
+                                <div class="modal-promo-badge">PROMO</div>
+                            @endif
                             <img src="{{ $imageUrl }}" alt="{{ $product->name }}" loading="lazy"
                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=No+Image'; this.style.opacity='1';"
                                 onload="this.style.opacity='1';" style="opacity: 0; transition: opacity 0.3s ease;">
@@ -483,11 +1051,15 @@
                         <div class="product-info">
                             <div class="product-category">{{ $product->category->name ?? 'Uncategorized' }}</div>
                             <div class="product-name">{{ $product->name }}</div>
-                            <div class="product-price">{{ $formattedPrice }}</div>
+                            <div class="product-price">
+                                @if ($showOldPrice)
+                                    <span class="product-old-price">{{ $oldPrice }}</span>
+                                @endif
+                                <span class="product-current-price">{{ $formattedPrice }}</span>
+                            </div>
                         </div>
                     </div>
                 @empty
-                    {{-- Div ini hanya akan ditampilkan jika $products kosong --}}
                     <div id="noResults" class="no-results" style="display: block; grid-column: 1 / -1;">
                         <h3>Produk yang Anda cari tidak ditemukan</h3>
                         <p>Coba gunakan kata kunci yang berbeda atau lihat semua produk kami.</p>
@@ -495,53 +1067,18 @@
                 @endforelse
             </div>
 
-            {{-- PERBAIKAN: Menambahkan link paginasi --}}
+            {{-- Tombol Lihat Selengkapnya untuk tampilan bertahap --}}
+            <div class="show-more-container" style="display:flex; justify-content:center; margin-top:16px;">
+                <button id="tenantShowMoreBtn" style="display:none; padding:10px 16px; border-radius:999px; background:#111; color:#fff; border:none; cursor:pointer;">Lihat Selengkapnya →</button>
+            </div>
+
+            {{-- Link paginasi --}}
             <div class="pagination-links">
                 {{ $products->appends(request()->query())->links() }}
             </div>
         </section>
 
     </main>
-
-    <style>
-        /* Style untuk pagination */
-        .pagination-links {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-        }
-
-        .pagination {
-            display: flex;
-            list-style: none;
-            padding: 0;
-        }
-
-        .pagination li {
-            margin: 0 5px;
-        }
-
-        .pagination li a,
-        .pagination li span {
-            display: block;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        .pagination li.active span {
-            background-color: #333;
-            color: #fff;
-            border-color: #333;
-        }
-
-        .pagination li.disabled span {
-            color: #aaa;
-            background-color: #f5f5f5;
-        }
-    </style>
 
     <footer class="footer">
         <div class="footer-content">
@@ -555,15 +1092,15 @@
                         @else
                             <img id="footerStoreLogo" class="footer-logo"
                                 src="{{ asset('assets/demo/fashion/img/temp/logo-fashion.png') }}"
-                                alt="{{ $userStore->store_name ?? 'Fashion Store Logo' }}" loading="lazy"
-                                decoding="async">
+                                alt="{{ $userStore->store_name ?? 'Fashion Store Logo' }}" loading="lazy" decoding="async">
                         @endif
                     </div>
                 </div>
                 <div class="footer-section footer-text-content">
                     <h3 id="footerStoreName">{{ $userStore->store_name ?? 'Fashion Store' }}</h3>
                     <p id="footerStoreDescription">
-                        {{ $userStore->store_description ?? 'A place to find your best fashion.' }}</p>
+                        {{ $userStore->store_description ?? 'A place to find your best fashion.' }}
+                    </p>
                 </div>
             </div>
             <div class="footer-middle-space">
@@ -589,207 +1126,50 @@
         </div>
     </footer>
 
-    <style>
-        .footer-brand-container {
-            height: 50px;
-            width: 50px;
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            const cards = Array.from(grid.querySelectorAll('.product-card'));
+            const btn = document.getElementById('tenantShowMoreBtn');
+            let visibleCount = 20;
 
-        .footer-logo {
-            height: 100%;
-            width: 100%;
-            object-fit: contain;
-        }
+            const applyVisibility = () => {
+                cards.forEach((card, idx) => {
+                    card.style.display = idx < visibleCount ? '' : 'none';
+                });
+                if (cards.length > visibleCount) {
+                    btn.style.display = 'inline-flex';
+                } else {
+                    btn.style.display = 'none';
+                }
+            };
 
-        /* Style untuk gambar produk */
-        .product-image {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #f8f9fa;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.3s ease;
-        }
-
-        .no-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f5f5f5;
-            color: #666;
-            font-size: 1rem;
-            border-radius: 8px;
-        }
-
-        .modal-product-image {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            overflow: hidden;
-            border-radius: 12px;
-            background: #f8f9fa;
-        }
-
-        .modal-product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .modal-product-image .no-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0f0f0;
-            color: #999;
-            font-size: 1.2rem;
-            border-radius: 12px;
-        }
-    </style>
+            applyVisibility();
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    visibleCount += 20;
+                    applyVisibility();
+                    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+        });
+    </script>
 
     <!-- Product Modal -->
     <div id="productModal" class="product-modal">
         <div class="modal-container">
-            <span onclick="closeModal()" class="modal-close">&times;</span>
+            <span class="modal-close">&times;</span>
             <div id="modalContent"></div>
         </div>
     </div>
-
-    <style>
-        /* Modal Styles */
-        .product-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s ease-out;
-            padding: 2rem;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        .product-modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-        }
-
-        .modal-container {
-            position: fixed;
-            background-color: #fff;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 1000px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            /*animation: zoomIn 0.3s ease-out;*/
-            margin: auto;
-        }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1001;
-            transition: color 0.2s ease;
-        }
-
-        .modal-close:hover,
-        .modal-close:focus {
-            color: #000;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .product-modal {
-                padding: 1rem;
-            }
-
-            .modal-container {
-                margin: 10px;
-                /* kasih jarak aman di HP */
-                width: calc(100% - 20px);
-            }
-
-            .modal-close {
-                top: 10px;
-                right: 15px;
-                font-size: 24px;
-            }
-        }
-    </style>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <p>Memuat data...</p>
     </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
         // ===== KONFIGURASI YANG DAPAT DIKUSTOMISASI OLEH ADMIN =====
@@ -802,8 +1182,7 @@
                         title: "{{ $banner->title ?? ($userStore->store_name ?? 'Fashion Store') }}",
                         subtitle: "{{ $banner->subtitle ?? 'Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti' }}",
                         background: "{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
-                    }
-                    {{ !$loop->last ? ',' : '' }}
+                    }{{ !$loop->last ? ',' : '' }}
                 @empty
                     {
                         title: "{{ $userStore->store_name ?? 'Fashion Store' }}",
@@ -821,17 +1200,18 @@
             phone: "{{ $userStore->store_phone ?? '+62 123 456 789' }}",
             email: "{{ $userStore->store_email ?? 'info@fashionstore.com' }}",
             address: "{{ $userStore->store_address ?? 'Jakarta, Indonesia' }}",
-            logo: "{{ $userStore->store_logo ? asset('storage/' . $userStore->store_logo) : '' }}"
+            logo: "{{ $userStore->store_logo ? route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) : '' }}",
+            logoPath: "{{ $userStore->store_logo ?? '' }}"
         };
 
         // Konfigurasi Kategori yang Dapat Dikustomisasi
         const categoryConfig = {
             showAllCategory: {{ $storeSettings->show_all_category ?? 'true' }},
             allCategoryText: "{{ $storeSettings->all_category_text ?? 'Semua Kategori' }}",
-            categoryDisplayStyle: "{{ $storeSettings->category_display_style ?? 'grid' }}", // grid, list, carousel
+            categoryDisplayStyle: "{{ $storeSettings->category_display_style ?? 'grid' }}",
             maxCategoriesPerRow: {{ $storeSettings->max_categories_per_row ?? 4 }},
             showCategoryIcons: {{ $storeSettings->show_category_icons ?? 'true' }},
-            categoryIconStyle: "{{ $storeSettings->category_icon_style ?? 'rounded' }}" // rounded, square, circle
+            categoryIconStyle: "{{ $storeSettings->category_icon_style ?? 'rounded' }}"
         };
 
         // Konfigurasi Produk yang Dapat Dikustomisasi
@@ -839,7 +1219,7 @@
             productsPerPage: {{ $storeSettings->products_per_page ?? 12 }},
             showProductPrice: {{ $storeSettings->show_product_price ?? 'true' }},
             showProductDescription: {{ $storeSettings->show_product_description ?? 'true' }},
-            productImageStyle: "{{ $storeSettings->product_image_style ?? 'rounded' }}", // rounded, square, circle
+            productImageStyle: "{{ $storeSettings->product_image_style ?? 'rounded' }}",
             enableProductModal: {{ $storeSettings->enable_product_modal ?? 'true' }},
             showContactSeller: {{ $storeSettings->show_contact_seller ?? 'true' }},
             contactButtonText: "{{ $storeSettings->contact_button_text ?? 'Hubungi Penjual' }}"
@@ -860,32 +1240,46 @@
 
         const tenantAssetUrl = (p) => {
             let path = (p || '')
-                .replace(/^storage\/+/i, '') // buang "storage/" kalau ada
-                .replace(/^\/+/, '') // buang slash depan
-                .replaceAll('\\', '/'); // normalize backslash Windows
+                .replace(/^storage\/+/i, '')
+                .replace(/^\/+/, '')
+                .replaceAll('\\', '/');
             return tenantAssetBase + encodeURI(path);
         };
 
-        // Legacy support - ASSET_URL for backward compatibility
         const ASSET_URL = tenantAssetBase;
 
-        // Loading overlay functions
+        // Loading overlay functions menggunakan jQuery
         function showLoadingOverlay() {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                overlay.style.display = 'flex';
-            }
+            $('#loadingOverlay').fadeIn(300);
         }
 
         function hideLoadingOverlay() {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-            }
+            $('#loadingOverlay').fadeOut(300);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        $(document).ready(function() {
             // --- FUNGSI-FUNGSI UTAMA ---
+
+            // Helper: smooth scroll dengan durasi dan offset
+            function smoothScrollTo(targetEl, offset = 0, duration = 600) {
+                if (!targetEl) return;
+                const start = window.scrollY || window.pageYOffset;
+                const target = (targetEl.getBoundingClientRect().top + start) + offset;
+                const distance = target - start;
+                const startTime = performance.now();
+
+                const easeInOutQuad = (t) => (t < 0.5) ? (2 * t * t) : (1 - Math.pow(-2 * t + 2, 2) / 2);
+
+                function step(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = easeInOutQuad(progress);
+                    window.scrollTo(0, start + distance * eased);
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+
+                requestAnimationFrame(step);
+            }
 
             // Fungsi untuk mengarahkan pengguna dengan parameter filter
             function applyFilterAndReload() {
@@ -893,27 +1287,27 @@
                 const params = new URLSearchParams();
 
                 // Kategori
-                const activeCategory = document.querySelector('.category-card.active');
-                if (activeCategory && activeCategory.dataset.categoryId !== 'all') {
-                    params.set('category', activeCategory.dataset.categoryId);
+                const activeCategory = $('.category-card.active');
+                if (activeCategory.length && activeCategory.data('category-id') !== 'all') {
+                    params.set('category', activeCategory.data('category-id'));
                 }
 
                 // Subkategori
-                const activeSubcategory = document.querySelector('.subcategory-card.active');
-                if (activeSubcategory && activeSubcategory.dataset.subcategoryId) {
-                    params.set('subcategory', activeSubcategory.dataset.subcategoryId);
+                const activeSubcategory = $('.subcategory-card.active');
+                if (activeSubcategory.length && activeSubcategory.data('subcategory-id')) {
+                    params.set('subcategory', activeSubcategory.data('subcategory-id'));
                 }
 
                 // Pencarian
-                const searchTerm = document.getElementById('searchInput').value;
+                const searchTerm = $('#searchInput').val();
                 if (searchTerm) {
                     params.set('search', searchTerm);
                 }
 
                 // Urutan
-                const sortPrice = document.getElementById('sortPrice').value;
-                const sortName = document.getElementById('sortName').value;
-                const sortDate = document.getElementById('sortDate').value;
+                const sortPrice = $('#sortPrice').val();
+                const sortName = $('#sortName').val();
+                const sortDate = $('#sortDate').val();
 
                 if (sortPrice) params.set('sort', sortPrice);
                 else if (sortName) params.set('sort', sortName);
@@ -924,19 +1318,18 @@
 
             // Fungsi untuk menampilkan subkategori yang relevan
             function showSubcategoriesForCategory(categoryId) {
-                const subcategoryGrid = document.getElementById('subcategoryGrid');
-                const subcategorySection = document.getElementById('subcategorySection');
-                subcategoryGrid.innerHTML = '';
+                const $subcategoryGrid = $('#subcategoryGrid');
+                const $subcategorySection = $('#subcategorySection');
+                $subcategoryGrid.empty();
 
                 // Jika kategori "Semua Kategori", sembunyikan subkategori
                 if (categoryId === 'all') {
-                    subcategorySection.style.display = 'none';
+                    $subcategorySection.hide();
                     return;
                 }
 
                 // Filter subkategori berdasarkan kategori dan produk yang tersedia
                 const relevantSubcategories = allSubcategories.filter(sub => {
-                    // Pastikan ada produk yang menggunakan subkategori ini dan berada di kategori yang dipilih
                     return allProducts.some(product =>
                         product.product_category_id == categoryId &&
                         product.sub_category_id == sub.id
@@ -944,32 +1337,51 @@
                 });
 
                 if (relevantSubcategories.length === 0) {
-                    subcategorySection.style.display = 'none';
+                    $subcategorySection.hide();
                     return;
                 }
 
-                const allSubCard = document.createElement('div');
-                allSubCard.className = 'subcategory-card active';
-                allSubCard.innerHTML = '<div class="subcategory-name">Semua Sub Kategori</div>';
-                allSubCard.onclick = () => selectSubcategory(null, allSubCard);
-                subcategoryGrid.appendChild(allSubCard);
+                const $allSubCard = $('<div>')
+                    .addClass('subcategory-card active')
+                    .html('<div class="subcategory-name">Semua Sub Kategori</div>')
+                    .on('click', function() {
+                        selectSubcategory(null, $(this));
+                    });
+                $subcategoryGrid.append($allSubCard);
 
-                relevantSubcategories.forEach(sub => {
-                    const subCard = document.createElement('div');
-                    subCard.className = 'subcategory-card';
-                    subCard.dataset.subcategoryId = sub.id;
-                    subCard.innerHTML = `<div class="subcategory-name">${sub.name}</div>`;
-                    subCard.onclick = () => selectSubcategory(sub.id, subCard);
-                    subcategoryGrid.appendChild(subCard);
+                $.each(relevantSubcategories, function(index, sub) {
+                    const $subCard = $('<div>')
+                        .addClass('subcategory-card')
+                        .data('subcategory-id', sub.id)
+                        .html(`<div class="subcategory-name">${sub.name}</div>`)
+                        .on('click', function() {
+                            selectSubcategory(sub.id, $(this));
+                        });
+                    $subcategoryGrid.append($subCard);
                 });
 
-                subcategorySection.style.display = 'block';
+                $subcategorySection.show();
             }
 
-            function selectSubcategory(subcategoryId, element) {
-                document.querySelectorAll('.subcategory-card').forEach(card => card.classList.remove('active'));
-                element.classList.add('active');
+            function selectSubcategory(subcategoryId, $element) {
+                $('.subcategory-card').removeClass('active');
+                $element.addClass('active');
                 currentSubcategoryId = subcategoryId;
+                // Update URL params untuk auto-redirect feel
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    if (currentCategoryId && currentCategoryId !== 'all') {
+                        params.set('category', currentCategoryId);
+                    } else {
+                        params.delete('category');
+                    }
+                    if (subcategoryId) {
+                        params.set('subcategory', subcategoryId);
+                    } else {
+                        params.delete('subcategory');
+                    }
+                    history.pushState(null, '', `?${params.toString()}`);
+                } catch (e) { /* noop */ }
                 filterProductsByCategory(currentCategoryId);
             }
 
@@ -997,40 +1409,93 @@
                 if (currentSearchTerm) {
                     filteredProducts = filteredProducts.filter(product =>
                         product.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-                        (product.description && product.description.toLowerCase().includes(currentSearchTerm
-                            .toLowerCase()))
+                        (product.description && product.description.toLowerCase().includes(currentSearchTerm.toLowerCase()))
                     );
                 }
 
-                renderProducts(filteredProducts);
+                // Update URL params (auto redirect behaviour)
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    if (categoryId && categoryId !== 'all') {
+                        params.set('category', categoryId);
+                    } else {
+                        params.delete('category');
+                    }
+                    if (currentSubcategoryId) {
+                        params.set('subcategory', currentSubcategoryId);
+                    } else {
+                        params.delete('subcategory');
+                    }
+                    history.pushState(null, '', `?${params.toString()}`);
+                } catch (e) { /* noop */ }
+
+                const gridEl = document.getElementById('productsGrid');
+                if (gridEl) {
+                    gridEl.style.opacity = '0';
+                    setTimeout(() => {
+                        renderProducts(filteredProducts);
+                        gridEl.style.opacity = '1';
+                        // Scroll ke produk saat subkategori dipilih atau kategori 'all'
+                        const shouldScrollToProducts = !!currentSubcategoryId || categoryId === 'all';
+                        if (shouldScrollToProducts) {
+                            smoothScrollTo(gridEl, -16, 600);
+                        }
+                    }, 150);
+                } else {
+                    renderProducts(filteredProducts);
+                }
             }
 
-            // Function to render products
+            // Helper untuk mengurutkan produk secara client-side
+            function getSortedProducts(products) {
+                const sortPrice = $('#sortPrice').val();
+                const sortName = $('#sortName').val();
+                const sortDate = $('#sortDate').val();
+
+                const sorted = [...products];
+
+                if (sortPrice === 'low-high') {
+                    sorted.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+                } else if (sortPrice === 'high-low') {
+                    sorted.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+                } else if (sortName === 'a-z') {
+                    sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                } else if (sortName === 'z-a') {
+                    sorted.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+                } else if (sortDate === 'newest') {
+                    sorted.sort((a, b) => new Date(b.created_at || b.updated_at || 0) - new Date(a.created_at || a.updated_at || 0));
+                } else if (sortDate === 'oldest') {
+                    sorted.sort((a, b) => new Date(a.created_at || a.updated_at || 0) - new Date(b.created_at || b.updated_at || 0));
+                }
+
+                return sorted;
+            }
+
+            // Function to render products menggunakan jQuery
             function renderProducts(products) {
-                const productsGrid = document.getElementById('productsGrid');
+                const $productsGrid = $('#productsGrid');
 
                 if (products.length === 0) {
-                    productsGrid.innerHTML = `
+                    $productsGrid.html(`
                         <div id="noResults" class="no-results" style="display: block; grid-column: 1 / -1;">
                             <h3>Produk yang Anda cari tidak ditemukan</h3>
                             <p>Coba gunakan kata kunci yang berbeda atau lihat semua produk kami.</p>
                         </div>
-                    `;
+                    `);
                     return;
                 }
 
-                productsGrid.innerHTML = products.map(product => {
-                    const imagePath = product.image || (product.product_images && product.product_images[
-                        0] ? product.product_images[0].image_path : null);
+                const sortedProducts = getSortedProducts(products);
+                const productsHTML = sortedProducts.map(product => {
+                    const imagePath = product.image || (product.product_images && product.product_images[0] ? product.product_images[0].image_path : null);
                     const imageUrl = imagePath ?
                         `${window.location.origin}/tenancy/assets/${imagePath.replace(/^\//, '')}` :
                         'https://via.placeholder.com/200?text=No+Image';
                     const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(product.price);
-                    const categoryName = allCategories.find(cat => cat.id == product.product_category_id)
-                        ?.name || 'Uncategorized';
+                    const categoryName = allCategories.find(cat => cat.id == product.product_category_id)?.name || 'Uncategorized';
 
                     return `
-                        <div class="product-card" data-product-id="${product.id}" onclick="showProductDetails(${product.id})">
+                        <div class="product-card" data-product-id="${product.id}">
                             <div class="product-image">
                                 <img src="${imageUrl}" alt="${product.name}" loading="lazy"
                                     onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=No+Image'; this.style.opacity='1';"
@@ -1044,102 +1509,142 @@
                         </div>
                     `;
                 }).join('');
-            }
 
-            // --- EVENT LISTENERS ---
+                $productsGrid.html(productsHTML);
 
-            document.querySelectorAll('.category-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const categoryId = this.dataset.categoryId;
+                // Tambahkan badge PROMO dan harga lama pada kartu yang relevan
+                sortedProducts.forEach(product => {
+                    const $card = $productsGrid.find(`.product-card[data-product-id="${product.id}"]`);
+                    if (!$card.length) return;
 
-                    // Update active state
-                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove(
-                        'active'));
-                    this.classList.add('active');
+                    const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(product.price ?? 0);
+                    const oldPriceFormatted = (product.old_price && Number(product.old_price) > Number(product.price))
+                        ? ('Rp ' + new Intl.NumberFormat('id-ID').format(product.old_price))
+                        : '';
 
-                    // Reset subcategory selection
-                    currentSubcategoryId = null;
-
-                    // Show subcategories only if not "Semua Kategori"
-                    if (categoryId === 'all') {
-                        // Hide subcategories section
-                        const subcategorySection = document.querySelector('.subcategory-section');
-                        if (subcategorySection) {
-                            subcategorySection.style.display = 'none';
-                        }
-                    } else {
-                        // Show subcategories for this category
-                        showSubcategoriesForCategory(categoryId);
-                        const subcategorySection = document.querySelector('.subcategory-section');
-                        if (subcategorySection) {
-                            subcategorySection.style.display = 'block';
+                    const $imgWrap = $card.find('.product-image');
+                    $imgWrap.css('position', 'relative');
+                    if (product.is_promo) {
+                        // Hindari duplikasi badge
+                        if ($imgWrap.find('.modal-promo-badge').length === 0) {
+                            $imgWrap.append('<div class="modal-promo-badge">PROMO</div>');
                         }
                     }
 
-                    // Filter products without page reload
-                    filterProductsByCategory(categoryId);
+                    const $price = $card.find('.product-price');
+                    if ($price.length) {
+                        const priceHtml = `${oldPriceFormatted ? `<span class=\"product-old-price\">${oldPriceFormatted}</span>` : ''}` +
+                            `<span class="product-current-price">${formattedPrice}</span>`;
+                        $price.html(priceHtml);
+                    }
                 });
+
+                // Bind click event untuk product cards
+                $('.product-card').on('click', function() {
+                    const productId = $(this).data('product-id');
+                    showProductDetails(productId);
+                });
+            }
+
+            // --- EVENT LISTENERS menggunakan jQuery ---
+
+            $('.category-card').on('click', function() {
+                const categoryId = $(this).data('category-id');
+
+                // Update active state
+                $('.category-card').removeClass('active');
+                $(this).addClass('active');
+
+                // Reset subcategory selection
+                currentSubcategoryId = null;
+
+                // Show subcategories only if not "Semua Kategori"
+                if (categoryId === 'all') {
+                    $('.subcategory-section').hide();
+                } else {
+                    showSubcategoriesForCategory(categoryId);
+                    $('.subcategory-section').show();
+                }
+
+                // Auto-redirect: update URL dan scroll ke sub kategori
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    if (categoryId && categoryId !== 'all') {
+                        params.set('category', categoryId);
+                    } else {
+                        params.delete('category');
+                    }
+                    params.delete('subcategory'); // reset sub kategori
+                    history.pushState(null, '', `?${params.toString()}`);
+                } catch (e) { /* noop */ }
+
+                const subEl = document.getElementById('subcategorySection');
+                if (subEl && categoryId !== 'all') {
+                    smoothScrollTo(subEl, -16, 600);
+                }
+
+                // Tetap filter agar list produk relevan, dengan animasi fade internal
+                filterProductsByCategory(categoryId);
             });
 
             // Event listener untuk filter
-            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            $('#searchInput').on('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    currentSearchTerm = e.target.value;
+                    currentSearchTerm = $(this).val();
                     filterProductsByCategory(currentCategoryId);
                 }
             });
 
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                currentSearchTerm = e.target.value;
+            $('#searchInput').on('input', function() {
+                currentSearchTerm = $(this).val();
                 filterProductsByCategory(currentCategoryId);
             });
-            document.getElementById('sortPrice').addEventListener('change', applyFilterAndReload);
-            document.getElementById('sortName').addEventListener('change', applyFilterAndReload);
-            document.getElementById('sortDate').addEventListener('change', applyFilterAndReload);
+
+            $('#sortPrice, #sortName, #sortDate').on('change', function() {
+                filterProductsByCategory(currentCategoryId);
+            });
 
             // --- FUNGSI KUSTOMISASI ADMIN ---
 
             // Fungsi untuk menerapkan konfigurasi hero section
             function applyHeroConfiguration() {
-                // Update hero background images
-                const bgSlides = document.querySelectorAll('.bg-slide');
-                bgSlides.forEach((slide, index) => {
+                const $bgSlides = $('.bg-slide');
+                $bgSlides.each(function(index) {
                     if (heroConfig.slides[index]) {
                         const slideData = heroConfig.slides[index];
-                        const bgImage = slide.querySelector('.bg-image');
-                        if (bgImage) {
-                            bgImage.style.backgroundImage = `url('${slideData.background}')`;
-                            bgImage.style.backgroundSize = 'cover';
-                            bgImage.style.backgroundPosition = 'center';
-                            bgImage.style.backgroundRepeat = 'no-repeat';
+                        const $bgImage = $(this).find('.bg-image');
+                        if ($bgImage.length) {
+                            $bgImage.css({
+                                'background-image': `url('${slideData.background}')`,
+                                'background-size': 'cover',
+                                'background-position': 'center',
+                                'background-repeat': 'no-repeat'
+                            });
                         }
                     }
                 });
 
-                // Update hero content for first slide
                 updateHeroContent(0);
             }
 
             // Fungsi untuk update konten hero berdasarkan slide aktif
             function updateHeroContent(slideIndex) {
-                const heroTitle = document.querySelector('.hero-title');
-                const heroSubtitle = document.querySelector('.hero-subtitle');
+                const $heroTitle = $('.hero-title');
+                const $heroSubtitle = $('.hero-subtitle');
 
                 if (heroConfig.slides[slideIndex]) {
                     const slideData = heroConfig.slides[slideIndex];
 
-                    if (heroTitle) {
-                        heroTitle.style.opacity = '0';
+                    if ($heroTitle.length) {
+                        $heroTitle.css('opacity', '0');
                         setTimeout(() => {
-                            heroTitle.textContent = slideData.title;
-                            heroTitle.style.opacity = '1';
+                            $heroTitle.text(slideData.title).css('opacity', '1');
                         }, 200);
                     }
-                    if (heroSubtitle) {
-                        heroSubtitle.style.opacity = '0';
+                    if ($heroSubtitle.length) {
+                        $heroSubtitle.css('opacity', '0');
                         setTimeout(() => {
-                            heroSubtitle.textContent = slideData.subtitle;
-                            heroSubtitle.style.opacity = '1';
+                            $heroSubtitle.text(slideData.subtitle).css('opacity', '1');
                         }, 300);
                     }
                 }
@@ -1147,85 +1652,69 @@
 
             // Fungsi untuk menerapkan konfigurasi footer
             function applyFooterConfiguration() {
-                // Update store name in footer
-                const footerStoreName = document.querySelector('.footer h3');
-                if (footerStoreName) footerStoreName.textContent = storeConfig.name;
+                const $footerStoreName = $('.footer h3').first();
+                if ($footerStoreName.length) $footerStoreName.text(storeConfig.name);
 
-                // Update store description in footer
-                const footerDescription = document.querySelector('.footer p');
-                if (footerDescription) footerDescription.textContent = storeConfig.description;
+                const $footerDescription = $('.footer p').first();
+                if ($footerDescription.length) $footerDescription.text(storeConfig.description);
 
-                // Update contact information
-                const contactItems = document.querySelectorAll('.contact-item span');
-                if (contactItems[0]) contactItems[0].textContent = storeConfig.phone;
-                if (contactItems[1]) contactItems[1].textContent = storeConfig.email;
-                if (contactItems[2]) contactItems[2].textContent = storeConfig.address;
+                const $contactItems = $('.contact-item span');
+                if ($contactItems.eq(0).length) $contactItems.eq(0).text(storeConfig.phone);
+                if ($contactItems.eq(1).length) $contactItems.eq(1).text(storeConfig.email);
+                if ($contactItems.eq(2).length) $contactItems.eq(2).text(storeConfig.address);
 
-                // Update logo if available
-                if (storeConfig.logo) {
-                    const brandIcon = document.querySelector('.brand-icon');
-                    if (brandIcon) {
-                        brandIcon.innerHTML =
-                            `<img src="${storeConfig.logo}" alt="${storeConfig.name}" style="width: 40px; height: 40px; object-fit: contain;">`;
+                const computedLogo = storeConfig.logo || (storeConfig.logoPath ? tenantAssetUrl(storeConfig.logoPath) : '');
+                if (computedLogo) {
+                    const $brandIcon = $('.brand-icon');
+                    if ($brandIcon.length) {
+                        $brandIcon.html(`<img src="${computedLogo}" alt="${storeConfig.name}" style="width: 40px; height: 40px; object-fit: contain;">`);
+                    }
+                    const $footerLogo = $('#footerStoreLogo');
+                    if ($footerLogo.length) {
+                        $footerLogo.attr('src', computedLogo).attr('alt', storeConfig.name);
                     }
                 }
             }
 
             // Fungsi untuk menerapkan konfigurasi kategori
             function applyCategoryConfiguration() {
-                // Update "Semua Kategori" text jika ada
-                const allCategoryCard = document.querySelector(
-                    '.category-card[data-category-id="all"] .category-name');
-                if (allCategoryCard && categoryConfig.allCategoryText) {
-                    allCategoryCard.textContent = categoryConfig.allCategoryText;
+                const $allCategoryCard = $('.category-card[data-category-id="all"] .category-name');
+                if ($allCategoryCard.length && categoryConfig.allCategoryText) {
+                    $allCategoryCard.text(categoryConfig.allCategoryText);
                 }
 
-                // Apply category display style
-                const categoryGrid = document.querySelector('.category-grid');
-                if (categoryGrid) {
-                    categoryGrid.className = `category-grid category-${categoryConfig.categoryDisplayStyle}`;
-
-                    // Set max categories per row via CSS custom property
-                    categoryGrid.style.setProperty('--max-categories-per-row', categoryConfig.maxCategoriesPerRow);
+                const $categoryGrid = $('.category-grid');
+                if ($categoryGrid.length) {
+                    $categoryGrid.attr('class', `category-grid category-${categoryConfig.categoryDisplayStyle}`);
+                    $categoryGrid.css('--max-categories-per-row', categoryConfig.maxCategoriesPerRow);
                 }
 
-                // Apply category icon style
-                const categoryCards = document.querySelectorAll('.category-card');
-                categoryCards.forEach(card => {
-                    card.classList.add(`category-${categoryConfig.categoryIconStyle}`);
+                $('.category-card').each(function() {
+                    $(this).addClass(`category-${categoryConfig.categoryIconStyle}`);
                 });
             }
 
             // Fungsi untuk menerapkan konfigurasi produk
             function applyProductConfiguration() {
-                // Update contact button text
-                const contactButtons = document.querySelectorAll('.contact-seller-btn');
-                contactButtons.forEach(btn => {
-                    if (productConfig.contactButtonText) {
-                        btn.textContent = productConfig.contactButtonText;
-                    }
+                const $contactButtons = $('.contact-seller-btn');
+                if (productConfig.contactButtonText) {
+                    $contactButtons.text(productConfig.contactButtonText);
+                }
+
+                $('.product-image').each(function() {
+                    $(this).addClass(`product-image-${productConfig.productImageStyle}`);
                 });
 
-                // Apply product image style
-                const productImages = document.querySelectorAll('.product-image');
-                productImages.forEach(img => {
-                    img.classList.add(`product-image-${productConfig.productImageStyle}`);
-                });
-
-                // Hide/show product elements based on configuration
                 if (!productConfig.showProductPrice) {
-                    const priceElements = document.querySelectorAll('.product-price');
-                    priceElements.forEach(el => el.style.display = 'none');
+                    $('.product-price').hide();
                 }
 
                 if (!productConfig.showProductDescription) {
-                    const descElements = document.querySelectorAll('.product-description');
-                    descElements.forEach(el => el.style.display = 'none');
+                    $('.product-description').hide();
                 }
 
                 if (!productConfig.showContactSeller) {
-                    const contactElements = document.querySelectorAll('.contact-seller-btn');
-                    contactElements.forEach(el => el.style.display = 'none');
+                    $('.contact-seller-btn').hide();
                 }
             }
 
@@ -1241,16 +1730,14 @@
             applyProductConfiguration();
 
             // Atur state aktif untuk kategori
-            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
-            const activeCategoryCard = document.querySelector(
-                `.category-card[data-category-id="${currentCategory}"]`);
-            if (activeCategoryCard) {
-                activeCategoryCard.classList.add('active');
+            $('.category-card').removeClass('active');
+            const $activeCategoryCard = $(`.category-card[data-category-id="${currentCategory}"]`);
+            if ($activeCategoryCard.length) {
+                $activeCategoryCard.addClass('active');
             } else {
-                // Jika tidak ada kategori yang cocok, aktifkan "Semua Kategori"
-                const allCategoryCard = document.querySelector('.category-card[data-category-id="all"]');
-                if (allCategoryCard) {
-                    allCategoryCard.classList.add('active');
+                const $allCategoryCard = $('.category-card[data-category-id="all"]');
+                if ($allCategoryCard.length) {
+                    $allCategoryCard.addClass('active');
                 }
             }
 
@@ -1258,46 +1745,40 @@
             if (currentCategory !== 'all') {
                 showSubcategoriesForCategory(currentCategory);
                 if (currentSubcategory) {
-                    document.querySelectorAll('.subcategory-card').forEach(sc => sc.classList.remove('active'));
-                    const activeSubCard = document.querySelector(
-                        `.subcategory-card[data-subcategory-id="${currentSubcategory}"]`);
-                    if (activeSubCard) activeSubCard.classList.add('active');
+                    $('.subcategory-card').removeClass('active');
+                    const $activeSubCard = $(`.subcategory-card[data-subcategory-id="${currentSubcategory}"]`);
+                    if ($activeSubCard.length) $activeSubCard.addClass('active');
                 }
             } else {
-                // Pastikan subkategori disembunyikan untuk kategori "Semua Kategori"
-                const subcategorySection = document.getElementById('subcategorySection');
-                if (subcategorySection) {
-                    subcategorySection.style.display = 'none';
-                }
+                $('#subcategorySection').hide();
             }
+
+            // Make functions globally accessible
+            window.showSubcategoriesForCategory = showSubcategoriesForCategory;
+            window.filterProductsByCategory = filterProductsByCategory;
+            window.updateHeroContent = updateHeroContent;
         });
-    </script>
 
-    {{-- Sisanya adalah script untuk slider dan modal --}}
-    <script>
-        const productModal = document.getElementById('productModal');
-        const modalContent = document.getElementById('modalContent');
-        const loadingOverlay = document.getElementById('loadingOverlay'); // Ensure this is defined
-
+        // Product Modal Functions (Global scope untuk onclick handler)
         async function showProductDetails(productId) {
-            // Show modal immediately
-            productModal.style.display = 'flex';
-            productModal.classList.add('show');
-            document.body.style.overflow = 'hidden';
+            const $productModal = $('#productModal');
+            const $modalContent = $('#modalContent');
 
-            modalContent.innerHTML = `
+            // Show modal immediately
+            $productModal.fadeIn(300).addClass('show');
+            $('body').css('overflow', 'hidden');
+
+            $modalContent.html(`
                 <div class="modal-loading">
                     <div class="loading-spinner"></div>
                     <p>Memuat detail produk...</p>
                 </div>
-            `;
+            `);
 
             try {
-                // First try to find product in local data
                 let product = allProducts.find(p => p.id == productId);
 
                 if (!product) {
-                    // Fallback to API if not found in local data
                     const response = await fetch(`/api/products/${productId}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -1342,8 +1823,6 @@
                     'https://via.placeholder.com/400x400?text=No+Image';
 
                 const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(product.price);
-
-                // Handle old price for discount display
                 const oldPriceFormatted = product.old_price ?
                     'Rp ' + new Intl.NumberFormat('id-ID').format(product.old_price) : null;
 
@@ -1360,31 +1839,31 @@
                         <div class="image-gallery">
                             ${images.map((img, index) => {
                                 const imgUrl = `${window.location.origin}/tenancy/assets/${img.replace(/^\//, '')}`;
-                                return `
-                                                                                                                                                                                                                                                        <img src="${imgUrl}"
-                                                                                                                                                                                                                                                             alt="${product.name} ${index + 1}"
-                                                                                                                                                                                                                                                             class="gallery-thumb ${index === 0 ? 'active' : ''}"
-                                                                                                                                                                                                                                                             onclick="changeMainImage('${imgUrl}', this)">
-                                                                                                                                                                                                                                                    `;
+                                return `<img src="${imgUrl}" alt="${product.name} ${index + 1}" class="gallery-thumb ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${imgUrl}', this)">`;
                             }).join('')}
                         </div>
                     `;
                 }
 
-                // Generate sizes HTML
+                // Ukuran tersedia: ambil dari spesifikasi jika ada, fallback ke S–XXL
                 let sizesHTML = '';
-                if (sizes && sizes.length > 0) {
+                let sizeItems = [];
+                if (Array.isArray(sizes) && sizes.length > 0) {
+                    sizeItems = sizes;
+                } else {
+                    sizeItems = ['S','M','L','XL','XXL'];
+                }
+                if (sizeItems.length > 0) {
                     sizesHTML = `
-                        <div class="modal-section">
+                        <div class=\"modal-section\">
                             <h4>Ukuran Tersedia:</h4>
-                            <div class="sizes-list">
-                                ${sizes.map(size => `<span class="size-tag">${size}</span>`).join('')}
+                            <div class=\"sizes-list\">
+                                ${sizeItems.map(s => `<span class=\\\"size-tag\\\">${s}</span>`).join('')}
                             </div>
                         </div>
                     `;
                 }
 
-                // Generate colors HTML
                 let colorsHTML = '';
                 if (colors && colors.length > 0) {
                     colorsHTML = `
@@ -1397,11 +1876,83 @@
                     `;
                 }
 
-                modalContent.innerHTML = `
-                    <div class="modal-product-details">
+                // Jika ukuran kosong, tampilkan info stok
+                let stockHTML = '';
+                if (!sizes || sizes.length === 0) {
+                    const rawStock = typeof product.stock === 'number' ? product.stock : null;
+                    const availability = typeof product.isAvailable === 'boolean' ? product.isAvailable : null;
+                    let stockClass = 'out-of-stock';
+                    let stockText = 'Stok Habis';
+                    let stockCountText = '';
+
+                    if (rawStock !== null) {
+                        if (rawStock > 10) {
+                            stockClass = 'in-stock';
+                            stockText = 'Stok Banyak';
+                        } else if (rawStock > 0) {
+                            stockClass = 'low-stock';
+                            stockText = 'Stok Terbatas';
+                        } else {
+                            stockClass = 'out-of-stock';
+                            stockText = 'Stok Habis';
+                        }
+                        stockCountText = ` (${rawStock})`;
+                    } else if (availability !== null) {
+                        if (availability) {
+                            stockClass = 'in-stock';
+                            stockText = 'Tersedia';
+                        } else {
+                            stockClass = 'out-of-stock';
+                            stockText = 'Stok Habis';
+                        }
+                    } else {
+                        stockClass = 'low-stock';
+                        stockText = 'Ketersediaan stok tidak diketahui';
+                    }
+
+                    stockHTML = `
+                        <div class="modal-section">
+                            <h4>Ketersediaan Stok:</h4>
+                            <p class="stock-info ${stockClass}">${stockText}${stockCountText}</p>
+                        </div>
+                    `;
+                }
+
+                // Produk serupa berdasarkan kategori
+                const similarProducts = getSimilarProducts(product, 6);
+                let similarProductsHTML = '';
+                if (similarProducts.length > 0) {
+                    similarProductsHTML = `
+                        <div class="modal-similar-section">
+                            <h3>Produk Serupa</h3>
+                            <div class="similar-grid">
+                                ${similarProducts.map(sp => {
+                                    const imagePath = sp.image || (sp.product_images && sp.product_images[0] ? sp.product_images[0].image_path : null);
+                                    const imgUrl = imagePath ? `${window.location.origin}/tenancy/assets/${String(imagePath).replace(/^\//,'')}` : 'https://via.placeholder.com/140?text=No+Image';
+                                    const spPriceStr = 'Rp ' + new Intl.NumberFormat('id-ID').format(Number(sp.price) || 0);
+                                    return `
+                                        <div class="similar-card" onclick="showProductDetails(${sp.id})">
+                                            <div class="similar-image">
+                                                <img src="${imgUrl}" alt="${sp.name}">
+                                            </div>
+                                            <div class="similar-info">
+                                                <div class="similar-name">${sp.name}</div>
+                                                <div class="similar-price">${spPriceStr}</div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const isPromo = !!(product.is_promo || product.isPromo);
+                $modalContent.html(`
+                    <div class="modal-product-details" style="position: relative;">
+                        ${isPromo ? `<div class=\"modal-promo-badge\">PROMO</div>` : ''}
                         <div class="modal-product-image">
-                            <img id="mainProductImage" src="${primaryImageUrl}"
-                                 alt="${product.name}"
+                            <img id="mainProductImage" src="${primaryImageUrl}" alt="${product.name}"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                  style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px;">
                             <div class="no-image" style="display: none; height: 400px; background: #f0f0f0; border-radius: 12px; align-items: center; justify-content: center; font-size: 1.2rem; color: #999;">📷 Image Not Available</div>
@@ -1413,431 +1964,77 @@
                                     <span class="category-name">${product.category?.name || 'Uncategorized'}</span>
                                     ${product.sub_category?.name || product.subcategory?.name ? `<span class="subcategory-name"> > ${product.sub_category?.name || product.subcategory?.name}</span>` : ''}
                                 </div>
-                                ${sku ? `<div class="modal-product-sku">SKU: ${sku}</div>` : ''}
-                                ${brand ? `<div class="modal-product-brand">Brand: ${brand}</div>` : ''}
+
                             </div>
                             <h2 class="modal-product-name">${product.name}</h2>
                             <div class="modal-product-pricing">
                                 <div class="price-container">
                                     <div class="modal-product-price">${formattedPrice}</div>
                                     ${oldPriceFormatted ? `<div class="modal-product-old-price">${oldPriceFormatted}</div>` : ''}
+
                                 </div>
                             </div>
-
                             <div class="modal-product-description">
                                 <h4>Deskripsi:</h4>
                                 <p>${product.description || 'Tidak ada deskripsi tersedia untuk produk ini.'}</p>
                             </div>
-
+                            ${brand ? `<div class="modal-section"><h4>Brand:</h4><p class="spec-value">${brand}</p></div>` : ''}
                             <div class="modal-product-specs">
-                                ${material ? `
-                                                                                                                                                                                                                                                        <div class="modal-section">
-                                                                                                                                                                                                                                                            <h4>Material:</h4>
-                                                                                                                                                                                                                                                            <p class="spec-value">${material}</p>
-                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                    ` : ''}
-                                ${sizesHTML}
-                                ${colorsHTML}
-                            </div>
+                                ${material ? `<div class=\"modal-section\"><h4>Material:</h4><p class=\"spec-value\">${material}</p></div>` : ''}
 
+                                ${colorsHTML}
+
+                            </div>
                             <div class="modal-product-actions">
                                 <button class="btn-contact contact-seller-btn" onclick="contactSeller('${product.name}')">
                                     <i class="fab fa-whatsapp"></i> Hubungi
                                 </button>
                             </div>
+                            ${similarProductsHTML}
                         </div>
                     </div>
+                `);
 
-                    <style>
-                        .modal-product-details {
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 2rem;
-                            padding: 2rem;
-                        }
-
-                        .modal-product-category {
-                            font-size: 0.9rem;
-                            color: #777;
-                            margin-bottom: 0.5rem;
-                        }
-
-                        .category-name {
-                            font-weight: 600;
-                            color: #555;
-                        }
-
-                        .subcategory-name {
-                            color: #888;
-                            font-weight: 400;
-                        }
-
-                        .modal-product-sku {
-                            font-size: 0.85rem;
-                            color: #666;
-                            margin-bottom: 0.3rem;
-                        }
-
-                        .modal-product-brand {
-                            font-size: 0.85rem;
-                            color: #666;
-                            margin-bottom: 0.5rem;
-                        }
-
-                        .modal-product-name {
-                            font-size: 2rem;
-                            font-weight: 700;
-                            color: #333;
-                            margin-bottom: 1rem;
-                            line-height: 1.2;
-                        }
-
-                        .price-container {
-                            display: flex;
-                            align-items: center;
-                            gap: 1rem;
-                            margin-bottom: 1.5rem;
-                        }
-
-                        .modal-product-price {
-                            font-size: 1.8rem;
-                            font-weight: 700;
-                            color: #e74c3c;
-                        }
-
-                        .modal-product-old-price {
-                            font-size: 1.2rem;
-                            color: #999;
-                            text-decoration: line-through;
-                            font-weight: 400;
-                        }
-
-                        .modal-section {
-                            margin-bottom: 1.5rem;
-                        }
-
-                        .modal-section h4 {
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            color: #333;
-                            margin-bottom: 0.5rem;
-                        }
-
-                        .modal-section p {
-                            line-height: 1.6;
-                            color: #555;
-                        }
-
-                        .sizes-list, .colors-list {
-                            display: flex;
-                            flex-wrap: wrap;
-                            gap: 0.5rem;
-                        }
-
-                        .size-tag, .color-tag {
-                            background: #f0f0f0;
-                            padding: 0.4rem 0.8rem;
-                            border-radius: 20px;
-                            font-size: 0.9rem;
-                            font-weight: 500;
-                            border: 1px solid #ddd;
-                        }
-
-                        .stock-info.in-stock { color: #28a745; }
-                        .stock-info.low-stock { color: #ffc107; }
-                        .stock-info.out-of-stock { color: #dc3545; }
-
-                        /* Gallery Styles */
-                        .image-gallery {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 1rem;
-                        }
-
-                        .main-image {
-                            width: 100%;
-                            height: 400px;
-                            object-fit: cover;
-                            border-radius: 8px;
-                            border: 1px solid #ddd;
-                        }
-
-                        .gallery-thumbnails {
-                            display: flex;
-                            gap: 0.5rem;
-                            overflow-x: auto;
-                            padding: 0.5rem 0;
-                        }
-
-                        .gallery-thumb {
-                            width: 60px;
-                            height: 60px;
-                            object-fit: cover;
-                            border-radius: 4px;
-                            border: 2px solid transparent;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            flex-shrink: 0;
-                        }
-
-                        .gallery-thumb:hover {
-                            border-color: #007bff;
-                            opacity: 0.8;
-                        }
-
-                        .gallery-thumb.active {
-                            border-color: #007bff;
-                            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-                        }
-
-                        /* Error Modal Styles */
-                        .modal-error {
-                            text-align: center;
-                            padding: 3rem 2rem;
-                            max-width: 400px;
-                            margin: 0 auto;
-                        }
-
-                        .error-icon {
-                            font-size: 4rem;
-                            margin-bottom: 1rem;
-                        }
-
-                        .modal-error h3 {
-                            color: #dc3545;
-                            margin-bottom: 1rem;
-                            font-size: 1.5rem;
-                        }
-
-                        .modal-error p {
-                            color: #666;
-                            margin-bottom: 2rem;
-                            line-height: 1.6;
-                        }
-
-                        .btn-retry {
-                            background: #007bff;
-                            color: white;
-                            border: none;
-                            padding: 0.75rem 1.5rem;
-                            border-radius: 6px;
-                            font-size: 1rem;
-                            cursor: pointer;
-                            transition: background-color 0.3s ease;
-                        }
-
-                        .btn-retry:hover {
-                            background: #0056b3;
-                        }
-
-                        /* Action Buttons */
-                        .modal-actions {
-                            display: flex;
-                            gap: 1rem;
-                            margin-top: 2rem;
-                        }
-
-                        .btn-contact {
-                            flex: 1;
-                            background: linear-gradient(135deg, #25d366, #128c7e);
-                            color: white;
-                            border: none;
-                            padding: 14px 28px;
-                            border-radius: 30px;
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 10px;
-                            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
-                            text-decoration: none;
-                            width: 100%;
-                        }
-
-                        .btn-contact:hover {
-                            background: linear-gradient(135deg, #128c7e, #25d366);
-                            transform: translateY(-2px);
-                            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
-                        }
-
-                        .btn-contact i {
-                            font-size: 1.2rem;
-                        }
-
-                        .modal-product-actions {
-                            margin-top: 2rem;
-                        }
-
-                        @media (max-width: 768px) {
-                            .modal-product-details {
-                                grid-template-columns: 1fr;
-                                gap: 1rem;
-                                padding: 1rem;
-                            }
-
-                            .modal-product-name {
-                                font-size: 1.5rem;
-                            }
-
-                            .modal-product-price {
-                                font-size: 1.4rem;
-                            }
-
-                            .main-image {
-                                height: 250px;
-                            }
-
-                            .modal-actions {
-                                flex-direction: column;
-                            }
-                        }
-
-                        /* Additional Responsive Improvements */
-                        @media (max-width: 576px) {
-                            .container {
-                                padding: 1rem 0.5rem;
-                            }
-
-                            .section-title h2 {
-                                font-size: 1.8rem;
-                            }
-
-                            .category-grid {
-                                grid-template-columns: repeat(2, 1fr);
-                                gap: 0.75rem;
-                            }
-
-                            .category-card {
-                                padding: 1rem;
-                                min-height: 120px;
-                            }
-
-                            .category-card h3 {
-                                font-size: 1rem;
-                                margin-bottom: 0.5rem;
-                            }
-
-                            .category-card p {
-                                font-size: 0.8rem;
-                                line-height: 1.3;
-                            }
-
-                            .search-and-filters-wrapper {
-                                flex-direction: column;
-                                gap: 1rem;
-                            }
-
-                            .filters-section {
-                                flex-direction: column;
-                                gap: 0.75rem;
-                            }
-
-                            .filter-group {
-                                width: 100%;
-                            }
-
-                            .filter-group select {
-                                width: 100%;
-                                padding: 0.75rem;
-                                font-size: 0.9rem;
-                            }
-
-                            .search-box {
-                                width: 100%;
-                                padding: 0.75rem 1rem;
-                                font-size: 0.9rem;
-                            }
-
-                            .products-grid {
-                                grid-template-columns: repeat(2, 1fr);
-                                gap: 0.75rem;
-                            }
-
-                            .product-card {
-                                padding: 0.75rem;
-                            }
-
-                            .product-image {
-                                height: 140px;
-                            }
-
-                            .product-name {
-                                font-size: 0.9rem;
-                                line-height: 1.2;
-                                margin-bottom: 0.5rem;
-                            }
-
-                            .product-price {
-                                font-size: 1rem;
-                                margin-bottom: 0.5rem;
-                            }
-
-                            .product-description {
-                                font-size: 0.8rem;
-                                line-height: 1.3;
-                                margin-bottom: 0.75rem;
-                            }
-
-                            .btn-detail {
-                                padding: 0.5rem 0.75rem;
-                                font-size: 0.8rem;
-                            }
-                        }
-
-                        @media (max-width: 400px) {
-                            .category-grid {
-                                grid-template-columns: 1fr;
-                                gap: 0.5rem;
-                            }
-
-                            .products-grid {
-                                grid-template-columns: 1fr;
-                                gap: 0.5rem;
-                            }
-
-                            .product-image {
-                                height: 180px;
-                            }
-                        }
-                    </style>
-                `;
-
-                productModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+                $productModal.addClass('show');
+                $('body').css('overflow', 'hidden');
 
             } catch (error) {
                 console.error('Error fetching product details:', error);
                 hideLoadingOverlay();
-                modalContent.innerHTML = `
+                $modalContent.html(`
                     <div class="modal-error">
                         <div class="error-icon">⚠️</div>
                         <h3>Gagal Memuat Detail Produk</h3>
                         <p>Terjadi kesalahan saat memuat detail produk. Silakan coba lagi.</p>
                         <button class="btn-retry" onclick="showProductDetails(${productId})">Coba Lagi</button>
                     </div>
-                `;
-                productModal.style.display = 'flex';
+                `);
+                $productModal.fadeIn(300);
             }
         }
 
-        // Function to change main image in gallery
+        // Ambil produk serupa berdasarkan kategori yang sama
+        function getSimilarProducts(currentProduct, max = 6) {
+            try {
+                const categoryId = currentProduct.product_category_id || currentProduct.category?.id;
+                if (!categoryId) return [];
+                const candidates = (Array.isArray(allProducts) ? allProducts : []).filter(p => {
+                    const pCategoryId = p.product_category_id || p.category?.id;
+                    return p.id != currentProduct.id && pCategoryId == categoryId;
+                });
+                return candidates.slice(0, max);
+            } catch (e) {
+                console.warn('getSimilarProducts error:', e);
+                return [];
+            }
+        }
+
         function changeMainImage(imageUrl, thumbElement) {
-            const mainImage = document.getElementById('mainProductImage');
-            if (mainImage) {
-                mainImage.src = imageUrl;
-            }
-
-            // Update active thumbnail
-            document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            thumbElement.classList.add('active');
+            $('#mainProductImage').attr('src', imageUrl);
+            $('.gallery-thumb').removeClass('active');
+            $(thumbElement).addClass('active');
         }
 
-        // Function to contact seller via WhatsApp
         function contactSeller(productName) {
             const storePhone = "{{ $userStore->store_phone ?? ($userStore->phone ?? '') }}";
             if (!storePhone) {
@@ -1846,56 +2043,44 @@
             }
 
             const storeName = "{{ $userStore->store_name ?? 'Toko' }}";
-            const message =
-                `Halo ${storeName},\n\nSaya tertarik dengan produk "${productName}" yang ada di katalog Anda.\n\nBisakah Anda memberikan informasi lebih lanjut mengenai:\n- Ketersediaan stok\n- Detail produk\n- Harga dan cara pemesanan\n\nTerima kasih!`;
+            const message = `Halo ${storeName},\n\nSaya tertarik dengan produk "${productName}" yang ada di katalog Anda.\n\nBisakah Anda memberikan informasi lebih lanjut mengenai:\n- Ketersediaan stok\n- Detail produk\n- Harga dan cara pemesanan\n\nTerima kasih!`;
 
-            // Clean phone number (remove non-numeric characters)
             const cleanPhone = storePhone.replace(/[^0-9]/g, '');
-
-            // Add country code if not present
             const formattedPhone = cleanPhone.startsWith('62') ? cleanPhone : '62' + cleanPhone.replace(/^0/, '');
-
             const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
 
-        // Close modal
         function closeModal() {
-            if (productModal) {
-                productModal.classList.remove('show');
-                productModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-
-                // Clear modal content
-                const modalContent = document.getElementById('modalContent');
-                if (modalContent) {
-                    modalContent.innerHTML = '';
-                }
+            const $productModal = $('#productModal');
+            if ($productModal.length) {
+                $productModal.removeClass('show').fadeOut(300);
+                $('body').css('overflow', 'auto');
+                $('#modalContent').empty();
             }
         }
 
-        // Close modal when clicking outside
-        productModal.addEventListener('click', function(event) {
-            if (event.target === productModal) {
-                closeModal();
-            }
-        });
+        // Close modal events menggunakan jQuery
+        $(document).ready(function() {
+            // Close button click
+            $('.modal-close').on('click', closeModal);
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && productModal && productModal.classList.contains('show')) {
-                closeModal();
-            }
+            // Click outside modal
+            $('#productModal').on('click', function(event) {
+                if ($(event.target).is('#productModal')) {
+                    closeModal();
+                }
+            });
+
+            // Escape key
+            $(document).on('keydown', function(event) {
+                if (event.key === 'Escape' && $('#productModal').hasClass('show')) {
+                    closeModal();
+                }
+            });
         });
 
         // ===== BANNER SLIDER MENGGUNAKAN SWIPER.JS =====
-        // Implementasi slider banner sudah dipindahkan ke Swiper.js
-        // untuk performa yang lebih baik dan fitur yang lebih lengkap
-    </script>
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        // Banner data untuk hero content updates
         @php
             $bannerData = $banners->map(function ($banner) {
                 return [
@@ -1908,82 +2093,78 @@
         @endphp
 
         const bannerData = @json($bannerData);
-        console.log('Banner data:', bannerData);
 
-        // Function to update hero content
-        function updateHeroContent(index) {
+        // Function to update hero content menggunakan jQuery
+        function updateHeroContentSwiper(index) {
             const banner = bannerData[index] || bannerData[0];
-            const titleElement = document.getElementById('heroTitle');
-            const subtitleElement = document.getElementById('heroSubtitle');
-            const buttonElement = document.getElementById('heroButton');
+            const $titleElement = $('#heroTitle');
+            const $subtitleElement = $('#heroSubtitle');
+            const $buttonElement = $('#heroButton');
 
-            if (titleElement && subtitleElement) {
+            if ($titleElement.length && $subtitleElement.length) {
                 // Fade out
-                titleElement.style.opacity = '0';
-                subtitleElement.style.opacity = '0';
+                $titleElement.css('opacity', '0');
+                $subtitleElement.css('opacity', '0');
 
                 setTimeout(() => {
                     // Update content
-                    titleElement.textContent = banner.title;
-                    subtitleElement.textContent = banner.subtitle;
+                    $titleElement.text(banner.title);
+                    $subtitleElement.text(banner.subtitle);
 
                     // Update button
-                    if (buttonElement && banner.link) {
-                        buttonElement.href = banner.link;
-                        buttonElement.textContent = banner.button_text;
-                        buttonElement.style.display = 'inline-block';
-                    } else if (buttonElement) {
-                        buttonElement.style.display = 'none';
+                    if ($buttonElement.length && banner.link) {
+                        $buttonElement.attr('href', banner.link).text(banner.button_text).show();
+                    } else if ($buttonElement.length) {
+                        $buttonElement.hide();
                     }
 
                     // Fade in
-                    titleElement.style.opacity = '1';
-                    subtitleElement.style.opacity = '1';
+                    $titleElement.css('opacity', '1');
+                    $subtitleElement.css('opacity', '1');
                 }, 250);
             }
         }
 
         // Initialize Swiper for banner slider
-        console.log('Initializing Swiper...');
-        const swiper = new Swiper(".swiper-container", {
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                dynamicBullets: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
-            speed: 800,
-            on: {
-                slideChange: function() {
-                    const realIndex = this.realIndex;
-                    console.log('Slide changed to:', realIndex);
-                    updateHeroContent(realIndex);
+        $(document).ready(function() {
+            console.log('Initializing Swiper...');
+            const swiper = new Swiper(".swiper-container", {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
                 },
-                init: function() {
-                    console.log('Swiper initialized successfully');
-                    console.log('Navigation buttons:', document.querySelectorAll(
-                        '.swiper-button-prev, .swiper-button-next'));
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                    dynamicBullets: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
+                },
+                speed: 800,
+                on: {
+                    slideChange: function() {
+                        const realIndex = this.realIndex;
+                        console.log('Slide changed to:', realIndex);
+                        updateHeroContentSwiper(realIndex);
+                    },
+                    init: function() {
+                        console.log('Swiper initialized successfully');
+                        console.log('Navigation buttons:', $('.swiper-button-prev, .swiper-button-next'));
+                    }
                 }
-            }
-        });
+            });
 
-        console.log('Swiper instance:', swiper);
+            console.log('Swiper instance:', swiper);
 
-        // Initialize hero content on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateHeroContent(0);
+            // Initialize hero content on page load
+            updateHeroContentSwiper(0);
         });
     </script>
 
