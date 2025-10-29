@@ -183,6 +183,9 @@ class StoreController extends Controller
     /**
      * Get product details (for AJAX)
      */
+    /**
+     * Get product details (for AJAX)
+     */
     public function getProductDetails($productId)
     {
         $userStore = $this->getCurrentStore();
@@ -190,10 +193,43 @@ class StoreController extends Controller
         $product = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
             ->where('id', $productId)
-            ->with(['category', 'subCategory', 'images'])
+            ->with(['category', 'subCategory', 'brand', 'images']) // Pastikan 'brand' dan 'subCategory' di-load
             ->firstOrFail();
 
-        return response()->json(['success' => true, 'product' => $product]);
+        // Format data agar SAMA PERSIS dengan @json($productsForJs) di blade
+        $images = $product->images
+            ? $product->images
+                ->sortBy('position')
+                ->map(fn($img) => route('tenant.asset.domain', ['path' => ltrim($img->image_url, '/')]))
+                ->values()
+                ->all()
+            : [];
+        if ($product->primary_image_src) {
+            array_unshift($images, $product->primary_image_src);
+        }
+
+        // Dapatkan path placeholder jika gambar utama tidak ada
+        // (Gunakan path placeholder yang sama dengan di blade Anda)
+        $placeholder = asset('assets/demo/toko-kosmetik/img/placeholder.png');
+
+        $productData = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'brand' => $product->brand->name ?? '',
+            'category_id' => $product->product_category_id,
+            'category' => $product->category->name ?? 'Uncategorized',
+            'subcategory' => $product->subCategory ? $product->subCategory->name : '', // Gunakan relasi subCategory
+            'price_formatted' => $product->price_idr, // Accessor
+            'old_price_formatted' => $product->old_price_idr, // Accessor
+            'description' => $product->description,
+            'specs' => $product->specification, // Pastikan ini adalah array
+            'images' => array_unique($images),
+            'image' => $product->primary_image_src ?: $placeholder,
+            'is_new' => $product->is_new,
+            'discount_percentage' => $product->discount_percentage, // Accessor
+        ];
+
+        return response()->json(['success' => true, 'product' => $productData]);
     }
 
     /**
