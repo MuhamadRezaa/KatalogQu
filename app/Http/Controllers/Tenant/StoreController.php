@@ -12,6 +12,8 @@ use App\Models\PriceRange; // Added
 use Illuminate\Support\Facades\Cache;
 // Add ProductSubCategory model
 use App\Models\ProductSubCategory;
+// [PERBAIKAN] Tambahkan model StoreCategory
+use App\Models\StoreCategory;
 
 
 class StoreController extends Controller
@@ -23,6 +25,18 @@ class StoreController extends Controller
     {
         // Get current store info
         $userStore = $this->getCurrentStore();
+
+        // [PERBAIKAN] Logika untuk mengambil setelan menu dinamis
+        $menus = [];
+        if ($userStore && $userStore->catalogTemplate) {
+            $currentStoreCategoryId = $userStore->catalogTemplate->categories_store_id;
+            $storeCategory = StoreCategory::find($currentStoreCategoryId);
+            if ($storeCategory) {
+                $menus = $storeCategory->menus->pluck('code')->toArray();
+            }
+        }
+        // [AKHIR PERBAIKAN]
+
 
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -196,7 +210,8 @@ class StoreController extends Controller
             'brands',
             'priceRanges',
             'banners',
-            'categorySubcategoryMap'
+            'categorySubcategoryMap',
+            'menus' // [PERBAIKAN] Kirimkan data menu ke view
         ));
     }
 

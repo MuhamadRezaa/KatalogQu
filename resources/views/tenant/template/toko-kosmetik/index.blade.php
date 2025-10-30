@@ -754,19 +754,61 @@
     </div>
     {{-- AKHIR PERBARUAN --}}
 
+    {{-- ============================================= --}}
+    {{-- [PERBAIKAN FOOTER] Penambahan Info Kontak     --}}
+    {{-- ============================================= --}}
     <footer id="contact" class="footer py-5">
         <div class="container">
             <div class="row">
+                {{-- Kolom 1: Logo & Deskripsi (Sudah Ada) --}}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="footer-brand">
                         @if ($userStore->store_logo)
                             <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                                 alt="Logo" class="footer-logo mb-3" width="150"
                                 style="border-radius:10px; background: white; padding: 10px;">
-                        @else<h4 class="text-white">{{ $userStore->store_name }}</h4>
+                        @else
+                            <h4 class="text-white">{{ $userStore->store_name }}</h4>
                         @endif
                         <p class="footer-description">{{ $userStore->store_description }}</p>
                     </div>
+                </div>
+
+                {{-- Kolom 2: Info Kontak (BARU) --}}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="footer-title">Hubungi Kami</h5>
+                    <ul class="list-unstyled">
+                        @if ($userStore->store_phone)
+                            <li class="mb-2">
+                                <i class="fas fa-phone fa-fw me-2"></i>
+                                <a href="tel:{{ $userStore->store_phone }}">{{ $userStore->store_phone }}</a>
+                            </li>
+                        @endif
+                        @if ($userStore->store_email)
+                            <li class="mb-2">
+                                <i class="fas fa-envelope fa-fw me-2"></i>
+                                <a href="mailto:{{ $userStore->store_email }}">{{ $userStore->store_email }}</a>
+                            </li>
+                        @endif
+                        {{-- Mengambil dari 'whatsapp_number' jika ada --}}
+                        @if ($userStore->whatsapp_number)
+                             <li class="mb-2">
+                                <i class="fab fa-whatsapp fa-fw me-2"></i>
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $userStore->whatsapp_number) }}" target="_blank">{{ $userStore->whatsapp_number }}</a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+
+                {{-- Kolom 3: Lokasi (BARU) --}}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    @if ($userStore->store_address)
+                        <h5 class="footer-title">Lokasi</h5>
+                        <p style="opacity: 0.9;">
+                            <i class="fas fa-map-marker-alt fa-fw me-2"></i>
+                            {{ $userStore->store_address }}
+                        </p>
+                    @endif
                 </div>
             </div>
             <div class="row mt-4 pt-4 border-top border-secondary">
@@ -777,6 +819,10 @@
             </div>
         </div>
     </footer>
+    {{-- ============================================= --}}
+    {{-- [AKHIR PERBAIKAN FOOTER]                     --}}
+    {{-- ============================================= --}}
+
 
     <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
         aria-hidden="true">
@@ -871,7 +917,7 @@
                     'brand' => $product->brand->name ?? '',
                     'category_id' => $product->product_category_id,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'subcategory' => $product->subcategory->name ?? '',
+                    'subcategory' => $product->subCategory->name ?? '', // Perbaikan: Gunakan subCategory
                     'price_formatted' => $product->price_idr,
                     'old_price_formatted' => $product->old_price_idr,
                     'description' => $product->description,
@@ -884,18 +930,11 @@
             })
             ->values();
 
-        // [PERBAIKAN TOTAL] Membuat data Kategori -> Subkategori dari variabel Controller
-        // Pastikan variabel $categoriesWithSubcategories sudah dikirim dari Controller (Langkah 1)
-        $categoriesForFilterJs = collect($categoriesWithSubcategories ?? [])
-            ->keyBy('id')
-            ->map(function ($category) {
-                // Mengambil nama dari relasi subcategories yang sudah di-load
-                return $category->subcategories->pluck('name');
-            })
-            ->filter(function ($subcategories) {
-                // Hanya sertakan kategori yang punya sub-kategori
-                return $subcategories->isNotEmpty();
-            });
+        // ========================================================
+        // [PERBAIKAN FILTER] Menggunakan $categorySubcategoryMap
+        // ========================================================
+        // Variabel $categorySubcategoryMap sudah berisi data [category_id => collection_of_subcategories]
+        $categoriesForFilterJs = $categorySubcategoryMap ?? collect([]);
 
     @endphp
 
@@ -903,12 +942,17 @@
         document.addEventListener("DOMContentLoaded", function() {
             // Data dari PHP
             const allProductsData = @json($productsForJs);
-            // [PERBAIKAN TOTAL] Menggunakan data kategori dan subkategori yang lengkap dari controller
+
+            // ========================================================
+            // [PERBAIKAN FILTER] Data filter diambil dari $categoriesForFilterJs
+            // ========================================================
             const categoriesData = @json($categoriesForFilterJs);
 
             // Inisialisasi Modal dan Variabel
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
-            const storePhoneNumber = "{{ $userStore->store_phone ?? '' }}";
+            // [PERBAIKAN FOOTER] Gunakan 'whatsapp_number' jika ada, fallback ke 'store_phone'
+            const storePhoneNumber = "{{ $userStore->whatsapp_number ?? $userStore->store_phone ?? '' }}";
+
 
             // Inisialisasi Swiper/Carousel
             if (document.querySelector('.featured-swiper')) {
@@ -991,8 +1035,10 @@
                 }
 
                 const message = `Halo, saya tertarik dengan produk "${product.name}".`;
+                // [PERBAIKAN FOOTER] Pastikan nomor telepon bersih dari karakter non-numerik
+                const cleanPhoneNumber = storePhoneNumber.replace(/[^0-9]/g, '');
                 document.getElementById('chatButton').href =
-                    `https://wa.me/${storePhoneNumber}?text=${encodeURIComponent(message)}`;
+                    `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(message)}`;
 
                 // Logika untuk menampilkan produk terkait (related products)
                 const relatedContainer = document.getElementById('related-products-container');
@@ -1042,10 +1088,15 @@
                     // Asumsi route-nya adalah '/product-details/{productId}'
                     // Pastikan route ini terdaftar di file route tenant Anda (misal: routes/tenant.php)
                     // dan mengarah ke StoreController@getProductDetails
-                    fetch(`/product-details/${productId}`)
+                    {{-- SETELAH PERBAIKAN (Sekitar baris 960) --}}
+                    // [PERBAIKAN] Menggunakan route API prefix '/api/products/' yang lebih standar
+                    // untuk menghindari masalah routing di server produksi (hosting).
+                    fetch(`/api/products/${productId}`)
                         .then(response => {
                             if (!response.ok) {
-                                throw new Error('Gagal mengambil data produk.');
+                                // [PERBAIKAN] Memberi log error yang lebih detail di console
+                                console.error('Fetch response not OK:', response.status, response.statusText);
+                                throw new Error(`Gagal mengambil data produk (Status: ${response.status}).`);
                             }
                             return response.json();
                         })
@@ -1096,32 +1147,41 @@
             const filterControls = document.querySelectorAll('.filter-control');
             let debounceTimer;
 
-            // [PERBAIKAN TOTAL] Fungsi untuk mengisi filter sub-kategori berdasarkan data lengkap dari server
+            // ========================================================================
+            // [PERBAIKAN FILTER] Fungsi untuk mengisi filter sub-kategori
+            // ========================================================================
             function updateSubcategoryFilter() {
                 const categoryId = document.getElementById('categoryFilter').value;
                 const subcategoryFilter = document.getElementById('subcategoryFilter');
 
-                // Simpan nilai sub-kategori yang sedang dipilih (jika ada)
+                // Simpan nilai ID sub-kategori yang sedang dipilih (jika ada)
                 const currentSubcategoryValue = new URLSearchParams(window.location.search).get('subcategory');
 
                 subcategoryFilter.innerHTML = '<option value="">Semua Sub Kategori</option>'; // Reset
-                subcategoryFilter.disabled = false; // Nonaktifkan sementara
+                subcategoryFilter.disabled = true; // Nonaktifkan by default
 
+                // Cek jika categoryId ada, dan ada datanya di categoriesData
                 if (categoryId && categoriesData[categoryId] && categoriesData[categoryId].length > 0) {
-                    const subcategories = categoriesData[categoryId];
-                    subcategories.forEach(subName => {
+                    const subcategories = categoriesData[categoryId]; // Ini adalah array of objects [{id, name}, ...]
+
+                    subcategories.forEach(sub => { // 'sub' adalah objek, bukan string 'subName'
                         const option = document.createElement('option');
-                        option.value = subName;
-                        option.textContent = subName;
-                        // Jika nilai sama dengan yang ada di URL, pilih opsi ini
-                        if (subName === currentSubcategoryValue) {
+                        option.value = sub.id; // BENAR: Menggunakan ID sebagai value
+                        option.textContent = sub.name; // BENAR: Menggunakan NAMA sebagai text
+
+                        // Cek jika ID subkategori sama dengan yang ada di URL
+                        if (sub.id == currentSubcategoryValue) { // Menggunakan == untuk perbandingan (string vs number)
                             option.selected = true;
                         }
                         subcategoryFilter.appendChild(option);
                     });
+
                     subcategoryFilter.disabled = false; // Aktifkan kembali jika ada isinya
                 }
             }
+            // ========================================================================
+            // [AKHIR PERBAIKAN FILTER]
+            // ========================================================================
 
             // Fungsi untuk mengisi filter brand secara dinamis
             function populateBrandFilter() {
@@ -1153,7 +1213,7 @@
             function applyFilters() {
                 const search = document.getElementById('searchInput').value;
                 const category = document.getElementById('categoryFilter').value;
-                const subcategory = document.getElementById('subcategoryFilter').value;
+                const subcategory = document.getElementById('subcategoryFilter').value; // Ini sekarang berisi ID
                 const brand = document.getElementById('brandFilter').value;
                 const sort = document.getElementById('sortFilter').value;
                 const priceFilter = document.getElementById('priceFilter').options[document.getElementById(
@@ -1164,7 +1224,7 @@
                 const params = new URLSearchParams({
                     search,
                     category,
-                    subcategory,
+                    subcategory, // Mengirim ID subkategori
                     brand,
                     sort,
                     price_min,
