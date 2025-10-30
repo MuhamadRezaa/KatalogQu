@@ -43,11 +43,6 @@ Route::middleware([
     // CUSTOMER-FACING STORE ROUTES
     // ========================================
 
-
-    // Route::get('/', function () {
-    //     return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-    // });
-
     // Main store page - uses template based on catalog_template_id
     Route::get('/', [StoreController::class, 'index'])->name('tenant.store.index');
 
@@ -62,6 +57,9 @@ Route::middleware([
 
     // Search
     Route::get('/search', [StoreController::class, 'search'])->name('tenant.store.search');
+
+    // AJAX ROUTE
+    Route::get('/filter-products', [StoreProductController::class, 'filterProductsAjax'])->name('products.filter.ajax');
 
     // API routes for AJAX
     Route::prefix('api')->name('tenant.api.')->group(function () {

@@ -12,10 +12,12 @@ use Illuminate\Http\Request;
 use App\Models\StoreCategory;
 use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class StoreProductController extends Controller
@@ -63,7 +65,7 @@ class StoreProductController extends Controller
 
                     }
 
-            
+
         }
         return $path;
     }
@@ -369,5 +371,113 @@ class StoreProductController extends Controller
 
         return redirect()->route('tenant.admin.products.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Produk berhasil dihapus!');
+    }
+
+    public function filterProductsAjax(Request $request)
+    {
+        DB::enableQueryLog();
+
+        // Get the current tenant's store
+        $userStore = $this->getCurrentStore();
+
+        $query = StoreProduct::query()
+            ->where('user_store_id', $userStore->id)
+            ->where('is_active', true) // Only show active products
+            ->with(['category', 'subcategory', 'images']); // Eager load relationships
+
+        // Apply search filter
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        // Apply category filter
+        if ($request->filled('category') && $request->input('category') !== 'all') {
+            $query->where('product_category_id', $request->input('category'));
+        }
+
+        // Apply subcategory filter
+        if ($request->filled('subcategory') && $request->input('subcategory') !== 'all') {
+            $query->where('sub_category_id', $request->input('subcategory'));
+        }
+
+        // Apply brand filter
+        if ($request->filled('brand_ids')) {
+            $brandIds = $request->input('brand_ids');
+            if (is_array($brandIds) && count($brandIds) > 0) {
+                $query->whereIn('brand_id', $brandIds);
+            }
+        }
+
+        // Apply price filter
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->input('price_min'));
+        }
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->input('price_max'));
+        }
+
+        // Apply sorting
+        $sort = $request->input('sort', 'newest');
+        switch ($sort) {
+            case 'price_low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'newest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        // Paginate the results - 12 items per page seems reasonable for the grid
+        $paginator = $query->paginate(12);
+
+        // Transform each item in the paginator's collection to include fully-qualified image URL
+        $paginator->through(function ($product) use ($userStore) {
+            $imageUrl = null;
+            if ($product->image) {
+                // Membuat URL lengkap menggunakan route helper, sama seperti di Blade Anda
+                $imageUrl = route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $product->image]);
+            }
+
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'old_price' => $product->old_price,
+                'is_promo' => $product->is_promo,
+                'category' => $product->category,
+                'image_url' => $imageUrl, // Kirim URL yang sudah jadi
+            ];
+        });
+
+        Log::info('SUBCATEGORY_FILTER_DEBUG', DB::getQueryLog());
+
+        return $paginator;
+    }
+
+    private function getCurrentStore()
+    {
+        // Get the current tenant's subdomain
+        $subdomain = request()->getHost();
+        $subdomain = explode('.', $subdomain)[0]; // Get subdomain part
+
+        // Cache store info for performance
+        return Cache::remember("store_{$subdomain}", 3600, function () use ($subdomain) {
+            return UserStore::where('subdomain', $subdomain)
+                ->where('tenant_created', true)
+                ->first();
+        });
     }
 }
