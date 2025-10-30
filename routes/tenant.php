@@ -16,6 +16,7 @@ use App\Http\Controllers\Tenant\ProductSubCategoryController;
 use App\Http\Controllers\Tenant\ProductUnitController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
+
 /*
 |--------------------------------------------------------------------------
 | Tenant Routes
@@ -43,6 +44,7 @@ Route::middleware([
     // CUSTOMER-FACING STORE ROUTES
     // ========================================
 
+    Route::get('/product-details/{productId}', [StoreController::class, 'getProductDetails']);
 
     // Route::get('/', function () {
     //     return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
