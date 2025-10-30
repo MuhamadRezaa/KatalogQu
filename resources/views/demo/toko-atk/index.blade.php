@@ -95,9 +95,7 @@
                 Pemotong Kertas
             </button>
         </div>
-        <div class="subcategory-chips" id="subcategoryChips">
-            <!-- Chips akan dirender dinamis sesuai kategori -->
-        </div>
+        <!-- Subcategory chips dihapus sesuai permintaan -->
 
         <!-- Search and Filter Section -->
         <div class="search-filter-section">
@@ -115,6 +113,13 @@
             </div>
 
             <div class="filter-container">
+                <div class="filter-group">
+                    <label for="subcategory-filter">Filter Sub Kategori:</label>
+                    <select id="subcategory-filter" onchange="filterBySubcategoryDropdown()">
+                        <option value="all">Semua Sub Kategori</option>
+                        <!-- Opsi akan diisi melalui JavaScript agar konsisten dengan kategori -->
+                    </select>
+                </div>
                 <div class="filter-group">
                     <label for="sort-filter">Urutkan Berdasarkan:</label>
                     <select id="sort-filter" onchange="sortProducts()">
@@ -870,6 +875,23 @@
                 'lem':'Lem','label':'Label','double-tape':'Double Tape','lakban':'Lakban',
                 'cutter':'Cutter','gunting':'Gunting','trimmer':'Paper Trimmer'
             };
+
+            // State kategori saat ini untuk sinkronisasi dropdown subkategori
+            let currentAtkCategory = 'all';
+
+            // Render opsi subkategori pada dropdown sesuai kategori aktif
+            function renderAtkSubcategorySelect(category) {
+                const select = document.getElementById('subcategory-filter');
+                if (!select) return;
+                const list = category === 'all'
+                    ? Object.keys(atkSubcategoryLabels)
+                    : (atkSubcategoryMap[category] || []);
+                // Bangun opsi
+                let optionsHtml = '<option value="all">Semua Sub Kategori</option>';
+                optionsHtml += list.map(sc => `<option value="${sc}">${atkSubcategoryLabels[sc] || sc}</option>`).join('');
+                select.innerHTML = optionsHtml;
+                select.value = 'all';
+            }
             // Helper: smooth scroll to element by id with header offset
             function smoothScrollToId(id) {
                 const el = document.getElementById(id);
@@ -886,13 +908,7 @@
                 return null;
             }
 
-            function renderAtkSubcategoryChips(category) {
-                const container = document.getElementById('subcategoryChips');
-                const list = category === 'all'
-                    ? Object.keys(atkSubcategoryLabels)
-                    : (atkSubcategoryMap[category] || []);
-                container.innerHTML = list.map(sc => `<button class="chip" onclick="filterBySubcategory('${sc}')">${atkSubcategoryLabels[sc] || sc}</button>`).join('');
-            }
+            // renderAtkSubcategoryChips dihapus: gunakan dropdown untuk memilih sub kategori
 
             // Filter kategori + render chips
             document.querySelectorAll('.category-btn').forEach(btn => {
@@ -905,13 +921,12 @@
                         card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
                     });
 
-                    renderAtkSubcategoryChips(category);
-                    // Smooth scroll: ke chips untuk kategori spesifik, ke produk untuk "all"
-                    if (category === 'all') {
-                        smoothScrollToId('products-grid');
-                    } else {
-                        smoothScrollToId('subcategoryChips');
-                    }
+                    // Simpan kategori aktif dan render ulang opsi dropdown subkategori
+                    currentAtkCategory = category;
+                    renderAtkSubcategorySelect(category);
+
+                    // Smooth scroll langsung ke grid produk karena chips dihapus
+                    smoothScrollToId('products-grid');
                 });
             });
 
@@ -1059,9 +1074,34 @@
             // Filter by subcategory
             function filterBySubcategory(subcat) {
                 const cards = document.querySelectorAll('.product-card');
+                // Sinkronkan dropdown saat chip ditekan
+                const select = document.getElementById('subcategory-filter');
+                if (select) {
+                    // Pastikan opsi tersedia sesuai kategori subcat
+                    const cat = getAtkCategoryBySubcategory(subcat);
+                    if (cat && cat !== currentAtkCategory) {
+                        currentAtkCategory = cat;
+                        renderAtkSubcategorySelect(cat);
+                    }
+                    select.value = subcat;
+                }
+
                 cards.forEach(card => {
                     const sc = card.dataset.subcategory || '';
                     card.style.display = (sc === subcat) ? 'block' : 'none';
+                });
+                smoothScrollToId('products-grid');
+            }
+
+            // Filter subkategori dari dropdown
+            function filterBySubcategoryDropdown() {
+                const subcat = document.getElementById('subcategory-filter').value;
+                const cards = document.querySelectorAll('.product-card');
+                cards.forEach(card => {
+                    const sc = card.dataset.subcategory || '';
+                    const matchesCategory = (currentAtkCategory === 'all' || card.dataset.category === currentAtkCategory);
+                    const matchesSubcat = (subcat === 'all' || sc === subcat);
+                    card.style.display = (matchesCategory && matchesSubcat) ? 'block' : 'none';
                 });
                 smoothScrollToId('products-grid');
             }
@@ -1217,7 +1257,9 @@
             document.addEventListener('DOMContentLoaded', function() {
                 showSlide(0);
                 setupAtkShowMoreWithDummy();
-                renderAtkSubcategoryChips('all');
+                // Chips dihapus; cukup render opsi dropdown
+                renderAtkSubcategorySelect('all');
+                currentAtkCategory = 'all';
                 applyOldPriceToCards();
             });
         </script>

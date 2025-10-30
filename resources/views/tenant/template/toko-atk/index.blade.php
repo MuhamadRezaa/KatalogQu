@@ -156,7 +156,7 @@
 
         <div class="search-filter-section">
             <div class="section-header">
-                <h3>🔍 Cari & Filter Produk</h3>
+                <h3>Cari & Filter Produk</h3>
                 <p>Temukan produk alat tulis yang Anda butuhkan dengan mudah</p>
             </div>
             <div class="search-container">
