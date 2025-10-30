@@ -290,9 +290,11 @@
                         <button id="subCategoryToggle"
                             class="w-full flex items-center justify-center px-6 py-2 text-sm md:text-base font-medium text-primary-600 bg-white border border-primary-500 rounded-full shadow-md hover:bg-primary-50 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-primary-300">
                             <span id="subCategoryLabel">Kategori</span>
-                            <svg id="dropdownArrow" class="w-4 h-4 ml-2 text-primary-600 transition-transform duration-300" fill="none"
+                            <svg id="dropdownArrow"
+                                class="w-4 h-4 ml-2 text-primary-600 transition-transform duration-300" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7">
                                 </path>
                             </svg>
                         </button>
@@ -302,1084 +304,1141 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6"
-                    id="item-container">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6" id="item-container">
 
                     <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-panjang">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
-        <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
-                <p class="text-sm opacity-90">Rambut Panjang</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                        data-category="hairstyle" data-sub-category="rambut-panjang">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
+                                    <p class="text-sm opacity-90">Rambut Panjang</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-pendek">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
-        <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80" alt="Potongan Bob Klasik"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
-                <p class="text-sm opacity-90">Rambut Pendek</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-pendek">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80"
+                                alt="Potongan Bob Klasik"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
+                                    <p class="text-sm opacity-90">Rambut Pendek</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="warna-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Warna Rambut Ombre"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
-                <p class="text-sm opacity-90">Pewarnaan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="warna-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+                                alt="Warna Rambut Ombre"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
+                                    <p class="text-sm opacity-90">Pewarnaan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
-        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80" alt="Hair Spa Anti Ketombe"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
-                <p class="text-sm opacity-90">Perawatan Khusus</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80"
+                                alt="Hair Spa Anti Ketombe"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
+                                    <p class="text-sm opacity-90">Perawatan Khusus</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-panjang">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
-        <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
-                <p class="text-sm opacity-90">Rambut Panjang</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-panjang">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
+                                    <p class="text-sm opacity-90">Rambut Panjang</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-pendek">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
-        <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80" alt="Potongan Bob Klasik"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
-                <p class="text-sm opacity-90">Rambut Pendek</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-pendek">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80"
+                                alt="Potongan Bob Klasik"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
+                                    <p class="text-sm opacity-90">Rambut Pendek</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="warna-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Warna Rambut Ombre"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
-                <p class="text-sm opacity-90">Pewarnaan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="warna-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+                                alt="Warna Rambut Ombre"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
+                                    <p class="text-sm opacity-90">Pewarnaan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
-        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80" alt="Hair Spa Anti Ketombe"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
-                <p class="text-sm opacity-90">Perawatan Khusus</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-panjang">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
-        <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
-                <p class="text-sm opacity-90">Rambut Panjang</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80"
+                                alt="Hair Spa Anti Ketombe"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
+                                    <p class="text-sm opacity-90">Perawatan Khusus</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-panjang">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
+                                    <p class="text-sm opacity-90">Rambut Panjang</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-pendek">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
-        <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80" alt="Potongan Bob Klasik"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
-                <p class="text-sm opacity-90">Rambut Pendek</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-pendek">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80"
+                                alt="Potongan Bob Klasik"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
+                                    <p class="text-sm opacity-90">Rambut Pendek</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="warna-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Warna Rambut Ombre"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
-                <p class="text-sm opacity-90">Pewarnaan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="warna-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+                                alt="Warna Rambut Ombre"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
+                                    <p class="text-sm opacity-90">Pewarnaan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
-        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80" alt="Hair Spa Anti Ketombe"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
-                <p class="text-sm opacity-90">Perawatan Khusus</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-panjang">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
-        <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
-                <p class="text-sm opacity-90">Rambut Panjang</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80"
+                                alt="Hair Spa Anti Ketombe"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
+                                    <p class="text-sm opacity-90">Perawatan Khusus</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-panjang">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80','Gaya Rambut Panjang Wave')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=800&q=80"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Panjang Wave</h3>
+                                    <p class="text-sm opacity-90">Rambut Panjang</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 200.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="rambut-pendek">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
-        <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80" alt="Potongan Bob Klasik"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
-                <p class="text-sm opacity-90">Rambut Pendek</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="rambut-pendek">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80','Potongan Bob Klasik')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?auto=format&fit=crop&w=800&q=80"
+                                alt="Potongan Bob Klasik"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Bob Klasik</h3>
+                                    <p class="text-sm opacity-90">Rambut Pendek</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="warna-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Warna Rambut Ombre"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
-                <p class="text-sm opacity-90">Pewarnaan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="warna-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80','Warna Rambut Ombre')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+                                alt="Warna Rambut Ombre"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Warna Ombre</h3>
+                                    <p class="text-sm opacity-90">Pewarnaan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 500.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="hairstyle" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
-        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80" alt="Hair Spa Anti Ketombe"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
-                <p class="text-sm opacity-90">Perawatan Khusus</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-                   <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" alt="Nail Art Glitter Pink"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="hairstyle" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80','Hair Spa Anti Ketombe')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80"
+                                alt="Hair Spa Anti Ketombe"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Hair Spa</h3>
+                                    <p class="text-sm opacity-90">Perawatan Khusus</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Glitter Pink"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="manicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
-        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80" alt="Manicure Standar"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Manicure</h3>
-                <p class="text-sm opacity-90">Manicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="manicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
+                                alt="Manicure Standar"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Manicure</h3>
+                                    <p class="text-sm opacity-90">Manicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="pedicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
-        <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80" alt="Pedicure Spa"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
-                <p class="text-sm opacity-90">Pedicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="pedicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80"
+                                alt="Pedicure Spa"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
+                                    <p class="text-sm opacity-90">Pedicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
-        <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" alt="Nail Art Minimalis"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minimalis</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Minimalis"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minimalis</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" alt="Nail Art Glitter Pink"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Glitter Pink"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="manicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
-        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80" alt="Manicure Standar"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Manicure</h3>
-                <p class="text-sm opacity-90">Manicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="manicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
+                                alt="Manicure Standar"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Manicure</h3>
+                                    <p class="text-sm opacity-90">Manicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="pedicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
-        <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80" alt="Pedicure Spa"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
-                <p class="text-sm opacity-90">Pedicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="pedicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80"
+                                alt="Pedicure Spa"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
+                                    <p class="text-sm opacity-90">Pedicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
-        <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" alt="Nail Art Minimalis"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minimalis</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" alt="Nail Art Glitter Pink"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="manicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
-        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80" alt="Manicure Standar"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Manicure</h3>
-                <p class="text-sm opacity-90">Manicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="pedicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
-        <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80" alt="Pedicure Spa"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
-                <p class="text-sm opacity-90">Pedicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
-        <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" alt="Nail Art Minimalis"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minimalis</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" alt="Nail Art Glitter Pink"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="manicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
-        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80" alt="Manicure Standar"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Manicure</h3>
-                <p class="text-sm opacity-90">Manicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="pedicure">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
-        <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80" alt="Pedicure Spa"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
-                <p class="text-sm opacity-90">Pedicure</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="nailart" data-sub-category="gel-art">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
-        <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" alt="Nail Art Minimalis"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minimalis</h3>
-                <p class="text-sm opacity-90">Gel Art</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Minimalis"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minimalis</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
-        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80" alt="Spa Relaksasi Aromaterapi"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Glitter Pink"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
-        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80" alt="Spa Wajah Premium"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="manicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
+                                alt="Manicure Standar"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Manicure</h3>
+                                    <p class="text-sm opacity-90">Manicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-badan">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
-        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Spa Lulur Tradisional"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
-                <p class="text-sm opacity-90">Perawatan Badan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="pedicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80"
+                                alt="Pedicure Spa"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
+                                    <p class="text-sm opacity-90">Pedicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
-        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80" alt="Spa Pijat Bali"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Minimalis"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minimalis</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80','Nail Art Glitter Pink')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Glitter Pink"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Gel Art Glitter</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 120.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
-        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80" alt="Spa Relaksasi Aromaterapi"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="manicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80','Manicure Standar')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
+                                alt="Manicure Standar"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Manicure</h3>
+                                    <p class="text-sm opacity-90">Manicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 80.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
-        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80" alt="Spa Wajah Premium"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="pedicure">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80','Pedicure Spa')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80"
+                                alt="Pedicure Spa"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pedicure Spa</h3>
+                                    <p class="text-sm opacity-90">Pedicure</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 100.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-badan">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
-        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Spa Lulur Tradisional"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
-                <p class="text-sm opacity-90">Perawatan Badan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="nailart" data-sub-category="gel-art">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80','Nail Art Minimalis')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
+                                alt="Nail Art Minimalis"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minimalis</h3>
+                                    <p class="text-sm opacity-90">Gel Art</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 110.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
-        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80" alt="Spa Pijat Bali"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
-        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80" alt="Spa Relaksasi Aromaterapi"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
-        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80" alt="Spa Wajah Premium"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Relaksasi Aromaterapi"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="perawatan-badan">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
-        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Spa Lulur Tradisional"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
-                <p class="text-sm opacity-90">Perawatan Badan</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Wajah Premium"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="spa" data-sub-category="pijat">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
-        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80" alt="Spa Pijat Bali"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
-                <p class="text-sm opacity-90">Pijat</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-badan">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Lulur Tradisional"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
+                                    <p class="text-sm opacity-90">Perawatan Badan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Pijat Bali"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Relaksasi Aromaterapi"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Wajah Premium"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-badan">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Lulur Tradisional"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
+                                    <p class="text-sm opacity-90">Perawatan Badan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Pijat Bali"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80','Spa Relaksasi Aromaterapi')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Relaksasi Aromaterapi"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Aromaterapi</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 250.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80','Spa Wajah Premium')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Wajah Premium"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Wajah Premium</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 320.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="perawatan-badan">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80','Spa Lulur Tradisional')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Lulur Tradisional"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Lulur Tradisional</h3>
+                                    <p class="text-sm opacity-90">Perawatan Badan</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 280.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="spa" data-sub-category="pijat">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalUniversal('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80','Spa Pijat Bali')">👁</span>
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80"
+                                alt="Spa Pijat Bali"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Pijat Bali</h3>
+                                    <p class="text-sm opacity-90">Pijat</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 380.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
 
                     <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80" alt="Shampoo Keratin"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
-                <p class="text-sm opacity-90">Perawatan Rambut</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                        data-category="product" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80"
+                                alt="Shampoo Keratin"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
+                                    <p class="text-sm opacity-90">Perawatan Rambut</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80" alt="Serum Vitamin C"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80"
+                                alt="Serum Vitamin C"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Minyak Argan"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80"
+                                alt="Minyak Argan"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80" alt="Parfum Floral"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80"
+                                alt="Parfum Floral"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-  <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80" alt="Shampoo Keratin"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
-                <p class="text-sm opacity-90">Perawatan Rambut</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80"
+                                alt="Shampoo Keratin"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
+                                    <p class="text-sm opacity-90">Perawatan Rambut</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80" alt="Serum Vitamin C"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80"
+                                alt="Serum Vitamin C"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Minyak Argan"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80"
+                                alt="Minyak Argan"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80" alt="Parfum Floral"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
-            </div>
-        </div>
-    </div>
-</div>  <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80" alt="Shampoo Keratin"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
-                <p class="text-sm opacity-90">Perawatan Rambut</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80"
+                                alt="Parfum Floral"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80"
+                                alt="Shampoo Keratin"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
+                                    <p class="text-sm opacity-90">Perawatan Rambut</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80" alt="Serum Vitamin C"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80"
+                                alt="Serum Vitamin C"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Minyak Argan"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80"
+                                alt="Minyak Argan"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80" alt="Parfum Floral"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
-            </div>
-        </div>
-    </div>
-</div>  <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-rambut">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80" alt="Shampoo Keratin"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
-                <p class="text-sm opacity-90">Perawatan Rambut</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80"
+                                alt="Parfum Floral"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-rambut">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80','Shampoo Keratin','edieusjwj','Rp 150.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80"
+                                alt="Shampoo Keratin"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Shampoo Keratin</h3>
+                                    <p class="text-sm opacity-90">Perawatan Rambut</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 150.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="perawatan-wajah">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80" alt="Serum Vitamin C"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
-                <p class="text-sm opacity-90">Perawatan Wajah</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="perawatan-wajah">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80','Serum Vitamin C','Glamour Admin','Rp 185.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80"
+                                alt="Serum Vitamin C"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Serum Vitamin C</h3>
+                                    <p class="text-sm opacity-90">Perawatan Wajah</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 185.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Minyak Argan"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80','Minyak Argan','Global Store','Rp 220.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80"
+                                alt="Minyak Argan"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Minyak Argan</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 220.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
-    data-category="product" data-sub-category="lain-lain">
-    <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
-        <span
-            class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
-            onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
-        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80" alt="Parfum Floral"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-        <div class="hairstyle-overlay">
-            <div class="text-white">
-                <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
-                <p class="text-sm opacity-90">Lain-lain</p>
-                <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="hairstyle-card group shadow-md hover:shadow-xl transition-shadow duration-300 bg-white rounded-3xl"
+                        data-category="product" data-sub-category="lain-lain">
+                        <div class="aspect-[3/4] rounded-3xl overflow-hidden relative">
+                            <span
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow-md hover:bg-primary-500 hover:text-white transition-colors cursor-pointer text-base"
+                                onclick="bukaModalProduk('https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80','Parfum Floral','Beauty Shop','Rp 225.000')">🛒</span>
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80"
+                                alt="Parfum Floral"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="hairstyle-overlay">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold mb-1">Parfum Floral</h3>
+                                    <p class="text-sm opacity-90">Lain-lain</p>
+                                    <p class="text-xs mt-1 opacity-75 font-semibold">Rp 225.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -1466,9 +1525,10 @@
 
             <button onclick="tutupModalProduk()"
                 class="absolute top-2 right-2 bg-gray-200/80 rounded-full p-1.5 hover:bg-red-500 hover:text-white transition-all text-xl font-bold z-10">
-                <svg class="w-6 h-6 text-gray-700 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <svg class="w-6 h-6 text-gray-700 hover:text-white" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
                 </svg>
             </button>
 
@@ -1502,13 +1562,14 @@
                 <h4 class="text-lg font-bold text-gray-800 mb-4">Rekomendasi Produk Serupa</h4>
                 <div class="flex justify-around items-center space-x-2 overflow-x-auto">
                     <div class="flex-shrink-0 w-24 h-24 p-1 bg-white border rounded-lg shadow-sm">
-                         <img src="LINK_URL_SPESIFIK_ANDA_13" class="w-full h-full object-contain" alt="Rekomendasi 1">
+                        <img src="LINK_URL_SPESIFIK_ANDA_13" class="w-full h-full object-contain" alt="Rekomendasi 1">
                     </div>
                     <div class="flex-shrink-0 w-24 h-24 p-1 bg-white border rounded-lg shadow-sm">
-                         <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=160&h=160&q=80" class="w-full h-full object-cover" alt="Rekomendasi 2">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=160&h=160&q=80"
+                            class="w-full h-full object-cover" alt="Rekomendasi 2">
                     </div>
-                     <div class="flex-shrink-0 w-24 h-24 p-1 bg-white border rounded-lg shadow-sm">
-                         <img src="LINK_URL_SPESIFIK_ANDA_14" class="w-full h-full object-contain" alt="Rekomendasi 3">
+                    <div class="flex-shrink-0 w-24 h-24 p-1 bg-white border rounded-lg shadow-sm">
+                        <img src="LINK_URL_SPESIFIK_ANDA_14" class="w-full h-full object-contain" alt="Rekomendasi 3">
                     </div>
                 </div>
             </div>
@@ -1517,7 +1578,7 @@
     </div>
     <script>
         // Hero Carousel Control (Tidak Berubah)
-        (function() {
+        (function () {
             const track = document.getElementById('heroTrack');
             const slides = track ? Array.from(track.querySelectorAll('.hero-slide')) : [];
             const indicators = document.getElementById('heroIndicators');
@@ -1548,9 +1609,8 @@
                 indicators.innerHTML = '';
                 slides.forEach((_, index) => {
                     const dot = document.createElement('button');
-                    dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${
-						index === currentSlide ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/75'
-					}`;
+                    dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/75'
+                        }`;
                     dot.addEventListener('click', () => {
                         goToSlide(index);
                         resetAutoplay();
@@ -1590,7 +1650,7 @@
         // ==============================================
         // LOGIKA FILTER DAN PAGINASI (Tidak Berubah)
         // ==============================================
-        (function() {
+        (function () {
             // --- KONSTANTA & VARIABEL GLOBAL ---
             const allCards = Array.from(document.querySelectorAll('.hairstyle-card'));
             const filterBtns = document.querySelectorAll(".filter-btn[data-category-type='main']");
@@ -1712,7 +1772,7 @@
                         btn.classList.add('font-semibold', 'bg-primary-100', 'text-primary-600');
                     }
 
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         currentSubCategory = key;
                         currentPage = 1;
                         subCategoryLabel.textContent = name;
@@ -1823,7 +1883,7 @@
 
             // --- EVENT LISTENERS ---
             filterBtns.forEach(btn => {
-                btn.addEventListener("click", function() {
+                btn.addEventListener("click", function () {
                     const newFilter = this.getAttribute("data-filter");
                     if (!newFilter) return;
 
@@ -1841,7 +1901,7 @@
                 });
             });
 
-            subCategoryToggle.addEventListener('click', function() {
+            subCategoryToggle.addEventListener('click', function () {
                 const isHidden = subCategoryList.classList.contains('invisible');
 
                 if (isHidden) {
@@ -1853,7 +1913,7 @@
                 }
             });
 
-            document.addEventListener('click', function(event) {
+            document.addEventListener('click', function (event) {
                 const isClickInside = subCategoryContainer.contains(event.target);
                 if (!isClickInside && !subCategoryList.classList.contains('invisible')) {
                     subCategoryList.classList.add('opacity-0', 'invisible', 'scale-95');
@@ -1904,12 +1964,15 @@
         }
 
         const modalProduk = document.getElementById("modal-produk");
-        modalProduk.addEventListener('click', function(event) {
+        modalProduk.addEventListener('click', function (event) {
             if (event.target === modalProduk) {
                 tutupModalProduk();
             }
         });
     </script>
-</body>
 
+    @include('demo.universal-checkout-bubble', [
+        'templateSlug' => 'salon',
+    ])
+</body>
 </html>

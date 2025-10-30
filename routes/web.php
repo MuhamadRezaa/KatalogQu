@@ -68,41 +68,6 @@ foreach (config('tenancy.central_domains') as $domain) {
         Route::get('/demo/{slug}', [DemoController::class, 'show'])->name('demo.show');
 
         // ========================================
-        // TESTING ROUTES (Development Only)
-        // ========================================
-
-        Route::get('/test/payment-success', function () {
-            // Simulate successful payment for testing
-            return view('pages.checkout.success', [
-                'payment_status' => 'paid',
-                'order_id' => 'TEST-' . time(),
-                'template_name' => 'Template Toko Komputer',
-                'total_amount' => 'Rp 150.000',
-                'purchase_data' => null // For testing without actual purchase data
-            ]);
-        })->name('test.payment.success');
-
-        Route::get('/test/payment-pending', function () {
-            return view('pages.checkout.success', [
-                'payment_status' => 'pending',
-                'order_id' => 'TEST-' . time(),
-                'template_name' => 'Template Toko Komputer',
-                'total_amount' => 'Rp 150.000',
-                'purchase_data' => null
-            ]);
-        })->name('test.payment.pending');
-
-        Route::get('/test/payment-failed', function () {
-            return view('pages.checkout.success', [
-                'payment_status' => 'failed',
-                'order_id' => 'TEST-' . time(),
-                'template_name' => 'Template Toko Komputer',
-                'total_amount' => 'Rp 150.000',
-                'purchase_data' => null
-            ]);
-        })->name('test.payment.failed');
-
-        // ========================================
         // AUTHENTICATION ROUTES
         // ========================================
 
@@ -157,8 +122,6 @@ foreach (config('tenancy.central_domains') as $domain) {
             // ========================================
             // PAYMENT ROUTES
             // ========================================
-
-
 
             // Payment success page
             Route::get('/payment/success', function () {

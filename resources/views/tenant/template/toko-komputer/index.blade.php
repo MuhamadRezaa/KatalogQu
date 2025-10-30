@@ -9,6 +9,13 @@
         href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
         type="image/x-icon">
     <title>{{ $userStore->store_name ?? 'TechZone' }}</title>
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -16,6 +23,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        .category-card.category-active {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.5);
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-white">
@@ -244,11 +257,11 @@
                 <select id="sort-select"
                     class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500">
                     <option value="newest">Terbaru</option>
+                    <option value="oldest">Terlama</option>
                     <option value="price_low">Harga: Terendah</option>
                     <option value="price_high">Harga: Tertinggi</option>
                     <option value="name">Nama: A-Z</option>
                     <option value="name_desc">Nama: Z-A</option>
-                    <option value="oldest">Terlama</option>
                 </select>
             </div>
         </div>
@@ -261,16 +274,15 @@
                 <div class="product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer"
                     data-product-id="{{ $product->id }}">
                     <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
-                        {{-- Logika gambar disesuaikan agar bisa menangani koleksi 'productimgs' --}}
-                        @php $src = $product->primary_image_src; @endphp
-                        @if ($src)
+                        @if ($product->image)
                             <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105"
-                                loading="lazy" decoding="async" src="{{ $src }}"
+                                loading="lazy" decoding="async"
+                                src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $product->image]) }}"
                                 alt="{{ $product->name }}" />
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gray-200">
-                                <span class="text-gray-500">No Image</span>
-                            </div>
+                            <img class="product-image w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                                loading="lazy" decoding="async" src="{{ asset('assets/images/no-image-icon.png') }}"
+                                alt="{{ $product->name }}" />
                         @endif
                         @if ($product->is_promo)
                             <span
@@ -458,6 +470,14 @@
                                         <i data-lucide="copy" class="h-4 w-4"></i>
                                         Salin Link
                                     </button>
+                                </div>
+                            </div>
+
+                            <!-- Similar Products Section -->
+                            <div class="pt-6 border-t border-gray-200 mt-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-3">Produk Serupa</h3>
+                                <div id="similar-products-container" class="grid grid-cols-3 gap-3">
+                                    <!-- Similar products will be dynamically inserted here -->
                                 </div>
                             </div>
                         </div>
@@ -692,6 +712,7 @@
             @endphp
 
             window.productsData = @json($productsForJs);
+            window.categorySubcategoryMap = @json($categorySubcategoryMap ?? []);
 
             // ====== Elemen ======
             const modal = document.getElementById('product-modal');
@@ -764,10 +785,8 @@
                     return; // No subcategories for 'all'
                 }
 
-                const subcategories = [...new Set(window.productsData
-                    .filter(p => p.category && p.category.id == selectedCategoryId && p.subcategory)
-                    .map(p => p.subcategory.name)
-                )].sort();
+                const subcategories = window.categorySubcategoryMap[selectedCategoryId] || [];
+
 
                 if (subcategories.length > 0) {
                     selectedCategoryNameSpan.textContent = window.productsData.find(p => p.category && p.category
@@ -791,7 +810,7 @@
                     allSpan.textContent = 'Semua Sub-Kategori';
                     subcategoryDisplay.appendChild(allDiv);
 
-                    subcategories.forEach((subcatName, index) => {
+                    subcategories.forEach((subcat, index) => {
                         const radioClone = subcategoryCheckboxTemplate.content.cloneNode(true);
                         const div = radioClone.querySelector('div');
                         const input = div.querySelector('input');
@@ -800,11 +819,11 @@
                         const inputId = `subcat-${selectedCategoryId}-${index}`;
 
                         input.id = inputId;
-                        input.value = subcatName;
+                        input.value = subcat.id;
                         input.name = 'subcategory'; // Ensure all subcategory radios have the same name
                         input.addEventListener('change', applyFilters);
                         label.htmlFor = inputId;
-                        span.textContent = subcatName;
+                        span.textContent = subcat.name;
 
                         subcategoryDisplay.appendChild(div);
                     });
@@ -812,12 +831,7 @@
                 }
             }
 
-            productGrid.addEventListener('click', function(event) {
-                const card = event.target.closest('[data-product-id]');
-                if (!card) return;
-
-                const productId = parseInt(card.dataset.productId, 10);
-                const product = productsData.find(p => p.id === productId);
+            function openProductModal(product) {
                 if (!product) return;
 
                 // Judul & kategori
@@ -960,9 +974,53 @@
                     }
                 };
 
+                // Similar Products Logic
+                const similarProductsContainer = document.getElementById('similar-products-container');
+                similarProductsContainer.innerHTML = ''; // Clear previous similar products
+
+                const similarProducts = window.productsData.filter(p =>
+                    p.category && product.category && p.category.id === product.category.id && p.id !== product
+                    .id
+                );
+
+                // Shuffle and take up to 3
+                const shuffledSimilar = similarProducts.sort(() => 0.5 - Math.random());
+                const selectedSimilar = shuffledSimilar.slice(0, 3);
+
+                if (selectedSimilar.length > 0) {
+                    selectedSimilar.forEach(similarProd => {
+                        const similarProdCard = document.createElement('div');
+                        similarProdCard.className = 'cursor-pointer';
+                        const similarImgSrc = (similarProd.productimgs && similarProd.productimgs.length >
+                                0) ? similarProd.productimgs[0].image_url :
+                            "{{ asset('assets/images/no-image-icon.png') }}";
+                        similarProdCard.innerHTML = `
+                            <img src="${similarImgSrc}" alt="${similarProd.name}" class="w-full h-auto object-cover rounded-lg mb-1">
+                            <p class="text-xs font-medium text-gray-800 line-clamp-2">${similarProd.name}</p>
+                            <p class="text-xs text-gray-600">${formatRupiah(similarProd.price)}</p>
+                        `;
+                        similarProdCard.addEventListener('click', () => {
+                            openProductModal(similarProd);
+                        });
+                        similarProductsContainer.appendChild(similarProdCard);
+                    });
+                } else {
+                    similarProductsContainer.innerHTML =
+                        '<p class="text-sm text-gray-500 col-span-3">Tidak ada produk serupa.</p>';
+                }
+
                 // Tampilkan modal
                 modal.classList.remove('hidden');
                 lucide.createIcons();
+            }
+
+            productGrid.addEventListener('click', function(event) {
+                const card = event.target.closest('[data-product-id]');
+                if (!card) return;
+
+                const productId = parseInt(card.dataset.productId, 10);
+                const product = productsData.find(p => p.id === productId);
+                openProductModal(product);
             });
 
             // Tutup modal
@@ -1022,297 +1080,767 @@
             });
 
             // ==================================================
-            // ====== FILTER & SORT LOGIC (WITH APPLY BUTTON) ===
+
+            // ====== FILTER & SORT LOGIC (JQUERY + AJAX) ===
+
             // ==================================================
 
-            const searchInput = document.getElementById('search-input');
-            const categoryFilter = document.getElementById('category-filter'); // Now hidden, but still referenced
-            const priceRangeFilter = document.getElementById('price-range');
-            const sortSelect = document.getElementById('sort-select');
-            const applyFiltersButton = document.getElementById('apply-filters');
-            const resetFiltersButton = document.getElementById('reset-filters');
 
-            const minPriceFilter = document.getElementById("min-price-filter"); // Declared
-            const maxPriceFilter = document.getElementById("max-price-filter"); // Declared
 
-            let currentSelectedCategoryId = 'all'; // New state variable for selected category
+            let selectedBrandIds = new Set();
 
-            // Brand filter elements
-            const brandSearchInput = document.getElementById('brand-search');
-            const brandDropdownToggle = document.getElementById('brand-dropdown-toggle');
-            const brandDropdown = document.getElementById('brand-dropdown');
-            const brandOptionsContainer = document.getElementById('brand-options');
-            const selectedBrandsContainer = document.getElementById('selected-brands');
-            const brandOptions = Array.from(brandOptionsContainer.querySelectorAll('.brand-option'));
-            const brandFilterWrapper = brandSearchInput.parentElement.parentElement;
 
-            const currentUrl = new URL(window.location.href);
 
-            // --- State Management ---
-            let selectedBrandIds = new Set(
-                (currentUrl.searchParams.get('brand_ids') || '')
-                .split(',').filter(Boolean)
-            );
+            function formatPrice(price) {
 
-            // --- Initialization from URL ---
-            function initializeFilters() {
-                // Search
-                searchInput.value = currentUrl.searchParams.get('search') || '';
+                if (price === null || typeof price === 'undefined') return '';
 
-                // Category
-                currentSelectedCategoryId = currentUrl.searchParams.get('category') || 'all';
-                updateSubcategoryDisplay(currentSelectedCategoryId); // Call to update subcategories
+                return new Intl.NumberFormat('id-ID', {
 
-                // Price Range
-                const minPrice = currentUrl.searchParams.get('price_min');
-                const maxPrice = currentUrl.searchParams.get('price_max');
-                if (minPrice || maxPrice) {
-                    minPriceFilter.value = minPrice || '';
-                    maxPriceFilter.value = maxPrice || '';
-                    for (const option of priceRangeFilter.options) {
-                        if (option.dataset.min == minPrice && option.dataset.max == maxPrice) {
-                            option.selected = true;
-                            break;
-                        }
-                    }
-                }
+                    style: 'currency',
 
-                // Sort
-                sortSelect.value = currentUrl.searchParams.get('sort') || 'newest';
+                    currency: 'IDR',
 
-                // Brands
-                updateBrandSelectionUI();
+                    minimumFractionDigits: 0
+
+                }).format(price);
+
             }
 
-            // --- Client-side Filtering and Rendering ---
-            function filterAndRenderProducts(page = 1) {
-                let productsToFilter = [...window.productsData]; // Start with all products
 
-                // Apply Search Filter
-                const searchTerm = searchInput.value.toLowerCase();
-                if (searchTerm) {
-                    productsToFilter = productsToFilter.filter(product =>
-                        product.name.toLowerCase().includes(searchTerm) ||
-                        (product.description && product.description.toLowerCase().includes(searchTerm))
-                    );
-                }
 
-                // Apply Category Filter
-                if (currentSelectedCategoryId !== 'all') {
-                    productsToFilter = productsToFilter.filter(product =>
-                        product.category && product.category.id == currentSelectedCategoryId
-                    );
-                }
+            function updateResultCount(response) {
 
-                // Apply Subcategory Filter
-                const selectedSubcategoryRadio = subcategoryDisplay.querySelector(
-                    'input[name="subcategory"]:checked');
-                if (selectedSubcategoryRadio && selectedSubcategoryRadio.value !== 'all') {
-                    productsToFilter = productsToFilter.filter(product =>
-                        product.subcategory && product.subcategory.name === selectedSubcategoryRadio.value
-                    );
-                }
+                const countText =
+                    `Menampilkan ${response.from || 0} - ${response.to || 0} dari ${response.total || 0} produk`;
 
-                // Apply Price Range Filter
-                const minPrice = parseFloat(minPriceFilter.value) || 0;
-                const maxPrice = parseFloat(maxPriceFilter.value) || Infinity;
-                productsToFilter = productsToFilter.filter(product =>
-                    product.price >= minPrice && product.price <= maxPrice
+                $('#result-count').text(countText);
+
+            }
+
+
+
+                        function updateProductGrid(products) {
+
+
+
+                            const $productGrid = $('#product-grid');
+
+
+
+            
+
+
+
+                            if (products && products.length > 0) {
+
+
+
+                                let allCardsHtml = ''; // Create an empty string
+
+
+
+                                                    $.each(products, function(index, product) {
+
+
+
+                                                        const primaryImage = product.image_url || '{{ asset("assets/images/no-image-icon.png") }}';
+
+
+
+                                
+
+
+
+                                                        const oldPriceHtml = product.old_price && parseFloat(product.old_price) > parseFloat(product.price) ?
+
+
+
+                                                            `<span class="text-sm text-gray-500 line-through">${formatPrice(product.old_price)}</span>` : '';
+
+
+
+                                    
+
+
+
+                                    let savingsBadgeHtml = '';
+
+
+
+                                    if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
+
+
+
+                                        const savings = product.old_price - product.price;
+
+
+
+                                        savingsBadgeHtml = `
+
+
+
+                                            <div class="savings-badge-container mt-1">
+
+
+
+                                                <span class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-md">
+
+
+
+                                                    Hemat ${formatPrice(savings)}
+
+
+
+                                                </span>
+
+
+
+                                            </div>`;
+
+
+
+                                    }
+
+
+
+            
+
+
+
+                                    const promoBadgeHtml = product.is_promo ? 
+
+
+
+                                        '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' : '';
+
+
+
+            
+
+
+
+                                    const productCardHtml = `
+
+
+
+                                        <div class="product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer" data-product-id="${product.id}">
+
+
+
+                                            <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
+
+
+
+                                                <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" src="${primaryImage}" alt="${product.name}" />
+
+
+
+                                                ${promoBadgeHtml}
+
+
+
+                                            </div>
+
+
+
+                                            <div class="p-4">
+
+
+
+                                                <h3 class="text-base font-semibold text-gray-800 line-clamp-2">${product.name}</h3>
+
+
+
+                                                <p class="text-xs text-gray-500 mb-2">${product.category ? product.category.name : 'Uncategorized'}</p>
+
+
+
+                                                <div class="flex flex-col gap-1">
+
+
+
+                                                    <div class="flex flex-wrap items-baseline gap-x-1">
+
+
+
+                                                        <span class="text-lg font-bold text-gray-900">${formatPrice(product.price)}</span>
+
+
+
+                                                        ${oldPriceHtml}
+
+
+
+                                                    </div>
+
+
+
+                                                    ${savingsBadgeHtml}
+
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    `;
+
+
+
+                                    allCardsHtml += productCardHtml; // Append to the string, not the DOM
+
+
+
+                                });
+
+
+
+                                $productGrid.html(allCardsHtml); // Set the HTML in one go
+
+
+
+                            } else {
+
+
+
+                                $productGrid.html('<div class="col-span-full text-center py-16"><p class="text-gray-500">Tidak ada produk yang ditemukan.</p></div>');
+
+
+
+                            }
+
+
+
+                        }
+
+
+
+            function updatePagination(response) {
+
+                const $paginationContainer = $('.mt-8').first();
+
+                $paginationContainer.empty();
+
+
+
+                if (!response || !response.links || response.last_page <= 1) return;
+
+
+
+                const $nav = $(
+                    '<nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between"></nav>'
                 );
 
-                // Apply Brand Filter
-                if (selectedBrandIds.size > 0) {
-                    productsToFilter = productsToFilter.filter(product =>
-                        product.brand && selectedBrandIds.has(product.brand.id
-                    .toString()) // Assuming brand.id is used
-                    );
-                }
 
-                // Apply Sorting
-                productsToFilter.sort((a, b) => {
-                    if (a.stock <= 0 && b.stock > 0) return 1; // Out of stock last
-                    if (a.stock > 0 && b.stock <= 0) return -1; // In stock first
 
-                    switch (sortValue) {
-                        case 'price_low':
-                            return a.price - b.price;
-                        case 'price_high':
-                            return b.price - a.price;
-                        case 'name':
-                            return a.name.localeCompare(b.name);
-                        case 'name_desc':
-                            return b.name.localeCompare(a.name);
-                        case 'oldest':
-                            return a.id - b.id; // Assuming lower ID is older
-                        case 'newest':
-                            return b.id - a.id; // Assuming higher ID is newer
-                        default:
-                            return 0;
-                    }
-                });
+                let linksHtml = '';
 
-                // Update result count
-                $('#result-count').text(`Menampilkan ${productsToFilter.length} produk`);
+                $.each(response.links, function(index, link) {
 
-                // Render products for the current page
-                renderProductGrid(productsToFilter, page);
-                renderPagination(productsToFilter.length, page);
-            }
+                    if (link.url === null) {
 
-            // --- Update URL and Reload ---
-            function applyFilters(page = 1) {
-                const params = new URLSearchParams();
+                        linksHtml +=
+                            `<span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5">${link.label}</span>`;
 
-                // Set search
-                if (searchInput.value) {
-                    params.set('search', searchInput.value);
-                }
+                    } else if (link.active) {
 
-                // Set category
-                if (categoryFilter.value && categoryFilter.value !== 'all') {
-                    params.set('category', categoryFilter.value);
-                }
+                        linksHtml +=
+                            `<span aria-current="page" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5">${link.label}</span>`;
 
-                // Set subcategory
-                const selectedSubcategoryRadio = subcategoryDisplay.querySelector(
-                    'input[name="subcategory"]:checked');
-                if (selectedSubcategoryRadio && selectedSubcategoryRadio.value !== 'all') {
-                    params.set('subcategory', selectedSubcategoryRadio.value);
-                }
-
-                // Set price
-                const selectedPriceOption = priceRangeFilter.options[priceRangeFilter.selectedIndex];
-                if (selectedPriceOption && selectedPriceOption.value) {
-                    const minPrice = selectedPriceOption.dataset.min;
-                    const maxPrice = selectedPriceOption.dataset.max;
-                    if (minPrice && minPrice !== "0") {
-                        params.set('price_min', minPrice);
-                    }
-                    if (maxPrice) {
-                        params.set('price_max', maxPrice);
-                    }
-                }
-
-                // Set brands
-                if (selectedBrandIds.size > 0) {
-                    params.set('brand_ids', Array.from(selectedBrandIds).join(','));
-                }
-
-                // Set sort
-                if (sortSelect.value) {
-                    params.set('sort', sortSelect.value);
-                }
-
-                // Keep other existing params
-                const oldParams = new URLSearchParams(window.location.search);
-                oldParams.forEach((value, key) => {
-                    if (!['search', 'category', 'subcategory', 'price_min', 'price_max', 'brands', 'sort',
-                            'page'
-                        ]
-                        .includes(key)) {
-                        params.set(key, value);
-                    }
-                });
-
-                window.location.href = window.location.pathname + '?' + params.toString();
-            }
-
-            // --- Event Listeners ---
-            if (applyFiltersButton) {
-                applyFiltersButton.addEventListener('click', applyFilters);
-            }
-            sortSelect.addEventListener('change', applyFilters); // Sorting is applied instantly
-            resetFiltersButton.addEventListener('click', () => {
-                window.location.href = window.location.pathname;
-            });
-
-            // --- Brand Filter Logic (No immediate apply) ---
-            function updateBrandSelectionUI() {
-                brandOptions.forEach(option => {
-                    const id = option.dataset.id;
-                    const check = option.querySelector('.brand-check');
-                    if (selectedBrandIds.has(id)) check.classList.remove('hidden');
-                    else check.classList.add('hidden');
-                });
-
-                selectedBrandsContainer.innerHTML = '';
-                if (selectedBrandIds.size > 0) {
-                    selectedBrandsContainer.classList.remove('hidden');
-                    selectedBrandIds.forEach(id => {
-                        const option = brandOptions.find(el => el.dataset.id === id);
-                        const name = option ? option.dataset.name : id;
-                        const pill = document.createElement('div');
-                        pill.className =
-                            'flex items-center bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-1 rounded-full';
-                        pill.innerHTML =
-                            `<span>${name}</span>
-        <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800" data-id="${id}">&times;</button>`;
-                        selectedBrandsContainer.appendChild(pill);
-                    });
-                } else {
-                    selectedBrandsContainer.classList.add('hidden');
-                }
-            }
-
-            brandDropdownToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                brandDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (brandFilterWrapper && !brandFilterWrapper.contains(e.target)) {
-                    brandDropdown.classList.add('hidden');
-                }
-            });
-
-            brandSearchInput.addEventListener('input', () => {
-                const searchTerm = brandSearchInput.value.toLowerCase();
-                brandOptions.forEach(option => {
-                    const brandName = option.querySelector('.brand-name').textContent.toLowerCase();
-                    if (brandName.includes(searchTerm)) {
-                        option.style.display = 'flex';
                     } else {
-                        option.style.display = 'none';
+
+                        linksHtml +=
+                            `<a href="#" data-page="${link.url.split('page=')[1]}" class="pagination-link relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">${link.label}</a>`;
+
                     }
+
                 });
-            });
 
-            brandOptionsContainer.addEventListener('click', (e) => {
-                const option = e.target.closest('.brand-option');
-                if (!option) return;
-                const id = option.dataset.id;
-                if (selectedBrandIds.has(id)) selectedBrandIds.delete(id);
-                else selectedBrandIds.add(id);
-                applyFilters(); // langsung terapkan
-            });
 
-            selectedBrandsContainer.addEventListener('click', (e) => {
-                const btn = e.target.closest('button[data-id]');
-                if (!btn) return;
-                selectedBrandIds.delete(btn.dataset.id);
-                applyFilters();
-            });
 
-            // --- Category Cards Click ---
-            const categoryCards = document.querySelectorAll('.category-card');
-            categoryCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const categoryId = card.dataset
-                        .categoryId; // Assuming category cards have data-category-id
-                    const categoryName = card.querySelector('.category-name').textContent.trim();
-                    const categoryOption = Array.from(categoryFilter.options).find(opt => opt
-                        .text === categoryName);
-                    if (categoryOption) {
-                        categoryFilter.value = categoryOption.value;
-                        updateSubcategoryDisplay(categoryOption
-                            .value); // Update subcategories when category changes
-                        applyFilters(); // Clicking a category card is an immediate action
+                $nav.html(`
+
+                                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+
+                                                <div>
+
+                                                    <p class="text-sm text-gray-700 leading-5">
+
+                                                        Showing
+
+                                                        <span class="font-medium">${response.from}</span>
+
+                                                        to
+
+                                                        <span class="font-medium">${response.to}</span>
+
+                                                        of
+
+                                                        <span class="font-medium">${response.total}</span>
+
+                                                        results
+
+                                                    </p>
+
+                                                </div>
+
+                                                <div>
+
+                                                    <span class="relative z-0 inline-flex shadow-sm rounded-md">${linksHtml}</span>
+
+                                                </div>
+
+                                            </div>
+
+                                        `);
+
+                $paginationContainer.append($nav);
+
+            }
+
+
+
+            // --- Main AJAX Function ---
+
+            function applyFilters(page = 1) {
+
+                const filterData = {
+
+                    search: $('#search-input').val(),
+
+                    category: $('#category-filter').val(),
+
+                    subcategory: $('input[name="subcategory"]:checked').val(),
+
+                    sort: $('#sort-select').val(),
+
+                    brand_ids: Array.from(selectedBrandIds),
+
+                    page: page
+
+                };
+
+
+
+                const selectedPriceOption = $('#price-range').find('option:selected');
+
+                if (selectedPriceOption.length && selectedPriceOption.val()) {
+
+                    filterData.price_min = selectedPriceOption.data('min') || null;
+
+                    filterData.price_max = selectedPriceOption.data('max') || null;
+
+                }
+
+
+
+                // Show loading indicator
+
+                $('#product-grid').html(
+                    '<div class="col-span-full text-center py-16"><p class="text-gray-500">Memuat produk...</p></div>'
+                );
+
+                $('.mt-8').first().html(''); // Clear old pagination
+
+
+
+                // Make the AJAX call
+
+                $.ajax({
+
+                    url: "{{ route('products.filter.ajax') }}",
+
+                    type: 'GET',
+
+                    data: filterData,
+
+                    success: function(response) {
+
+                        // Render the new products and pagination
+
+                        updateProductGrid(response.data);
+
+                        updatePagination(response);
+
+                        updateResultCount(response);
+
+                    },
+
+                    error: function(xhr) {
+
+                        console.error('AJAX Error:', xhr);
+
+                        $('#product-grid').html(
+                            '<div class="col-span-full text-center py-16"><p class="text-red-500">Gagal memuat produk. Silakan coba lagi.</p></div>'
+                        );
+
                     }
-                });
-            });
 
-            // Initialize filters on page load
-            initializeFilters();
+                });
+
+            }
+
+
+
+            // --- Brand Filter UI Logic ---
+
+            function updateBrandSelectionUI() {
+
+                $('#brand-options .brand-option').each(function() {
+
+                    const id = $(this).data('id').toString();
+
+                    if (selectedBrandIds.has(id)) {
+
+                        $(this).find('.brand-check').removeClass('hidden');
+
+                    } else {
+
+                        $(this).find('.brand-check').addClass('hidden');
+
+                    }
+
+                });
+
+
+
+                const $selectedBrandsContainer = $('#selected-brands');
+
+                $selectedBrandsContainer.html('');
+
+                if (selectedBrandIds.size > 0) {
+
+                    $selectedBrandsContainer.removeClass('hidden');
+
+                    selectedBrandIds.forEach(id => {
+
+                        const option = $('#brand-options .brand-option[data-id="' + id + '"]');
+
+                        const name = option.data('name');
+
+                        const pill = `
+
+                                                    <div class="flex items-center bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-1 rounded-full">
+
+                                                        <span>${name}</span>
+
+                                                        <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800 brand-remove-btn" data-id="${id}">&times;</button>
+
+                                                    </div>
+
+                                                `;
+
+                        $selectedBrandsContainer.append(pill);
+
+                    });
+
+                } else {
+
+                    $selectedBrandsContainer.addClass('hidden');
+
+                }
+
+            }
+
+
+
+            // --- Document Ready - Event Handlers ---
+
+            $(document).ready(function() {
+
+                const currentUrl = new URL(window.location.href);
+
+
+
+                // Initialize filters on page load
+
+                function initializeFilters() {
+
+                    // Brands
+
+                    const brandIdsFromUrl = (currentUrl.searchParams.get('brand_ids') || '').split(',')
+                        .filter(Boolean);
+
+                    selectedBrandIds = new Set(brandIdsFromUrl);
+
+                    updateBrandSelectionUI();
+
+
+
+                    // Other filters can be initialized here if needed
+
+                    $('#search-input').val(currentUrl.searchParams.get('search') || '');
+
+                    $('#sort-select').val(currentUrl.searchParams.get('sort') || 'newest');
+
+
+
+                    const categoryFromUrl = currentUrl.searchParams.get('category') || 'all';
+
+                    $('#category-filter').val(categoryFromUrl);
+
+                    $('.category-card[data-category-id="' + categoryFromUrl + '"]').addClass(
+                        'category-active');
+
+                    updateSubcategoryDisplay(categoryFromUrl);
+
+                }
+
+
+
+                initializeFilters();
+
+
+
+                // --- Event Handlers ---
+
+                $('#apply-filters').on('click', function() {
+                    applyFilters(1);
+                });
+
+                $('#sort-select').on('change', function() {
+                    applyFilters(1);
+                });
+
+                $('#price-range').on('change', function() {
+                    applyFilters(1);
+                });
+
+
+
+                let searchTimeout;
+
+                $('#search-input').on('keyup', function() {
+
+                    clearTimeout(searchTimeout);
+
+                    searchTimeout = setTimeout(() => applyFilters(1), 500);
+
+                });
+
+
+
+                $('#reset-filters').on('click', function() {
+
+                    // 1. Reset input fields
+
+                    $('#search-input').val('');
+
+                    $('#price-range').val('');
+
+                    $('#sort-select').val('newest');
+
+                    $('#category-filter').val('all');
+
+
+
+                    // 2. Reset UI states
+
+                    $('.category-card').removeClass('category-active');
+
+                    $('#subcategory-display-container').addClass('hidden');
+
+
+
+                    // 3. Reset brand state and UI
+
+                    selectedBrandIds.clear();
+
+                    updateBrandSelectionUI();
+
+                    $('#brand-search').val(''); // Also clear brand search
+
+                    $('#brand-options .brand-option').show(); // Show all brand options
+
+
+
+                    // 4. Apply the reset filters to show all products via AJAX
+
+                    applyFilters(1);
+
+                });
+
+
+
+                // Category & Subcategory
+
+
+
+                $('.category-card').on('click', function() {
+
+
+
+                    const categoryId = $(this).data('category-id');
+
+
+
+                    if ($(this).hasClass('category-active')) {
+
+
+
+                        $('.category-card').removeClass('category-active');
+
+
+
+                        $('#category-filter').val('all');
+
+
+
+                    } else {
+
+
+
+                        $('.category-card').removeClass('category-active');
+
+
+
+                        $(this).addClass('category-active');
+
+
+
+                        $('#category-filter').val(categoryId);
+
+
+
+                    }
+
+
+
+                    updateSubcategoryDisplay($('#category-filter').val());
+
+
+
+                    applyFilters(1);
+
+
+
+
+
+
+
+                    // Scroll to the product grid
+
+
+
+                    $('html, body').animate({
+
+
+
+                        scrollTop: $('#product-grid').offset().top -
+                            80 // Adjust 80 for sticky header height
+
+
+
+                    }, 500);
+
+
+
+                });
+
+
+
+                $(document).on('change', 'input[name="subcategory"]', function() {
+                    applyFilters(1);
+                });
+
+
+
+                // Brand
+
+                $('#brand-dropdown-toggle').on('click', (e) => {
+
+                    e.preventDefault();
+
+                    $('#brand-dropdown').toggleClass('hidden');
+
+                });
+
+
+
+                $('#brand-search').on('input', function() {
+
+                    const searchTerm = $(this).val().toLowerCase();
+
+                    $('#brand-options .brand-option').each(function() {
+
+                        const brandName = $(this).find('.brand-name').text().toLowerCase();
+
+                        $(this).toggle(brandName.includes(searchTerm));
+
+                    });
+
+                });
+
+
+
+                $('#brand-options').on('click', '.brand-option', function() {
+
+                    const id = $(this).data('id').toString();
+
+                    if (selectedBrandIds.has(id)) {
+
+                        selectedBrandIds.delete(id);
+
+                    } else {
+
+                        selectedBrandIds.add(id);
+
+                    }
+
+                    updateBrandSelectionUI();
+
+                    applyFilters(1);
+
+                });
+
+
+
+                $(document).on('click', '.brand-remove-btn', function() {
+
+                    const id = $(this).data('id').toString();
+
+                    selectedBrandIds.delete(id);
+
+                    updateBrandSelectionUI();
+
+                    applyFilters(1);
+
+                });
+
+
+
+                // Pagination click handler
+
+                $(document).on('click', '.pagination-link', function(e) {
+
+                    e.preventDefault();
+
+                    const page = $(this).data('page');
+
+                    applyFilters(page);
+
+                });
+
+            });
+        });
+    </script>
+    <script>
+        // Setup AJAX to send CSRF token with every request
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         });
     </script>
     <script>

@@ -119,29 +119,48 @@ class StoreController extends Controller
             ->get();
 
         // Get sub-categories with product counts
-        $subCategories = ProductSubCategory::query()
-            ->where('user_store_id', $userStore->id)
-            ->where('is_active', true)
-            ->whereHas('products', function ($q) use ($userStore) {
-                $q->where('user_store_id', $userStore->id)
-                    ->where('is_active', true);
-            })
-            ->withCount(['products as products_count' => function ($q) use ($userStore) {
-                $q->where('is_active', true)
-                    ->where('user_store_id', $userStore->id);
-            }])
-            ->orderBy('name')
-            ->get();
+        $subCategories = Cache::remember("store_{$userStore->id}_sub_categories", 3600, function () use ($userStore) {
+            return ProductSubCategory::query()
+                ->where('user_store_id', $userStore->id)
+                ->where('is_active', true)
+                ->whereHas('products', function ($q) use ($userStore) {
+                    $q->where('user_store_id', $userStore->id)
+                        ->where('is_active', true);
+                })
+                ->withCount(['products as products_count' => function ($q) use ($userStore) {
+                    $q->where('is_active', true)
+                        ->where('user_store_id', $userStore->id);
+                }])
+                ->orderBy('name')
+                ->get();
+        });
+
+        $categorySubcategoryMap = Cache::remember("store_{$userStore->id}_cat_subcat_map", 3600, function () use ($userStore) {
+            return StoreProduct::where('user_store_id', $userStore->id)
+                ->where('is_active', true)
+                ->whereNotNull('product_category_id')
+                ->whereNotNull('sub_category_id')
+                ->with('subCategory:id,name')
+                ->get()
+                ->groupBy('product_category_id')
+                ->map(function ($products) {
+                    return $products->pluck('subCategory')->filter()->unique('id')->sortBy('name')->values();
+                });
+        });
 
         // Get brands
-        $brands = \App\Models\StoreBrand::where('user_store_id', $userStore->id)
-            ->where('is_active', true)
-            ->get();
+        $brands = Cache::remember("store_{$userStore->id}_brands", 3600, function () use ($userStore) {
+            return \App\Models\StoreBrand::where('user_store_id', $userStore->id)
+                ->where('is_active', true)
+                ->get();
+        });
 
-        $priceRanges = PriceRange::active()
-            ->forStore($userStore->id)
-            ->orderBy('min')
-            ->get();
+        $priceRanges = Cache::remember("store_{$userStore->id}_price_ranges", 3600, function () use ($userStore) {
+            return PriceRange::active()
+                ->forStore($userStore->id)
+                ->orderBy('min')
+                ->get();
+        });
 
         // Load banners from database
         $banners = $userStore->heroes()->where('is_active', true)->get();
@@ -176,7 +195,8 @@ class StoreController extends Controller
             'subCategories', // Add this
             'brands',
             'priceRanges',
-            'banners'
+            'banners',
+            'categorySubcategoryMap'
         ));
     }
 
