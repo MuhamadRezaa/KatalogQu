@@ -1422,7 +1422,7 @@
 
                     <div class="hero-icon">
                         <img src="{{ asset('assets/demo/barbershop/img/klasik.png') }}" alt="Barbershop Logo"
-                            style="width: 40px; height: 40px; object-fit: contain;">
+                            style="width: 1200px; height: auto; object-fit: contain;">
                     </div>
 
                     <h1 style="margin-top: 0.5rem;">Low Barber</h1>
