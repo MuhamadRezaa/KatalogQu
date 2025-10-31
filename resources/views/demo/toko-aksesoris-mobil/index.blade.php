@@ -184,7 +184,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(2)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -205,9 +205,7 @@
                             <button class="btn btn-detail" onclick="showProductDetail(3)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(3)">
-                                <i class="fab fa-whatsapp"></i> Pesan
-                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -235,7 +233,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(4)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -258,7 +256,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(5)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -281,7 +279,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(6)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -303,7 +301,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(7)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -325,7 +323,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(8)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -348,7 +346,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(9)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -370,7 +368,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(10)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -392,7 +390,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(11)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -414,7 +412,7 @@
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
                             <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(12)">
-                                <i class="fab fa-whatsapp"></i> Pesan
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -801,7 +799,7 @@
                         <div class="product-detail-action">
                             <button class="btn btn-whatsapp btn-detail-order" onclick="orderViaWhatsApp(${productId})">
                                 <i class="fab fa-whatsapp"></i>
-                                <span>Pesan Sekarang</span>
+                                <span> Sekarang</span>
                                 <div class="btn-shine"></div>
                             </button>
                         </div>
