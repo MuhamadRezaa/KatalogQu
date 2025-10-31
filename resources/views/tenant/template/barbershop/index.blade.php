@@ -287,7 +287,7 @@
                 width: 100%;
                 text-align: center;
             }
-            
+
             .nav-link:hover::after,
             .nav-link.active::after {
                 width: 0;
@@ -307,11 +307,6 @@
                 alt="{{ $userStore->store_name ?? 'Logo' }}">
             <span>{{ $userStore->store_name ?? 'Barbershop' }}</span>
         </a>
-        <nav class="navbar-nav">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#services-and-styles" class="nav-link">Layanan</a>
-            <a href="#contact" class="nav-link">Kontak</a>
-        </nav>
         <button class="navbar-toggler" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
