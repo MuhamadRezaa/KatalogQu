@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('storage/' . $userStore->store_logo) }}" type="image/x-icon">
+    <link rel="icon"
+        href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+        type="image/x-icon">
     <title>{{ $userStore->store_name }}</title>
     <link rel="stylesheet" href="{{ asset('assets/demo/toko-aksesoris-hp/styles.css') }}" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,8 +49,8 @@
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
             <div class="flex items-center space-x-4 mb-4 md:mb-0">
                 @if ($userStore->store_logo)
-                    <img src="{{ asset('storage/' . $userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                        class="rounded-full w-16 h-16 object-cover">
+                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                        alt="{{ $userStore->store_name }}" class="rounded-full w-16 h-16 object-cover">
                 @else
                     <div class="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center">
                         <span class="text-white font-bold text-2xl">{{ substr($userStore->store_name, 0, 1) }}</span>
@@ -63,62 +65,64 @@
 
     <section class="relative text-white text-center py-5 overflow-hidden" style="max-width: 1920px; margin: 0 auto;">
         {{-- Container dengan aspect ratio 16:9 --}}
-         {{-- <div aria-hidden="true" class="h-90"></div> --}}
+        {{-- <div aria-hidden="true" class="h-90"></div> --}}
         <div style="aspect-ratio: 16 / 9; position: relative;">
             <div id="hero-slider" class="absolute inset-0">
-            @php
-                $fallbacks = collect([
-                    [
-                        'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag.webp'),
-                        'title' => 'Banner 1',
-                        'subtitle' => 'sub 1',
-                    ],
-                    [
-                        'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg'),
-                        'title' => 'Banner 2',
-                        'subtitle' => 'Kartecsgcgsj',
-                    ],
-                    [
-                        'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg'),
-                        'title' => 'Banner 3',
-                        'subtitle' => 'sub 3',
-                    ],
-                ]);
-
-                $slides = isset($banners) && $banners->isNotEmpty() ? collect($banners)->take(3) : collect();
-                if ($slides->count() < 3) {
-                    $slides = $slides->concat($fallbacks->take(3 - $slides->count()));
-                }
-            @endphp
-
-            @foreach ($slides as $i => $bn)
                 @php
-                    $isObj = is_object($bn);
-                    $imgSrc = $isObj ? route('tenant.asset.domain', ['path' => $bn->image_url]) : $bn['image_url'];
-                    $title = $isObj ? $bn->title ?? 'Banner' : $bn['title'];
-                    $subtitle = $isObj ? $bn->subtitle ?? '' : $bn['subtitle'];
+                    $fallbacks = collect([
+                        [
+                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag.webp'),
+                            'title' => 'Banner 1',
+                            'subtitle' => 'sub 1',
+                        ],
+                        [
+                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg'),
+                            'title' => 'Banner 2',
+                            'subtitle' => 'Kartecsgcgsj',
+                        ],
+                        [
+                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg'),
+                            'title' => 'Banner 3',
+                            'subtitle' => 'sub 3',
+                        ],
+                    ]);
+
+                    $slides = isset($banners) && $banners->isNotEmpty() ? collect($banners)->take(3) : collect();
+                    if ($slides->count() < 3) {
+                        $slides = $slides->concat($fallbacks->take(3 - $slides->count()));
+                    }
                 @endphp
 
-                <div
-                    class="slide absolute inset-0 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }} transition-opacity duration-1000">
-                    <img src="{{ $imgSrc }}" alt="{{ $title }}"
-                        class="w-full h-full object-cover brightness-75 absolute inset-0">
-                    <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+                @foreach ($slides as $i => $bn)
+                    @php
+                        $isObj = is_object($bn);
+                        $imgSrc = $isObj ? route('tenant.asset.domain', ['path' => $bn->image_url]) : $bn['image_url'];
+                        $title = $isObj ? $bn->title ?? 'Banner' : $bn['title'];
+                        $subtitle = $isObj ? $bn->subtitle ?? '' : $bn['subtitle'];
+                    @endphp
 
-                    <div class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
-                        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{{ $title }}</h1>
-                        <p class="text-lg md:text-xl font-light mb-6">{{ $subtitle }}</p>
+                    <div
+                        class="slide absolute inset-0 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }} transition-opacity duration-1000">
+                        <img src="{{ $imgSrc }}" alt="{{ $title }}"
+                            class="w-full h-full object-cover brightness-75 absolute inset-0">
+                        <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+
+                        <div
+                            class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
+                            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{{ $title }}</h1>
+                            <p class="text-lg md:text-xl font-light mb-6">{{ $subtitle }}</p>
+                        </div>
+                    </div>
+                @endforeach
+                <div class="absolute bottom-4 left-0 right-0 z-20">
+                    <div class="flex justify-center space-x-3">
+                        @for ($i = 0; $i < $slides->count(); $i++)
+                            <span
+                                class="dot w-3 h-3 rounded-full bg-white {{ $i === 0 ? 'opacity-100' : 'opacity-50' }} transition-all duration-500"></span>
+                        @endfor
                     </div>
                 </div>
-            @endforeach
-            <div class="absolute bottom-4 left-0 right-0 z-20">
-                <div class="flex justify-center space-x-3">
-                    @for ($i = 0; $i < $slides->count(); $i++)
-                        <span class="dot w-3 h-3 rounded-full bg-white {{ $i === 0 ? 'opacity-100' : 'opacity-50' }} transition-all duration-500"></span>
-                    @endfor
-                </div>
             </div>
-        </div>
     </section>
 
 
@@ -155,7 +159,8 @@
         {{-- SUB KATEGORI --}}
         <div class="my-8 container mx-auto px-4 filter-section rounded-xl">
             <h2 class="text-lg md:text-2xl font-bold text-center mt-6 mb-2 text-teal-600">Sub Kategori</h2>
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl mx-auto" id="subcategory-filter-container">
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl mx-auto"
+                id="subcategory-filter-container">
                 <button
                     class="filter-btn subcategory-btn inline-flex items-center whitespace-nowrap px-4 md:px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
                     data-subcategory="all" data-category="all" data-category-id="all">
@@ -314,7 +319,7 @@
 
                             <div class="text-center mt-2">
                                 @if ($product->original_price && $product->original_price > $product->price)
-                                    <div class="flex items-center justify-center space-x-1 mb-2">
+<div class="flex items-center justify-center space-x-1 mb-2">
                                         <span class="text-gray-400 line-through text-lg">
                                             Rp {{ number_format($product->original_price, 0, ',', '.') }}
                                         </span>
@@ -328,11 +333,11 @@
                                             Hemat {{ round((($product->original_price - $product->price) / $product->original_price) * 100) }}%
                                         </span>
                                     </div>
-                                @else
-                                    <span class="text-teal-500 font-bold text-xl">
+@else
+<span class="text-teal-500 font-bold text-xl">
                                         Rp {{ number_format($product->price, 0, ',', '.') }}
                                     </span>
-                                @endif
+@endif
                             </div>
 
                             <div class="text-center mt-3 mb-6">
@@ -398,8 +403,8 @@
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="flex items-center mb-4 md:mb-0">
                         @if ($userStore->store_logo)
-                            <img src="{{ Storage::url($userStore->store_logo) }}" alt="{{ $userStore->store_name }}"
-                                class="w-10 h-10 rounded-full mr-3">
+                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                                alt="{{ $userStore->store_name }}" class="w-10 h-10 rounded-full mr-3">
                         @else
                             <div
                                 class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
@@ -458,7 +463,10 @@
                 function updateSubcategories(categoryName, categoryId) {
                     // Mark (highlight) which subcategories belong to the selected category.
                     // Do not fully hide or disable non-matching subcategories — just visually indicate matches.
-                    console.log('Updating subcategories for:', { categoryName, categoryId });
+                    console.log('Updating subcategories for:', {
+                        categoryName,
+                        categoryId
+                    });
 
                     const subcategorySection = document.getElementById('subcategory-filter-container').parentElement;
                     if (subcategorySection) {
@@ -561,7 +569,7 @@
                         const dateA = new Date(a.getAttribute('data-created-at'));
                         const dateB = new Date(b.getAttribute('data-created-at'));
 
-                        switch(currentSort) {
+                        switch (currentSort) {
                             case 'lama':
                             case 'date_asc':
                                 return dateA - dateB; // Oldest to newest
@@ -625,7 +633,8 @@
 
                         // 3. Update subcategory selections
                         currentSubcategory = 'all';
-                        const allSubBtn = document.querySelector('.subcategory-btn[data-subcategory="all"]');
+                        const allSubBtn = document.querySelector(
+                            '.subcategory-btn[data-subcategory="all"]');
 
                         // Reset all subcategory button styles first
                         subcategoryButtons.forEach(btn => {
@@ -640,7 +649,8 @@
                         }
 
                         // 4. Update subcategories visibility and styling
-                        updateSubcategories(categoryName, categoryId);                        // Apply filters and update display
+                        updateSubcategories(categoryName,
+                            categoryId); // Apply filters and update display
                         applyFilters();
                     });
                 });
@@ -675,7 +685,8 @@
                                     btn.classList.remove('active', 'bg-teal-500', 'text-white');
                                     btn.classList.add('bg-white', 'text-gray-700');
                                 });
-                                matchingCategoryBtn.classList.add('active', 'bg-teal-500', 'text-white');
+                                matchingCategoryBtn.classList.add('active', 'bg-teal-500',
+                                    'text-white');
                                 matchingCategoryBtn.classList.remove('bg-white', 'text-gray-700');
                                 currentCategory = subCategory;
                             }
@@ -703,12 +714,12 @@
                 const priceDropdownEl = document.getElementById('priceDropdown');
                 const activePriceLabelEl = document.getElementById('activePriceLabel');
 
-                    function updateActivePriceLabel() {
-                        // Tidak menampilkan label rentang harga yang dipilih
-                        if (activePriceLabelEl) {
-                            activePriceLabelEl.textContent = '';
-                        }
+                function updateActivePriceLabel() {
+                    // Tidak menampilkan label rentang harga yang dipilih
+                    if (activePriceLabelEl) {
+                        activePriceLabelEl.textContent = '';
                     }
+                }
                 if (priceDropdownEl) priceDropdownEl.addEventListener('change', function() {
                     const selectedOption = this.options[this.selectedIndex];
                     if (this.value === 'all') {
