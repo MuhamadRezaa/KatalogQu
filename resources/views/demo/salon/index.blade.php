@@ -1471,16 +1471,6 @@
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-bold mb-4 border-b-2 border-primary-500 inline-block">Layanan Utama</h3>
-                    <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="#" class="hover:text-primary-300 transition-colors">HairStyle</a></li>
-                        <li><a href="#" class="hover:text-primary-300 transition-colors">Nail Art & Pedicure</a></li>
-                        <li><a href="#" class="hover:text-primary-300 transition-colors">Spa & Perawatan Badan</a></li>
-                        <li><a href="#" class="hover:text-primary-300 transition-colors">Produk Kecantikan</a></li>
-                    </ul>
-                </div>
-
-                <div>
                     <h3 class="text-lg font-bold mb-4 border-b-2 border-primary-500 inline-block">Kontak</h3>
                     <div class="space-y-3 text-sm text-gray-300">
                         <p class="flex items-center">
