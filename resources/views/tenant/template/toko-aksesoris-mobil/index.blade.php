@@ -26,7 +26,7 @@
                         <img src="{{ route('tenant.asset.domain', ['path' => ltrim($userStore->store_logo, '/')]) }}"
                              alt="{{ $userStore->store_name }}"
                              loading="lazy" decoding="async"
-                             style="width:50px;height:50px;object-fit:contain;background:transparent;">
+                             style="width:100px;height:auto;object-fit:contain;background:transparent;">
                     @else
                         <div class="logo-placeholder"
                              style="width:50px;height:50px;background:#eee;display:flex;align-items:center;justify-content:center;border-radius:5px;">
@@ -54,9 +54,9 @@
                     <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                         alt="{{ $banner->alt_text ?? ($banner->title ?? 'Banner') }}" loading="lazy" decoding="async"
                         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-                    <!-- overlay gelap -->
+                    {{-- <!-- overlay gelap -->
                     <div style="position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.3));">
-                    </div>
+                    </div> --}}
 
                     <!-- konten tetap -->
                     <div class="slide-content" style="position:relative;z-index:1;">
