@@ -404,7 +404,7 @@
                     <div class="flex items-center mb-4 md:mb-0">
                         @if ($userStore->store_logo)
                             <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                                alt="{{ $userStore->store_name }}" class="w-10 h-10 rounded-full mr-3">
+                                alt="{{ 'Gambar:' . $userStore->store_name }}" class="w-10 h-10 rounded-full mr-3">
                         @else
                             <div
                                 class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
