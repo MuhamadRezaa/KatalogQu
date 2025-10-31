@@ -178,9 +178,6 @@
                                 <button class="btn btn-detail" onclick="showProductDetail({{ $product->id }})">
                                     <i class="fas fa-info-circle"></i> Detail
                                 </button>
-                                <button class="btn btn-whatsapp" onclick="orderViaWhatsApp({{ $product->id }})">
-                                    <i class="fab fa-whatsapp"></i> Pesan
-                                </button>
                             </div>
                         </div>
                     </div>

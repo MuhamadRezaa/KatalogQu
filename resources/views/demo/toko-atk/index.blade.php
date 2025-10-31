@@ -163,10 +163,7 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Pulpen Standard', 3000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
+
                     </div>
                 </div>
             </div>
