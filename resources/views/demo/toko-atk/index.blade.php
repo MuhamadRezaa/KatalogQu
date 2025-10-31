@@ -182,10 +182,7 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Pensil 2B Faber-Castell', 2500)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
+
                     </div>
                 </div>
             </div>
@@ -205,10 +202,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Spidol Whiteboard Snowman', 7000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -226,10 +219,6 @@
                         <button class="btn-detail" onclick="showDetail('correction')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Correction Tape Kenko', 8500)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -250,10 +239,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Stapler Kenko HD-10', 15000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -270,10 +255,6 @@
                         <button class="btn-detail" onclick="showDetail('map')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Map Plastik A4', 5000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -292,10 +273,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Ordner Besar A4', 22000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -312,10 +289,6 @@
                         <button class="btn-detail" onclick="showDetail('sheetProtectorA4')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Sheet Protector A4', 1200)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -335,10 +308,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Kertas HVS A4', 45000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -355,10 +324,6 @@
                         <button class="btn-detail" onclick="showDetail('stickyNotes3x3')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Sticky Notes 3x3', 6000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -377,10 +342,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Kertas Warna A4 Campuran', 18000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -396,10 +357,6 @@
                         <button class="btn-detail" onclick="showDetail('memoPadSpiralKecil')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Memo Pad Spiral Kecil', 4000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -419,10 +376,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Lem Kertas UHU Stick 21gr', 12000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -440,10 +393,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Label Nama A4 65 Label', 15000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -459,10 +408,6 @@
                         <button class="btn-detail" onclick="showDetail('doubleTape1Inch')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Double Tape 1 Inch', 8000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -480,10 +425,6 @@
                         <button class="btn-detail" onclick="showDetail('lakbanBening2Inch')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Lakban Bening 2 Inch', 10000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -503,10 +444,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Cutter Kecil Joyko', 5000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -524,10 +461,6 @@
                             <i class="fas fa-eye"></i>
                             Lihat Detail
                         </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Gunting Kertas Stainless', 8000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
-                        </button>
                     </div>
                 </div>
             </div>
@@ -543,10 +476,6 @@
                         <button class="btn-detail" onclick="showDetail('paperTrimmerA4')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Paper Trimmer A4', 125000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -564,10 +493,6 @@
                         <button class="btn-detail" onclick="showDetail('pisauCutterBesar')">
                             <i class="fas fa-eye"></i>
                             Lihat Detail
-                        </button>
-                        <button class="btn-whatsapp" onclick="chatWhatsApp('Pisau Cutter Besar', 9000)">
-                            <i class="fab fa-whatsapp"></i>
-                            Chat via WhatsApp
                         </button>
                     </div>
                 </div>
