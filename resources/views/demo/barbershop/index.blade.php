@@ -1460,7 +1460,7 @@
 
             <div class="footer-bottom">
 
-                <p>&copy; {{ date('Y') }} Low Barber. Diberdayakan oleh KatalogQu</p>
+                <p>&copy; {{ date('Y') }} Low Barber. Powered By KatalogQu</p>
 
             </div>
 
