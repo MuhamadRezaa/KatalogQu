@@ -157,9 +157,6 @@
                             <button class="btn btn-detail" onclick="showProductDetail(1)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(1)">
-                                <i class="fab fa-whatsapp"></i> Pesan
-                            </button>
                         </div>
                     </div>
                 </div>
