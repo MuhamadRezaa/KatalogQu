@@ -396,11 +396,6 @@
             <img src="{{ asset('assets/demo/barbershop/img/klasik.png') }}" alt="Low Barber Logo">
             <span>Low Barber</span>
         </a>
-        <nav class="navbar-nav">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#services-and-styles" class="nav-link">Layanan</a>
-            <a href="#contact" class="nav-link">Kontak</a>
-        </nav>
         <button class="navbar-toggler" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
