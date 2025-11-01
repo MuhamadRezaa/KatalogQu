@@ -142,11 +142,11 @@
         }
 
         .pagination-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.5rem;
             border: 1px solid #ddd;
-            background: #fff;
+            background: #e0e0e0;
             color: #333;
-            border-radius: 4px;
+            border-radius: 25px; 
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
@@ -169,16 +169,19 @@
         }
 
         .page-number {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #ddd;
-            background: #fff;
-            color: #333;
-            border-radius: 4px;
+            padding: 0.5rem;
+            width: 2.5rem; /* tambah width tetap */
+            height: 2.5rem; /* tambah height tetap */
+            border: none; /* hilangkan border */
+            background: transparent;
+            color: #666;
+            border-radius: 50%; /* ← ubah jadi bulat sempurna */
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
-            min-width: 2rem;
-            text-align: center;
+            display: flex; /* untuk center text */
+            align-items: center;
+            justify-content: center;
         }
 
         .page-number:hover {
