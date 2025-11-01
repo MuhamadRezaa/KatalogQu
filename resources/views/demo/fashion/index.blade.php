@@ -210,7 +210,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Powered by PT. Era Cipta Digital</p>
+            <p>© 2025 Powered by PT. Era Cipta Digital</p>
         </div>
     </footer>
 
