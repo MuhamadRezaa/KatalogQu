@@ -464,7 +464,7 @@
         <div class="header-container">
             <div class="header-top">
                 {{-- Logo di Header --}}
-                <div class="logo">
+                <div class="logo" style="margin-left: 60px;">
                     @if ($userStore->store_logo)
                         <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                             alt="Logo Toko" class="logo-image"
@@ -579,17 +579,6 @@
                     {{-- Input Pencarian (Selalu Tampil) --}}
                     <input type="text" class="search-box" placeholder="Cari produk..." id="searchBox">
 
-                    {{-- Filter Kategori (Selalu Tampil karena diperlukan Sub Kategori) --}}
-                    <select id="categoryFilter" class="search-box" style="min-width: 200px;">
-                        <option value="all">Semua Kategori</option>
-                        @if (isset($categories) && $categories->isNotEmpty())
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->slug ?? $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-
-                    {{-- === PERUBAHAN: Filter Sub Kategori (Kondisional) === --}}
                     @if (in_array('subkategoriproduk', $activeMenuCodes ?? []))
                         <select id="subcategoryFilter" class="search-box" style="min-width: 200px;" disabled>
                             <option value="all" data-category-slug="">Semua Sub Kategori</option>
@@ -603,7 +592,15 @@
                             @endif
                         </select>
                     @endif
-                    {{-- === AKHIR PERUBAHAN === --}}
+                    {{-- Filter Kategori (Selalu Tampil karena diperlukan Sub Kategori) --}}
+                    <select id="categoryFilter" class="search-box" style="min-width: 200px;">
+                        <option value="all">Semua Kategori</option>
+                        @if (isset($categories) && $categories->isNotEmpty())
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->slug ?? $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
 
                     {{-- === PERUBAHAN: Filter Brand Produk (Kondisional) === --}}
                     @if (in_array('brandproduk', $activeMenuCodes ?? []))
@@ -1223,7 +1220,7 @@
                         case 'name-asc':
                             return nameA.localeCompare(nameB);
                         case 'name-desc':
-                            return nameB.localeCompare(nameA);
+                            return nameB.localeCompare(a.name);
                         case 'newest':
                             return dateB - dateA;
                         default:
