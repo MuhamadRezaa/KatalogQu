@@ -266,6 +266,10 @@ const categoriesData = {
   let currentFilter = 'all';
   let currentSubcategory = null;
   let visibleLimit = 20; // jumlah produk awal yang ditampilkan
+  // Pagination state
+  let currentPage = 1;
+  const itemsPerPage = 12;
+  let lastRenderedProducts = [];
 
   // DOM Elements
   const loadingOverlay = document.getElementById('loadingOverlay');
@@ -409,6 +413,7 @@ const categoriesData = {
 
   // Render products
   function renderProducts(products) {
+      lastRenderedProducts = products;
       productsGrid.innerHTML = '';
 
       if (products.length === 0) {
@@ -417,7 +422,12 @@ const categoriesData = {
       }
 
       noResults.style.display = 'none';
-      const toRender = products.slice(0, visibleLimit);
+      const totalPages = Math.max(1, Math.ceil(products.length / itemsPerPage));
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const toRender = products.slice(start, end);
       toRender.forEach(product => {
           const productCard = document.createElement('div');
           productCard.className = 'product-card';
@@ -480,27 +490,64 @@ const categoriesData = {
 
           productsGrid.appendChild(productCard);
       });
+      // Render pagination controls
+      renderPagination(totalPages);
+  }
 
-      // Tambah/atur tombol Lihat Selengkapnya
-      let showMoreBtn = document.getElementById('showMoreBtn');
-      if (!showMoreBtn) {
-          showMoreBtn = document.createElement('button');
-          showMoreBtn.id = 'showMoreBtn';
-          showMoreBtn.textContent = 'Lihat Selengkapnya →';
-          showMoreBtn.style.cssText = 'margin: 16px auto; display: none; padding: 10px 16px; border-radius: 999px; background:#111; color:#fff; border:none; cursor:pointer;';
-          productsGrid.parentElement.appendChild(showMoreBtn);
+  function renderPagination(totalPages) {
+      let paginationContainer = document.getElementById('paginationContainer');
+      if (!paginationContainer) {
+          paginationContainer = document.createElement('div');
+          paginationContainer.id = 'paginationContainer';
+          paginationContainer.className = 'pagination';
+          productsGrid.parentElement.appendChild(paginationContainer);
       }
-      if (products.length > visibleLimit) {
-          showMoreBtn.style.display = 'inline-flex';
-          showMoreBtn.onclick = () => {
-              visibleLimit += 20;
-              renderProducts(products);
-              // Scroll ringan untuk menjaga fokus di grid
+      paginationContainer.innerHTML = '';
+
+      if (totalPages <= 1) {
+          return; // no pagination needed
+      }
+
+      // Prev button
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'page-btn';
+      prevBtn.textContent = '‹';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+          if (currentPage > 1) {
+              currentPage -= 1;
+              renderProducts(lastRenderedProducts);
+              productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+      };
+      paginationContainer.appendChild(prevBtn);
+
+      // Numbered pages
+      for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+          btn.textContent = i;
+          btn.onclick = () => {
+              currentPage = i;
+              renderProducts(lastRenderedProducts);
               productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
           };
-      } else {
-          showMoreBtn.style.display = 'none';
+          paginationContainer.appendChild(btn);
       }
+
+      // Next button
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'page-btn';
+      nextBtn.textContent = '›';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+          if (currentPage < totalPages) {
+              currentPage += 1;
+              renderProducts(lastRenderedProducts);
+              productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+      };
+      paginationContainer.appendChild(nextBtn);
   }
 
   // Filter products by category
@@ -547,6 +594,7 @@ const categoriesData = {
           }
       }
 
+      currentPage = 1;
       renderProducts(filteredProducts);
 
       // Scroll to subcategory section if displayed
@@ -651,6 +699,7 @@ const categoriesData = {
           );
       }
 
+      currentPage = 1;
       renderProducts(filteredProducts);
 
       // Scroll to products section
@@ -677,6 +726,7 @@ const categoriesData = {
                  (product.colors && product.colors.some(color => color.toLowerCase().includes(searchTerm)));
       });
 
+      currentPage = 1;
       renderProducts(filteredProducts);
   }
 
@@ -721,6 +771,7 @@ const categoriesData = {
           }
       });
 
+      currentPage = 1;
       renderProducts(productsData);
   }
 

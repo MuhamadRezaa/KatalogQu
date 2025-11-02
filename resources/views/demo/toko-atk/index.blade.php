@@ -498,8 +498,16 @@
                 </div>
             </div>
         </div>
-        <div class="show-more-container">
-            <button id="atkShowMoreBtn" class="show-more-button" onclick="atkShowMore()">Lihat Selengkapnya</button>
+        <div class="pagination-container">
+            <div class="pagination-controls">
+                <button id="atkPrevBtn" class="pagination-btn" onclick="atkPreviousPage()" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <div id="atkPageNumbers" class="page-numbers"></div>
+                <button id="atkNextBtn" class="pagination-btn" onclick="atkNextPage()">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Modal Detail Produk -->
@@ -872,14 +880,14 @@
                         <ul class="modal-specs">
                             ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
                         </ul>
-                        <div class="related-title">Produk Serupa</div>
-                        <div id="atkRelatedGrid" class="related-products-grid"></div>
                         <div class="modal-actions">
                             <button class="btn-whatsapp" onclick="chatWhatsApp('${product.name}', '${product.price}')">
                                 <i class="fab fa-whatsapp"></i>
                                 Chat via WhatsApp
                             </button>
                         </div>
+                        <div class="related-title">Produk Serupa</div>
+                        <div id="atkRelatedGrid" class="related-products-grid"></div>
                     </div>
                 </div>
             `;
@@ -1082,39 +1090,127 @@
                 });
             }
 
-            // Show more with dummy: clone cards to reach 50 and reveal gradually
-            let atkVisibleCount = 20;
-            function setupAtkShowMoreWithDummy() {
+            // Pagination system
+            const ITEMS_PER_PAGE = 12;
+            let atkCurrentPage = 1;
+            let atkTotalPages = 1;
+
+            function setupAtkPagination() {
                 const grid = document.getElementById('products-grid');
                 if (!grid) return;
+
                 const currentCards = Array.from(grid.querySelectorAll('.product-card'));
-                // Clone until 50
+
+                // Clone until 50 items
                 let i = 0;
                 while (grid.querySelectorAll('.product-card').length < 50) {
                     const base = currentCards[i % currentCards.length].cloneNode(true);
                     grid.appendChild(base);
                     i++;
                 }
-                // Hide beyond visibleCount
+
                 const allCards = Array.from(grid.querySelectorAll('.product-card'));
-                allCards.forEach((card, idx) => {
-                    card.style.display = (idx < atkVisibleCount) ? 'block' : 'none';
-                });
-                // Toggle button
-                const btn = document.getElementById('atkShowMoreBtn');
-                if (btn) btn.style.display = 'inline-block';
+                atkTotalPages = Math.ceil(allCards.length / ITEMS_PER_PAGE);
+
+                showAtkPage(1);
+                updateAtkPaginationControls();
             }
 
-            function atkShowMore() {
+            function showAtkPage(page) {
                 const grid = document.getElementById('products-grid');
-                const cards = Array.from(grid.querySelectorAll('.product-card'));
-                atkVisibleCount = Math.min(atkVisibleCount + 10, cards.length);
-                cards.forEach((card, idx) => {
-                    card.style.display = (idx < atkVisibleCount) ? 'block' : 'none';
+                const allCards = Array.from(grid.querySelectorAll('.product-card'));
+
+                atkCurrentPage = page;
+
+                allCards.forEach((card, idx) => {
+                    const pageNumber = Math.floor(idx / ITEMS_PER_PAGE) + 1;
+                    card.style.display = pageNumber === page ? 'block' : 'none';
                 });
-                if (atkVisibleCount >= cards.length) {
-                    const btn = document.getElementById('atkShowMoreBtn');
-                    if (btn) btn.style.display = 'none';
+
+                updateAtkPaginationControls();
+                smoothScrollToId('products-grid');
+            }
+
+            function updateAtkPaginationControls() {
+                const prevBtn = document.getElementById('atkPrevBtn');
+                const nextBtn = document.getElementById('atkNextBtn');
+                const pageNumbers = document.getElementById('atkPageNumbers');
+
+                // Update Previous button
+                if (prevBtn) {
+                    prevBtn.disabled = atkCurrentPage === 1;
+                }
+
+                // Update Next button
+                if (nextBtn) {
+                    nextBtn.disabled = atkCurrentPage === atkTotalPages;
+                }
+
+                // Update page numbers
+                if (pageNumbers) {
+                    pageNumbers.innerHTML = '';
+
+                    // Show max 5 page numbers
+                    let startPage = Math.max(1, atkCurrentPage - 2);
+                    let endPage = Math.min(atkTotalPages, startPage + 4);
+
+                    if (endPage - startPage < 4) {
+                        startPage = Math.max(1, endPage - 4);
+                    }
+
+                    // Add first page and ellipsis if needed
+                    if (startPage > 1) {
+                        addAtkPageNumber(1);
+                        if (startPage > 2) {
+                            addAtkEllipsis();
+                        }
+                    }
+
+                    // Add page numbers
+                    for (let i = startPage; i <= endPage; i++) {
+                        addAtkPageNumber(i);
+                    }
+
+                    // Add ellipsis and last page if needed
+                    if (endPage < atkTotalPages) {
+                        if (endPage < atkTotalPages - 1) {
+                            addAtkEllipsis();
+                        }
+                        addAtkPageNumber(atkTotalPages);
+                    }
+                }
+            }
+
+            function addAtkPageNumber(pageNum) {
+                const pageNumbers = document.getElementById('atkPageNumbers');
+                if (!pageNumbers) return;
+
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-number ${pageNum === atkCurrentPage ? 'active' : ''}`;
+                pageBtn.textContent = pageNum;
+                pageBtn.onclick = () => showAtkPage(pageNum);
+                pageNumbers.appendChild(pageBtn);
+            }
+
+            function addAtkEllipsis() {
+                const pageNumbers = document.getElementById('atkPageNumbers');
+                if (!pageNumbers) return;
+
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'page-ellipsis';
+                ellipsis.textContent = '...';
+                pageNumbers.appendChild(ellipsis);
+            }
+
+            function atkPreviousPage() {
+                if (atkCurrentPage > 1) {
+                    showAtkPage(atkCurrentPage - 1);
+                }
+            }
+
+            function atkNextPage() {
+                if (atkCurrentPage < atkTotalPages) {
+                    showAtkPage(atkCurrentPage + 1);
                 }
             }
 
@@ -1178,7 +1274,7 @@
             // Initialize carousel
             document.addEventListener('DOMContentLoaded', function() {
                 showSlide(0);
-                setupAtkShowMoreWithDummy();
+                setupAtkPagination();
                 // Chips dihapus; cukup render opsi dropdown
                 renderAtkSubcategorySelect('all');
                 currentAtkCategory = 'all';
@@ -1191,11 +1287,21 @@
 <!-- Footer -->
 <footer class="footer">
     <div class="footer-content">
+        <!-- Column 1: Brand -->
         <div class="footer-brand">
-            <img src="{{ asset('assets/demo/toko-atk/images/20250819_1904_Logo_E-Catalog_Alat_Tulis_simple_compose_01k313dfh6e1xtcnhs1atfdnt3-removebg-preview.png') }}"
-                alt="E-Katalog ATK Logo" class="footer-logo">
+            <div class="brand-info">
+                <div class="brand-header">
+                    <img src="{{ asset('assets/demo/toko-atk/images/20250819_1904_Logo_E-Catalog_Alat_Tulis_simple_compose_01k313dfh6e1xtcnhs1atfdnt3-removebg-preview.png') }}"
+                        alt="Tinta Cipta Logo" class="footer-logo">
+                    <span class="brand-name">Tinta Cipta</span>
+                </div>
+                <p class="brand-description">
+                    Solusi lengkap alat tulis kantor berkualitas tinggi
+                </p>
+            </div>
         </div>
 
+        <!-- Column 2: Contact -->
         <div class="footer-section">
             <h4>Contact</h4>
             <div class="contact-info">
