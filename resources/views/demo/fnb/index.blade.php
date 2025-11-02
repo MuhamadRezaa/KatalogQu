@@ -452,6 +452,7 @@
                                 block: 'start'
                             });
                         }
+
                         // Update label kategori jika ada
                         var categoryLabel = document.getElementById('category-label');
                         if (categoryLabel) {
