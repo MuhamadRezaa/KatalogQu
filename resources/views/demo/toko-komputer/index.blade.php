@@ -657,7 +657,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
                     <div class="text-center sm:text-left">
                         <p class="text-xs lg:text-sm text-gray-400">
-                            © 2025 PT. Era Cipta Digital
+                            © 2025 by KatalogQu. Powered by PT. Era Cipta Digital.
                         </p>
                     </div>
 
@@ -892,6 +892,7 @@
                     price: 15500000,
                     oldPrice: 16000000,
                     isPromo: true, // ADDED
+                    images: ["{{ asset('assets/demo/toko-komputer/img/temp/computer-store.png') }}"],
                     url: "product-detail.html",
                     description: "Geared for serious gaming and real-world durability, the TUF Gaming F15 is a fully-loaded Windows 10 Pro gaming laptop that can carry you to victory.",
                     specs: {
@@ -2421,12 +2422,12 @@
                                     0;
 
                                 // Populate template with product data
-                                productImage
-                                    .src =
-                                    product
-                                    .images[
-                                        0
-                                    ];
+                                if (product.images && product.images.length > 0) {
+                                    productImage.src = product.images[0];
+                                } else {
+                                    productImage.src =
+                                        "{{ asset('assets/images/no-image-icon.png') }}";
+                                }
                                 productImage
                                     .alt =
                                     product
@@ -2488,7 +2489,7 @@
                                 cardElement.addEventListener("click", () => {
 
                                     console.log('Product card clicked. Product ID:', product
-                                    .id); // Debugging line
+                                        .id); // Debugging line
 
                                     console.log('Product data:', product); // Debugging line
 
@@ -3712,9 +3713,7 @@
                     );
             }
 
-            if (
-                lightboxNext
-            ) {
+            if (lightboxNext) {
                 lightboxNext
                     .addEventListener(
                         "click",

@@ -80,6 +80,11 @@ class ProductSubCategoryController extends Controller
         try {
             ProductSubCategory::create($validated);
             Log::info('SubCategory created successfully: ' . $validated['name']);
+
+            // Clear relevant caches
+            \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+            \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
+
             return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
                 ->with('success', 'Sub Kategori berhasil dibuat!');
         } catch (\Exception $e) {
@@ -163,6 +168,10 @@ class ProductSubCategoryController extends Controller
 
         $subCategory->update($validated);
 
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
+
         return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Sub Kategori berhasil diperbarui!');
     }
 
@@ -182,6 +191,10 @@ class ProductSubCategoryController extends Controller
         }
 
         $subCategory->delete();
+
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
 
         return redirect()->route('tenant.admin.sub-categories.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Sub Kategori berhasil dihapus!');
