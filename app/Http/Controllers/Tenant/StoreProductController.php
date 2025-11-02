@@ -375,94 +375,98 @@ class StoreProductController extends Controller
 
     public function filterProductsAjax(Request $request)
     {
+        $startTime = microtime(true);
+        Log::info('filterProductsAjax: Start processing AJAX request.');
+
         DB::enableQueryLog();
 
-        // Get the current tenant's store
         $userStore = $this->getCurrentStore();
+        $tenantId = $userStore->tenant_id;
 
         $query = StoreProduct::query()
-            ->where('user_store_id', $userStore->id)
-            ->where('is_active', true) // Only show active products
-            ->with(['category', 'subcategory', 'images']); // Eager load relationships
+            ->select([
+                'store_products.id',
+                'store_products.name',
+                'store_products.price',
+                'store_products.old_price',
+                'store_products.is_promo',
+                'store_products.image',
+                'product_categories.name as category_name'
+            ])
+            ->leftJoin('product_categories', 'store_products.product_category_id', '=', 'product_categories.id')
+            ->where('store_products.user_store_id', $userStore->id)
+            ->where('store_products.is_active', true);
 
         // Apply search filter
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->input('search') . '%');
+            $query->where('store_products.name', 'like', '%' . $request->input('search') . '%');
         }
 
         // Apply category filter
         if ($request->filled('category') && $request->input('category') !== 'all') {
-            $query->where('product_category_id', $request->input('category'));
+            $query->where('store_products.product_category_id', $request->input('category'));
         }
 
         // Apply subcategory filter
         if ($request->filled('subcategory') && $request->input('subcategory') !== 'all') {
-            $query->where('sub_category_id', $request->input('subcategory'));
+            $query->where('store_products.sub_category_id', $request->input('subcategory'));
         }
 
         // Apply brand filter
         if ($request->filled('brand_ids')) {
             $brandIds = $request->input('brand_ids');
             if (is_array($brandIds) && count($brandIds) > 0) {
-                $query->whereIn('brand_id', $brandIds);
+                $query->whereIn('store_products.brand_id', $brandIds);
             }
         }
 
         // Apply price filter
         if ($request->filled('price_min')) {
-            $query->where('price', '>=', $request->input('price_min'));
+            $query->where('store_products.price', '>=', $request->input('price_min'));
         }
         if ($request->filled('price_max')) {
-            $query->where('price', '<=', $request->input('price_max'));
+            $query->where('store_products.price', '<=', $request->input('price_max'));
         }
 
         // Apply sorting
         $sort = $request->input('sort', 'newest');
         switch ($sort) {
             case 'price_low':
-                $query->orderBy('price', 'asc');
+                $query->orderBy('store_products.price', 'asc');
                 break;
             case 'price_high':
-                $query->orderBy('price', 'desc');
+                $query->orderBy('store_products.price', 'desc');
                 break;
             case 'name':
-                $query->orderBy('name', 'asc');
+                $query->orderBy('store_products.name', 'asc');
                 break;
             case 'name_desc':
-                $query->orderBy('name', 'desc');
+                $query->orderBy('store_products.name', 'desc');
                 break;
             case 'oldest':
-                $query->orderBy('created_at', 'asc');
+                $query->orderBy('store_products.created_at', 'asc');
                 break;
             case 'newest':
             default:
-                $query->orderBy('created_at', 'desc');
+                $query->orderBy('store_products.created_at', 'desc');
                 break;
         }
 
-        // Paginate the results - 12 items per page seems reasonable for the grid
         $paginator = $query->paginate(12);
 
-        // Transform each item in the paginator's collection to include fully-qualified image URL
-        $paginator->through(function ($product) use ($userStore) {
-            $imageUrl = null;
-            if ($product->image) {
-                // Membuat URL lengkap menggunakan route helper, sama seperti di Blade Anda
-                $imageUrl = route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $product->image]);
-            }
-
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'old_price' => $product->old_price,
-                'is_promo' => $product->is_promo,
-                'category' => $product->category,
-                'image_url' => $imageUrl, // Kirim URL yang sudah jadi
-            ];
+        $paginator->getCollection()->transform(function ($product) use ($tenantId) {
+            $product->image_url = $product->image ? route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => $product->image]) : null;
+            // We need to shape the category data to match the old structure for the frontend
+            $product->category = ['name' => $product->category_name];
+            unset($product->category_name); // Clean up the extra field
+            return $product;
         });
 
         Log::info('SUBCATEGORY_FILTER_DEBUG', DB::getQueryLog());
+
+        $endTime = microtime(true);
+        $executionTime = ($endTime - $startTime) * 1000;
+        Log::info("filterProductsAjax: Finished processing AJAX request in {$executionTime} ms.");
 
         return $paginator;
     }

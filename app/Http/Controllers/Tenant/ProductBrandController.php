@@ -75,6 +75,9 @@ class ProductBrandController extends Controller
 
         StoreBrand::create($validated);
 
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_brands");
+
         return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Merek berhasil dibuat!');
     }
@@ -145,6 +148,9 @@ class ProductBrandController extends Controller
 
         $brand->update($validated);
 
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_brands");
+
         return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])->with('success', 'Merek berhasil diperbarui!');
     }
 
@@ -164,6 +170,9 @@ class ProductBrandController extends Controller
         }
 
         $brand->delete();
+
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_brands");
 
         return redirect()->route('tenant.admin.brands.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Merek berhasil dihapus!');
