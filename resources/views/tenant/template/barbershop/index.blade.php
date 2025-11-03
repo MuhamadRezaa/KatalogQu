@@ -306,7 +306,7 @@
             <img src="{{ $userStore->store_logo ? route('tenant.asset.domain', ['path' => $userStore->store_logo]) : asset('assets/demo/barbershop/img/klasik.png') }}"
                 alt="{{ $userStore->store_name ?? 'Logo' }}">
             <span>{{ $userStore->store_name ?? 'Barbershop' }}</span>
-        </a>
+        </a>git
         <button class="navbar-toggler" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>

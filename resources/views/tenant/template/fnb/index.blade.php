@@ -430,64 +430,110 @@
             </div>
 
             <div class="w-full mt-6">
-                <div class="flex flex-col lg:flex-row gap-6 items-center justify-between ">
-                    <div class="w-full">
-                        <div class="flex items-center gap-4">
-                            <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
-                                <button id="filter-category-btn" type="button"
-                                    class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <span id="category-label" class="truncate">Semua Menu</span>
-                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="category-options"
-                                    class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
-                                    <div class="py-1" role="menu" aria-orientation="vertical"
-                                        aria-labelledby="filter-category-btn">
-                                        @if (isset($categories) && $categories->isNotEmpty())
-                                            @foreach ($categories as $category)
-                                                <a href="#"
-                                                    class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                                    data-category="{{ $category->slug }}">{{ $category->name }}</a>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
+                <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-center justify-between">
 
-                            <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
-                                <button id="sort-menu-btn" type="button"
-                                    class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <span id="sort-label" class="truncate">Urutkan menu</span>
-                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="sort-options"
-                                    class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
-                                    <div class="py-1" role="menu" aria-orientation="vertical"
-                                        aria-labelledby="sort-menu-btn">
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="newest">Urutkan menurut yang terbaru</a>
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="cheapest">Urutkan dari termurah</a>
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="mostexpensive">Urutkan dari termahal</a>
-                                    </div>
+                    <div class="w-full flex gap-4">
+
+                        <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="filter-category-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="category-label" class="truncate">Pilih Kategori</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="category-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="filter-category-btn">
+                                    {{-- Logika Blade untuk Kategori DIPERTAHANKAN --}}
+                                    @if (isset($categories) && $categories->isNotEmpty())
+                                        @foreach ($categories as $category)
+                                            <a href="#"
+                                                class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                                data-category="{{ $category->slug }}">{{ $category->name }}</a>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="filter-subcategory-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="subcategory-label" class="truncate">Pilih Subkategori</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="subcategory-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="filter-subcategory-btn">
+                                    {{-- Logika Blade untuk Subkategori DIPERTAHANKAN --}}
+                                    @if (isset($subCategories) && $subCategories->isNotEmpty())
+                                        @foreach ($subCategories as $subcategory)
+                                            <a href="#"
+                                                class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                                data-subcategory="{{ $subcategory->name }}"
+                                                data-category-id="{{ $subcategory->category_id }}">{{ $subcategory->name }}</a>
+                                        @endforeach
+                                    @else
+                                        <span class="text-xs text-gray-500 px-4 py-2">No subcategories found</span>
+                                    @endif
+                                    {{-- <a href="#"
+                            class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                            data-subcategory="all" data-category-id="all">Semua Subkategori</a> --}}
+                                    <script>
+                                        console.log('Subcategories data:', @json($subCategories ?? []));
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex gap-4 mt-2 lg:mt-0 lg:w-auto">
+
+                        {{-- Mengubah w-1/2 menjadi w-2/3 agar tombol Grid/List mendapat ruang --}}
+                        <div class="relative w-2/3 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="sort-menu-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="sort-label" class="truncate">Urutkan menu</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+
+                            <div id="sort-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="sort-menu-btn">
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="newest">Urutkan dari yang terbaru</a>
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="cheapest">Urutkan dari yang termurah</a>
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="mostexpensive">Urutkan dari yang termahal</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Mengubah div ini agar tombolnya rata kanan dan mengambil sisa lebar (w-1/3) --}}
+                        <div class="w-1/3 flex justify-end">
                             <div
-                                class="flex border border-gray-300 rounded-md shadow-sm divide-x divide-gray-300 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                class="flex border border-gray-300 rounded-md shadow-sm divide-x divide-gray-300 bg-gray-50">
                                 <button id="view-grid"
                                     class="p-2 bg-white text-gray-700 hover:bg-gray-50 rounded-l-md active:bg-gray-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24"
@@ -506,6 +552,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -526,6 +573,13 @@
             // Data menu dari database Laravel
             // Konversi data produk untuk JavaScript
             @php
+                // Debug subcategories
+                if (isset($subCategories)) {
+                    error_log('Subcategories count: ' . $subCategories->count());
+                } else {
+                    error_log('Subcategories variable is not set');
+                }
+
                 $productsForJs = $products
                     ->map(function ($product) {
                         $imgs = [];
@@ -545,6 +599,15 @@
                         }
 
                         $cat = $product->category;
+                        $subcat = $product->subCategory;
+
+                        // Debug category and subcategory
+                        if ($cat) {
+                            error_log("Product {$product->id} has category: {$cat->name}");
+                            if ($subcat) {
+                                error_log("Product {$product->id} has subcategory: {$subcat->name}");
+                            }
+                        }
 
                         return [
                             'id' => $product->id,
@@ -556,14 +619,27 @@
                             'notes' => $product->notes,
                             'stock' => $product->stock,
                             'discount_percentage' => $product->discount_percentage,
-                            'category' => $cat ? ['id' => $cat->id, 'name' => $cat->name] : null,
+                            'category' => $cat
+                                ? [
+                                    'id' => $cat->id,
+                                    'name' => $cat->name,
+                                    'slug' => $cat->slug,
+                                ]
+                                : null,
+                            'sub_category' => $subcat
+                                ? [
+                                    'id' => $subcat->id,
+                                    'name' => $subcat->name,
+                                    'slug' => $subcat->slug,
+                                    'category_id' => $subcat->category_id,
+                                ]
+                                : null,
                             'productimgs' => $imgs,
                             'price_idr' => $product->price_idr,
                             'old_price_idr' => $product->old_price_idr,
                             'primary_image_src' => $product->primary_image_src,
                             'is_new' => $product->is_new ?? false,
                             'is_available' => $product->is_available ?? true,
-                            'sub_category' => $product->subCategory ? ['id' => $product->subCategory->id, 'name' => $product->subCategory->name] : null,
                             'unit' => $product->unit ? ['unit_name' => $product->unit->unit_name] : null,
                         ];
                     })
@@ -574,22 +650,46 @@
 
             // Konversi data untuk format yang dibutuhkan JavaScript
             const processedMenuData = window.productsData.map(product => {
+                // Pastikan product dan propertinya ada sebelum diakses
+                if (!product) return null;
+
+                // Parse price safely
+                let price = 0;
+                try {
+                    price = parseFloat(product.price);
+                    if (isNaN(price)) price = 0;
+                } catch (e) {
+                    console.error('Error parsing price:', e);
+                }
+
+                // Buat objek kategori dan subkategori terlebih dahulu
+                const category = product.category || {};
+                const subCategory = product.sub_category || {};
+
                 return {
-                    id: product.id.toString(),
-                    category: product.category ? product.category.name.toLowerCase() : 'uncategorized',
-                    categoryName: product.category ? product.category.name : '',
-                    name: product.name,
-                    description: product.description || '',
-                    price: parseFloat(product.price) || 0,
-                    image: product.primary_image_src || '{{ asset('assets/images/no-image-icon.png') }}',
-                    isNew: product.is_new || false,
-                    isAvailable: product.is_available !== false,
-                    unit: product.unit ? product.unit.unit_name : '',
-                    subCategoryName: product.sub_category ? product.sub_category.name : ''
+                    id: String(product?.id || ''),
+                    name: (product?.name || '').toString(),
+                    description: (product?.description || '').toString(),
+                    price: price,
+                    image: product?.primary_image_src || '{{ asset('assets/images/no-image-icon.png') }}',
+                    isNew: Boolean(product?.is_new),
+                    isAvailable: product?.is_available !== false,
+                    unit: product?.unit?.unit_name || '',
+                    // Data kategori dengan null safety
+                    category: (category?.name || '').toLowerCase(),
+                    categoryId: String(category?.id || ''),
+                    categoryName: category?.name || '',
+                    categorySlug: category?.slug || '',
+                    // Data subkategori dengan null safety
+                    subCategoryId: String(subCategory?.id || ''),
+                    subCategoryName: subCategory?.name || '',
+                    subCategorySlug: subCategory?.slug || '',
+                    subCategoryCategoryId: String(subCategory?.category_id || '')
                 };
-            });
+            }).filter(item => item !== null); // Hapus item null jika ada
 
             let currentCategory = 'all';
+            let currentSubcategory = 'all';
             let currentSort = 'newest';
             let currentView = 'list';
             let currentPage = 1;
@@ -729,50 +829,75 @@
 
                 menuList.innerHTML = '';
 
-                if (currentView === 'list') {
-                    // Hapus border-b dan pb-6 dari item, dan gunakan space-y-6 pada kontainer induk
-                    menuList.classList.remove('grid', 'grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-5', 'gap-4');
-                    menuList.classList.add('space-y-6');
-                } else {
-                    menuList.classList.remove('space-y-6');
-                    menuList.classList.add('grid', 'grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-5', 'gap-4');
-                }
+                // Handle view type safely
+                const isList = currentView === 'list';
+                menuList.classList.remove(...['grid', 'grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-5', 'gap-4', 'space-y-6']);
+                menuList.classList.add(...(isList ? ['space-y-6'] : ['grid', 'grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-5',
+                    'gap-4'
+                ]));
 
-                items.forEach(item => {
-                    let itemHTML;
-                    if (currentView === 'list') {
-                        itemHTML = `
+                // Ensure items is an array and filter out any null/undefined items
+                const validItems = (Array.isArray(items) ? items : [])
+                    .filter(item => item && typeof item === 'object');
+
+                validItems.forEach(item => {
+                    // Safely access item properties with defaults
+                    const safeItem = {
+                        id: String(item?.id || ''),
+                        name: String(item?.name || ''),
+                        description: String(item?.description || ''),
+                        price: parseFloat(item?.price) || 0,
+                        image: item?.image || '{{ asset('assets/images/no-image-icon.png') }}',
+                        isAvailable: Boolean(item?.isAvailable)
+                    };
+
+                    // Format price safely
+                    const formattedPrice = (() => {
+                        try {
+                            const price = parseFloat(safeItem.price);
+                            if (isNaN(price)) return '0';
+                            return price.toLocaleString('id-ID');
+                        } catch (e) {
+                            console.error('Error formatting price:', e);
+                            return '0';
+                        }
+                    })();
+
+                    // Create stock status overlay if needed
+                    const stockOverlay = !safeItem.isAvailable ?
+                        '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' :
+                        '';
+
+                    let itemHTML = isList ?
+                        `
 <div class="relative flex justify-between items-start border-b border-gray-200 pb-6 transition duration-200 ease-in-out hover:shadow-md hover:bg-gray-50">
     <div class="flex-grow space-y-2">
-        <h3 class="font-semibold text-lg">${item.name}</h3>
-        <p class="text-xs text-gray-600">${item.description}</p>
-        <p class="text-base font-bold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</p>
-        <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-4 py-1 text-sm rounded-full shadow transition duration-200" data-product-id="${item.id}">Detail</button>
+        <h3 class="font-semibold text-lg">${safeItem.name}</h3>
+        <p class="text-xs text-gray-600">${safeItem.description}</p>
+        <p class="text-base font-bold text-[#994d51]">Rp${formattedPrice}</p>
+        <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-4 py-1 text-sm rounded-full shadow transition duration-200" data-product-id="${safeItem.id}">Detail</button>
     </div>
     <div class="relative w-40 h-50 rounded-lg ml-6 overflow-hidden">
         <div class="relative w-full pb-[125%]">
-            <img src="${item.image}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
-            ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
+            ${stockOverlay}
         </div>
     </div>
-</div>
-`;
-                    } else { // Tampilan Grid
-                        itemHTML = `
+</div>` :
+                        `
 <div class="relative flex flex-col items-center border border-gray-200 rounded-lg p-4 text-center transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
     <div class="relative w-full overflow-hidden rounded-lg mb-2">
         <div class="relative w-full pb-[125%]">
-            <img src="${item.image}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
-            ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
+            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
+            ${stockOverlay}
         </div>
     </div>
-    <h3 class="font-semibold text-sm">${item.name}</h3>
-    <p class="text-xs font-bold text-[#994d51]">Rp${item.price.toLocaleString('id-ID')}</p>
-    <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-2 py-1 text-xs rounded-full shadow transition duration-200" data-product-id="${item.id}">Detail</button>
-</div>
-`;
-                    }
-                    menuList.innerHTML += itemHTML;
+    <h3 class="font-semibold text-sm">${safeItem.name}</h3>
+    <p class="text-xs font-bold text-[#994d51]">Rp${formattedPrice}</p>
+    <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-2 py-1 text-xs rounded-full shadow transition duration-200" data-product-id="${safeItem.id}">Detail</button>
+</div>`;
+
+                    menuList.insertAdjacentHTML('beforeend', itemHTML);
                 });
 
                 addModalEventListeners();
@@ -780,77 +905,102 @@
 
             // Fungsi utama untuk mengurutkan, memfilter, dan merender ulang
             function sortAndRender() {
-                let itemsToRender;
+                try {
+                    // Ensure we have a valid array to work with
+                    let itemsToRender = Array.isArray(processedMenuData) ? [...processedMenuData] : [];
 
-                // 1. Filter berdasarkan kategori
-                if (currentCategory === 'all') {
-                    itemsToRender = [...processedMenuData];
-                } else {
-                    itemsToRender = processedMenuData.filter(item => item.category === currentCategory);
-                }
+                    // 1. Filter based on category and/or subcategory with null safety
+                    itemsToRender = itemsToRender.filter(item => {
+                        if (!item) return false;
 
-                // 2. Filter berdasarkan pencarian (search term)
-                if (searchTerm) {
-                    itemsToRender = itemsToRender.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                }
+                        // Normalize values for safe comparison
+                        const itemCategorySlug = (item.categorySlug || '').toString().trim().toLowerCase();
+                        const itemSubCategoryName = (item.subCategoryName || '').toString().trim().toLowerCase();
+                        const activeCategory = (currentCategory || 'all').toString().trim().toLowerCase();
+                        const activeSubcategory = (currentSubcategory || 'all').toString().trim().toLowerCase();
 
-                // 3. Filter berdasarkan status produk
-                if (productStatus === 'new') {
-                    itemsToRender = itemsToRender.filter(item => item.isNew);
-                } else if (productStatus === 'old') {
-                    itemsToRender = itemsToRender.filter(item => !item.isNew);
-                }
+                        // If a category filter is active, require category match
+                        if (activeCategory !== 'all' && itemCategorySlug !== activeCategory) return false;
 
-                // 4. Tambahkan filter berdasarkan ketersediaan stok
-                if (productStock === 'available') {
-                    itemsToRender = itemsToRender.filter(item => item.isAvailable);
-                } else if (productStock === 'unavailable') {
-                    itemsToRender = itemsToRender.filter(item => !item.isAvailable);
-                }
+                        // If a subcategory filter is active, require subcategory match
+                        if (activeSubcategory !== 'all' && itemSubCategoryName !== activeSubcategory) return false;
 
+                        return true;
+                    });
 
-
-                // 6. Tambahkan filter berdasarkan rentang harga (dari input Min-Max atau dropdown)
-                itemsToRender = itemsToRender.filter(item => {
-                    return item.price >= minPriceRange && item.price <= maxPriceRange;
-                });
-
-                // 7. Lanjutkan dengan pengurutan seperti biasa
-                let sortedItems = [...itemsToRender];
-                sortedItems.sort((a, b) => {
-                    // Pindahkan item yang stoknya habis ke bagian bawah
-                    if (!a.isAvailable && b.isAvailable) {
-                        return 1; // a (stok habis) ke belakang
-                    }
-                    if (a.isAvailable && !b.isAvailable) {
-                        return -1; // b (stok habis) ke belakang
+                    // 2. Filter based on search term with null safety
+                    if (searchTerm) {
+                        const searchLower = searchTerm.toLowerCase();
+                        itemsToRender = itemsToRender.filter(item =>
+                            item && typeof item.name === 'string' &&
+                            item.name.toLowerCase().includes(searchLower)
+                        );
                     }
 
-                    // Jika status ketersediaan sama, urutkan berdasarkan kriteria lain
-                    if (currentSort === 'cheapest') {
-                        return a.price - b.price;
-                    } else if (currentSort === 'mostexpensive') {
-                        return b.price - a.price;
-                    } else if (currentSort === 'newest') {
-                        // Asumsi `isNew` adalah boolean (true/false)
-                        // Item baru (true) akan memiliki nilai 1, item lama (false) 0.
-                        // `b.isNew - a.isNew` akan menempatkan item baru di depan.
-                        return b.isNew - a.isNew;
+                    // 3. Filter based on product status
+                    if (productStatus === 'new') {
+                        itemsToRender = itemsToRender.filter(item => Boolean(item?.isNew));
+                    } else if (productStatus === 'old') {
+                        itemsToRender = itemsToRender.filter(item => !item?.isNew);
                     }
 
-                    // Default: tidak diurutkan
-                    return 0;
-                });
+                    // 4. Filter based on stock availability
+                    if (productStock === 'available') {
+                        itemsToRender = itemsToRender.filter(item => Boolean(item?.isAvailable));
+                    } else if (productStock === 'unavailable') {
+                        itemsToRender = itemsToRender.filter(item => !item?.isAvailable);
+                    }
 
-                // 8. Lanjutkan dengan pagination
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
-                const paginatedItems = sortedItems.slice(startIndex, endIndex);
+                    // 5. Filter based on price range with null safety
+                    itemsToRender = itemsToRender.filter(item => {
+                        const price = typeof item?.price === 'number' ? item.price : 0;
+                        return price >= minPriceRange && price <= maxPriceRange;
+                    });
 
-                renderMenu(paginatedItems);
-                renderPagination(sortedItems.length);
-                // Tambahkan event listener setelah menu dirender
-                addModalEventListeners();
+                    // 6. Sort items with null safety
+                    let sortedItems = [...itemsToRender];
+                    sortedItems.sort((a, b) => {
+                        // Handle null/undefined items
+                        if (!a || !b) return 0;
+
+                        // Sort by availability
+                        if (!a.isAvailable && b.isAvailable) return 1;
+                        if (a.isAvailable && !b.isAvailable) return -1;
+
+                        // Sort by other criteria
+                        switch (currentSort) {
+                            case 'cheapest':
+                                return (a.price || 0) - (b.price || 0);
+                            case 'mostexpensive':
+                                return (b.price || 0) - (a.price || 0);
+                            case 'newest':
+                                return Number(b.isNew || 0) - Number(a.isNew || 0);
+                            default:
+                                return 0;
+                        }
+                    });
+
+                    // 7. Handle pagination safely
+                    const pageSize = Math.max(1, itemsPerPage);
+                    const totalItems = sortedItems.length;
+                    const maxPage = Math.ceil(totalItems / pageSize);
+                    currentPage = Math.max(1, Math.min(currentPage, maxPage));
+
+                    const startIndex = (currentPage - 1) * pageSize;
+                    const endIndex = Math.min(startIndex + pageSize, totalItems);
+                    const paginatedItems = sortedItems.slice(startIndex, endIndex);
+
+                    // 8. Render the results
+                    renderMenu(paginatedItems);
+                    renderPagination(totalItems);
+
+                } catch (error) {
+                    console.error('Error in sortAndRender:', error);
+                    // Fallback to showing all items without sorting/filtering
+                    const fallbackItems = Array.isArray(processedMenuData) ? processedMenuData : [];
+                    renderMenu(fallbackItems.slice(0, itemsPerPage));
+                    renderPagination(fallbackItems.length);
+                }
             }
 
             function addModalEventListeners() {
@@ -912,7 +1062,7 @@
                             // 2. Tampilkan teks gabungan ke elemen kategori (dan kosongkan subkategori)
                             document.getElementById('modal-product-category').textContent = combinedText;
                             document.getElementById('modal-product-subcategory').textContent =
-                            ''; // Kosongkan elemen subcategory
+                                ''; // Kosongkan elemen subcategory
 
                             // --- Akhir Bagian yang Diubah ---
 
@@ -989,7 +1139,7 @@
 
                     var waMessage = encodeURIComponent('Halo, saya ingin memesan produk: ' + productName + (
                         priceSpan ? ' dengan harga ' + priceSpan : '') + '.');
-                    var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '081572505989')) !!};
+                    var waNumber = {!! json_encode($userStore->whatsapp ?? ($userStore->store_phone ?? '6281572505989')) !!};
                     var waUrl = 'https://wa.me/' + waNumber + '?text=' + waMessage;
                     window.open(waUrl, '_blank');
                 });
@@ -1021,21 +1171,80 @@
                 const filterCategoryBtn = document.getElementById('filter-category-btn');
                 const categoryOptions = document.getElementById('category-options');
                 const categoryLabel = document.getElementById('category-label');
+                const filterSubcategoryBtn = document.getElementById('filter-subcategory-btn');
+                const subcategoryOptions = document.getElementById('subcategory-options');
+                const subcategoryLabel = document.getElementById('subcategory-label');
+
                 if (filterCategoryBtn) {
                     filterCategoryBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
                         categoryOptions.classList.toggle('hidden');
                     });
                 }
+
+                // Toggle subcategory dropdown
+                if (filterSubcategoryBtn) {
+                    filterSubcategoryBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        subcategoryOptions.classList.toggle('hidden');
+                    });
+                }
+
                 if (categoryOptions) {
                     categoryOptions.addEventListener('click', (e) => {
-                        if (e.target.classList.contains('category-option')) {
+                        const target = e.target;
+                        if (target && target.classList.contains('category-option')) {
                             e.preventDefault();
-                            currentCategory = e.target.dataset.category;
-                            categoryLabel.innerText = e.target.innerText;
+                            const selectedCategory = target.dataset.category || 'all';
+                            const matchingProduct = processedMenuData.find(item =>
+                                item && item.categorySlug === selectedCategory);
+                            const selectedCategoryId = matchingProduct ? matchingProduct.categoryId : '';
+
+                            currentCategory = selectedCategory;
+                            if (categoryLabel) {
+                                categoryLabel.innerText = target.innerText || 'Pilih Kategori';
+                            }
+
+                            // Reset subcategory when category changes
+                            currentSubcategory = 'all';
+                            if (subcategoryLabel) {
+                                subcategoryLabel.innerText = 'Pilih Subkategori';
+                            }
+
+                            // Filter subcategories based on selected category
+                            const subcategoryItems = document.querySelectorAll('.subcategory-option');
+                            subcategoryItems.forEach(option => {
+                                if (!option) return;
+
+                                const isAllOption = option.dataset.subcategory === 'all';
+                                const categoryId = option.dataset.categoryId;
+
+                                option.style.display = isAllOption || (categoryId ===
+                                        selectedCategoryId) ?
+                                    'block' :
+                                    'none';
+                            });
+
                             currentPage = 1;
                             sortAndRender();
                             categoryOptions.classList.add('hidden');
+                        }
+                    });
+                }
+
+                // Event listener for subcategory selection
+                if (subcategoryOptions) {
+                    subcategoryOptions.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('subcategory-option')) {
+                            e.preventDefault();
+                            // Normalize selected subcategory for consistent comparisons
+                            const rawSub = e.target.dataset.subcategory || '';
+                            currentSubcategory = rawSub.toString().trim().toLowerCase();
+                            // Keep label as visible text
+                            subcategoryLabel.innerText = e.target.innerText;
+                            currentPage = 1;
+                            sortAndRender();
+                            subcategoryOptions.classList.add('hidden');
                         }
                     });
                 }
@@ -1130,12 +1339,19 @@
                     resetButton.addEventListener('click', () => {
                         // Reset variabel global
                         currentCategory = 'all';
+                        currentSubcategory = 'all';
                         currentSort = 'newest';
                         currentView = 'list';
                         currentPage = 1;
                         searchTerm = '';
                         productStatus = 'all';
                         productStock = 'all';
+
+                        // Reset subcategory visibility - show all options
+                        const subcategoryItems = document.querySelectorAll('.subcategory-option');
+                        subcategoryItems.forEach(option => {
+                            if (option) option.style.display = 'block';
+                        });
 
                         // **Penting: Reset kedua variabel harga
                         minPriceRange = 0;
@@ -1165,10 +1381,13 @@
                         if (priceRangeDropdown) priceRangeDropdown.value = '';
 
                         const sortLabel = document.getElementById('sort-label');
-                        if (sortLabel) sortLabel.innerText = "Terbaru";
+                        if (sortLabel) sortLabel.innerText = "Urutkan Menu";
 
                         const categoryLabel = document.getElementById('category-label');
-                        if (categoryLabel) categoryLabel.innerText = "Semua Kategori";
+                        if (categoryLabel) categoryLabel.innerText = "Pilih Kategori";
+
+                        const subCategoryLabel = document.getElementById('subcategory-label');
+                        if (subCategoryLabel) subCategoryLabel.innerText = "Pilih Subkategori";
 
                         const viewListBtn = document.getElementById('view-list');
                         const viewGridBtn = document.getElementById('view-grid');
@@ -1217,7 +1436,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5m-7 7v4m0 0H4m4 0l-5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H5V8h14v10z" />
                                 </svg>
                             </button>
                         </div>
