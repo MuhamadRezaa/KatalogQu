@@ -494,6 +494,9 @@
             <div class="row g-3 g-md-4" id="productsGrid"></div>
         </div>
     </section>
+    {{-- [BARU] Tambahkan Kontainer Pagination di Sini --}}
+    <div class="my-5 d-flex justify-content-center" id="paginationContainer">
+    </div>
 
     <footer id="contact" class="footer">
         <div class="container">
@@ -712,7 +715,13 @@
             }));
 
             const promoProducts = allProductsData.filter(p => p.discount_percentage !== null);
+            //{{-- INI KODE YANG BENAR --}}
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+
+            // [BARU] Variabel untuk Pagination
+            let currentPage = 1;
+            const productsPerPage = 12; // 4 kolom x 3 baris = 12 produk per halaman
+            const paginationContainer = document.getElementById('paginationContainer');
 
             function populateBanners() {
                 const indicators = document.getElementById('heroCarouselIndicators');
@@ -751,62 +760,47 @@
                 setupProductCardListeners();
             }
 
-            function populateModal(product) {
-                document.getElementById('modalProductBrand').textContent = product.brand;
-                document.getElementById('modalProductName').textContent = product.name;
-                document.getElementById('modalProductCategory').textContent =
-                    `${product.category} > ${product.subcategory}`;
-                document.getElementById('modalProductPrice').textContent = product.price_formatted;
+            // [BARU] Fungsi untuk merender tombol pagination
+            function renderPagination(totalProducts) {
+                const totalPages = Math.ceil(totalProducts / productsPerPage);
+                paginationContainer.innerHTML = ''; // Kosongkan
+                if (totalPages <= 1) return; // Sembunyikan jika hanya 1 halaman
 
-                document.getElementById('modalProductOldPrice').style.display = product.old_price_formatted ?
-                    'inline' : 'none';
-                document.getElementById('modalProductOldPrice').textContent = product.old_price_formatted || '';
+                let paginationHtml = '<ul class="pagination">';
 
-                const badgeEl = document.getElementById('modalProductBadge');
-                badgeEl.textContent = '';
-                badgeEl.className = 'badge ms-2';
-                if (product.discount_percentage) {
-                    badgeEl.classList.add('bg-danger');
-                    badgeEl.textContent = 'PROMO';
-                } else if (product.is_new) {
-                    badgeEl.classList.add('bg-success');
-                    badgeEl.textContent = 'BARU';
+                // Tombol "Previous"
+                paginationHtml += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="prev" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>`;
+
+                // Tombol Angka
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHtml += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>`;
                 }
 
-                document.getElementById('modalProductDescription').innerHTML = product.description ||
-                    'Tidak ada deskripsi.';
-                document.getElementById('modalCarouselInner').innerHTML = product.images.map((src, i) =>
-                    `<div class="carousel-item ${i === 0 ? 'active' : ''}"><img src="${src}" class="d-block w-100 modal-carousel-image"></div>`
-                ).join('');
+                // Tombol "Next"
+                paginationHtml += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="next" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>`;
 
-                const specsContainer = document.getElementById('modalProductSpecs');
-                specsContainer.innerHTML = (product.specs && Object.keys(product.specs).length > 0) ?
-                    `<ul class="list-unstyled">${Object.entries(product.specs).map(([k, v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('')}</ul>` :
-                    '<p>Tidak ada spesifikasi.</p>';
-
-                const relatedContainer = document.getElementById('related-products-container');
-                const relatedSection = document.getElementById('related-products-section');
-                const relatedProducts = allProductsData.filter(p => p.category_id === product.category_id && p
-                    .id !== product.id).slice(0, 3);
-
-                if (relatedProducts.length > 0) {
-                    relatedContainer.innerHTML = relatedProducts.map(rp => `
-                        <div class="col-4">
-                            <div class="related-product-card" data-product-id="${rp.id}">
-                                <img src="${rp.image}" alt="${rp.name}" class="img-fluid">
-                                <div class="related-product-title">${rp.name}</div>
-                            </div>
-                        </div>
-                    `).join('');
-                    relatedSection.style.display = 'block';
-                } else {
-                    relatedSection.style.display = 'none';
-                }
+                paginationHtml += '</ul>';
+                paginationContainer.innerHTML = paginationHtml;
             }
 
             let debounceTimer;
 
-            function filterProducts() {
+            // [DIGANTI] Fungsi filterProducts diganti menjadi updateProductDisplay
+            function updateProductDisplay() {
+                // 1. Ambil Nilai Filter
                 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
                 const categoryId = document.getElementById('categoryFilter').value;
                 const subcategory = document.getElementById('subcategoryFilter').value;
@@ -817,6 +811,7 @@
                 const priceMin = parseFloat(priceFilter.dataset.min) || null;
                 const priceMax = parseFloat(priceFilter.dataset.max) || null;
 
+                // 2. Filter Data
                 let filtered = allProductsData.filter(p =>
                     (!searchTerm || p.name.toLowerCase().includes(searchTerm) || p.brand.toLowerCase().includes(
                         searchTerm)) &&
@@ -827,6 +822,7 @@
                     (!priceMax || p.price <= priceMax)
                 );
 
+                // 3. Sortir Data
                 filtered.sort((a, b) => {
                     switch (sortBy) {
                         case 'price_low':
@@ -836,26 +832,49 @@
                         case 'name':
                             return a.name.localeCompare(b.name);
                         default:
-                            return b.id - a.id;
+                            // Asumsi 'newest'
+                            // Jika ada ID, gunakan b.id - a.id. Jika tidak, gunakan index.
+                            // Kita asumsikan data dummy sudah urut terbaru
+                            return 0;
                     }
                 });
-                displayProducts(filtered);
+
+                // 4. [BARU] Render Pagination berdasarkan total produk *yang difilter*
+                renderPagination(filtered.length);
+
+                // 5. [BARU] Slice/Potong array untuk halaman saat ini
+                const startIndex = (currentPage - 1) * productsPerPage;
+                const paginatedProducts = filtered.slice(startIndex, startIndex + productsPerPage);
+
+                // 6. Tampilkan produk yang sudah dipaginasi
+                displayProducts(paginatedProducts);
             }
 
             window.resetFilters = function() {
                 document.querySelectorAll('.filter-control').forEach(el => el.selectedIndex = 0);
                 document.getElementById('searchInput').value = '';
-                filterProducts();
+                currentPage = 1; // [BARU] Reset ke halaman 1
+                updateProductDisplay(); // [DIGANTI] Panggil fungsi baru
             }
 
+            // [DIGANTI] setupEventListeners diperbarui
             function setupEventListeners() {
-                document.querySelectorAll('.filter-control').forEach(c => c.addEventListener('change',
-                    filterProducts));
+                // Listener untuk Kontrol Filter
+                document.querySelectorAll('.filter-control').forEach(c => c.addEventListener('change', () => {
+                    currentPage = 1; // [BARU] Reset ke halaman 1
+                    updateProductDisplay(); // [DIGANTI] Panggil fungsi baru
+                }));
+
+                // Listener untuk Input Search (dengan debounce)
                 document.getElementById('searchInput').addEventListener('input', () => {
                     clearTimeout(debounceTimer);
-                    debounceTimer = setTimeout(filterProducts, 300);
+                    debounceTimer = setTimeout(() => {
+                        currentPage = 1; // [BARU] Reset ke halaman 1
+                        updateProductDisplay(); // [DIGANTI] Panggil fungsi baru
+                    }, 300);
                 });
 
+                // Listener untuk Klik "Related Product" di Modal
                 document.getElementById('related-products-container').addEventListener('click', function(e) {
                     const card = e.target.closest('.related-product-card');
                     if (card) {
@@ -863,7 +882,45 @@
                         const newProduct = allProductsData.find(p => p.id === productId);
                         if (newProduct) {
                             populateModal(newProduct);
+                            // Scroll modal ke atas
+                            document.querySelector('#productModal .modal-body').scrollTop = 0;
                         }
+                    }
+                });
+
+                // [BARU] Event Listener untuk Pagination (AJAX)
+                paginationContainer.addEventListener('click', function(e) {
+                    const clickedLink = e.target.closest('.page-link');
+                    if (!clickedLink) return;
+
+                    e.preventDefault();
+                    const pageData = clickedLink.dataset.page;
+                    const isDisabled = clickedLink.closest('.page-item.disabled');
+                    if (isDisabled) return; // Jangan lakukan apa-apa jika tombol disabled
+
+                    if (pageData === 'prev') {
+                        if (currentPage > 1) currentPage--;
+                    } else if (pageData === 'next') {
+                        // Hitung total halaman dari jumlah tombol angka
+                        const totalPages = paginationContainer.querySelectorAll('.page-item').length -
+                            2; // Kurangi Prev/Next
+                        if (currentPage < totalPages) currentPage++;
+                    } else if (pageData) {
+                        const pageNum = parseInt(pageData, 10);
+                        if (pageNum !== currentPage) currentPage = pageNum;
+                    } else {
+                        return; // Klik pada link non-aktif
+                    }
+
+                    // Panggil fungsi update
+                    updateProductDisplay();
+
+                    // Scroll ke atas ke bagian produk
+                    const productsSection = document.getElementById('products');
+                    if (productsSection) {
+                        productsSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
                     }
                 });
             }
@@ -927,7 +984,8 @@
             });
 
             populateFilters();
-            filterProducts();
+            // filterProducts(); // [DIGANTI]
+            updateProductDisplay(); // [DIGANTI] Panggil fungsi baru saat inisialisasi
             setupEventListeners();
         });
     </script>
