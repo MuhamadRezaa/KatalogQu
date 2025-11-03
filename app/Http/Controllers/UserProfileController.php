@@ -23,13 +23,13 @@ class UserProfileController extends Controller
         $purchases = TemplatePurchase::where('user_id', $user->id)
             ->with(['catalogTemplate', 'payment'])
             ->latest()
-            ->paginate(10, ['*'], 'purchases_page'); // Paginasi untuk pembelian
+            ->get();
 
         // Mengambil katalog/toko yang dimiliki pengguna (yang sudah selesai)
         $userStores = UserStore::where('user_id', $user->id)
             ->where('setup_status', 'completed')
             ->latest()
-            ->paginate(10, ['*'], 'stores_page'); // Paginasi untuk toko
+            ->get();
 
         // --- AWAL PERUBAHAN ---
         // Mengambil data setup toko yang masih tertunda
