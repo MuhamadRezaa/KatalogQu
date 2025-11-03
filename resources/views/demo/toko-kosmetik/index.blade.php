@@ -47,7 +47,41 @@
         .navbar {
             background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); */
+            /* <-- Ganti ini */
+            border-bottom: 1px solid #e5e7eb;
+            /* <-- Tambahkan style border seperti toko-komputer */
+        }
+
+        /* Menghilangkan border pada tombol hamburger */
+        .navbar-toggler {
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* Menyesuaikan menu mobile agar mirip toko-komputer */
+        @media (max-width: 991.98px) {
+
+            /* Ini adalah breakpoint 'lg' Bootstrap */
+            .navbar-collapse {
+                /* Ini meniru 'border-t border-gray-200' dari toko-komputer */
+                border-top: 1px solid #e5e7eb;
+                margin-top: 1rem;
+                /* Memberi jarak dari logo */
+                padding-top: 0.5rem;
+            }
+
+            .navbar-nav .nav-link {
+                /* Ini meniru 'block px-3 py-2' dari toko-komputer */
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                padding-left: 0;
+                /* Rata kiri */
+            }
         }
 
         .brand-text {
@@ -64,8 +98,12 @@
         .hero-slide {
             position: relative;
             width: 100%;
-            height: 60vh;
-            min-height: 450px;
+            /* height: 60vh; */
+            /* <-- Hapus atau komentari baris ini */
+            /* min-height: 450px; */
+            /* <-- Hapus atau komentari baris ini */
+            aspect-ratio: 16 / 9;
+            /* <-- Tambahkan baris ini untuk rasio 1080p */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,7 +143,7 @@
 
         .hero-title {
             font-family: var(--font-primary);
-            font-size: 3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #fff;
         }
