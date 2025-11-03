@@ -76,6 +76,10 @@ class ProductCategoryController extends Controller
 
         ProductCategory::create($validated);
 
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
+
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Kategori berhasil dibuat!');
     }
@@ -147,6 +151,10 @@ class ProductCategoryController extends Controller
 
         $category->update($validated);
 
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
+
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])->with('success', 'Kategori berhasil diperbarui!');
     }
 
@@ -166,6 +174,10 @@ class ProductCategoryController extends Controller
         }
 
         $category->delete();
+
+        // Clear relevant caches
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_sub_categories");
+        \Illuminate\Support\Facades\Cache::forget("store_{$userStore->id}_cat_subcat_map");
 
         return redirect()->route('tenant.admin.categories.index', ['tenant' => $userStore->tenant_id])
             ->with('success', 'Kategori berhasil dihapus!');

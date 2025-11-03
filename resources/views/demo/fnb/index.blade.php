@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{{ asset('assets/images/katalogqu_icon.png') }}" type="image/x-icon">
-    <title>Kopi Seduh Pagi</title>
+    <title>E-Katalog FnB - Premium</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
@@ -426,58 +426,61 @@
                             showMoreIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0)';
                         });
                     }
-                }); <
-                script >
-                    // Filter menu sesuai kategori saat card kategori ditekan
-                    document.querySelectorAll('.card-category').forEach(function(card) {
-                        card.addEventListener('click', function() {
-                            var categoryText = card.querySelector('.card-title').textContent.trim().toLowerCase();
-                            // Mapping kategori agar sesuai dengan data menu
-                            var categoryMap = {
-                                'minuman': 'minuman',
-                                'makanan': 'makanan',
-                                'cemilan': 'cemilan',
-                                'dessert': 'dessert'
-                            };
-                            var selectedCategory = categoryMap[categoryText] || 'all';
-                            window.currentCategory = selectedCategory;
-                            window.currentPage = 1;
-                            if (typeof sortAndRender === 'function') sortAndRender();
-                            var productSection = document.getElementById('menu-list');
-                            if (productSection) {
-                                productSection.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
+                });
+            </script>
+
+            <script>
+                //Filter menu sesuai kategori saat card kategori ditekan
+                document.querySelectorAll('.card-category').forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        var categoryText = card.querySelector('.card-title').textContent.trim().toLowerCase();
+                        // Mapping kategori agar sesuai dengan data menu
+                        var categoryMap = {
+                            'minuman': 'minuman',
+                            'makanan': 'makanan',
+                            'cemilan': 'cemilan',
+                            'dessert': 'dessert'
+                        };
+                        var selectedCategory = categoryMap[categoryText] || 'all';
+                        window.currentCategory = selectedCategory;
+                        window.currentPage = 1;
+                        if (typeof sortAndRender === 'function') sortAndRender();
+                        var productSection = document.getElementById('menu-list');
+                        if (productSection) {
+                            productSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+
+                        // Update label kategori jika ada
+                        var categoryLabel = document.getElementById('category-label');
+                        if (categoryLabel) {
+                            switch (selectedCategory) {
+                                case 'minuman':
+                                    categoryLabel.innerText = 'Minuman';
+                                    break;
+                                case 'makanan':
+                                    categoryLabel.innerText = 'Makanan';
+                                    break;
+                                case 'cemilan':
+                                    categoryLabel.innerText = 'Cemilan';
+                                    break;
+                                case 'dessert':
+                                    categoryLabel.innerText = 'Dessert';
+                                    break;
+                                case 'pakethemat':
+                                    categoryLabel.innerText = 'Paket Hemat';
+                                    break;
+                                case 'promo':
+                                    categoryLabel.innerText = 'Promo';
+                                    break;
+                                default:
+                                    categoryLabel.innerText = 'Semua Menu';
                             }
-                            // Update label kategori jika ada
-                            var categoryLabel = document.getElementById('category-label');
-                            if (categoryLabel) {
-                                switch (selectedCategory) {
-                                    case 'minuman':
-                                        categoryLabel.innerText = 'Minuman';
-                                        break;
-                                    case 'makanan':
-                                        categoryLabel.innerText = 'Makanan';
-                                        break;
-                                    case 'cemilan':
-                                        categoryLabel.innerText = 'Cemilan';
-                                        break;
-                                    case 'dessert':
-                                        categoryLabel.innerText = 'Dessert';
-                                        break;
-                                    case 'pakethemat':
-                                        categoryLabel.innerText = 'Paket Hemat';
-                                        break;
-                                    case 'promo':
-                                        categoryLabel.innerText = 'Promo';
-                                        break;
-                                    default:
-                                        categoryLabel.innerText = 'Semua Menu';
-                                }
-                            }
-                        });
+                        }
                     });
+                });
             </script>
             <script>
                 // Scroll ke produk saat kategori ditekan
@@ -665,78 +668,124 @@
             </div>
 
             <div class="w-full mt-6">
-                <div class="flex flex-col lg:flex-row gap-6 items-center justify-between ">
-                    <div class="w-full">
-                        <div class="flex items-center gap-4">
-                            <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
-                                <button id="filter-category-btn" type="button"
-                                    class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <span id="category-label" class="truncate">Semua Menu</span>
-                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="category-options"
-                                    class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
-                                    <div class="py-1" role="menu" aria-orientation="vertical"
-                                        aria-labelledby="filter-category-btn">
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="all">Semua Menu</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="minuman">Minuman</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="makanan">Makanan</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="cemilan">Cemilan</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="dessert">Dessert</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="pakethemat">Paket Hemat</a>
-                                        <a href="#"
-                                            class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-category="promo">Promo</a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start lg:items-center justify-between">
 
-                            <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
-                                <button id="sort-menu-btn" type="button"
-                                    class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <span id="sort-label" class="truncate">Urutkan menu</span>
-                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="sort-options"
-                                    class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
-                                    <div class="py-1" role="menu" aria-orientation="vertical"
-                                        aria-labelledby="sort-menu-btn">
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="newest">Urutkan menurut yang terbaru</a>
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="cheapest">Urutkan dari termurah</a>
-                                        <a href="#"
-                                            class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            data-sort-by="mostexpensive">Urutkan dari termahal</a>
-                                    </div>
+                    <div class="w-full flex gap-4">
+
+                        <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="filter-category-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="category-label" class="truncate">Pilih Kategori</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="category-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="filter-category-btn">
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="all">Semua Menu</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="minuman">Minuman</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="makanan">Makanan</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="cemilan">Cemilan</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="dessert">Dessert</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="pakethemat">Paket Hemat</a>
+                                    <a href="#"
+                                        class="category-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-category="promo">Promo</a>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="relative w-1/2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="filter-subcategory-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="subcategory-label" class="truncate">Pilih Subkategori</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="subcategory-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="filter-subcategory-btn">
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="all">Semua Menu</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Kopi & Minuman Panas">Kopi & Minuman Panas</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Hidangan Utama">Hidangan Utama</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Snack Ringan">Snack Ringan</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Pencuci Mulut">Pencuci Mulut</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Combo Hemat">Combo Hemat</a>
+                                    <a href="#"
+                                        class="subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-subcategory="Penawaran Spesial">Penawaran Spesial</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex gap-4 mt-4 lg:mt-0 lg:w-auto">
+
+                        <div class="relative w-2/3 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                            <button id="sort-menu-btn" type="button"
+                                class="inline-flex justify-between items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span id="sort-label" class="truncate">Urutkan menu</span>
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="sort-options"
+                                class="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+                                <div class="py-1" role="menu" aria-orientation="vertical"
+                                    aria-labelledby="sort-menu-btn">
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="newest">Urutkan dari yang terbaru</a>
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="cheapest">Urutkan dari yang termurah</a>
+                                    <a href="#"
+                                        class="sort-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        data-sort-by="mostexpensive">Urutkan dari yang termahal</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w-1/3 flex justify-end">
                             <div
-                                class="flex border border-gray-300 rounded-md shadow-sm divide-x divide-gray-300 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                class="flex border border-gray-300 rounded-md shadow-sm divide-x divide-gray-300 bg-gray-50">
                                 <button id="view-grid"
                                     class="p-2 bg-white text-gray-700 hover:bg-gray-50 rounded-l-md active:bg-gray-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24"
@@ -755,6 +804,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -771,11 +821,13 @@
                 </main>
             </div>
         </div>
+
         <script>
             // Data menu dan variabel lainnya
             const menuData = [{
                     id: 'kopisusugulaaren',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Kopi Susu Aren',
                     description: 'Perpaduan espresso, susu segar, dan manisnya gula aren alami.',
                     price: 18000,
@@ -786,6 +838,7 @@
                 {
                     id: 'capuccino',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Capuccino',
                     description: 'Paduan sempurna antara espresso, susu hangat, dan busa susu lembut.',
                     price: 20000,
@@ -796,6 +849,7 @@
                 {
                     id: 'rotibakarcoklat',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Roti Bakar Coklat',
                     description: 'Roti panggang isi coklat meleleh dengan taburan meses.',
                     price: 12000,
@@ -806,6 +860,7 @@
                 {
                     id: 'nasigorengkampung',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Nasi Goreng Kampung',
                     description: 'Nasi goreng pedas dengan irisan ayam, telur, dan kerupuk.',
                     price: 25000,
@@ -816,6 +871,7 @@
                 {
                     id: 'sandwich',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Sandwich',
                     description: 'Roti isi daging asap, sayuran segar, dan saus mayo.',
                     price: 10000,
@@ -826,6 +882,7 @@
                 {
                     id: 'salad',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Salad Sayur',
                     description: 'Campuran sayuran segar dengan dressing lemon.',
                     price: 18000,
@@ -836,6 +893,7 @@
                 {
                     id: 'pasta',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Pasta Aglio e Olio',
                     description: 'Pasta dengan saus bawang putih, minyak zaitun, dan cabai.',
                     price: 20000,
@@ -846,6 +904,7 @@
                 {
                     id: 'croissant',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Croissant',
                     description: 'Roti croissant renyah dengan isian selai strawberry.',
                     price: 15000,
@@ -856,6 +915,7 @@
                 {
                     id: 'kentanggoreng',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Kentang Goreng',
                     description: 'Crunchy, gurih, dan pas sebagai teman minum kopi.',
                     price: 15000,
@@ -866,6 +926,7 @@
                 {
                     id: 'pisangcrispy',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Pisang Crispy',
                     description: 'Potongan pisang yang digoreng hingga renyah, dilapisi saus karamel dan keju.',
                     price: 17000,
@@ -876,6 +937,7 @@
                 {
                     id: 'cheesecake',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Cheesecake',
                     description: 'Kue keju lembut dengan lapisan biskuit di bawahnya.',
                     price: 30000,
@@ -886,6 +948,7 @@
                 {
                     id: 'moccacino',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Moccacino',
                     description: 'Espresso dengan cokelat, susu, dan whipped cream.',
                     price: 22000,
@@ -896,6 +959,7 @@
                 {
                     id: 'espresso',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Espresso',
                     description: 'Kopi hitam pekat dengan aroma yang kuat.',
                     price: 17000,
@@ -906,6 +970,7 @@
                 {
                     id: 'latte',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Latte',
                     description: 'Espresso dengan susu panas dan sedikit busa.',
                     price: 22000,
@@ -916,6 +981,7 @@
                 {
                     id: 'americano',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Americano',
                     description: 'Espresso yang disajikan dengan air panas.',
                     price: 16000,
@@ -926,6 +992,7 @@
                 {
                     id: 'tehtarik',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Teh Tarik',
                     description: 'Teh susu klasik yang ditarik hingga berbusa.',
                     price: 15000,
@@ -936,6 +1003,7 @@
                 {
                     id: 'ayambakarmadu',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Ayam Bakar Madu',
                     description: 'Ayam panggang dengan bumbu madu manis dan gurih.',
                     price: 35000,
@@ -946,6 +1014,7 @@
                 {
                     id: 'spaghetti',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Spaghetti Bolognese',
                     description: 'Spaghetti dengan saus daging cincang dan keju parmesan.',
                     price: 32000,
@@ -956,6 +1025,7 @@
                 {
                     id: 'tahugejrot',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Tahu Gejrot',
                     description: 'Tahu goreng dengan kuah pedas manis khas Cirebon.',
                     price: 10000,
@@ -966,6 +1036,7 @@
                 {
                     id: 'brownies',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Brownies',
                     description: 'Kue cokelat yang padat dan kaya rasa.',
                     price: 28000,
@@ -976,6 +1047,7 @@
                 {
                     id: 'redvelvetcake',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Red Velvet Cake',
                     description: 'Kue merah dengan lapisan krim keju yang lembut.',
                     price: 35000,
@@ -986,6 +1058,7 @@
                 {
                     id: 'lemontea',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Lemon Tea',
                     description: 'Teh segar dengan perasan lemon.',
                     price: 12000,
@@ -996,6 +1069,7 @@
                 {
                     id: 'chickenwings',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Chicken Wings',
                     description: 'Sayap ayam goreng tepung dengan saus pedas.',
                     price: 28000,
@@ -1006,6 +1080,7 @@
                 {
                     id: 'onionrings',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Onion Rings',
                     description: 'Irisan bawang bombay goreng tepung.',
                     price: 14000,
@@ -1016,6 +1091,7 @@
                 {
                     id: 'matchalatte',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Matcha Latte',
                     description: 'Minuman dengan perpaduan teh hijau matcha premium dan susu segar.',
                     price: 24000,
@@ -1026,6 +1102,7 @@
                 {
                     id: 'thaitea',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Thai Tea',
                     description: 'Teh Thailand yang creamy dengan rempah khas.',
                     price: 18000,
@@ -1036,6 +1113,7 @@
                 {
                     id: 'chickenparm',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Chicken Parmigiana',
                     description: 'Ayam crispy dengan saus marinara dan keju mozzarella.',
                     price: 38000,
@@ -1046,6 +1124,7 @@
                 {
                     id: 'churros',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Churros',
                     description: 'Camilan manis khas Spanyol dengan saus coklat.',
                     price: 20000,
@@ -1056,6 +1135,7 @@
                 {
                     id: 'tiramisu',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Tiramisu',
                     description: 'Dessert Italia klasik dengan lapisan mascarpone dan kopi.',
                     price: 32000,
@@ -1066,6 +1146,7 @@
                 {
                     id: 'beefburger',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Classic Beef Burger',
                     description: 'Burger dengan patty daging sapi, keju, dan sayuran segar.',
                     price: 45000,
@@ -1076,6 +1157,7 @@
                 {
                     id: 'orangejuice',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Fresh Orange Juice',
                     description: 'Jus jeruk segar tanpa tambahan gula.',
                     price: 15000,
@@ -1086,6 +1168,7 @@
                 {
                     id: 'nachos',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Loaded Nachos',
                     description: 'Tortilla chips dengan keju leleh, guacamole, dan salsa.',
                     price: 28000,
@@ -1096,6 +1179,7 @@
                 {
                     id: 'pavlova',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Fruit Pavlova',
                     description: 'Meringue renyah dengan whipped cream dan buah segar.',
                     price: 30000,
@@ -1106,6 +1190,7 @@
                 {
                     id: 'avocadocoffee',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Avocado Coffee',
                     description: 'Perpaduan unik alpukat segar dengan espresso premium.',
                     price: 48000,
@@ -1116,6 +1201,7 @@
                 {
                     id: 'grassjelly',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Grass Jelly Milk Tea',
                     description: 'Milk tea dengan cincau hitam yang menyegarkan.',
                     price: 20000,
@@ -1126,6 +1212,7 @@
                 {
                     id: 'strawberrysmoothie',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Strawberry Smoothie',
                     description: 'Smoothie strawberry segar dengan yogurt.',
                     price: 25000,
@@ -1136,6 +1223,7 @@
                 {
                     id: 'coconutcoffee',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Coconut Coffee',
                     description: 'Kopi dengan santan kelapa dan gula aren.',
                     price: 23000,
@@ -1146,6 +1234,7 @@
                 {
                     id: 'beefsteak',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Beef Steak',
                     description: 'Steak daging sapi dengan saus mushroom.',
                     price: 75000,
@@ -1156,6 +1245,7 @@
                 {
                     id: 'chickensalad',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Grilled Chicken Salad',
                     description: 'Salad dengan ayam panggang dan sayuran segar.',
                     price: 35000,
@@ -1166,6 +1256,7 @@
                 {
                     id: 'fishchips',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Fish and Chips',
                     description: 'Ikan dory goreng tepung dengan kentang goreng.',
                     price: 40000,
@@ -1176,6 +1267,7 @@
                 {
                     id: 'clubsandwich',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Club Sandwich',
                     description: 'Sandwich berlapis dengan ayam, telur, dan sayuran.',
                     price: 32000,
@@ -1186,6 +1278,7 @@
                 {
                     id: 'springroll',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Spring Roll',
                     description: 'Lumpia isi sayuran dengan saus asam manis.',
                     price: 18000,
@@ -1196,6 +1289,7 @@
                 {
                     id: 'mozarellasticks',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Mozzarella Sticks',
                     description: 'Stik keju mozzarella goreng dengan saus marinara.',
                     price: 25000,
@@ -1206,6 +1300,7 @@
                 {
                     id: 'calamari',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Crispy Calamari',
                     description: 'Cumi goreng tepung dengan saus tartar.',
                     price: 30000,
@@ -1216,6 +1311,7 @@
                 {
                     id: 'dimsum',
                     category: 'cemilan',
+                    subcategory: 'Snack Ringan',
                     name: 'Dimsum Platter',
                     description: 'Aneka dimsum dengan saus spesial.',
                     price: 35000,
@@ -1226,6 +1322,7 @@
                 {
                     id: 'chocolatecake',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Chocolate Lava Cake',
                     description: 'Kue coklat dengan lelehan coklat di dalamnya.',
                     price: 35000,
@@ -1236,6 +1333,7 @@
                 {
                     id: 'crepedurian',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Crepe Durian',
                     description: 'Crepe tipis dengan filling durian asli.',
                     price: 28000,
@@ -1246,6 +1344,7 @@
                 {
                     id: 'pannacotta',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Panna Cotta',
                     description: 'Dessert Italia dengan saus berry segar.',
                     price: 27000,
@@ -1256,6 +1355,7 @@
                 {
                     id: 'icecreamcake',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Ice Cream Cake',
                     description: 'Kue es krim dengan topping buah.',
                     price: 40000,
@@ -1266,6 +1366,7 @@
                 {
                     id: 'milkshake',
                     category: 'minuman',
+                    subcategory: 'Kopi & Minuman Panas',
                     name: 'Classic Milkshake',
                     description: 'Milkshake vanilla dengan whipped cream.',
                     price: 25000,
@@ -1276,6 +1377,7 @@
                 {
                     id: 'chickenwrap',
                     category: 'makanan',
+                    subcategory: 'Hidangan Utama',
                     name: 'Chicken Wrap',
                     description: 'Tortilla wrap dengan isian ayam dan sayuran.',
                     price: 28000,
@@ -1286,6 +1388,7 @@
                 {
                     id: 'fruitsalad',
                     category: 'dessert',
+                    subcategory: 'Pencuci Mulut',
                     name: 'Fresh Fruit Salad',
                     description: 'Aneka buah segar dengan yogurt dan madu.',
                     price: 23000,
@@ -1296,6 +1399,7 @@
                 {
                     id: 'pkthmt1',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Puas 1 (Burger + Fries + Cola)',
                     description: 'Cheeseburger klasik, kentang goreng reguler, dan Cola 300ml.',
                     price: 45000,
@@ -1306,6 +1410,7 @@
                 {
                     id: 'pkthmt2',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Nasi Ayam Geprek Komplit',
                     description: 'Nasi hangat, ayam geprek pedas level 3, tahu/tempe, dan es teh manis.',
                     price: 35000,
@@ -1316,6 +1421,7 @@
                 {
                     id: 'pkthmt3',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Roti Bakar Duo (2 Roti + 2 Kopi)',
                     description: 'Dua porsi roti bakar (keju dan cokelat) ditambah dua kopi susu panas.',
                     price: 55000,
@@ -1326,6 +1432,7 @@
                 {
                     id: 'pkthmt4',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Sarapan Sehat (Oatmeal + Juice)',
                     description: 'Semangkuk Oatmeal dengan topping buah dan satu gelas orange juice.',
                     price: 32000,
@@ -1336,6 +1443,7 @@
                 {
                     id: 'pkthmt5',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Siang Cepat (Mie Goreng + Es Jeruk)',
                     description: 'Mie goreng spesial dengan telur dan es jeruk segar.',
                     price: 27000,
@@ -1346,6 +1454,7 @@
                 {
                     id: 'pkthmt6',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Pizza Mini Couple',
                     description: 'Dua mini pizza dengan topping berbeda dan dua minuman soda dingin.',
                     price: 65000,
@@ -1356,6 +1465,7 @@
                 {
                     id: 'pkthmt7',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Kopi dan Donat (1 Kopi + 2 Donat)',
                     description: 'Satu Latte panas dan dua donat klasik pilihan.',
                     price: 38000,
@@ -1366,6 +1476,7 @@
                 {
                     id: 'pkthmt8',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Ikan Fillet Saus Mentai',
                     description: 'Nasi dengan ikan fillet crispy dan saus mentai spesial, termasuk air mineral.',
                     price: 42000,
@@ -1376,6 +1487,7 @@
                 {
                     id: 'pkthmt9',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Seblak Pedas Level 5 + Minuman Dingin',
                     description: 'Seblak dengan isian komplit dan es lemon tea.',
                     price: 30000,
@@ -1386,6 +1498,7 @@
                 {
                     id: 'pkthmt10',
                     category: 'pakethemat',
+                    subcategory: 'Combo Hemat',
                     name: 'Paket Family (4 Makanan Utama + Diskon Minuman)',
                     description: 'Diskon 25% untuk 4 menu utama apa saja, harga yang tertera adalah harga diskon rata-rata.',
                     price: 90000,
@@ -1396,6 +1509,7 @@
                 {
                     id: 'promo1',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'DISKON 50% Smoothies Hari Senin',
                     description: 'Semua varian buah Smoothies diskon 50% setiap hari Senin.',
                     price: 15000, // Harga setelah diskon
@@ -1406,6 +1520,7 @@
                 {
                     id: 'promo2',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Buy 1 Get 1 Free Large Pizza',
                     description: 'Beli 1 pizza ukuran besar, gratis 1 pizza medium (pilih rasa).',
                     price: 99000,
@@ -1416,6 +1531,7 @@
                 {
                     id: 'promo3',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Gratis Tambah Keju di Semua Pasta',
                     description: 'Dapatkan keju mozarella ekstra gratis untuk semua menu pasta.',
                     price: 0, // Item promosi tambahan (harga 0 karena gratis)
@@ -1426,6 +1542,7 @@
                 {
                     id: 'promo4',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Weekend Hemat (Diskon 20% Minuman)',
                     description: 'Diskon 20% untuk semua minuman non-kopi pada hari Sabtu & Minggu.',
                     price: 12000, // Harga rata-rata setelah diskon
@@ -1436,6 +1553,7 @@
                 {
                     id: 'promo5',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Nasi Goreng Merah Spesial',
                     description: 'Menu spesial bulanan: Nasi goreng merah dengan udang besar (Harga normal 40k).',
                     price: 38000,
@@ -1446,6 +1564,7 @@
                 {
                     id: 'promo6',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Beli 2 Es Kopi Susu, Hemat 10K',
                     description: 'Beli dua Es Kopi Susu signature, hemat Rp 10.000 dari harga normal.',
                     price: 40000,
@@ -1456,6 +1575,7 @@
                 {
                     id: 'promo7',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Hot Dog XXL Edisi Terbatas',
                     description: 'Hot Dog dengan sosis ukuran jumbo dan topping ekstra, hanya untuk bulan ini!',
                     price: 40000,
@@ -1466,6 +1586,7 @@
                 {
                     id: 'promo8',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Gratis Tambah Toping (Ice Cream)',
                     description: 'Setiap pembelian Ice Cream, gratis satu topping (pilih whip cream/cherry).',
                     price: 0,
@@ -1476,6 +1597,7 @@
                 {
                     id: 'promo9',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Diskon 30% Semua Kue Tart',
                     description: 'Diskon besar 30% untuk semua pembelian kue tart (ukuran apa saja).',
                     price: 150000, // Harga setelah diskon
@@ -1486,6 +1608,7 @@
                 {
                     id: 'promo10',
                     category: 'promo',
+                    subcategory: 'Penawaran Spesial',
                     name: 'Diskon Khusus Pelajar/Mahasiswa',
                     description: 'Tunjukkan kartu pelajar/mahasiswa dan dapatkan diskon 15% untuk semua menu.',
                     price: 0, // Item informasi promosi
@@ -1496,6 +1619,7 @@
             ];
 
             let currentCategory = 'all';
+            let currentSubcategory = 'all';
             let currentSort = 'newest';
             let currentView = 'list';
             let currentPage = 1;
@@ -1780,11 +1904,18 @@
             function sortAndRender() {
                 let itemsToRender;
 
-                // 1. Filter berdasarkan kategori
-                if (currentCategory === 'all') {
+                // 1. Filter berdasarkan kategori dan subkategori
+                if (currentCategory === 'all' && currentSubcategory === 'all') {
                     itemsToRender = [...menuData];
-                } else {
+                } else if (currentCategory === 'all') {
+                    itemsToRender = menuData.filter(item => item.subcategory === currentSubcategory);
+                } else if (currentSubcategory === 'all') {
                     itemsToRender = menuData.filter(item => item.category === currentCategory);
+                } else {
+                    itemsToRender = menuData.filter(item =>
+                        item.category === currentCategory &&
+                        item.subcategory === currentSubcategory
+                    );
                 }
 
                 // 2. Filter berdasarkan pencarian (search term)
@@ -2034,6 +2165,29 @@
                     });
                 }
 
+                // Event listener untuk subcategory dropdown
+                const filterSubcategoryBtn = document.getElementById('filter-subcategory-btn');
+                const subcategoryOptions = document.getElementById('subcategory-options');
+                const subcategoryLabel = document.getElementById('subcategory-label');
+                if (filterSubcategoryBtn) {
+                    filterSubcategoryBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        subcategoryOptions.classList.toggle('hidden');
+                    });
+                }
+                if (subcategoryOptions) {
+                    subcategoryOptions.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('subcategory-option')) {
+                            e.preventDefault();
+                            currentSubcategory = e.target.dataset.subcategory;
+                            subcategoryLabel.innerText = e.target.innerText;
+                            currentPage = 1;
+                            sortAndRender();
+                            subcategoryOptions.classList.add('hidden');
+                        }
+                    });
+                }
+
                 // Event listener untuk kategori dropdown
                 const filterCategoryBtn = document.getElementById('filter-category-btn');
                 const categoryOptions = document.getElementById('category-options');
@@ -2142,6 +2296,7 @@
                     resetButton.addEventListener('click', () => {
                         // Reset variabel global
                         currentCategory = 'all';
+                        currentSubcategory = 'all';
                         currentSort = 'newest';
                         currentView = 'list';
                         currentPage = 1;
@@ -2167,7 +2322,13 @@
                         // Reset category label
                         const categoryLabel = document.getElementById('category-label');
                         if (categoryLabel) {
-                            categoryLabel.innerText = "Semua Menu";
+                            categoryLabel.innerText = "Pilih Kategori";
+                        }
+
+                        // Reset subcategory label
+                        const subcategoryLabel = document.getElementById('subcategory-label');
+                        if (subcategoryLabel) {
+                            subcategoryLabel.innerText = "Pilih Subkategori";
                         }
 
                         // Reset view buttons

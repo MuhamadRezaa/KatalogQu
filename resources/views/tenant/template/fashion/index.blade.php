@@ -263,12 +263,212 @@
             opacity: 0.8;
         }
 
+        /* Category Grid - Locked Dimensions with Responsive Layout */
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(var(--max-categories-per-row, 4), 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
+        /* Category Card - Fixed Dimensions - Override External CSS */
+        .category-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+            border: 2px solid #e9ecef !important;
+            border-radius: 16px !important;
+            padding: 2rem 1.5rem !important;
+            text-align: center !important;
+            cursor: pointer !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            
+            /* Locked dimensions - Override external max-width */
+            min-height: 180px !important;
+            max-height: 180px !important;
+            height: 180px !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            
+            /* Flexbox for consistent content alignment */
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #d4af37 0%, #e8b86d 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #d4af37;
+        }
+
+        .category-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .category-card.active {
+            background: #d4af37;
+            color: #2c3e50;
+            border-color: #d4af37;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+        }
+
+        .category-card.active::before {
+            opacity: 1;
+        }
+
+        .category-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            
+            /* Text overflow handling */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+
+        .category-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            
+            /* Multi-line text handling */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+            max-height: 2.8rem;
+        }
+
+        .category-card:hover .category-name,
+        .category-card:hover .category-description {
+            color: #d4af37;
+            transform: translateY(-2px);
+        }
+
+        .category-card.active .category-name,
+        .category-card.active .category-description {
+            color: #2c3e50;
+        }
+
+        /* Responsive Breakpoints */
+        
+        /* Tablet (768px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 1.25rem !important;
+            }
+            
+            .category-card {
+                min-height: 160px !important;
+                max-height: 160px !important;
+                height: 160px !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 1.5rem 1rem !important;
+            }
+            
+            .category-name {
+                font-size: 1.1rem !important;
+            }
+            
+            .category-description {
+                font-size: 0.85rem !important;
+            }
+        }
+
+        /* Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 1rem !important;
+                padding: 0 0.5rem !important;
+            }
+            
+            .category-card {
+                min-height: 140px !important;
+                max-height: 140px !important;
+                height: 140px !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 1.25rem 0.75rem !important;
+            }
+            
+            .category-name {
+                font-size: 1rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            
+            .category-description {
+                font-size: 0.8rem !important;
+                -webkit-line-clamp: 2 !important;
+                max-height: 2.4rem !important;
+            }
+        }
+
+        /* Small Mobile (max-width: 480px) */
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.75rem !important;
+                padding: 0 0.25rem !important;
+            }
+            
+            .category-card {
+                min-height: 120px !important;
+                max-height: 120px !important;
+                height: 120px !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 1rem 0.5rem !important;
+            }
+            
+            .category-name {
+                font-size: 0.9rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            
+            .category-description {
+                font-size: 0.75rem;
+                -webkit-line-clamp: 1;
+                max-height: 1.2rem;
+            }
+        }
+
+        /* Legacy category styling overrides */
         .category-grid.category-list {
             display: flex;
             flex-direction: column;
@@ -307,18 +507,6 @@
             border-radius: 50%;
             aspect-ratio: 1;
             object-fit: cover;
-        }
-
-        @media (max-width: 768px) {
-            .category-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .category-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         .pagination-links {
@@ -806,6 +994,7 @@
             box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
             text-decoration: none;
             width: 100%;
+            margin-bottom: 12px;
         }
 
         .btn-contact:hover {
@@ -898,6 +1087,16 @@
                 font-size: 1.4rem;
             }
 
+            /* Harga pada kartu produk, kecilkan di mobile */
+            .product-current-price { font-size: 0.95rem; }
+            .product-old-price { font-size: 0.85rem; }
+
+            /* Heading responsif di mobile */
+            .hero-title { font-size: 1.75rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .section-title h2 { font-size: 1.4rem; }
+            .section-title p { font-size: 0.95rem; }
+
             .main-image {
                 height: 250px;
             }
@@ -905,6 +1104,25 @@
             .modal-actions {
                 flex-direction: column;
             }
+        }
+
+        /* Gaya paginasi Laravel agar konsisten seperti pagination numerik */
+        .pagination-links nav { display: flex; justify-content: center; margin-top: 16px; }
+        .pagination-links ul.pagination { display: flex; gap: 8px; }
+        .pagination-links a, .pagination-links span {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #374151;
+            text-decoration: none;
+            background: #fff;
+        }
+        .pagination-links a:hover { background: #f9fafb; }
+        .pagination-links span[aria-current="page"], .pagination-links .active span {
+            background: #111;
+            color: #fff;
+            border-color: #111;
         }
     </style>
 
@@ -996,8 +1214,8 @@
                             <label for="sortPrice">Urutkan Harga:</label>
                             <select id="sortPrice">
                                 <option value="">-- Pilih --</option>
-                                <option value="low-high">Harga Terendah</option>
-                                <option value="high-low">Harga Tertinggi</option>
+                                <option value="price_low">Harga Terendah</option>
+                                <option value="price_high">Harga Tertinggi</option>
                             </select>
                         </div>
 
@@ -1005,8 +1223,8 @@
                             <label for="sortName">Urutkan Nama:</label>
                             <select id="sortName">
                                 <option value="">-- Pilih --</option>
-                                <option value="a-z">A - Z</option>
-                                <option value="z-a">Z - A</option>
+                                <option value="name">A - Z</option>
+                                <option value="name_desc">Z - A</option>
                             </select>
                         </div>
 
@@ -1016,6 +1234,22 @@
                                 <option value="">-- Pilih --</option>
                                 <option value="newest">Terbaru</option>
                                 <option value="oldest">Terlama</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="priceRange">Rentang Harga:</label>
+                            <select id="priceRange">
+                                <option value="">-- Semua Harga --</option>
+                                @foreach (($priceRanges ?? []) as $range)
+                                    @php
+                                        $min = $range->min;
+                                        $max = $range->max;
+                                        $label = $range->name;
+                                        $value = ($min !== null ? $min : '') . '-' . ($max !== null ? $max : '');
+                                    @endphp
+                                    <option value="{{ $value }}">{{ $label }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -1076,9 +1310,8 @@
             </div>
 
             {{-- Tombol Lihat Selengkapnya untuk tampilan bertahap --}}
-            <div class="show-more-container" style="display:flex; justify-content:center; margin-top:16px;">
-                <button id="tenantShowMoreBtn" style="display:none; padding:10px 16px; border-radius:999px; background:#111; color:#fff; border:none; cursor:pointer;">Lihat Selengkapnya →</button>
-            </div>
+            <!-- Progressive show-more dihapus, gunakan paginasi server -->
+            <div class="show-more-container" style="display:none;"></div>
 
             {{-- Link paginasi --}}
             <div class="pagination-links">
@@ -1130,7 +1363,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Powered by PT. Era Cipta Digital</p>
+    <p>© 2025 Powered by PT. Era Cipta Digital</p>
         </div>
     </footer>
 
@@ -1289,8 +1522,8 @@
                 requestAnimationFrame(step);
             }
 
-            // Fungsi untuk mengarahkan pengguna dengan parameter filter
-            function applyFilterAndReload() {
+            // Fungsi untuk menerapkan filter TANPA reload penuh (AJAX only update products)
+            async function applyFilterAndReload(page = 1) {
                 const baseUrl = "{{ url()->current() }}";
                 const params = new URLSearchParams();
 
@@ -1321,7 +1554,137 @@
                 else if (sortName) params.set('sort', sortName);
                 else if (sortDate) params.set('sort', sortDate);
 
-                window.location.href = `${baseUrl}?${params.toString()}`;
+                // Rentang harga dari controller (admin dapat unggah)
+                const rangeVal = $('#priceRange').val();
+                if (rangeVal) {
+                    const [min, max] = rangeVal.split('-');
+                    if (min !== undefined && min !== '') params.set('price_min', min);
+                    if (max !== undefined && max !== '') params.set('price_max', max);
+                } else {
+                    params.delete('price_min');
+                    params.delete('price_max');
+                }
+
+                // Tambahkan page jika ada
+                if (page && Number(page) > 0) {
+                    params.set('page', Number(page));
+                }
+
+                // Update URL tanpa reload agar user bisa share link
+                try {
+                    history.replaceState(null, '', `${baseUrl}?${params.toString()}`);
+                } catch (e) { /* noop */ }
+
+                // Muat produk via AJAX
+                await loadProductsAjax(params);
+            }
+
+            // Ambil data produk dari server dan render ke grid tanpa reload
+            async function loadProductsAjax(params) {
+                const $grid = $('#productsGrid');
+                const $pagination = $('.pagination-links');
+                if (!$grid.length) return;
+
+                // Efek loading ringan pada grid saja
+                $grid.css('opacity', 0.4);
+                try {
+                    const url = `${window.location.origin}/filter-products?${params.toString()}`;
+                    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                    if (!resp.ok) throw new Error('Gagal memuat produk');
+                    const data = await resp.json();
+
+                    const items = data.data || data.products || [];
+                    renderAjaxProducts(items);
+
+                    // Perbarui pagination jika ada struktur links
+                    if (data.links) {
+                        renderAjaxPagination(data);
+                    } else if (data.pagination) {
+                        renderSimplePagination(data.pagination);
+                    }
+                } catch (err) {
+                    $grid.html(`
+                        <div id="noResults" class="no-results" style="display: block; grid-column: 1 / -1;">
+                            <h3>Terjadi kesalahan saat memuat produk</h3>
+                            <p>Silakan coba lagi.</p>
+                        </div>
+                    `);
+                } finally {
+                    $grid.css('opacity', 1);
+                }
+            }
+
+            function renderAjaxProducts(items) {
+                const $productsGrid = $('#productsGrid');
+                if (!items || items.length === 0) {
+                    $productsGrid.html(`
+                        <div id="noResults" class="no-results" style="display: block; grid-column: 1 / -1;">
+                            <h3>Produk yang Anda cari tidak ditemukan</h3>
+                            <p>Coba gunakan kata kunci yang berbeda atau lihat semua produk kami.</p>
+                        </div>
+                    `);
+                    return;
+                }
+
+                const productsHTML = items.map(p => {
+                    const imageUrl = p.image_url || 'https://via.placeholder.com/200?text=No+Image';
+                    const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(Number(p.price) || 0);
+                    const showOldPrice = p.old_price && Number(p.old_price) > Number(p.price);
+                    const oldPriceFormatted = showOldPrice ? ('Rp ' + new Intl.NumberFormat('id-ID').format(Number(p.old_price) || 0)) : '';
+                    const categoryName = p.category?.name || 'Uncategorized';
+                    const promoBadge = p.is_promo ? '<div class="modal-promo-badge">PROMO</div>' : '';
+
+                    return `
+                        <div class="product-card" data-product-id="${p.id}" onclick="showProductDetails(${p.id})">
+                            <div class="product-image" style="position: relative;">
+                                ${promoBadge}
+                                <img src="${imageUrl}" alt="${p.name}" loading="lazy"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=No+Image'; this.style.opacity='1';"
+                                    onload="this.style.opacity='1';" style="opacity: 0; transition: opacity 0.3s ease;">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">${categoryName}</div>
+                                <div class="product-name">${p.name}</div>
+                                <div class="product-price">
+                                    ${showOldPrice ? `<span class="product-old-price">${oldPriceFormatted}</span>` : ''}
+                                    <span class="product-current-price">${formattedPrice}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                $productsGrid.html(productsHTML);
+            }
+
+            function renderAjaxPagination(data) {
+                const $pagination = $('.pagination-links');
+                if (!$pagination.length) return;
+                const links = Array.isArray(data.links) ? data.links : [];
+                const html = links.map(l => {
+                    const disabled = !l.url ? ' disabled' : '';
+                    const active = l.active ? ' active' : '';
+                    // Ekstrak page dari URL jika ada
+                    let pageParam = null;
+                    try {
+                        const u = new URL(l.url);
+                        pageParam = u.searchParams.get('page');
+                    } catch (e) { /* noop */ }
+                    return `<a href="#" class="pagination-link${active}${disabled}" data-page="${pageParam || ''}">${l.label}</a>`;
+                }).join('');
+                $pagination.html(html);
+            }
+
+            function renderSimplePagination(p) {
+                const $pagination = $('.pagination-links');
+                if (!$pagination.length) return;
+                const curr = Number(p.current_page) || 1;
+                const last = Number(p.last_page) || 1;
+                let html = '';
+                for (let i = 1; i <= last; i++) {
+                    html += `<a href="#" class="pagination-link${i === curr ? ' active' : ''}" data-page="${i}">${i}</a>`;
+                }
+                $pagination.html(html);
             }
 
             // Fungsi untuk menampilkan subkategori yang relevan
@@ -1390,7 +1753,8 @@
                     }
                     history.pushState(null, '', `?${params.toString()}`);
                 } catch (e) { /* noop */ }
-                filterProductsByCategory(currentCategoryId);
+                // Muat dari server agar konsisten
+                applyFilterAndReload();
             }
 
             // Function to filter products without page reload
@@ -1556,8 +1920,12 @@
 
             // --- EVENT LISTENERS menggunakan jQuery ---
 
-            $('.category-card').on('click', function() {
+            // Use event delegation for category cards
+            $(document).on('click', '.category-card', function() {
                 const categoryId = $(this).data('category-id');
+                
+                // Update current category ID
+                currentCategoryId = categoryId;
 
                 // Update active state
                 $('.category-card').removeClass('active');
@@ -1592,24 +1960,32 @@
                 }
 
                 // Tetap filter agar list produk relevan, dengan animasi fade internal
-                filterProductsByCategory(categoryId);
+                // Gunakan server-side agar pagination & rentang harga konsisten
+                applyFilterAndReload();
             });
 
             // Event listener untuk filter
             $('#searchInput').on('keypress', function(e) {
                 if (e.key === 'Enter') {
                     currentSearchTerm = $(this).val();
-                    filterProductsByCategory(currentCategoryId);
+                    applyFilterAndReload();
                 }
             });
 
             $('#searchInput').on('input', function() {
                 currentSearchTerm = $(this).val();
-                filterProductsByCategory(currentCategoryId);
+                // Tidak reload setiap ketik untuk performa; gunakan Enter
             });
 
-            $('#sortPrice, #sortName, #sortDate').on('change', function() {
-                filterProductsByCategory(currentCategoryId);
+            $('#sortPrice, #sortName, #sortDate, #priceRange').on('change', function() {
+                applyFilterAndReload();
+            });
+
+            // Intersep klik pagination agar tidak reload penuh
+            $('.pagination-links').on('click', 'a.pagination-link', function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                applyFilterAndReload(page || 1);
             });
 
             // --- FUNGSI KUSTOMISASI ADMIN ---
@@ -1730,6 +2106,10 @@
             const currentUrlParams = new URLSearchParams(window.location.search);
             const currentCategory = currentUrlParams.get('category') || 'all';
             const currentSubcategory = currentUrlParams.get('subcategory');
+
+            // Set global variables
+            currentCategoryId = currentCategory;
+            currentSubcategoryId = currentSubcategory;
 
             // Terapkan semua konfigurasi saat halaman dimuat
             applyHeroConfiguration();

@@ -324,9 +324,7 @@
         </div>
 
         {{-- Pagination dari kode pertama --}}
-        <div class="mt-8">
-            {{ $products->links() }}
-        </div>
+        <div id="pagination-container" class="mt-8"></div>
     </main>
 
     <div id="product-modal"
@@ -777,20 +775,31 @@
             };
 
             // --- Subcategory Display Logic ---
-            function updateSubcategoryDisplay(selectedCategoryId) {
+            function updateSubcategoryDisplay(selectedCategoryId, selectedCategoryName) {
+                console.log('updateSubcategoryDisplay called for category:', selectedCategoryId, selectedCategoryName);
+                const subcategoryDisplay = document.getElementById('subcategory-display');
+                const subcategoryDisplayContainer = document.getElementById('subcategory-display-container');
+                const selectedCategoryNameSpan = document.getElementById('selected-category-name');
+                const subcategoryCheckboxTemplate = document.getElementById('subcategory-checkbox-template');
+
+                if (!subcategoryDisplay || !subcategoryDisplayContainer || !selectedCategoryNameSpan || !subcategoryCheckboxTemplate) {
+                    console.error('One or more subcategory display elements not found.');
+                    return;
+                }
+
                 subcategoryDisplay.innerHTML = ''; // Clear previous subcategories
                 subcategoryDisplayContainer.classList.add('hidden'); // Hide by default
 
                 if (selectedCategoryId === 'all') {
+                    console.log('Category is all, hiding subcategory display.');
                     return; // No subcategories for 'all'
                 }
 
                 const subcategories = window.categorySubcategoryMap[selectedCategoryId] || [];
-
+                console.log('Subcategories for selected category:', subcategories);
 
                 if (subcategories.length > 0) {
-                    selectedCategoryNameSpan.textContent = window.productsData.find(p => p.category && p.category
-                        .id == selectedCategoryId)?.category.name || '';
+                    selectedCategoryNameSpan.textContent = selectedCategoryName || '';
                     subcategoryDisplayContainer.classList.remove('hidden');
 
                     // Add an "All" radio button for subcategories
@@ -805,7 +814,8 @@
                     allInput.value = 'all';
                     allInput.name = 'subcategory'; // Ensure all subcategory radios have the same name
                     allInput.checked = true; // Default to 'All' selected
-                    allInput.addEventListener('change', applyFilters);
+                    // Remove existing event listener before adding a new one to prevent duplicates
+                    $(allInput).off('change').on('change', applyFilters);
                     allLabel.htmlFor = allInputId;
                     allSpan.textContent = 'Semua Sub-Kategori';
                     subcategoryDisplay.appendChild(allDiv);
@@ -821,13 +831,17 @@
                         input.id = inputId;
                         input.value = subcat.id;
                         input.name = 'subcategory'; // Ensure all subcategory radios have the same name
-                        input.addEventListener('change', applyFilters);
+                        // Remove existing event listener before adding a new one to prevent duplicates
+                        $(input).off('change').on('change', applyFilters);
                         label.htmlFor = inputId;
                         span.textContent = subcat.name;
 
                         subcategoryDisplay.appendChild(div);
                     });
-                    lucide.createIcons(); // Re-render lucide icons for new buttons
+                    lucide.createIcons({ createElements: true, scope: subcategoryDisplay }); // Re-create icons only within the subcategory display
+                } else {
+                    console.log('No subcategories found, hiding subcategory display.');
+                    subcategoryDisplayContainer.classList.add('hidden');
                 }
             }
 
@@ -1120,374 +1134,181 @@
 
 
 
-                        function updateProductGrid(products) {
+            function updateProductGrid(products) {
+                const productGridElement = document.getElementById('product-grid');
+                if (!productGridElement) return;
 
+                productGridElement.innerHTML = ''; // Clear existing products
 
+                if (products && products.length > 0) {
+                    const fragment = document.createDocumentFragment();
 
-                            const $productGrid = $('#product-grid');
+                    products.forEach(function(product) {
+                        const primaryImage = product.image_url ||
+                            '{{ asset('assets/images/no-image-icon.png') }}';
 
+                        const oldPriceHtml = product.old_price && parseFloat(product.old_price) >
+                            parseFloat(product.price) ?
+                            `<span class="text-sm text-gray-500 line-through">${formatPrice(product.old_price)}</span>` : '';
 
-
-            
-
-
-
-                            if (products && products.length > 0) {
-
-
-
-                                let allCardsHtml = ''; // Create an empty string
-
-
-
-                                                    $.each(products, function(index, product) {
-
-
-
-                                                        const primaryImage = product.image_url || '{{ asset("assets/images/no-image-icon.png") }}';
-
-
-
-                                
-
-
-
-                                                        const oldPriceHtml = product.old_price && parseFloat(product.old_price) > parseFloat(product.price) ?
-
-
-
-                                                            `<span class="text-sm text-gray-500 line-through">${formatPrice(product.old_price)}</span>` : '';
-
-
-
-                                    
-
-
-
-                                    let savingsBadgeHtml = '';
-
-
-
-                                    if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
-
-
-
-                                        const savings = product.old_price - product.price;
-
-
-
-                                        savingsBadgeHtml = `
-
-
-
+                        let savingsBadgeHtml = '';
+                        if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
+                            const savings = product.old_price - product.price;
+                            savingsBadgeHtml = `
                                             <div class="savings-badge-container mt-1">
-
-
-
                                                 <span class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-md">
-
-
-
                                                     Hemat ${formatPrice(savings)}
-
-
-
                                                 </span>
-
-
-
                                             </div>`;
-
-
-
-                                    }
-
-
-
-            
-
-
-
-                                    const promoBadgeHtml = product.is_promo ? 
-
-
-
-                                        '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' : '';
-
-
-
-            
-
-
-
-                                    const productCardHtml = `
-
-
-
-                                        <div class="product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer" data-product-id="${product.id}">
-
-
-
-                                            <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
-
-
-
-                                                <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" src="${primaryImage}" alt="${product.name}" />
-
-
-
-                                                ${promoBadgeHtml}
-
-
-
-                                            </div>
-
-
-
-                                            <div class="p-4">
-
-
-
-                                                <h3 class="text-base font-semibold text-gray-800 line-clamp-2">${product.name}</h3>
-
-
-
-                                                <p class="text-xs text-gray-500 mb-2">${product.category ? product.category.name : 'Uncategorized'}</p>
-
-
-
-                                                <div class="flex flex-col gap-1">
-
-
-
-                                                    <div class="flex flex-wrap items-baseline gap-x-1">
-
-
-
-                                                        <span class="text-lg font-bold text-gray-900">${formatPrice(product.price)}</span>
-
-
-
-                                                        ${oldPriceHtml}
-
-
-
-                                                    </div>
-
-
-
-                                                    ${savingsBadgeHtml}
-
-
-
-                                                </div>
-
-
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-
-                                    `;
-
-
-
-                                    allCardsHtml += productCardHtml; // Append to the string, not the DOM
-
-
-
-                                });
-
-
-
-                                $productGrid.html(allCardsHtml); // Set the HTML in one go
-
-
-
-                            } else {
-
-
-
-                                $productGrid.html('<div class="col-span-full text-center py-16"><p class="text-gray-500">Tidak ada produk yang ditemukan.</p></div>');
-
-
-
-                            }
-
-
-
                         }
 
+                        const promoBadgeHtml = product.is_promo ?
+                            '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' : '';
 
+                        const productCardHtmlContent = `
+                                            <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
+                                                <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" src="${primaryImage}" alt="${product.name}" />
+                                                ${promoBadgeHtml}
+                                            </div>
+                                            <div class="p-4">
+                                                <h3 class="text-base font-semibold text-gray-800 line-clamp-2">${product.name}</h3>
+                                                <p class="text-xs text-gray-500 mb-2">${product.category ? product.category.name : 'Uncategorized'}</p>
+                                                <div class="flex flex-col gap-1">
+                                                    <div class="flex flex-wrap items-baseline gap-x-1">
+                                                        <span class="text-lg font-bold text-gray-900">${formatPrice(product.price)}</span>
+                                                        ${oldPriceHtml}
+                                                    </div>
+                                                    ${savingsBadgeHtml}
+                                                </div>
+                                            </div>
+                                        `;
+
+                        const productCardElement = document.createElement('div');
+                        productCardElement.className = "product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer";
+                        productCardElement.dataset.productId = product.id;
+                        productCardElement.innerHTML = productCardHtmlContent;
+                        fragment.appendChild(productCardElement);
+                    });
+
+                    productGridElement.appendChild(fragment); // Append fragment to DOM once
+                    lucide.createIcons({ createElements: true, scope: productGridElement }); // Re-create icons only within the product grid
+
+                } else {
+                    productGridElement.innerHTML = 
+                        '<div class="col-span-full text-center py-16"><p class="text-gray-500">Tidak ada produk yang ditemukan.</p></div>';
+                }
+            }
 
             function updatePagination(response) {
-
-                const $paginationContainer = $('.mt-8').first();
-
+                const $paginationContainer = $('#pagination-container');
                 $paginationContainer.empty();
-
-
 
                 if (!response || !response.links || response.last_page <= 1) return;
 
+                let prevLink = response.links[0];
+                let nextLink = response.links[response.links.length - 1];
 
-
-                const $nav = $(
-                    '<nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between"></nav>'
-                );
-
-
-
-                let linksHtml = '';
-
-                $.each(response.links, function(index, link) {
-
-                    if (link.url === null) {
-
-                        linksHtml +=
-                            `<span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5">${link.label}</span>`;
-
-                    } else if (link.active) {
-
-                        linksHtml +=
-                            `<span aria-current="page" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5">${link.label}</span>`;
-
+                let pageLinksHtml = '';
+                $.each(response.links.slice(1, -1), function(index, link) {
+                    if (link.active) {
+                        pageLinksHtml +=
+                            `<span aria-current="page"><span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-cyan-500 text-white border border-cyan-500 cursor-default leading-5 rounded-md">${link.label}</span></span>`;
                     } else {
-
-                        linksHtml +=
-                            `<a href="#" data-page="${link.url.split('page=')[1]}" class="pagination-link relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">${link.label}</a>`;
-
+                        pageLinksHtml +=
+                            `<a href="${link.url}" class="pagination-link relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="Go to page ${link.label}">${link.label}</a>`;
                     }
-
                 });
 
+                const navHtml = `
+                    <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
+                        <div class="flex justify-between flex-1 sm:hidden">
+                            <div class="flex items-center">
+                                ${prevLink.url ? `<a href="${prevLink.url}" class="pagination-link relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">${prevLink.label}</a>` : `<span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">${prevLink.label}</span>`}
+                                <span class="text-sm text-gray-700 mx-2">Page ${response.current_page} of ${response.last_page}</span>
+                                ${nextLink.url ? `<a href="${nextLink.url}" class="pagination-link relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">${nextLink.label}</a>` : `<span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">${nextLink.label}</span>`}
+                            </div>
+                        </div>
 
-
-                $nav.html(`
-
-                                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-
-                                                <div>
-
-                                                    <p class="text-sm text-gray-700 leading-5">
-
-                                                        Showing
-
-                                                        <span class="font-medium">${response.from}</span>
-
-                                                        to
-
-                                                        <span class="font-medium">${response.to}</span>
-
-                                                        of
-
-                                                        <span class="font-medium">${response.total}</span>
-
-                                                        results
-
-                                                    </p>
-
-                                                </div>
-
-                                                <div>
-
-                                                    <span class="relative z-0 inline-flex shadow-sm rounded-md">${linksHtml}</span>
-
-                                                </div>
-
-                                            </div>
-
-                                        `);
-
-                $paginationContainer.append($nav);
-
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-700 leading-5">
+                                    Showing
+                                    <span class="font-medium">${response.from}</span>
+                                    to
+                                    <span class="font-medium">${response.to}</span>
+                                    of
+                                    <span class="font-medium">${response.total}</span>
+                                    results
+                                </p>
+                            </div>
+                            <div>
+                                <span class="relative z-0 inline-flex shadow-sm rounded-md">
+                                    ${prevLink.url ? `<a href="${prevLink.url}" class="pagination-link relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="${prevLink.label}"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>` : `<span aria-disabled="true" aria-label="${prevLink.label}"><span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5" aria-hidden="true"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></span></span>`}
+                                    ${pageLinksHtml}
+                                    ${nextLink.url ? `<a href="${nextLink.url}" class="pagination-link -ml-px relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="${nextLink.label}"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg></a>` : `<span aria-disabled="true" aria-label="${nextLink.label}"><span class="-ml-px relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-r-md leading-5" aria-hidden="true"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg></span></span>`}
+                                </span>
+                            </div>
+                        </div>
+                    </nav>
+                `;
+                $paginationContainer.html(navHtml);
+                lucide.createIcons({ createElements: true, scope: $paginationContainer[0] }); // Re-create icons only within the pagination container
             }
 
 
 
             // --- Main AJAX Function ---
-
             function applyFilters(page = 1) {
-
+                console.time('applyFilters execution');
                 const filterData = {
-
                     search: $('#search-input').val(),
-
                     category: $('#category-filter').val(),
-
                     subcategory: $('input[name="subcategory"]:checked').val(),
-
                     sort: $('#sort-select').val(),
-
                     brand_ids: Array.from(selectedBrandIds),
-
                     page: page
-
                 };
 
-
-
                 const selectedPriceOption = $('#price-range').find('option:selected');
-
                 if (selectedPriceOption.length && selectedPriceOption.val()) {
-
                     filterData.price_min = selectedPriceOption.data('min') || null;
-
                     filterData.price_max = selectedPriceOption.data('max') || null;
-
                 }
 
-
-
                 // Show loading indicator
-
                 $('#product-grid').html(
                     '<div class="col-span-full text-center py-16"><p class="text-gray-500">Memuat produk...</p></div>'
                 );
-
-                $('.mt-8').first().html(''); // Clear old pagination
-
-
+                $('#pagination-container').html(''); // Clear old pagination
 
                 // Make the AJAX call
-
                 $.ajax({
-
                     url: "{{ route('products.filter.ajax') }}",
-
                     type: 'GET',
-
                     data: filterData,
-
                     success: function(response) {
-
+                        console.time('AJAX success processing');
                         // Render the new products and pagination
-
                         updateProductGrid(response.data);
-
                         updatePagination(response);
-
                         updateResultCount(response);
-
+                        console.timeEnd('AJAX success processing');
                     },
-
                     error: function(xhr) {
-
                         console.error('AJAX Error:', xhr);
-
                         $('#product-grid').html(
                             '<div class="col-span-full text-center py-16"><p class="text-red-500">Gagal memuat produk. Silakan coba lagi.</p></div>'
                         );
-
+                        $('#pagination-container').html(''); // Clear pagination on error
                     }
-
                 });
-
+                console.timeEnd('applyFilters execution');
             }
+
+            // Call applyFilters on initial page load to render products and pagination
+            $(document).ready(function() {
+                applyFilters(1); // Initial load of products and pagination
+            });
 
 
 
@@ -1503,7 +1324,9 @@
 
                         $(this).find('.brand-check').removeClass('hidden');
 
-                    } else {
+                    }
+
+                    else {
 
                         $(this).find('.brand-check').addClass('hidden');
 
@@ -1543,7 +1366,9 @@
 
                     });
 
-                } else {
+                }
+
+                else {
 
                     $selectedBrandsContainer.addClass('hidden');
 
@@ -1591,7 +1416,7 @@
                     $('.category-card[data-category-id="' + categoryFromUrl + '"]').addClass(
                         'category-active');
 
-                    updateSubcategoryDisplay(categoryFromUrl);
+                    updateSubcategoryDisplay(categoryFromUrl, $('.category-card[data-category-id="' + categoryFromUrl + '"]').find('.category-name').text());
 
                 }
 
@@ -1631,41 +1456,43 @@
 
                 $('#reset-filters').on('click', function() {
 
-                    // 1. Reset input fields
+                                        // 1. Reset input fields
 
-                    $('#search-input').val('');
+                                        $('#search-input').val('');
 
-                    $('#price-range').val('');
+                                        $('#price-range').val('');
 
-                    $('#sort-select').val('newest');
+                                        $('#sort-select').val('newest');
 
-                    $('#category-filter').val('all');
+                                        $('#category-filter').val('all');
 
+                    
 
+                                        // 2. Reset UI states
 
-                    // 2. Reset UI states
+                                        $('.category-card').removeClass('category-active');
 
-                    $('.category-card').removeClass('category-active');
+                                        $('#subcategory-display-container').addClass('hidden');
 
-                    $('#subcategory-display-container').addClass('hidden');
+                                        $('input[name="subcategory"]').prop('checked', false); // Uncheck all subcategory radios
 
+                    
 
+                                        // 3. Reset brand state and UI
 
-                    // 3. Reset brand state and UI
+                                        selectedBrandIds.clear();
 
-                    selectedBrandIds.clear();
+                                        updateBrandSelectionUI();
 
-                    updateBrandSelectionUI();
+                                        $('#brand-search').val(''); // Also clear brand search
 
-                    $('#brand-search').val(''); // Also clear brand search
+                                        $('#brand-options .brand-option').show(); // Show all brand options
 
-                    $('#brand-options .brand-option').show(); // Show all brand options
+                    
 
+                                        // 4. Apply the reset filters to show all products via AJAX
 
-
-                    // 4. Apply the reset filters to show all products via AJAX
-
-                    applyFilters(1);
+                                        applyFilters(1);
 
                 });
 
@@ -1677,51 +1504,28 @@
 
                 $('.category-card').on('click', function() {
 
-
-
                     const categoryId = $(this).data('category-id');
-
-
+                    const categoryName = $(this).find('.category-name').text();
 
                     if ($(this).hasClass('category-active')) {
 
-
-
                         $('.category-card').removeClass('category-active');
-
-
 
                         $('#category-filter').val('all');
 
-
-
                     } else {
-
-
 
                         $('.category-card').removeClass('category-active');
 
-
-
                         $(this).addClass('category-active');
-
-
 
                         $('#category-filter').val(categoryId);
 
-
-
                     }
 
-
-
-                    updateSubcategoryDisplay($('#category-filter').val());
-
-
+                    updateSubcategoryDisplay($('#category-filter').val(), categoryName);
 
                     applyFilters(1);
-
-
 
 
 
@@ -1819,15 +1623,20 @@
 
 
                 // Pagination click handler
-
-                $(document).on('click', '.pagination-link', function(e) {
-
+                $(document).on('click', '#pagination-container a', function(e) {
                     e.preventDefault();
+                    const href = $(this).attr('href');
+                    if (!href) return;
 
-                    const page = $(this).data('page');
-
-                    applyFilters(page);
-
+                    try {
+                        const url = new URL(href);
+                        const page = url.searchParams.get('page');
+                        if (page) {
+                            applyFilters(page);
+                        }
+                    } catch (error) {
+                        console.error('Could not parse pagination URL:', href);
+                    }
                 });
 
             });
@@ -1898,7 +1707,8 @@
                         showMoreIcon.style.transform = 'rotate(0deg)';
                     }
                 });
-            } else {
+            }
+            else {
                 console.log(
                     'Condition categoryCards.length > limit is FALSE. Show more button will not be displayed.');
             }
