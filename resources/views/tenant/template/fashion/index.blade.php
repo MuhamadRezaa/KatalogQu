@@ -1150,11 +1150,11 @@
             <div class="hero-content">
                 <h1 id="heroTitle"
                     class="text-4xl md:text-6xl lg:text-8xl font-bold mb-4 hero-title transition-opacity duration-500">
-                    {{ $banners->first()->title ?? ($userStore->store_name ?? 'Fashion Store') }}
+                    {!! $banners->first()->title ?? ($userStore->store_name ?? 'Fashion Store') !!}
                 </h1>
                 <p id="heroSubtitle"
                     class="text-xl md:text-2xl lg:text-3xl mb-8 hero-subtitle transition-opacity duration-500">
-                    {{ $banners->first()->subtitle ?? 'Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti' }}
+                    {!! $banners->first()->subtitle ?? 'Dimana Setiap Benang Menceritakan Kisah, dan Setiap Kisah Memiliki Arti' !!}
                 </p>
                 @if ($banners->first() && $banners->first()->link)
                     <a id="heroButton" href="{{ $banners->first()->link }}"

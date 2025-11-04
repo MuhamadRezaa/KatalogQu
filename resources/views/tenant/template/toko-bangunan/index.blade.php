@@ -495,8 +495,8 @@
                                 alt="Placeholder Banner">
                         @endif
                         <div class="carousel-caption">
-                            <h3>{{ $banner->title ?? 'Banner Title' }}</h3>
-                            <p>{{ $banner->subtitle ?? 'Banner Sub Title' }}</p>
+                            <h3>{!! $banner->title ?? 'Banner Title' !!}</h3>
+                            <p>{!! $banner->subtitle ?? 'Banner Sub Title' !!}</p>
                         </div>
                     </div>
                 @empty

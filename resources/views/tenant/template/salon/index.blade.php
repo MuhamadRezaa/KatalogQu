@@ -187,30 +187,15 @@
         }
     </style>
     <script>
-        // Fungsi untuk membuat card rekomendasi
-        function createRecommendationCard(product) {
-            return `
-                <div class="group cursor-pointer hover:shadow-lg transition-all rounded-lg overflow-hidden"
-                    onclick="openProductModal('${product.img}', '${product.title}', '', '${product.oldPrice}', '${product.newPrice}', 'product')">
-                    <div class="aspect-[1/1] relative">
-                        <img src="${product.img}" alt="${product.title}"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                        <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <h5 class="text-white font-bold line-clamp-2">${product.title}</h5>
-                            <p class="text-white/90 text-sm mt-1">${product.newPrice}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Fungsi untuk menebak kategori produk (Digunakan untuk rekomendasi)
+        // Fungsi untuk menebak kategori produk (Digunakan untuk potensi filter/utilitas lain)
         function guessProductCategory(title, desc) {
             const keywords = {
                 wajah: ['serum', 'masker', 'krim', 'toner', 'mist', 'facial', 'wajah'],
-                rambut: ['shampoo', 'conditioner', 'rambut', 'hair'],
+                rambut: ['shampoo', 'conditioner', 'rambut', 'hair', 'pomade'],
                 body: ['body', 'tubuh', 'scrub', 'lotion', 'gel', 'sabun', 'krim tangan'],
-                aromaterapi: ['minyak', 'parfum', 'aroma', 'esensial', 'essential']
+                aromaterapi: ['minyak', 'parfum', 'aroma', 'esensial', 'essential'],
+                nailart: ['kuku', 'nail', 'kutek', 'manicure', 'pedicure'],
+                spa: ['massage', 'pijat', 'lulur', 'spa', 'relaksasi']
             };
 
             const lowerTitle = title.toLowerCase();
@@ -222,44 +207,6 @@
                 }
             }
             return 'other';
-        }
-
-        // Fungsi untuk mendapatkan rekomendasi produk dengan Null Check
-        function getRecommendations(currentTitle, desc) {
-            const allProducts = Array.from(document.querySelectorAll('.hairstyle-card')).map(card => {
-                // Mengambil data dari atribut Blade (data-price sudah disetel ke harga baru)
-                const titleElement = card.querySelector('.text-white h3');
-                const oldPriceEl = card.querySelector('.text-white .line-through');
-                const newPriceEl = card.querySelector('.text-white p > span:not(.line-through)');
-                const imgElement = card.querySelector('img');
-
-                const title = titleElement ? titleElement.textContent.trim() : 'No Title';
-                const newPrice = newPriceEl ? newPriceEl.textContent.trim() : card.dataset.price;
-                const oldPrice = oldPriceEl ? oldPriceEl.textContent.trim() : newPrice; // Jika tidak ada coretan, harga lama = harga baru
-
-                const img = imgElement ? imgElement.src : '';
-                const category = card.dataset.category || 'general';
-
-                return {
-                    title,
-                    desc: '',
-                    oldPrice,
-                    newPrice,
-                    img,
-                    category
-                };
-            });
-
-            const category = guessProductCategory(currentTitle, desc);
-
-            const similarProducts = allProducts.filter(p =>
-                p.title !== currentTitle && (
-                    p.category === category ||
-                    guessProductCategory(p.title, p.desc) === category
-                )
-            );
-
-            return similarProducts.sort(() => Math.random() - 0.5).slice(0, 3);
         }
 
         tailwind.config = {
@@ -312,7 +259,8 @@
                     @else
                         <div
                             class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition duration-300">
-                            <span class="text-pink-600 font-bold text-lg">{{ substr($userStore->store_name, 0, 1) }}</span>
+                            <span
+                                class="text-pink-600 font-bold text-lg">{{ substr($userStore->store_name, 0, 1) }}</span>
                         </div>
                     @endif
                     <span class="text-3xl md:text-4xl font-semibold tracking-wide text-white drop-shadow-md"
@@ -338,7 +286,7 @@
     <div class="h-16"></div>
 
     {{-- Hero Section --}}
-    <section class="hero-gradient min-h-[55vh] flex items-center pt-8 relative overflow-hidden">
+    <section class="hero-gradient min-h-screen flex items-center pt-8 relative overflow-hidden">
         <div class="hero-carousel" aria-hidden="false">
             <div class="hero-carousel-track" id="heroTrack">
                 @forelse ($banners as $banner)
@@ -346,8 +294,8 @@
                         style="background-image: url('{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $banner->image_url]) }}')"
                         data-caption="{{ $banner->title }} — {{ $banner->subtitle }}">
                         <div class="hero-caption">
-                            <h2 class="text-2xl sm:text-3xl font-bold">{{ $banner->title }}</h2>
-                            <p class="mt-1">{{ $banner->subtitle }}</p>
+                            <h2 class="text-2xl sm:text-3xl font-bold">{!! $banner->title !!}</h2>
+                            <p class="mt-1">{!! $banner->subtitle !!}</p>
                             @if ($banner->link)
                                 <div class="mt-8">
                                     <a href="{{ $banner->link }}"
@@ -366,7 +314,8 @@
                         style="background-image: url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1600&q=80')"
                         data-caption="Selamat datang di salon kami — kecantikan dimulai di sini">
                         <div class="hero-caption">
-                            <h2 class="text-2xl sm:text-3xl font-bold">Selamat datang di {{ $userStore->store_name }}</h2>
+                            <h2 class="text-2xl sm:text-3xl font-bold">Selamat datang di {{ $userStore->store_name }}
+                            </h2>
                             <p class="mt-1">Kecantikan dimulai di sini</p>
                             <div class="mt-8">
                                 <a href="#services"
@@ -398,22 +347,23 @@
                 @foreach ($categories as $category)
                     <button
                         class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
-                                        bg-white text-gray-700 ring-1 ring-gray-200 transition-all
-                                        hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                                             bg-white text-gray-700 ring-1 ring-gray-200 transition-all
+                                             hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
                         data-filter="{{ strtolower($category->name) }}">
                         {{ $category->name }}
                     </button>
                 @endforeach
             </div>
 
-            {{-- 🔥 MODIFIKASI: DROPDOWN FILTER SUB-KATEGORI (Warna Pink) 🔥 --}}
+            {{-- DROPDOWN FILTER SUB-KATEGORI --}}
             <div class="mt-4 flex justify-center w-full">
                 <div id="subcategory-dropdown-container" class="relative inline-block text-left w-auto min-w-[200px]">
                     <button type="button" id="subcategory-dropdown-button"
                         class="inline-flex justify-center items-center w-full rounded-full shadow-sm px-6 py-2 bg-white text-sm font-medium text-primary-500 hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 transition-all border border-primary-500">
                         <span id="dropdown-current-text">Kategori</span>
                         <svg class="w-4 h-4 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
                         </svg>
                     </button>
 
@@ -424,19 +374,36 @@
                     </div>
                 </div>
             </div>
-            {{-- 🔥 AKHIR DROPDOWN FILTER SUB-KATEGORI 🔥 --}}
+            {{-- AKHIR DROPDOWN FILTER SUB-KATEGORI --}}
 
             {{-- Product Grid Container (DENGAN LOGIKA PROMO) --}}
             <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
                 @forelse ($products as $product)
                     @php
-                        // 🔥 Logika Harga (ASUMSI DISKON ADA DI $product->discount_price_idr) 🔥
+                        // 🔥 Logika Harga
                         $oldPrice = $product->price_idr ?? 'Rp 0';
                         $newPrice = $product->discount_price_idr ?? $oldPrice;
                         // Perbandingan harga harus dilakukan setelah memastikan formatnya sama (misal, tanpa 'Rp ')
-                        $isPromo = (str_replace('Rp ', '', $newPrice) != str_replace('Rp ', '', $oldPrice));
+                        $rawOldPrice = (float) str_replace(['Rp ', '.'], '', $oldPrice);
+                        $rawNewPrice = (float) str_replace(['Rp ', '.'], '', $newPrice);
+
+                        $isPromo = ($rawOldPrice > $rawNewPrice); // Pengecekan promo lebih akurat
+
+                        // MODIFIKASI: Semua item diperlakukan sama dalam hal tampilan/promo
                         $categoryName = strtolower($product->category->name ?? 'general');
-                        $isProductCategory = ($categoryName == 'product');
+
+                        // 🔥 ASUMSI: DATA SPESIFIKASI DIBENTUK DI SINI 🔥
+                        $productSpecs = '';
+                        if (isset($product->duration)) {
+                            $productSpecs .= 'Durasi: ' . $product->duration . '|';
+                        }
+                        if (isset($product->inclusions)) {
+                            $productSpecs .= 'Termasuk: ' . $product->inclusions . '|';
+                        }
+                        if (isset($product->style_options)) {
+                            $productSpecs .= 'Gaya: ' . $product->style_options . '|';
+                        }
+                        $productSpecs = rtrim($productSpecs, '|'); // Hapus | terakhir
                     @endphp
 
                     <div class="hairstyle-card group" data-name="{{ strtolower($product->name) }}"
@@ -445,8 +412,8 @@
                         data-price="{{ $newPrice }}">
                         <div class="aspect-[3/4] rounded-3xl overflow-hidden relative bg-gray-100">
 
-                            @if ($isProductCategory && $isPromo)
-                                {{-- 🔥 LABEL PROMO DI KIRI ATAS 🔥 --}}
+                            @if ($isPromo)
+                                {{-- LABEL PROMO DI KIRI ATAS (Sekarang tampil untuk SEMUA item jika diskon) --}}
                                 <span
                                     class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold py-1 px-3 rounded-full shadow-md animate-pulse">
                                     PROMO
@@ -458,7 +425,7 @@
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-gray-200">
-                                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
+                                    <svg class="w-16 h-1-6 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -473,7 +440,7 @@
                                 <h3 class="text-white font-semibold text-lg">{{ $product->name }}</h3>
                                 <p class="text-white text-sm">
                                     @if ($isPromo)
-                                        {{-- 🔥 TAMPILAN HARGA PROMO DI OVERLAY CARD 🔥 --}}
+                                        {{-- TAMPILAN HARGA PROMO DI OVERLAY CARD --}}
                                         <span class="line-through text-gray-400 mr-2">{{ $oldPrice }}</span>
                                         <span class="font-bold">{{ $newPrice }}</span>
                                     @else
@@ -482,15 +449,19 @@
                                 </p>
                             </div>
 
-                            {{-- Tombol Modal Detail/Universal (Kanan Atas) --}}
+                            {{-- Tombol Modal Detail/Universal selalu menggunakan ikon MATA (👁) --}}
                             <span
                                 class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow hover:bg-primary-500 hover:text-white transition-colors cursor-pointer"
-                                onclick="openProductModal('{{ $product->primary_image_src }}', '{{ $product->name }}', '{{ $product->description }}', '{{ $oldPrice }}', '{{ $newPrice }}', '{{ $categoryName }}')">
-                                @if ($categoryName == 'product')
-                                    🛒
-                                @else
-                                    👁
-                                @endif
+                                onclick="openUniversalModal(
+                                        '{{ $product->primary_image_src }}',
+                                        '{{ $product->name }}',
+                                        '{{ $product->description }}',
+                                        '{{ $oldPrice }}',
+                                        '{{ $newPrice }}',
+                                        '{{ $categoryName }}',
+                                        '{{ $productSpecs }}'
+                                    )">
+                                👁
                             </span>
 
                             <div
@@ -565,66 +536,85 @@
     {{-- MODAL SECTION --}}
     {{-- ================================================================= --}}
 
-    {{-- MODAL UNIVERSAL (Untuk Hairstyle, Nailart, Spa) --}}
-    <div id="universal-modal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-4">
-        <div class="absolute inset-0 bg-black/80" onclick="tutupModalUniversal()"></div>
-        <div class="relative bg-white rounded-xl overflow-hidden max-w-xl w-full max-h-[90vh] flex flex-col">
-            <button onclick="tutupModalUniversal()"
-                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 hover:bg-primary-500 hover:text-white transition-colors">
+    <div id="product-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        {{-- Overlay hitam/gelap --}}
+        <div class="absolute inset-0 bg-black/80 transition-opacity duration-300" onclick="closeProductModal()"></div>
+
+        <div id="product-modal-content"
+            {{-- Menggunakan max-w-xl (640px) untuk lebar yang lebih nyaman di desktop. --}}
+            class="relative bg-white text-gray-800 rounded-xl shadow-2xl max-w-xl w-full max-h-[95vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-300 ease-out p-6 md:p-8 border border-primary-100">
+
+            {{-- Tombol Tutup (X di kanan atas) --}}
+            <button onclick="closeProductModal()"
+                class="absolute top-4 right-4 z-30 text-gray-600 hover:text-red-600 transition-all text-2xl font-semibold">
                 ✕
             </button>
-            <div class="p-2 flex-1 overflow-auto">
-                <img id="universal-modal-image" src="" alt="Preview"
-                    class="w-full h-auto object-contain max-h-[40vh] rounded-lg" />
-            </div>
-            <div class="text-center text-gray-800 text-lg font-semibold p-4" id="universal-modal-title"></div>
-        </div>
-    </div>
 
-    {{-- MODAL PRODUK (Untuk Product - DIUBAH UNTUK PROMO) --}}
-    <div id="product-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80" onclick="closeProductModal()"></div>
-        <div
-            class="relative bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform transition-transform duration-300">
+            {{-- KONTEN UTAMA DUA KOLOM (Desktop) --}}
+            <div class="flex flex-col md:flex-row gap-6">
 
-            <button onclick="closeProductModal()"
-                class="absolute top-3 right-3 z-10 bg-white/70 rounded-full p-2 hover:bg-red-500 hover:text-white transition-all">✕</button>
+                {{-- KOLOM KIRI: GAMBAR (30% Lebar Desktop) --}}
+                <div class="relative w-full md:w-1/3 flex-shrink-0">
+                    <div class="aspect-[3/4] relative bg-gray-200"> {{-- 🔥 MODIFIKASI: aspect-[4/3] diganti aspect-[3/4] --}}
+                        <img id="modal-image" src="" alt="Item Preview"
+                            class="w-full h-full object-cover rounded-xl shadow-lg border border-gray-100" />
 
-            <div class="p-4 md:p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <img id="modal-image" src="" alt="Product"
-                            class="w-full h-[300px] md:h-[400px] object-cover rounded-lg shadow-lg" />
-                    </div>
+                        {{-- PROMO TAG (Sudut Kiri Atas) --}}
+                        <span id="modal-promo-tag"
+                            class="hidden absolute top-3 left-3 z-20 bg-red-600 text-white text-xs font-extrabold py-1 px-3 rounded-full shadow-lg animate-pulse">DISKON</span>
 
-                    <div class="modal-details-section">
-                        <h2 id="modal-title" class="text-2xl font-bold mb-2"></h2>
-                        <p id="modal-description" class="text-gray-600 mb-4"></p>
-
-                        {{-- 🔥 BLOK HARGA DENGAN DUA ELEMEN BARU 🔥 --}}
-                        <div class="mb-6">
-                            <p class="text-sm text-gray-400 line-through" id="modal-old-price"></p>
-                            <p class="text-2xl font-semibold text-primary-600" id="modal-new-price"></p>
+                        {{-- BLOK HARGA SEBAGAI OVERLAY (Sudut Kiri Bawah) --}}
+                        <div id="modal-price-display-overlay" class="absolute bottom-0 left-0 p-3 bg-black/50 rounded-tr-xl z-20">
+                            <p class="text-sm font-normal line-through text-gray-300 hidden" id="modal-old-price-container-overlay">
+                                <span id="modal-old-price-overlay"></span>
+                            </p>
+                            <p class="text-xl font-extrabold text-white" id="modal-new-price-container-overlay">
+                                <span id="modal-new-price-overlay"></span>
+                            </p>
                         </div>
-
-                        <a id="whatsapp-link" href="#" target="_blank"
-                            class="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
-                            Chat via WhatsApp
-                        </a>
                     </div>
                 </div>
 
-                <div class="modal-recommendations-section mt-8">
-                    <h3 class="text-xl font-bold mb-4">Rekomendasi Produk Serupa</h3>
-                    <div id="rekomendasi-produk" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                {{-- KOLOM KANAN: DETAIL (70% Lebar Desktop) --}}
+                <div class="flex-1 space-y-4 pt-1">
+                    {{-- Nama Produk/Layanan --}}
+                    <h2 id="modal-title" class="text-3xl font-bold text-gray-900 leading-tight"></h2>
+
+                    {{-- 1. DESKRIPSI (Sesuai Referensi: Heading 'Deskripsi' + Konten) --}}
+                    <div id="modal-description-block" class="hidden">
+                        <h3 class="text-lg font-bold text-primary-600 mt-4 mb-2">Deskripsi</h3>
+                        <p id="modal-description" class="text-gray-700 text-base whitespace-pre-line leading-relaxed">
+                        </p>
+                    </div>
+
+                    {{-- BLOK SPESIFIKASI DIHAPUS --}}
                 </div>
+            </div>
+
+            <hr class="border-primary-100 my-6">
+
+            {{-- TOMBOL WA DIPINDAHKAN KE BAWAH SEKALI (LEBAR PENUH) --}}
+            <div class="pt-4" id="whatsapp-container">
+                <a id="whatsapp-link" href="#" target="_blank"
+                    class="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-3 rounded-xl transition-all duration-300 w-full text-base shadow-lg transform hover:scale-[1.01]">
+                    {{-- Ikon Telepon --}}
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.21-2.21c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.74 21 3 13.26 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.12.35.03.75-.25 1.02L6.62 10.79z"/>
+                    </svg>
+                    <span id="whatsapp-button-text">Pesan via WhatsApp</span>
+                </a>
+            </div>
+
+            {{-- BLOK REKOMENDASI DIHAPUS/DISEMBUNYIKAN PERMANEN --}}
+            <div class="modal-recommendations-section pt-4 hidden" id="recommendation-block">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-primary-500 pl-3">Rekomendasi Produk
+                    Serupa</h3>
+                <div id="rekomendasi-produk" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
             </div>
         </div>
     </div>
+
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
@@ -700,128 +690,144 @@
             if (autoplay) startAutoplay();
         })();
 
+        // FUNGSI MODAL UNIVERSAL BARU (Menangani Layanan & Produk)
+        window.openUniversalModal = function(imageUrl, name, description, oldPrice, newPrice, category,
+            specifications = '') {
 
-        // --- FUNGSI MODAL ---
-
-        // Fungsi Universal Modal (Untuk Layanan - Sesuai Tampilan Demo)
-        window.bukaModalUniversal = function(imageUrl, title) {
-            const modal = document.getElementById('universal-modal');
-            const modalImage = document.getElementById('universal-modal-image');
-            const modalTitle = document.getElementById('universal-modal-title');
-
-            modalImage.src = imageUrl;
-            if (title) {
-                modalTitle.textContent = title;
-            }
-
-            modal.classList.remove('hidden');
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.tutupModalUniversal = function() {
-            const modal = document.getElementById('universal-modal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        };
-
-        // FUNGSI MODAL PRODUK (Diperbarui untuk Promo/Diskon)
-        window.openProductModal = function(imageUrl, name, description, oldPrice, newPrice, category) {
-
-            // Logika pengalihan untuk membedakan LAYANAN dan PRODUK (TIDAK BERUBAH)
-            const simpleViewCategories = ['hairstyle', 'spa', 'nail', 'nailart', 'nail art'];
-            let categoryLower = category ? category.toLowerCase().trim() : '';
-            const isSimpleView = simpleViewCategories.includes(categoryLower);
-
-            if (isSimpleView) {
-                // Gunakan modal universal (simple view) untuk layanan
-                bukaModalUniversal(imageUrl, name);
-                return;
-            }
-
-            // Jika 'product', lanjutkan ke modal detail
+            // Ambil semua elemen penting dari modal
             const modal = document.getElementById('product-modal');
+            const modalContent = document.getElementById('product-modal-content');
+            const modalTitle = document.getElementById('modal-title');
             const modalImage = document.getElementById('modal-image');
-            const modalDetailsSection = modal.querySelector('.modal-details-section');
+            const modalDescription = document.getElementById('modal-description');
 
-            // Dapatkan elemen harga
-            const oldPriceEl = document.getElementById('modal-old-price');
-            const newPriceEl = document.getElementById('modal-new-price');
+            // Elemen CTA WhatsApp
+            const whatsappLink = document.getElementById('whatsapp-link');
+            const whatsappButtonText = document.getElementById('whatsapp-button-text');
 
-            const displayPrice = newPrice; // Harga yang digunakan di pesan WA
+            // Elemen Harga Overlay
+            const priceBlockOverlay = document.getElementById('modal-price-display-overlay');
+            const oldPriceElContainerOverlay = document.getElementById('modal-old-price-container-overlay');
+            const oldPriceElOverlay = document.getElementById('modal-old-price-overlay');
+            const newPriceElOverlay = document.getElementById('modal-new-price-overlay');
 
-            // 1. Isi Konten Modal
+            // Elemen lain
+            const promoTag = document.getElementById('modal-promo-tag');
+            const descriptionBlock = document.getElementById('modal-description-block');
+            const recommendationBlock = document.getElementById('recommendation-block');
+
+            // Membersihkan description
+            const cleanDescription = (description ? String(description) : '').replace(/<br\s*[\/]?>/gi, "\n")
+                .trim();
+
+            // isProduct selalu TRUE untuk menyamakan tampilan CTA
+            const isProduct = true;
+
+            // 1. Isi Konten Dasar
             modalImage.src = imageUrl;
-            if (modalDetailsSection) {
-                document.getElementById('modal-title').textContent = name;
-                document.getElementById('modal-description').textContent = description;
+            modalTitle.textContent = name;
 
-                // 🔥 LOGIKA HARGA PROMO BARU 🔥
-                if (oldPrice && newPrice && oldPrice !== newPrice) {
-                    oldPriceEl.textContent = oldPrice; // Harga lama (dicoret)
-                    oldPriceEl.classList.remove('hidden');
-                    newPriceEl.textContent = newPrice; // Harga baru
-                } else {
-                    oldPriceEl.textContent = ''; // Sembunyikan harga lama jika tidak ada promo
-                    oldPriceEl.classList.add('hidden');
-                    newPriceEl.textContent = oldPrice || newPrice; // Tampilkan harga normal
-                }
-
-                // 2. Setup WhatsApp link
-                const phoneNumber = '{{ $userStore->whatsapp }}';
-                const message = encodeURIComponent(
-                    `Halo, saya tertarik dengan produk "${name}" yang seharga ${displayPrice}.`
-                );
-                document.getElementById('whatsapp-link').href = `https://wa.me/${phoneNumber}?text=${message}`;
-            }
-
-            // 3. Isi Rekomendasi (TIDAK BERUBAH)
-            const rekomendasi = document.getElementById('rekomendasi-produk');
-            const recommendations = getRecommendations(name, description);
-            rekomendasi.innerHTML = '';
-
-            if (recommendations.length > 0) {
-                const recommendationsHTML = recommendations
-                    .map(createRecommendationCard)
-                    .join('');
-                rekomendasi.innerHTML = recommendationsHTML;
+            // 2. Logika Deskripsi
+            descriptionBlock.classList.remove('hidden');
+            if (cleanDescription.length > 5) {
+                modalDescription.textContent = cleanDescription;
             } else {
-                rekomendasi.innerHTML = '<p class="text-gray-500 text-center col-span-2">Tidak ada rekomendasi produk serupa saat ini.</p>';
+                modalDescription.textContent = 'Tidak ada deskripsi rinci untuk layanan atau produk ini.';
             }
 
-            // 4. Tampilkan modal detail
+            // Logika Spesifikasi Dihapus
+
+            // 4. Logika Penanganan Harga (Mengisi Elemen Overlay)
+            const priceToNumber = (price) => {
+                if (!price) return 0;
+                return parseFloat(price.replace(/[^0-9]/g, '')) || 0;
+            };
+
+            const hasValidPrice = priceToNumber(newPrice) > 0;
+
+            if (hasValidPrice) {
+                priceBlockOverlay.classList.remove('hidden');
+
+                const isPromoActive = (oldPrice && newPrice && priceToNumber(oldPrice) > priceToNumber(
+                    newPrice));
+
+                if (isPromoActive) {
+                    oldPriceElContainerOverlay.classList.remove('hidden');
+                    oldPriceElOverlay.textContent = oldPrice;
+                    newPriceElOverlay.textContent = newPrice;
+                    promoTag.classList.remove('hidden');
+                } else {
+                    oldPriceElContainerOverlay.classList.add('hidden');
+                    newPriceElOverlay.textContent = newPrice;
+                    promoTag.classList.add('hidden');
+                }
+            } else {
+                priceBlockOverlay.classList.add('hidden');
+                promoTag.classList.add('hidden');
+            }
+
+            // 5. Logika CTA WhatsApp
+            const itemType = isProduct ? 'produk' : 'layanan';
+            const ctaText = 'Pesan via WhatsApp';
+            const waMessage =
+                `Halo, saya tertarik dengan ${itemType}: ${name} (${newPrice}). Bisakah saya mendapatkan detail lebih lanjut?`;
+
+            const waNumber = '{{ $userStore->store_phone ?? '' }}'.replace(/[^0-9]/g, '');
+
+            whatsappButtonText.textContent = (waNumber.length > 8) ? ctaText : 'Hubungi Kami';
+
+            const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+
+            whatsappLink.href = waLink;
+            document.getElementById('whatsapp-container').classList.remove('hidden');
+
+
+            // Hapus Logika Penanganan Rekomendasi
+            recommendationBlock.classList.add('hidden');
+
+            // 7. Tampilkan modal dengan animasi
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-100');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
         };
 
         window.closeProductModal = function() {
             const modal = document.getElementById('product-modal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
+            const modalContent = document.getElementById('product-modal-content');
+
+            // Animasi keluar
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
         };
 
-        // --- FUNGSI FILTER DAN PAGINASI ---
+        // --- FUNGSI FILTER DAN PAGINASI (TIDAK BERUBAH) ---
 
         // Variabel global untuk filter & pagination
         const allProductCards = Array.from(document.querySelectorAll('.hairstyle-card'));
         const filterBtns = document.querySelectorAll(".category-btn");
         const controlsContainer = document.getElementById('pagination-controls');
-        // 🔥 VARIABEL BARU UNTUK DROPDOWN 🔥
         const subcategoryDropdownContainer = document.getElementById('subcategory-dropdown-container');
         const subcategoryDropdownButton = document.getElementById('subcategory-dropdown-button');
         const subcategoryDropdownMenu = document.getElementById('subcategory-dropdown-menu');
         const dropdownCurrentText = document.getElementById('dropdown-current-text');
-        // 👇 MODIFIKASI: Mengubah jumlah kartu per halaman menjadi 10
         const pageSize = 10;
 
         let currentCategory = 'hairstyle';
-        let currentSubCategory = 'all'; // Variabel untuk menyimpan filter sub-kategori
+        let currentSubCategory = 'all';
         let currentPage = 1;
 
-        // 🔥 FUNGSI TOGGLE DROPDOWN 🔥
+        // FUNGSI TOGGLE DROPDOWN
         function toggleDropdown() {
             if (subcategoryDropdownMenu) {
                 subcategoryDropdownMenu.classList.toggle('hidden');
@@ -842,7 +848,7 @@
         });
 
 
-        // 🔥 MODIFIKASI: Fungsi untuk merender Opsi Sub-Kategori ke Dropdown 🔥
+        // Fungsi untuk merender Opsi Sub-Kategori ke Dropdown
         function renderSubCategoryButtons() {
             if (!subcategoryDropdownMenu) return;
 
@@ -872,7 +878,8 @@
             // --- 4. Tambahkan Opsi 'Semua' ---
             const allOption = document.createElement('a');
             allOption.href = "#";
-            allOption.className = 'block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors';
+            allOption.className =
+                'block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors';
             allOption.textContent = 'Semua (Reset Filter)';
             allOption.setAttribute('data-filter', 'all');
             subcategoryDropdownMenu.appendChild(allOption);
@@ -881,9 +888,11 @@
             Array.from(uniqueSubCategories).forEach(sub => {
                 const option = document.createElement('a');
                 option.href = "#";
-                option.className = 'block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors';
+                option.className =
+                    'block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors';
                 // Kapitalisasi huruf pertama setiap kata
-                option.textContent = sub.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                option.textContent = sub.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
                 option.setAttribute('data-filter', sub);
                 subcategoryDropdownMenu.appendChild(option);
             });
@@ -902,7 +911,8 @@
                     currentPage = 1;
 
                     // Perbarui teks tombol dropdown utama
-                    dropdownCurrentText.textContent = (newSubFilter === 'all') ? 'Pilih Sub-Kategori' : newText;
+                    dropdownCurrentText.textContent = (newSubFilter === 'all') ? 'Pilih Sub-Kategori' :
+                        newText;
 
                     renderPage();
                     toggleDropdown(); // Tutup dropdown setelah memilih
@@ -920,12 +930,13 @@
 
             if (!allProductCards || !controlsContainer) return;
 
-            // 🔥 MODIFIKASI: Filter Berdasarkan Category DAN Sub-Category 🔥
+            // MODIFIKASI: Filter Berdasarkan Category DAN Sub-Category
             let visibleCards = allProductCards.filter(card => {
                 const isCategoryMatch = card.dataset.category === currentCategory;
 
                 // Periksa Sub-Category: Jika 'all' atau cocok dengan data-sub-category
-                const isSubCategoryMatch = currentSubCategory === 'all' || card.dataset.subCategory === currentSubCategory;
+                const isSubCategoryMatch = currentSubCategory === 'all' || card.dataset.subCategory ===
+                    currentSubCategory;
 
                 return isCategoryMatch && isSubCategoryMatch;
             });
@@ -969,9 +980,12 @@
 
             const isMobile = window.innerWidth < 640;
             const maxVisiblePages = isMobile ? 3 : 7;
-            const containerClass = 'px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-white rounded-md hover:bg-pink-500 hover:text-white';
-            const activeClass = 'px-4 py-2 mx-1 text-white transition-colors duration-300 transform bg-pink-500 rounded-md';
-            const disabledClass = 'px-4 py-2 mx-1 text-gray-400 transition-colors duration-300 transform bg-white rounded-md cursor-not-allowed opacity-50';
+            const containerClass =
+                'px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-white rounded-md hover:bg-pink-500 hover:text-white';
+            const activeClass =
+                'px-4 py-2 mx-1 text-white transition-colors duration-300 transform bg-pink-500 rounded-md';
+            const disabledClass =
+                'px-4 py-2 mx-1 text-gray-400 transition-colors duration-300 transform bg-white rounded-md cursor-not-allowed opacity-50';
 
             // Tombol Sebelumnya
             const prev = document.createElement('button');
@@ -1070,7 +1084,7 @@
             controlsContainer.appendChild(next);
         }
 
-        // --- EVENT LISTENERS FILTER KATEGORI ---
+        // --- EVENT LISTENERS FILTER KATEGORI (TIDAK BERUBAH) ---
         filterBtns.forEach(btn => {
             btn.addEventListener("click", function() {
                 const newFilter = this.getAttribute("data-filter");
@@ -1088,13 +1102,13 @@
                 currentSubCategory = 'all';
                 currentPage = 1;
 
-                // 🔥 MODIFIKASI: Render ulang Dropdown Sub-Category 🔥
+                // MODIFIKASI: Render ulang Dropdown Sub-Category
                 renderSubCategoryButtons();
                 renderPage();
             });
         });
 
-        // --- INISIALISASI ---
+        // --- INISIALISASI (TIDAK BERUBAH) ---
         document.addEventListener('DOMContentLoaded', () => {
             const defaultBtn = document.querySelector('.category-btn[data-filter="hairstyle"]');
             if (defaultBtn) {
@@ -1113,7 +1127,7 @@
             currentSubCategory = 'all';
             currentPage = 1;
 
-            // 🔥 MODIFIKASI: Inisialisasi tombol sub-kategori saat halaman dimuat 🔥
+            // MODIFIKASI: Inisialisasi tombol sub-kategori saat halaman dimuat
             renderSubCategoryButtons();
             renderPage();
 

@@ -530,8 +530,8 @@
                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80';">
                             <div class="container">
                                 <div class="hero-content">
-                                    <h1 class="hero-title">{{ $banner->title }}</h1>
-                                    <p class="hero-subtitle">{{ $banner->subtitle }}</p>
+                                    <h1 class="hero-title">{!! $banner->title !!}</h1>
+                                    <p class="hero-subtitle">{!! $banner->subtitle !!}</p>
                                     @if ($banner->link)
                                         <a href="{{ $banner->link }}"
                                             class="btn btn-primary mt-3">{{ $banner->button_text ?? 'Lihat Sekarang' }}</a>
