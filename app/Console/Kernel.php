@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:deactivate-expired-stores')->daily();
+        $schedule->command('app:delete-permanently-inactive-stores')->daily()->after(function () {
+            // Opsional: Tambahkan logika setelah command deactivate berjalan
+        });
     }
 
     /**

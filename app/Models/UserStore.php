@@ -36,7 +36,8 @@ class UserStore extends Model
         'twitter_url',
         'whatsapp_number',
         'maintenance_mode',
-        'expires_at'
+        'expires_at',
+        'deactivated_at'
     ];
 
     protected $casts = [
@@ -46,7 +47,8 @@ class UserStore extends Model
         'is_active' => 'boolean',
         'tenant_created' => 'boolean',
         'expires_at' => 'datetime',
-        'maintenance_mode' => 'boolean'
+        'maintenance_mode' => 'boolean',
+        'deactivated_at' => 'datetime'
     ];
 
     /**
