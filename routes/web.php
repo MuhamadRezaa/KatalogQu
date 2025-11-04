@@ -18,6 +18,7 @@ use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\CatalogTemplateController;
 use App\Http\Controllers\MenuController; // New import
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
+use App\Http\Controllers\MainHeroController; // New import
 use App\Http\Controllers\CatalogTemplatePriceController;
 use App\Http\Controllers\StoreCategoryMenuController; // New import
 // BARIS BARU: Import CheckoutController untuk fitur perpanjangan
@@ -194,6 +195,9 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::resource('/users', \App\Http\Controllers\UserController::class);
             Route::post('/users/{id}/restore', [\App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
             Route::delete('/users/{id}/force-delete', [\App\Http\Controllers\UserController::class, 'forceDelete'])->name('users.force-delete');
+
+            // Main Hero Management
+            Route::resource('/main-heroes', MainHeroController::class)->names('main-heroes');
 
             // Payment History
             Route::get('/pembayaran', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payments.index');
