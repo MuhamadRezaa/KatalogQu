@@ -29,7 +29,7 @@
     </header>
 
     <!-- Carousel Section -->
-    <div class="carousel-container">
+    <div class="carousel-container" style="border-radius: 0 !important;">
         <div class="carousel">
             <div class="carousel-slide active">
                 <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
