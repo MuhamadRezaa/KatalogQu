@@ -98,7 +98,7 @@
 
         /* Perbaikan Hero Section - FULL WIDTH */
         .hero-section {
-            padding-top: 80px;
+            padding-top: auto;
             width: 100%;
             margin: 0;
         }
@@ -112,9 +112,12 @@
         .hero-slide {
             position: relative;
             width: 100%;
-            height: 60vh;
-            /* Tinggi hero section */
-            min-height: 550px;
+            /* height: 60vh; */
+            /* <-- Hapus atau komentari baris ini */
+            /* min-height: 450px; */
+            /* <-- Hapus atau komentari baris ini */
+            aspect-ratio: 16 / 9;
+            /* <-- Tambahkan baris ini untuk rasio 1080p */
             display: flex;
             align-items: center;
             justify-content: center;
