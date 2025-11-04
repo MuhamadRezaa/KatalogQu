@@ -217,11 +217,19 @@
         }
 
         function deleteProductUnit(productUnitId) {
-            if (confirm('Anda yakin ingin menghapus satuan produk ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', productUnitId);
-                form.submit();
-            }
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan satuan produk ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = destroyUrlTemplate.replace(':id', productUnitId);
+                    form.submit();
+                }
+            });
         }
 
         document.getElementById('addProductUnitModal').addEventListener('hidden.bs.modal', function() {

@@ -244,11 +244,19 @@
         }
 
         function deletePriceRange(priceRangeId) {
-            if (confirm('Anda yakin ingin menghapus price range ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', priceRangeId);
-                form.submit();
-            }
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan price range ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = destroyUrlTemplate.replace(':id', priceRangeId);
+                    form.submit();
+                }
+            });
         }
 
         document.getElementById('addPriceRangeModal').addEventListener('hidden.bs.modal', function() {

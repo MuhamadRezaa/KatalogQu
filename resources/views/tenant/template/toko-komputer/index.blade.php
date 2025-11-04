@@ -58,13 +58,13 @@
                 @forelse ($banners as $banner)
                     <div class="swiper-slide relative">
                         <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
-                            class="w-full h-full object-cover" alt="{{ $banner->title ?? 'Banner' }}">
+                            class="w-full h-full object-cover" alt="{!! $banner->title !!}">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                             <div class="text-center text-white p-4">
-                                <h2 class="text-2xl md:text-4xl font-bold mb-2">{{ $banner->title ?? 'Special Offer' }}
+                                <h2 class="text-2xl md:text-4xl font-bold mb-2">{!! $banner->title !!}
                                 </h2>
                                 <p class="text-lg md:text-xl mb-4 px-4">
-                                    {{ $banner->subtitle ?? 'Check out our latest deals' }}</p>
+                                    {!! $banner->subtitle !!}</p>
                                 @if ($banner->link)
                                     <a href="{{ $banner->link }}"
                                         class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">{{ $banner->button_text ?? 'Learn More' }}</a>
@@ -776,13 +776,15 @@
 
             // --- Subcategory Display Logic ---
             function updateSubcategoryDisplay(selectedCategoryId, selectedCategoryName) {
-                console.log('updateSubcategoryDisplay called for category:', selectedCategoryId, selectedCategoryName);
+                console.log('updateSubcategoryDisplay called for category:', selectedCategoryId,
+                    selectedCategoryName);
                 const subcategoryDisplay = document.getElementById('subcategory-display');
                 const subcategoryDisplayContainer = document.getElementById('subcategory-display-container');
                 const selectedCategoryNameSpan = document.getElementById('selected-category-name');
                 const subcategoryCheckboxTemplate = document.getElementById('subcategory-checkbox-template');
 
-                if (!subcategoryDisplay || !subcategoryDisplayContainer || !selectedCategoryNameSpan || !subcategoryCheckboxTemplate) {
+                if (!subcategoryDisplay || !subcategoryDisplayContainer || !selectedCategoryNameSpan || !
+                    subcategoryCheckboxTemplate) {
                     console.error('One or more subcategory display elements not found.');
                     return;
                 }
@@ -838,7 +840,10 @@
 
                         subcategoryDisplay.appendChild(div);
                     });
-                    lucide.createIcons({ createElements: true, scope: subcategoryDisplay }); // Re-create icons only within the subcategory display
+                    lucide.createIcons({
+                        createElements: true,
+                        scope: subcategoryDisplay
+                    }); // Re-create icons only within the subcategory display
                 } else {
                     console.log('No subcategories found, hiding subcategory display.');
                     subcategoryDisplayContainer.classList.add('hidden');
@@ -1094,34 +1099,19 @@
             });
 
             // ==================================================
-
             // ====== FILTER & SORT LOGIC (JQUERY + AJAX) ===
-
             // ==================================================
-
-
-
             let selectedBrandIds = new Set();
 
-
-
             function formatPrice(price) {
-
                 if (price === null || typeof price === 'undefined') return '';
-
                 return new Intl.NumberFormat('id-ID', {
-
                     style: 'currency',
-
                     currency: 'IDR',
-
                     minimumFractionDigits: 0
-
                 }).format(price);
 
             }
-
-
 
             function updateResultCount(response) {
 
@@ -1149,10 +1139,12 @@
 
                         const oldPriceHtml = product.old_price && parseFloat(product.old_price) >
                             parseFloat(product.price) ?
-                            `<span class="text-sm text-gray-500 line-through">${formatPrice(product.old_price)}</span>` : '';
+                            `<span class="text-sm text-gray-500 line-through">${formatPrice(product.old_price)}</span>` :
+                            '';
 
                         let savingsBadgeHtml = '';
-                        if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
+                        if (product.old_price && parseFloat(product.old_price) > parseFloat(product
+                                .price)) {
                             const savings = product.old_price - product.price;
                             savingsBadgeHtml = `
                                             <div class="savings-badge-container mt-1">
@@ -1163,7 +1155,8 @@
                         }
 
                         const promoBadgeHtml = product.is_promo ?
-                            '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' : '';
+                            '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' :
+                            '';
 
                         const productCardHtmlContent = `
                                             <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
@@ -1184,17 +1177,21 @@
                                         `;
 
                         const productCardElement = document.createElement('div');
-                        productCardElement.className = "product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer";
+                        productCardElement.className =
+                            "product-card bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-200 relative cursor-pointer";
                         productCardElement.dataset.productId = product.id;
                         productCardElement.innerHTML = productCardHtmlContent;
                         fragment.appendChild(productCardElement);
                     });
 
                     productGridElement.appendChild(fragment); // Append fragment to DOM once
-                    lucide.createIcons({ createElements: true, scope: productGridElement }); // Re-create icons only within the product grid
+                    lucide.createIcons({
+                        createElements: true,
+                        scope: productGridElement
+                    }); // Re-create icons only within the product grid
 
                 } else {
-                    productGridElement.innerHTML = 
+                    productGridElement.innerHTML =
                         '<div class="col-span-full text-center py-16"><p class="text-gray-500">Tidak ada produk yang ditemukan.</p></div>';
                 }
             }
@@ -1252,10 +1249,11 @@
                     </nav>
                 `;
                 $paginationContainer.html(navHtml);
-                lucide.createIcons({ createElements: true, scope: $paginationContainer[0] }); // Re-create icons only within the pagination container
+                lucide.createIcons({
+                    createElements: true,
+                    scope: $paginationContainer[0]
+                }); // Re-create icons only within the pagination container
             }
-
-
 
             // --- Main AJAX Function ---
             function applyFilters(page = 1) {
@@ -1310,101 +1308,58 @@
                 applyFilters(1); // Initial load of products and pagination
             });
 
-
-
             // --- Brand Filter UI Logic ---
-
             function updateBrandSelectionUI() {
-
                 $('#brand-options .brand-option').each(function() {
-
                     const id = $(this).data('id').toString();
-
                     if (selectedBrandIds.has(id)) {
-
                         $(this).find('.brand-check').removeClass('hidden');
-
-                    }
-
-                    else {
-
+                    } else {
                         $(this).find('.brand-check').addClass('hidden');
-
                     }
 
                 });
 
-
-
                 const $selectedBrandsContainer = $('#selected-brands');
-
                 $selectedBrandsContainer.html('');
 
                 if (selectedBrandIds.size > 0) {
-
                     $selectedBrandsContainer.removeClass('hidden');
-
                     selectedBrandIds.forEach(id => {
-
                         const option = $('#brand-options .brand-option[data-id="' + id + '"]');
-
                         const name = option.data('name');
-
                         const pill = `
-
-                                                    <div class="flex items-center bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-
-                                                        <span>${name}</span>
-
-                                                        <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800 brand-remove-btn" data-id="${id}">&times;</button>
-
-                                                    </div>
-
-                                                `;
-
+                                <div class="flex items-center bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                    <span>${name}</span>
+                                    <button type="button" class="ml-2 -mr-1 p-0.5 rounded-full text-cyan-600 hover:bg-cyan-200 hover:text-cyan-800 brand-remove-btn" data-id="${id}">&times;</button>
+                                </div>
+                            `;
                         $selectedBrandsContainer.append(pill);
 
                     });
 
-                }
-
-                else {
-
+                } else {
                     $selectedBrandsContainer.addClass('hidden');
-
                 }
-
             }
 
-
-
             // --- Document Ready - Event Handlers ---
-
             $(document).ready(function() {
-
                 const currentUrl = new URL(window.location.href);
 
-
-
                 // Initialize filters on page load
-
                 function initializeFilters() {
 
                     // Brands
-
                     const brandIdsFromUrl = (currentUrl.searchParams.get('brand_ids') || '').split(',')
                         .filter(Boolean);
-
                     selectedBrandIds = new Set(brandIdsFromUrl);
-
                     updateBrandSelectionUI();
 
 
 
                     // Other filters can be initialized here if needed
-
                     $('#search-input').val(currentUrl.searchParams.get('search') || '');
-
                     $('#sort-select').val(currentUrl.searchParams.get('sort') || 'newest');
 
 
@@ -1412,22 +1367,16 @@
                     const categoryFromUrl = currentUrl.searchParams.get('category') || 'all';
 
                     $('#category-filter').val(categoryFromUrl);
-
                     $('.category-card[data-category-id="' + categoryFromUrl + '"]').addClass(
                         'category-active');
 
-                    updateSubcategoryDisplay(categoryFromUrl, $('.category-card[data-category-id="' + categoryFromUrl + '"]').find('.category-name').text());
+                    updateSubcategoryDisplay(categoryFromUrl, $('.category-card[data-category-id="' +
+                        categoryFromUrl + '"]').find('.category-name').text());
 
                 }
-
-
-
                 initializeFilters();
 
-
-
                 // --- Event Handlers ---
-
                 $('#apply-filters').on('click', function() {
                     applyFilters(1);
                 });
@@ -1445,54 +1394,32 @@
                 let searchTimeout;
 
                 $('#search-input').on('keyup', function() {
-
                     clearTimeout(searchTimeout);
-
                     searchTimeout = setTimeout(() => applyFilters(1), 500);
-
                 });
-
-
 
                 $('#reset-filters').on('click', function() {
 
-                                        // 1. Reset input fields
+                    // 1. Reset input fields
+                    $('#search-input').val('');
+                    $('#price-range').val('');
+                    $('#sort-select').val('newest');
+                    $('#category-filter').val('all');
 
-                                        $('#search-input').val('');
+                    // 2. Reset UI states
+                    $('.category-card').removeClass('category-active');
+                    $('#subcategory-display-container').addClass('hidden');
+                    $('input[name="subcategory"]').prop('checked',
+                        false); // Uncheck all subcategory radios
 
-                                        $('#price-range').val('');
+                    // 3. Reset brand state and UI
+                    selectedBrandIds.clear();
+                    updateBrandSelectionUI();
+                    $('#brand-search').val(''); // Also clear brand search
+                    $('#brand-options .brand-option').show(); // Show all brand options
 
-                                        $('#sort-select').val('newest');
-
-                                        $('#category-filter').val('all');
-
-                    
-
-                                        // 2. Reset UI states
-
-                                        $('.category-card').removeClass('category-active');
-
-                                        $('#subcategory-display-container').addClass('hidden');
-
-                                        $('input[name="subcategory"]').prop('checked', false); // Uncheck all subcategory radios
-
-                    
-
-                                        // 3. Reset brand state and UI
-
-                                        selectedBrandIds.clear();
-
-                                        updateBrandSelectionUI();
-
-                                        $('#brand-search').val(''); // Also clear brand search
-
-                                        $('#brand-options .brand-option').show(); // Show all brand options
-
-                    
-
-                                        // 4. Apply the reset filters to show all products via AJAX
-
-                                        applyFilters(1);
+                    // 4. Apply the reset filters to show all products via AJAX
+                    applyFilters(1);
 
                 });
 
@@ -1707,8 +1634,7 @@
                         showMoreIcon.style.transform = 'rotate(0deg)';
                     }
                 });
-            }
-            else {
+            } else {
                 console.log(
                     'Condition categoryCards.length > limit is FALSE. Show more button will not be displayed.');
             }

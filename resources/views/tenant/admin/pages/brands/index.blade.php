@@ -247,11 +247,19 @@
         }
 
         function deleteBrand(brandId) {
-            if (confirm('Anda yakin ingin menghapus brand ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', brandId);
-                form.submit();
-            }
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan brand ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = destroyUrlTemplate.replace(':id', brandId);
+                    form.submit();
+                }
+            });
         }
 
         document.getElementById('addBrandModal').addEventListener('hidden.bs.modal', function() {

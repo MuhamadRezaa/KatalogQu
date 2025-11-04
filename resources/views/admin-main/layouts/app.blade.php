@@ -50,6 +50,7 @@
     <link id="color" rel="stylesheet" href="{{ asset('assets/riho-asset/css/color-1.css') }}" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/riho-asset/css/responsive.css') }}">
+    @stack('styles')
 </head>
 
 <body>
@@ -82,7 +83,7 @@
                             </div>
                             <div class="col-6">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/admin">
+                                    <li class="breadcrumb-item"><a href="/admin/dashboard">
                                             <svg class="stroke-icon">
                                                 <use
                                                     href="{{ asset('assets/riho-asset/svg/icon-sprite.svg#stroke-home') }}">
@@ -139,9 +140,11 @@
     <script src="{{ asset('assets/riho-asset/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/dashboard/dashboard_3.js') }}"></script>
     <!-- Plugins JS Ends-->
+    <!-- Sweet Alert 2 js-->
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/app.js') }}"></script>
     <!-- Theme js-->
     <script src="{{ asset('assets/riho-asset/js/script.js') }}"></script>
-    <!-- <script src="{{ asset('assets/riho-asset/js/theme-customizer/customizer.js') }}"></script> -->
 
     <!-- Page specific scripts -->
     @stack('scripts')

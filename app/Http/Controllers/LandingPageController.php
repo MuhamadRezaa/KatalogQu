@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatalogTemplate;
+use App\Models\MainHero; // New import
 use App\Models\UserStore;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,9 @@ class LandingPageController extends Controller
 
         $user_stores = UserStore::count();
 
-        return view('welcome', compact('templates', 'templateCount', 'user_stores'));
+        $mainHeroes = MainHero::where('is_active', true)->orderBy('order')->get();
+
+        return view('welcome', compact('templates', 'templateCount', 'user_stores', 'mainHeroes'));
     }
 
     /**

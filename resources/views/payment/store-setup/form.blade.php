@@ -171,6 +171,9 @@
         </div>
     </div>
 
+    <!-- Sweet Alert 2 js-->
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/app.js') }}"></script>
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
@@ -322,8 +325,14 @@
                             // Hapus data dari localStorage setelah berhasil
                             localStorage.removeItem(storageKey);
                             // --- AKHIR TAMBAHAN ---
-                            alert('Store created successfully! Redirecting...');
-                            window.location.href = data.redirect_url;
+                            swal({
+                                title: 'Berhasil!',
+                                text: 'Toko berhasil dibuat! Anda akan dialihkan.',
+                                icon: 'success',
+                                button: 'OK',
+                            }).then(() => {
+                                window.location.href = data.redirect_url;
+                            });
                         } else {
                             // Show validation errors
                             if (data.errors) {
@@ -334,14 +343,30 @@
                                         errorEl.classList.remove('hidden');
                                     }
                                 });
+                                swal({
+                                    title: 'Gagal!',
+                                    text: 'Terdapat kesalahan pada input Anda. Mohon periksa kembali.',
+                                    icon: 'error',
+                                    button: 'OK',
+                                });
                             } else {
-                                alert('Error: ' + data.message);
+                                swal({
+                                    title: 'Error!',
+                                    text: data.message || 'Terjadi kesalahan. Silakan coba lagi.',
+                                    icon: 'error',
+                                    button: 'OK',
+                                });
                             }
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('An error occurred. Please try again.');
+                        swal({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan. Silakan coba lagi.',
+                            icon: 'error',
+                            button: 'OK',
+                        });
                     })
                     .finally(() => {
                         // Reset loading state

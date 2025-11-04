@@ -139,6 +139,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'tiny_api_key' => env('TINY_API_KEY', 'no-api-key'),
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

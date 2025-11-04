@@ -273,11 +273,19 @@
         }
 
         function deleteCategory(categoryId) {
-            if (confirm('Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', categoryId);
-                form.submit();
-            }
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan kategori ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = destroyUrlTemplate.replace(':id', categoryId);
+                    form.submit();
+                }
+            });
         }
 
         // Clear add form when modal is hidden

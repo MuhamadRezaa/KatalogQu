@@ -64,11 +64,10 @@
                                             </a>
                                         </li>
                                         <li class="delete">
-                                            <form action="{{ route('kategori-toko.destroy', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                            <form action="{{ route('kategori-toko.destroy', $item->id) }}" method="POST" class="delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
+                                                <button type="button" class="btn-delete"
                                                     style="background:none; border:none; padding:0; margin:0; cursor:pointer;">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
@@ -225,6 +224,23 @@
 
             $('#editModal').on('hidden.bs.modal', function() {
                 $(this).find('form')[0].reset();
+            });
+
+            // SweetAlert for delete confirmation
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form');
+                swal({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan data ini!',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
             });
         });
     </script>

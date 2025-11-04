@@ -268,11 +268,19 @@
         }
 
         function deleteSubCategory(subCategoryId) {
-            if (confirm('Anda yakin ingin menghapus sub-kategori ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const form = document.getElementById('deleteForm');
-                form.action = destroyUrlTemplate.replace(':id', subCategoryId);
-                form.submit();
-            }
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan sub-kategori ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = destroyUrlTemplate.replace(':id', subCategoryId);
+                    form.submit();
+                }
+            });
         }
 
         document.getElementById('addSubCategoryModal').addEventListener('hidden.bs.modal', function() {

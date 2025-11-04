@@ -790,10 +790,19 @@
 
 
         function deleteProduct(btn) {
-            if (!confirm('Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.')) return;
-            const form = document.getElementById('deleteForm');
-            form.action = btn.dataset.destroyUrl; // URL langsung dari Blade
-            form.submit();
+            swal({
+                title: 'Apakah Anda yakin?',
+                text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan produk ini!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const form = document.getElementById('deleteForm');
+                    form.action = btn.dataset.destroyUrl; // URL langsung dari Blade
+                    form.submit();
+                }
+            });
         }
 
         document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {

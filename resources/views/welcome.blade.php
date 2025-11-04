@@ -20,7 +20,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -152,6 +151,40 @@
             line-height: 1.6;
         }
 
+        #heroBgCarousel,
+        #heroBgCarousel .carousel-inner,
+        #heroBgCarousel .carousel-item {
+            position: relative;
+        }
+
+        /* SEMUA overlay di dalam carousel: tidak menerima klik */
+        #heroBgCarousel .hero-overlay,
+        #heroBgCarousel .hero-pattern,
+        #heroBgCarousel .floating-element {
+            position: absolute;
+            /* jaga tetap mengambang */
+            inset: 0;
+            /* tutup area slide jika perlu */
+            pointer-events: none;
+            /* <<< kunci utama */
+            z-index: 1;
+        }
+
+        /* Konten teks di atas overlay */
+        #heroBgCarousel .container,
+        #heroBgCarousel .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Indikator & tombol panah di paling atas */
+        #heroBgCarousel .carousel-indicators,
+        #heroBgCarousel .carousel-control-prev,
+        #heroBgCarousel .carousel-control-next {
+            z-index: 5;
+            /* lebih tinggi dari overlay */
+        }
+
         /* --- AKHIR PERUBAHAN --- */
     </style>
 </head>
@@ -223,47 +256,109 @@
 
     <section id="home" class="hero-section">
         <div class="hero-bg">
-            <div id="heroBgCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div id="heroBgCarousel" class="carousel slide">
+                <div class="carousel-indicators">
+                    @foreach ($mainHeroes as $key => $hero)
+                        <button type="button" data-bs-target="#heroBgCarousel"
+                            data-bs-slide-to="{{ $key }}" class="{{ $key == 0 ? 'active' : '' }}"
+                            aria-current="{{ $key == 0 ? 'true' : 'false' }}"
+                            aria-label="Slide {{ $key + 1 }}"></button>
+                    @endforeach
+                </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active"><img
-                            src="{{ asset('https://aici-umg.com/wp-content/uploads/2024/09/Perkembangan-AI-Inovasi-Terbaru-dan-Ke-Depan.webp') }}"
-                            alt="slide-1"></div>
-                    <div class="carousel-item"><img
-                            src="{{ asset('https://omghcontent.affino.com/AcuCustom/Sitename/DAM/235/SINGLE_USE_AI_BING.jpg') }}"
-                            alt="slide-2">
-                    </div>
-                    <div class="carousel-item"><img
-                            src="{{ asset('https://resources-public-blog.modulabs.co.kr/blog/prd/content/266100/ai-agents-the-future-of-work.jpg') }}"
-                            alt="slide-3">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-pattern"></div>
-        <div class="floating-element floating-1"></div>
-        <div class="floating-element floating-2"></div>
-        <div class="floating-element floating-3"></div>
-        <div class="floating-element floating-4"></div>
-        <div class="floating-element floating-5"></div>
-        <div class="container h-100">
-            <div class="row h-100 justify-content-center">
-                <div class="col-lg-10 d-flex flex-column align-items-center justify-content-center text-center">
-                    <div class="hero-content">
-                        <h1 class="hero-title animate__animated animate__fadeInUp">Platform Katalog Digital <span
-                                style="color: #f99a07;">Terdepan</span></h1>
-                        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
-                            Mulai dari Rp 15.000/bulan, Anda sudah dapat memiliki katalog atau menu digital yang
-                            professional untuk bisnis anda. Dapatkan gratis 2 Bulan langganan untuk satu tahun
-                            pembelian hanya Rp 150.000/tahun.
-                        </p>
-                        <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
-                            <a href="#demo" class="btn-hero btn-hero-primary"><i class="fas fa-rocket"></i> Miliki
-                                Sekarang</a>
-                            <a href="#features" class="btn-hero btn-hero-outline">Features</a>
+                    @forelse ($mainHeroes as $key => $hero)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ asset('storage/' . $hero->image_url) }}" class="img-fluid"
+                                alt="slide-{{ $key + 1 }}">
+                            <div class="hero-overlay"></div>
+                            <div class="hero-pattern"></div>
+                            <div class="floating-element floating-1"></div>
+                            <div class="floating-element floating-2"></div>
+                            <div class="floating-element floating-3"></div>
+                            <div class="floating-element floating-4"></div>
+                            <div class="floating-element floating-5"></div>
+                            <div class="container h-100">
+                                <div class="row h-100 justify-content-center">
+                                    <div
+                                        class="col-lg-10 d-flex flex-column align-items-center justify-content-center text-center">
+                                        <div class="hero-content">
+                                            <h1 class="hero-title animate__animated animate__fadeInUp">
+                                                {!! $hero->title !!}</h1>
+                                            <span
+                                                class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                                                {!! $hero->subtitle !!}
+                                            </span>
+                                            <div
+                                                class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                                                @if ($hero->button_text_1 && $hero->button_link_1)
+                                                    <a href="{{ $hero->button_link_1 }}"
+                                                        class="btn-hero btn-hero-primary">{!! $hero->button_text_1 !!}</a>
+                                                @endif
+                                                @if ($hero->button_text_2 && $hero->button_link_2)
+                                                    <a href="{{ $hero->button_link_2 }}"
+                                                        class="btn-hero btn-hero-outline">{!! $hero->button_text_2 !!}</a>
+                                                @endif
+                                                @if ($hero->button_text_3 && $hero->button_link_3)
+                                                    <a href="{{ $hero->button_link_3 }}"
+                                                        class="btn-hero btn-hero-outline">{!! $hero->button_text_3 !!}</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        {{-- Fallback static content if no heroes are available --}}
+                        <div class="carousel-item active">
+                            <img src="{{ asset('https://aici-umg.com/wp-content/uploads/2024/09/Perkembangan-AI-Inovasi-Terbaru-dan-Ke-Depan.webp') }}"
+                                class="img-fluid" alt="slide-1">
+                            <div class="hero-overlay"></div>
+                            <div class="hero-pattern"></div>
+                            <div class="floating-element floating-1"></div>
+                            <div class="floating-element floating-2"></div>
+                            <div class="floating-element floating-3"></div>
+                            <div class="floating-element floating-4"></div>
+                            <div class="floating-element floating-5"></div>
+                            <div class="container h-100">
+                                <div class="row h-100 justify-content-center">
+                                    <div
+                                        class="col-lg-10 d-flex flex-column align-items-center justify-content-center text-center">
+                                        <div class="hero-content">
+                                            <h1 class="hero-title animate__animated animate__fadeInUp">Platform Katalog
+                                                Digital <span style="color: #f99a07;">Terdepan</span></h1>
+                                            <p
+                                                class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                                                Mulai dari Rp 15.000/bulan, Anda sudah dapat memiliki katalog atau menu
+                                                digital yang
+                                                professional untuk bisnis anda. Dapatkan gratis 2 Bulan langganan untuk
+                                                satu tahun
+                                                pembelian hanya Rp 150.000/tahun.
+                                            </p>
+                                            <div
+                                                class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                                                <a href="#demo" class="btn-hero btn-hero-primary"><i
+                                                        class="fas fa-rocket"></i> Miliki
+                                                    Sekarang</a>
+                                                <a href="#features" class="btn-hero btn-hero-outline">Features</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroBgCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroBgCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
     </section>
@@ -577,7 +672,6 @@
     <button class="scroll-top" id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>

@@ -11,7 +11,8 @@
     <meta name="author" content="{{ $userStore->user->name ?? 'Store Owner' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @auth
-        @if(auth()->user()) {{-- Tambahan keamanan jika auth user null --}}
+        @if (auth()->user())
+            {{-- Tambahan keamanan jika auth user null --}}
             <meta name="api-token" content="{{ auth()->user()->createToken('dashboard')->plainTextToken }}">
         @endif
     @endauth
@@ -92,7 +93,7 @@
                 <div class="container-fluid">
                     @yield('content')
                 </div>
-                </div>
+            </div>
             @include('tenant.admin.layouts.footer')
         </div>
     </div>
@@ -126,6 +127,10 @@
     <script src="{{ asset('assets/riho-asset/js/datepicker/date-picker/datepicker.en.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
     <script src="{{ asset('assets/riho-asset/js/dashboard/dashboard_3.js') }}"></script>
+    <!-- Sweet Alert 2 js-->
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/riho-asset/js/sweet-alert/app.js') }}"></script>
+
     <script src="{{ asset('assets/riho-asset/js/script.js') }}"></script>
     @stack('scripts')
 </body>

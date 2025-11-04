@@ -42,11 +42,10 @@
                                             </a>
                                         </li>
                                         <li class="delete">
-                                            <form action="{{ route('admin.contacts.destroy', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus pesan ini?')">
+                                            <form action="{{ route('admin.contacts.destroy', $item->id) }}" method="POST" class="delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
+                                                <button type="button" class="btn-delete"
                                                     style="background:none; border:none; padding:0; margin:0; cursor:pointer;">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
@@ -139,6 +138,23 @@
                     }
                 }).fail(function() {
                     alert('Gagal mengambil detail pesan.');
+                });
+            });
+
+            // SweetAlert for delete confirmation
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form');
+                swal({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Setelah dihapus, Anda tidak akan dapat mengembalikan pesan ini!',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
                 });
             });
         });
