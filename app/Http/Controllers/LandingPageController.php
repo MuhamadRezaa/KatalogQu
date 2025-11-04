@@ -23,8 +23,7 @@ class LandingPageController extends Controller
 
         $user_stores = UserStore::count();
 
-
-
+        $mainHeroes = MainHero::where('is_active', true)->orderBy('order')->get();
 
         return view('welcome', compact('templates', 'templateCount', 'user_stores', 'mainHeroes'));
     }
