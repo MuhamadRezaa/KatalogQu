@@ -14,7 +14,7 @@
     <link rel="icon"
         href="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
         type="image/x-icon">
-    <title>{{ $userStore->store_name ?? 'Toko Kosmetik' }} - E-Katalog Premium</title>
+    <title>{{ $userStore->store_name ?? 'Toko Kosmetik' }}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -98,7 +98,6 @@
 
         /* Perbaikan Hero Section - FULL WIDTH */
         .hero-section {
-            padding-top: auto;
             width: 100%;
             margin: 0;
         }
@@ -109,15 +108,12 @@
             width: 100%;
         }
 
+        /* toko-kosmetik/index.blade.php (Perbaikan) */
         .hero-slide {
             position: relative;
             width: 100%;
-            /* height: 60vh; */
-            /* <-- Hapus atau komentari baris ini */
-            /* min-height: 450px; */
-            /* <-- Hapus atau komentari baris ini */
+            /* <-- TAMBAHKAN INI (atau sesuaikan) */
             aspect-ratio: 16 / 9;
-            /* <-- Tambahkan baris ini untuk rasio 1080p */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -168,7 +164,7 @@
 
         .hero-subtitle {
             font-family: var(--font-secondary);
-            font-size: 1.3rem;
+            font-size: 2.5rem;
             color: #eee;
             margin-top: 1rem;
             margin-bottom: 2rem;
@@ -244,7 +240,7 @@
             }
 
             .hero-subtitle {
-                font-size: 1rem;
+                font-size: 2.5rem;
             }
 
             /* [PENYESUAIAN MOBILE] Kontrol Carousel Hero */
@@ -489,6 +485,87 @@
             /* Fallback untuk browser lama */
         }
 
+        /*
+         ================================================================================
+         [BARU] STYLING PAGINATION MODERN (Menggantikan Bawaan Bootstrap)
+         ================================================================================
+        */
+        .pagination {
+            /* Menghilangkan margin default dari <ul> */
+            margin-bottom: 0;
+            justify-content: center;
+            /* Memastikan pagination selalu di tengah */
+        }
+
+        .pagination .page-item {
+            /* Memberi jarak antar tombol */
+            margin: 0 6px;
+        }
+
+        .pagination .page-link {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary-color);
+            /* Warna teks pink (dari variabel Anda) */
+
+            /* Bentuk Bulat Sempurna */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+
+            border: none;
+            /* Hapus border default Bootstrap */
+            border-radius: 50%;
+            /* Membuat link menjadi bulat sempurna */
+            background-color: var(--white-bg);
+            /* Latar belakang putih (dari variabel Anda) */
+
+            /* Shadow dan Transisi (mengikuti gaya .product-card) */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-link:hover,
+        .pagination .page-link:focus {
+            /* Efek hover: naik dan shadow lebih kuat */
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(230, 57, 122, 0.2);
+            /* Shadow pink (sesuai .btn-primary) */
+            background-color: var(--white-bg);
+            /* Tetap putih */
+            color: var(--primary-color);
+            /* Tetap pink */
+        }
+
+        .pagination .page-item.active .page-link {
+            /* Status Aktif */
+            background-color: var(--primary-color);
+            /* Latar belakang pink */
+            color: #fff;
+            /* Teks putih */
+            box-shadow: 0 6px 20px rgba(230, 57, 122, 0.4);
+            /* Shadow pink kuat */
+            transform: translateY(-2px);
+            /* Sedikit terangkat */
+        }
+
+        .pagination .page-item.disabled .page-link {
+            /* Status Disabled */
+            background-color: #f8f9fa;
+            /* Warna abu-abu sangat muda */
+            color: #b0b0b0;
+            box-shadow: none;
+            /* Hapus shadow */
+            transform: none;
+            /* Hapus efek hover */
+        }
+
+        /* [AKHIR STYLING PAGINATION] */
+
+
         /* * [DIHAPUS] Gaya Pagination Modern tidak diperlukan lagi
          * karena kita menggunakan tombol "Lihat Selengkapnya"
         */
@@ -527,8 +604,9 @@
                         <div class="hero-slide">
                             <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                                 alt="{{ $banner->title }}" class="hero-background"
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80';">
+                                onerror="this.onerror=null; this.src='https:images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80';">
                             <div class="container">
+                                {{-- toko-kosmetik/index.blade.php (Perbaikan) --}}
                                 <div class="hero-content">
                                     <h1 class="hero-title">{!! $banner->title !!}</h1>
                                     <p class="hero-subtitle">{!! $banner->subtitle !!}</p>
@@ -712,7 +790,7 @@
         <div class="container">
             <div class="row g-4" id="productsGrid">
                 @forelse ($products as $product)
-                    <div class="col-6 col-md-4 col-lg-4">
+                    <div class="col-6 col-md-4 col-lg-3">
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             @if ($product->discount_percentage)
                                 <div class="badge-promo">PROMO</div>
@@ -745,14 +823,11 @@
         </div>
     </section>
 
-    {{-- [PERBARUAN] Tombol "Lihat Selengkapnya" menggantikan pagination --}}
-    <div class="my-5 d-flex justify-content-center" id="loadMoreContainer">
-        {{-- Pastikan $products adalah objek Paginator --}}
-        @if ($products instanceof \Illuminate\Pagination\AbstractPaginator && $products->hasMorePages())
-            <button class="btn btn-primary" id="loadMoreBtn"
-                data-next-page-url="{{ $products->appends(request()->query())->nextPageUrl() }}">
-                Lihat Selengkapnya
-            </button>
+    {{-- [PERBARUAN] Menggunakan Pagination Tradisional --}}
+    <div class="my-5 d-flex justify-content-center" id="paginationContainer">
+        {{-- Pastikan $products adalah objek Paginator dan merender link Bootstrap 5 --}}
+        @if ($products instanceof \Illuminate\Pagination\AbstractPaginator)
+            {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
         @endif
     </div>
     {{-- AKHIR PERBARUAN --}}
@@ -795,9 +870,10 @@
                         @endif
                         {{-- Mengambil dari 'whatsapp_number' jika ada --}}
                         @if ($userStore->whatsapp_number)
-                             <li class="mb-2">
+                            <li class="mb-2">
                                 <i class="fab fa-whatsapp fa-fw me-2"></i>
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $userStore->whatsapp_number) }}" target="_blank">{{ $userStore->whatsapp_number }}</a>
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $userStore->whatsapp_number) }}"
+                                    target="_blank">{{ $userStore->whatsapp_number }}</a>
                             </li>
                         @endif
                     </ul>
@@ -954,7 +1030,7 @@
             // Inisialisasi Modal dan Variabel
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
             // [PERBAIKAN FOOTER] Gunakan 'whatsapp_number' jika ada, fallback ke 'store_phone'
-            const storePhoneNumber = "{{ $userStore->whatsapp_number ?? $userStore->store_phone ?? '' }}";
+            const storePhoneNumber = "{{ $userStore->whatsapp_number ?? ($userStore->store_phone ?? '') }}";
 
 
             // Inisialisasi Swiper/Carousel
@@ -1165,7 +1241,8 @@
 
                 // Cek jika categoryId ada, dan ada datanya di categoriesData
                 if (categoryId && categoriesData[categoryId] && categoriesData[categoryId].length > 0) {
-                    const subcategories = categoriesData[categoryId]; // Ini adalah array of objects [{id, name}, ...]
+                    const subcategories = categoriesData[
+                        categoryId]; // Ini adalah array of objects [{id, name}, ...]
 
                     subcategories.forEach(sub => { // 'sub' adalah objek, bukan string 'subName'
                         const option = document.createElement('option');
@@ -1173,7 +1250,9 @@
                         option.textContent = sub.name; // BENAR: Menggunakan NAMA sebagai text
 
                         // Cek jika ID subkategori sama dengan yang ada di URL
-                        if (sub.id == currentSubcategoryValue) { // Menggunakan == untuk perbandingan (string vs number)
+                        if (sub.id ==
+                            currentSubcategoryValue
+                        ) { // Menggunakan == untuk perbandingan (string vs number)
                             option.selected = true;
                         }
                         subcategoryFilter.appendChild(option);
@@ -1210,9 +1289,8 @@
                 });
             }
 
-            // ========================================================================
-            // [PERUBAHAN UTAMA] Fungsi applyFilters diubah untuk menggunakan AJAX/Fetch
-            // ========================================================================
+            {{-- INI KODE BARU --}}
+
             function applyFilters() {
                 const search = document.getElementById('searchInput').value;
                 const category = document.getElementById('categoryFilter').value;
@@ -1247,7 +1325,8 @@
 
                 // Ambil container
                 const productsGridContainer = document.getElementById('productsGrid');
-                const loadMoreContainer = document.getElementById('loadMoreContainer');
+                // [PERUBAHAN] Gunakan paginationContainer
+                const paginationContainer = document.getElementById('paginationContainer');
 
                 // Tampilkan status loading di grid
                 productsGridContainer.innerHTML = `
@@ -1255,10 +1334,10 @@
                     <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
                     <p class="fs-4 mt-3">Mencari produk...</p>
                 </div>`;
-                // Sembunyikan tombol "load more" saat loading
-                if (loadMoreContainer) {
-                    loadMoreContainer.style.display = 'none';
-                    loadMoreContainer.innerHTML = ''; // Kosongkan
+                // Sembunyikan pagination saat loading
+                if (paginationContainer) {
+                    paginationContainer.style.display = 'none';
+                    paginationContainer.innerHTML = ''; // Kosongkan
                 }
 
                 // Lakukan fetch
@@ -1288,14 +1367,14 @@
                             </div>`;
                         }
 
-                        // Ambil container "load more" baru
-                        const newLoadMoreContainer = doc.getElementById('loadMoreContainer');
-                        if (loadMoreContainer && newLoadMoreContainer) {
-                            // Ganti isi container. Listener sudah di-handle oleh event delegation.
-                            loadMoreContainer.innerHTML = newLoadMoreContainer.innerHTML;
+                        // [PERUBAHAN] Ambil container pagination baru
+                        const newPaginationContainer = doc.getElementById('paginationContainer');
+                        if (paginationContainer && newPaginationContainer) {
+                            // Ganti isi container.
+                            paginationContainer.innerHTML = newPaginationContainer.innerHTML;
                             // Tampilkan kembali jika ada isinya
-                            if (newLoadMoreContainer.innerHTML.trim() !== '') {
-                                loadMoreContainer.style.display = 'flex';
+                            if (newPaginationContainer.innerHTML.trim() !== '') {
+                                paginationContainer.style.display = 'flex';
                             }
                         }
                     })
@@ -1305,14 +1384,11 @@
                         <div class="col-12 text-center py-5">
                             <p class="fs-4 text-muted">Gagal memuat produk. Coba lagi.</p>
                         </div>`;
-                        if (loadMoreContainer) {
-                            loadMoreContainer.style.display = 'none';
+                        if (paginationContainer) {
+                            paginationContainer.style.display = 'none';
                         }
                     });
             }
-            // ========================================================================
-            // [AKHIR PERUBAHAN UTAMA]
-            // ========================================================================
 
 
             // Event Listeners untuk semua kontrol filter
@@ -1389,7 +1465,7 @@
 
                                 // Ambil produk baru dari grid di HTML yang diterima
                                 const newProducts = doc.querySelectorAll(
-                                    '#productsGrid > .col-6, #productsGrid > .col-md-4, #productsGrid > .col-lg-4'
+                                    '#productsGrid > .col-6, #productsGrid > .col-md-4, #productsGrid > .col-lg-4' // Jika Anda menerapkan 4 kolom, ubah col-lg-4 jadi col-lg-3 di sini
                                 );
 
                                 if (newProducts.length > 0) {
@@ -1425,6 +1501,86 @@
             }
             // ========================================================================
             // [AKHIR PERUBAHAN UTAMA]
+            // ========================================================================
+            // ========================================================================
+            // [BARU] Logika Pagination AJAX (Tanpa Reload)
+            // ========================================================================
+            const paginationContainer = document.getElementById('paginationContainer');
+            // const productsGridContainer = document.getElementById('productsGrid'); // Sudah ada di atas
+
+            if (paginationContainer && productsGridContainer) {
+                // Pasang listener pada CONTAINER, bukan pada link
+                paginationContainer.addEventListener('click', function(event) {
+                    // Cek apakah yang diklik adalah link di dalam .page-item
+                    const clickedLink = event.target.closest('.page-link');
+
+                    if (clickedLink) {
+                        event.preventDefault(); // Hentikan reload halaman
+
+                        const url = clickedLink.href;
+                        // Jangan lakukan apa-apa jika link tidak valid, atau mengklik halaman disabled/aktif
+                        if (!url || clickedLink.closest('.page-item.disabled') || clickedLink.closest(
+                                '.page-item.active')) {
+                            return;
+                        }
+
+                        // Tampilkan status loading di grid
+                        productsGridContainer.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+                            <p class="fs-4 mt-3">Memuat halaman...</p>
+                        </div>`;
+
+                        // Sembunyikan pagination saat loading
+                        paginationContainer.style.display = 'none';
+
+                        // Scroll ke atas ke bagian produk
+                        const productsSection = document.getElementById('products');
+                        if (productsSection) {
+                            productsSection.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+
+                        // Lakukan fetch ke URL pagination
+                        fetch(url)
+                            .then(response => response.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+
+                                // 1. Ganti Grid Produk
+                                const newProductsGrid = doc.getElementById('productsGrid');
+                                if (newProductsGrid) {
+                                    productsGridContainer.innerHTML = newProductsGrid.innerHTML;
+                                } else {
+                                    productsGridContainer.innerHTML =
+                                        '<div class="col-12 text-center py-5"><p>Gagal memuat produk.</p></div>';
+                                }
+
+                                // 2. Ganti Pagination
+                                const newPaginationContainer = doc.getElementById(
+                                    'paginationContainer');
+                                if (newPaginationContainer) {
+                                    paginationContainer.innerHTML = newPaginationContainer.innerHTML;
+                                    paginationContainer.style.display = 'flex'; // Tampilkan kembali
+                                }
+
+                                // 3. Update URL browser
+                                window.history.pushState({}, '', url);
+                            })
+                            .catch(error => {
+                                console.error('Error paginating:', error);
+                                productsGridContainer.innerHTML =
+                                    '<div class="col-12 text-center py-5"><p>Gagal memuat halaman. Coba lagi.</p></div>';
+                                // Tampilkan pagination kembali jika error
+                                paginationContainer.style.display = 'flex';
+                            });
+                    }
+                });
+            }
+            // ========================================================================
+            // [AKHIR] Logika Pagination AJAX
             // ========================================================================
 
         });
