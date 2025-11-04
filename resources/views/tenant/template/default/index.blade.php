@@ -38,8 +38,8 @@
                             alt="{{ $banner->alt_text }}">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                             <div class="text-center text-white p-4">
-                                <h2 class="text-2xl md:text-4xl font-bold mb-2">{{ $banner->title }}</h2>
-                                <p class="text-lg md:text-xl mb-4">{{ $banner->subtitle }}</p>
+                                <h2 class="text-2xl md:text-4xl font-bold mb-2">{!! $banner->title !!}</h2>
+                                <p class="text-lg md:text-xl mb-4">{!! $banner->subtitle !!}</p>
                                 <a href="{{ $banner->link }}"
                                     class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Learn
                                     More</a>

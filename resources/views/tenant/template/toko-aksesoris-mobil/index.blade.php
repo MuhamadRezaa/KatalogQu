@@ -60,8 +60,8 @@
 
                     <!-- konten tetap -->
                     <div class="slide-content" style="position:relative;z-index:1;">
-                        <h1>{{ $banner->title }}</h1>
-                        <p>{{ $banner->subtitle }}</p>
+                        <h1>{!! $banner->title !!}</h1>
+                        <p>{!! $banner->subtitle !!}</p>
                     </div>
                 </div>
             @empty

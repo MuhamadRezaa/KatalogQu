@@ -286,8 +286,8 @@
                     <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                         alt="{{ $banner->title ?? 'Banner' }}">
                     <div class="carousel-content">
-                        <h3>{{ $banner->title }}</h3>
-                        <p>{{ $banner->subtitle }}</p>
+                        <h3>{!! $banner->title !!}</h3>
+                        <p>{!! $banner->subtitle !!}</p>
                     </div>
                 </div>
             @empty

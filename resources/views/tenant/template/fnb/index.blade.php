@@ -102,10 +102,10 @@
                                 <div class="relative z-10 max-w-4xl mx-auto">
                                     <h3
                                         class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
-                                        {{ $banner->title }}</h3>
+                                        {!! $banner->title !!}</h3>
                                     <p
                                         class="text-sm sm:text-base md:text-lg text-gray-200 mt-2 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
-                                        {{ $banner->subtitle }}</p>
+                                        {!! $banner->subtitle !!}</p>
                                 </div>
                             </div>
                         </div>

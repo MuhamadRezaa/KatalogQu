@@ -456,6 +456,37 @@
             margin-bottom: 8px;
             font-size: 1.5rem;
         }
+
+        /* ----- [PENAMBAHAN] CSS BANNER 1080P ----- */
+        .carousel-section {
+            position: relative;
+            width: 100%;
+            /* 1080 (tinggi) / 1920 (lebar) = 0.5625 atau 56.25% */
+            padding-top: 56.25%;
+            overflow: hidden;
+            background-color: #333;
+            /* Warna latar jika gambar lama dimuat */
+        }
+
+        .carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Memotong gambar agar pas, bukan merusak rasio */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* ----- AKHIR PENAMBAHAN ----- */
     </style>
 </head>
 
@@ -491,18 +522,18 @@
                             <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                                 alt="{{ $banner->title ?? 'Banner' }}">
                         @else
-                            <img src="https://via.placeholder.com/1200x400?text=Banner+Image+Not+Available"
+                            <img src="https://via.placeholder.com/1920x1080?text=Banner+Image+Not+Available"
                                 alt="Placeholder Banner">
                         @endif
                         <div class="carousel-caption">
-                            <h3>{{ $banner->title ?? 'Banner Title' }}</h3>
-                            <p>{{ $banner->subtitle ?? 'Banner Sub Title' }}</p>
+                            <h3>{!! $banner->title ?? 'Banner Title' !!}</h3>
+                            <p>{!! $banner->subtitle ?? 'Banner Sub Title' !!}</p>
                         </div>
                     </div>
                 @empty
                     {{-- Banner Statis Fallback --}}
                     <div class="carousel-item active">
-                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                             alt="Material Bangunan">
                         <div class="carousel-caption">
                             <h3>Material Bangunan Berkualitas</h3>
@@ -510,7 +541,7 @@
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                             alt="Peralatan Kebersihan Modern">
                         <div class="carousel-caption">
                             <h3>Peralatan Kebersihan Modern</h3>

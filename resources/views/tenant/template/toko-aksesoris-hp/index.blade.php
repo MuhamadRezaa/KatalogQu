@@ -109,8 +109,8 @@
 
                         <div
                             class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
-                            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{{ $title }}</h1>
-                            <p class="text-lg md:text-xl font-light mb-6">{{ $subtitle }}</p>
+                            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{!! $title !!}</h1>
+                            <p class="text-lg md:text-xl font-light mb-6">{!! $subtitle !!}</p>
                         </div>
                     </div>
                 @endforeach

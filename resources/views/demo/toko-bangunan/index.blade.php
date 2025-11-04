@@ -191,6 +191,38 @@
                 margin-bottom: 15px;
             }
         }
+
+        /* ----- 5. PENYESUAIAN BANNER 1080P (DIMINTA PENGGUNA) ----- */
+        .carousel-section {
+            /* Mengatur aspect ratio ke 16:9 (khas 1080P) */
+            position: relative;
+            width: 100%;
+            /* 1080 (tinggi) / 1920 (lebar) = 0.5625 atau 56.25% */
+            padding-top: 56.25%;
+            overflow: hidden;
+            background-color: #333;
+            /* Warna latar jika gambar lama dimuat */
+        }
+
+        .carousel {
+            /* Membuat carousel mengisi penuh wrapper aspect-ratio */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            /* Memastikan gambar mengisi area tanpa distorsi */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Penting: memotong gambar agar pas, bukan merusak rasio */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 
@@ -211,7 +243,7 @@
         <div class="carousel">
             <div class="carousel-inner" id="carouselInner">
                 <div class="carousel-item active">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                         alt="Material Bangunan">
                     <div class="carousel-caption">
                         <h3>Material Bangunan Berkualitas</h3>
@@ -219,7 +251,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                         alt="Peralatan Konstruksi">
                     <div class="carousel-caption">
                         <h3>Peralatan Kebersihan Modern</h3>
@@ -227,7 +259,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                         alt="Cat dan Finishing">
                     <div class="carousel-caption">
                         <h3>Instalasi Listrik Handal</h3>

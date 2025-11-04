@@ -137,7 +137,7 @@
                                 <div class="mb-3">
                                     <label for="add_description" class="form-label">Deskripsi (Opsional)</label>
                                     <textarea class="form-control" id="add_description" name="description" rows="3"
-                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini"></textarea>
+                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="add_image" class="form-label">Gambar Utama Produk <span
@@ -271,8 +271,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="add_is_promo" name="is_promo"
-                                            value="1">
+                                        <input class="form-check-input" type="checkbox" id="add_is_promo"
+                                            name="is_promo" value="1">
                                         <label class="form-check-label" for="add_is_promo">Promo</label>
                                     </div>
                                 </div>
@@ -327,7 +327,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_description" class="form-label">Deskripsi (Opsional)</label>
-                                    <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" id="edit_description" name="description" rows="3"
+                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata"></textarea>
                                     @error('description')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
@@ -501,8 +502,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="edit_is_promo" name="is_promo"
-                                            value="1">
+                                        <input class="form-check-input" type="checkbox" id="edit_is_promo"
+                                            name="is_promo" value="1">
                                         <label class="form-check-label" for="edit_is_promo">Promo</label>
                                     </div>
                                 </div>
