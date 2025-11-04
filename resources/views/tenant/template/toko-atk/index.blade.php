@@ -479,8 +479,7 @@
                 <div class="brand-header">
                     <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
                         alt="{{ $userStore->store_name ?? 'Toko ATK' }} Logo" class="footer-logo">
-                    <span class="brand-name">{{ $userStore->store_name ?? 'Toko ATK' }}</span>
-                </div>
+                  </div>
                 <p class="brand-description">
                     {{ $userStore->store_description ?? 'Solusi lengkap alat tulis kantor berkualitas tinggi' }}
                 </p>
