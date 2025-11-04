@@ -25,6 +25,7 @@ class LandingPageController extends Controller
 
         $mainHeroes = MainHero::where('is_active', true)->orderBy('order')->get();
 
+
         return view('welcome', compact('templates', 'templateCount', 'user_stores', 'mainHeroes'));
     }
 
