@@ -72,7 +72,7 @@
                 <li class="sidebar-list">
                     <i class="fa fa-thumb-tack"></i>
                     <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/dashboard') ? 'active' : '' }}"
-                        href="/admin">
+                        href="/admin/dashboard">
                         <i class="fa fa-home menu-icon" aria-hidden="true"></i>
                         <span>Dashboard</span>
                     </a>
@@ -99,6 +99,15 @@
                         href="/admin/template-katalog">
                         <i class="fa fa-th menu-icon" aria-hidden="true"></i>
                         <span>Template Katalog</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-list">
+                    <i class="fa fa-thumb-tack"></i>
+                    <a class="sidebar-link sidebar-title link-nav {{ request()->is('admin/main-heroes*') ? 'active' : '' }}"
+                        href="{{ route('main-heroes.index') }}">
+                        <i class="fa fa-image menu-icon" aria-hidden="true"></i>
+                        <span>Manajemen Banner Utama</span>
                     </a>
                 </li>
 
