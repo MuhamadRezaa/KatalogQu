@@ -55,6 +55,15 @@
             }
         }
 
+        /* Make modal larger on desktop */
+        @media (min-width: 992px) {
+            .modal-content.large {
+                max-width: 1100px;
+                /* Increase max-width for desktop */
+                width: 90%;
+            }
+        }
+
         .pagination-container {
             margin-top: 40px;
             display: flex;
@@ -67,16 +76,16 @@
             padding: 0;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .pagination li a,
         .pagination li span {
             display: block;
             padding: 10px 15px;
-            background-color: #fff;
-            color: #555;
-            border-right: 1px solid #ddd;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-right: 1px solid #34495e;
             text-decoration: none;
             transition: all 0.3s;
             font-size: 0.9em;
@@ -96,20 +105,20 @@
         }
 
         .pagination li.active span {
-            background-color: #4A90E2;
-            color: #fff;
-            border-color: #4A90E2;
+            background-color: #f39c12;
+            color: #121212;
+            border-color: #f39c12;
             cursor: default;
         }
 
         .pagination li.disabled span {
-            color: #aaa;
-            background-color: #f5f5f5;
+            color: #7f8c8d;
+            background-color: #22303f;
             cursor: not-allowed;
         }
 
         .pagination li a:hover {
-            background-color: #f0f0f0;
+            background-color: #34495e;
         }
 
         /* Style untuk Filter Container */
@@ -164,6 +173,18 @@
             width: 100%;
             /* Pastikan kartu mengisi ruang yang tersedia */
         }
+
+        @media (max-width: 992px) {
+            .services-grid .service-card {
+                max-width: calc(50% - 0.75rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .services-grid .service-card {
+                max-width: calc(50% - 0.75rem);
+            }
+        }
     </style>
     <style>
         /* Navbar Styles */
@@ -185,7 +206,7 @@
 
         .navbar.scrolled {
             background-color: #121212;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             padding: 0.5rem 2rem;
         }
 
@@ -202,9 +223,12 @@
             width: 40px;
             height: 40px;
             margin-right: 10px;
-            object-fit: cover; /* Use cover to fill the space */
-            border-radius: 50%; /* Make it circular */
-            background-color: #333; /* Fallback background */
+            object-fit: cover;
+            /* Use cover to fill the space */
+            border-radius: 50%;
+            /* Make it circular */
+            background-color: #333;
+            /* Fallback background */
             border: 2px solid #f39c12;
         }
 
@@ -258,9 +282,11 @@
             .navbar {
                 padding: 1rem;
             }
+
             .navbar.scrolled {
                 padding: 0.75rem 1rem;
             }
+
             .navbar-nav {
                 position: absolute;
                 top: 100%;
@@ -301,12 +327,71 @@
 </head>
 
 <body>
+    <style>
+        /* Mengatur ukuran banner hero */
+        .hero {
+            height: 1080px; /* Tinggi banner diatur ke 1080px untuk layar besar */
+            background-color: #121212; /* Fallback background color */
+        }
+
+        .hero .bg-image {
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Penyesuaian untuk layar yang lebih kecil agar tetap responsif */
+        @media (max-width: 1200px) {
+            .hero {
+                height: 85vh; /* Gunakan tinggi viewport untuk layar lebih kecil */
+                min-height: 450px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 70vh;
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 60vh;
+                min-height: 350px;
+            }
+        }
+
+        /* Menghilangkan animasi pada logo di footer */
+        .footer-brand .hero-icon,
+        .footer-brand .hero-icon img {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+            /* Mencegah perubahan transformasi */
+        }
+
+        /* Menargetkan state hover secara spesifik */
+        .footer-brand:hover .hero-icon,
+        .footer-brand:hover .hero-icon img {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+            /* Mencegah perubahan transformasi saat hover */
+        }
+    </style>
     <header class="navbar">
         <a href="#home" class="navbar-brand">
             <img src="{{ $userStore->store_logo ? route('tenant.asset.domain', ['path' => $userStore->store_logo]) : asset('assets/demo/barbershop/img/klasik.png') }}"
                 alt="{{ $userStore->store_name ?? 'Logo' }}">
             <span>{{ $userStore->store_name ?? 'Barbershop' }}</span>
-        </a>git
+        </a>
+        <nav class="navbar-nav">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#services-and-styles" class="nav-link">Layanan</a>
+            <a href="#contact" class="nav-link">Kontak</a>
+        </nav>
         <button class="navbar-toggler" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
@@ -628,10 +713,7 @@
                 Tidak ada layanan yang ditemukan dengan filter tersebut.
             </div>
 
-            {{-- Pagination akan disembunyikan saat filter client-side aktif --}}
-            <div class="pagination-container">
-                {{ $products->links() }}
-            </div>
+            <div id="pagination-container" class="pagination-container"></div>
         </div>
     </section>
 
@@ -700,6 +782,150 @@
         /* ... kode CSS yang sudah ada ... */
     </style>
 
+    <style>
+        /* === Perbaikan Tampilan Footer === */
+
+        /* Kontainer utama footer */
+        .footer {
+            background-color: #1c1c1c;
+            /* Sedikit lebih terang dari hitam pekat */
+            color: #ccc;
+            padding: 4rem 0 2rem 0;
+            border-top: 4px solid #f39c12;
+        }
+
+        /* Konten utama: brand dan kontak */
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            /* Agar bisa wrap di layar kecil */
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Bagian brand/logo di kiri */
+        .footer-brand {
+            flex: 1;
+            min-width: 280px;
+            /* Lebar minimum sebelum wrap */
+        }
+
+        .footer-brand h1 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        /* Bagian kontak di kanan */
+        .footer-contact {
+            flex: 1.5;
+            /* Beri lebih banyak ruang untuk bagian kontak */
+            min-width: 280px;
+        }
+
+        .footer-contact .footer-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-contact .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #f39c12;
+        }
+
+        /* Daftar kontak (alamat, telepon, dll) */
+        .footer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-list li i {
+            font-size: 1.1rem;
+            color: #f39c12;
+            width: 25px;
+            /* Lebar ikon tetap */
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+            /* Penyesuaian posisi vertikal */
+        }
+
+        /* Ikon sosial media */
+        .footer-social {
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: #ccc;
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .social-link:hover {
+            color: #f39c12;
+            transform: translateY(-3px);
+        }
+
+        /* Bagian bawah footer (copyright) */
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                /* Tumpuk brand dan kontak */
+                align-items: center;
+                /* Pusatkan item */
+                text-align: center;
+            }
+
+            .footer-brand,
+            .footer-contact {
+                width: 100%;
+                max-width: 450px;
+                /* Batasi lebar agar tidak terlalu membentang */
+            }
+
+            .footer-contact .footer-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+                /* Pusatkan garis bawah judul */
+            }
+
+            .footer-list li {
+                justify-content: center;
+                /* Pusatkan item list */
+                text-align: left;
+                /* Tapi teks tetap rata kiri */
+            }
+        }
+    </style>
+
     {{-- Footer --}}
     <footer id="contact" class="footer">
         <div class="container">
@@ -707,8 +933,8 @@
                 <div class="footer-brand" style="display: flex; align-items: center;">
                     <div class="hero-icon">
                         <img src="{{ $userStore->store_logo ? route('tenant.asset.domain', ['path' => $userStore->store_logo]) : asset('assets/demo/barbershop/img/klasik.png') }}"
-                             alt="{{ $userStore->store_name ?? 'Logo' }}"
-                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; background-color: #333; border: 2px solid #f39c12; margin-right: 15px;">
+                            alt="{{ $userStore->store_name ?? 'Logo' }}"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; background-color: #333; border: 2px solid #f39c12; margin-right: 15px;">
                     </div>
                     <h1>{{ $userStore->store_name ?? 'Classic Cuts Barbershop' }}</h1>
                 </div>
@@ -765,8 +991,38 @@
                     <ul id="modal-specs" class="modal-specs">
                     </ul>
                     <a id="chat-button" href="#" target="_blank" class="modal-chat-button">
-                        <i class="fab fa-whatsapp "></i> Hubungi Kami
+                        <i class="fab fa-whatsapp"></i> Hubungi Kami
                     </a>
+                    <style>
+                        .modal-chat-button {
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #25D366;
+                            /* WhatsApp green */
+                            color: #fff;
+                            padding: 12px 25px;
+                            border-radius: 50px;
+                            /* Pill shape */
+                            text-decoration: none;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            margin-top: 20px;
+                            transition: background-color 0.3s ease, transform 0.2s ease;
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        }
+
+                        .modal-chat-button:hover {
+                            background-color: #1DA851;
+                            /* Darker green on hover */
+                            transform: translateY(-2px);
+                        }
+
+                        .modal-chat-button i {
+                            margin-right: 10px;
+                            font-size: 1.3rem;
+                        }
+                    </style>
                 </div>
             </div>
         </div>
@@ -775,6 +1031,7 @@
     <template id="thumbnail-template">
         <button class="thumbnail"><img class="thumbnail-image" src="" alt="thumbnail" /></button>
     </template>
+
 
     <script>
         // ===================================================================================
@@ -812,6 +1069,12 @@
                     $specs = $product->specification ?? ($product->specs ?? []);
                     if (is_string($specs)) {
                         $specs = json_decode($specs, true) ?? [];
+                    }
+                    $specs = (array) $specs;
+
+                    // Use the correct field name 'estimasi_waktu' for estimation time
+                    if (!empty($product->estimasi_waktu) && !isset($specs['Durasi'])) {
+                        $specs['Durasi'] = $product->estimasi_waktu . ' Menit'; // Append ' Menit' for display
                     }
 
                     return [
@@ -963,6 +1226,97 @@
                 });
             }
 
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            let currentFilteredProducts = [];
+
+            function renderPagination(totalItems) {
+                const paginationContainer = document.getElementById('pagination-container');
+                if (!paginationContainer) return;
+                paginationContainer.innerHTML = '';
+                const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+                if (pageCount <= 1) {
+                    paginationContainer.style.display = 'none';
+                    return;
+                }
+                paginationContainer.style.display = 'flex';
+
+                const paginationUl = document.createElement('ul');
+                paginationUl.className = 'pagination';
+
+                // Tombol Sebelumnya
+                const prevLi = document.createElement('li');
+                const prevLink = document.createElement('a');
+                prevLink.href = '#';
+                prevLink.innerHTML = '&laquo;';
+                prevLink.addEventListener('click', e => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updateAndRender();
+                    }
+                });
+                if (currentPage === 1) {
+                    prevLi.classList.add('disabled');
+                    prevLink.style.pointerEvents = 'none';
+                }
+                prevLi.appendChild(prevLink);
+                paginationUl.appendChild(prevLi);
+
+                // Tombol Halaman
+                for (let i = 1; i <= pageCount; i++) {
+                    const li = document.createElement('li');
+                    if (i === currentPage) {
+                        li.classList.add('active');
+                        const span = document.createElement('span');
+                        span.textContent = i;
+                        li.appendChild(span);
+                    } else {
+                        const pageLink = document.createElement('a');
+                        pageLink.href = '#';
+                        pageLink.textContent = i;
+                        pageLink.addEventListener('click', e => {
+                            e.preventDefault();
+                            currentPage = i;
+                            updateAndRender();
+                        });
+                        li.appendChild(pageLink);
+                    }
+                    paginationUl.appendChild(li);
+                }
+
+                // Tombol Berikutnya
+                const nextLi = document.createElement('li');
+                const nextLink = document.createElement('a');
+                nextLink.href = '#';
+                nextLink.innerHTML = '&raquo;';
+                nextLink.addEventListener('click', e => {
+                    e.preventDefault();
+                    if (currentPage < pageCount) {
+                        currentPage++;
+                        updateAndRender();
+                    }
+                });
+                if (currentPage === pageCount) {
+                    nextLi.classList.add('disabled');
+                    nextLink.style.pointerEvents = 'none';
+                }
+                nextLi.appendChild(nextLink);
+                paginationUl.appendChild(nextLi);
+
+                paginationContainer.appendChild(paginationUl);
+            }
+
+            function updateAndRender() {
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const paginatedItems = currentFilteredProducts.slice(startIndex, endIndex);
+
+                renderProducts(paginatedItems);
+                renderPagination(currentFilteredProducts.length);
+            }
+
             // Fungsi utama untuk filter dan sorting
             function applyFiltersAndSort() {
                 const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
@@ -1002,11 +1356,9 @@
                     }
                 });
 
-                renderProducts(filtered);
-
-                if (paginationContainer) {
-                    paginationContainer.style.display = 'none';
-                }
+                currentFilteredProducts = filtered;
+                currentPage = 1;
+                updateAndRender();
             }
 
             // Tambahkan event listener untuk kartu-kartu kategori
