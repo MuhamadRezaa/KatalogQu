@@ -126,6 +126,27 @@
                         <option value="safety">Keamanan</option>
                         <option value="lighting">Lampu</option>
                     </select>
+                    <select id="subCategoryFilter">
+                        <option value="all">Semua Sub Kategori</option>
+                        <option value="jok" data-parent="interior">Sarung Jok</option>
+                        <option value="dashboard" data-parent="interior">Dashboard</option>
+                        <option value="karpet" data-parent="interior">Karpet</option>
+                        <option value="spoiler" data-parent="exterior">Spoiler</option>
+                        <option value="bodykit" data-parent="exterior">Body Kit</option>
+                        <option value="emblem" data-parent="exterior">Emblem</option>
+                        <option value="audio" data-parent="electronics">Audio System</option>
+                        <option value="kamera" data-parent="electronics">Kamera</option>
+                        <option value="gps" data-parent="electronics">GPS</option>
+                        <option value="oli" data-parent="maintenance">Oli</option>
+                        <option value="filter" data-parent="maintenance">Filter</option>
+                        <option value="busi" data-parent="maintenance">Busi</option>
+                        <option value="alarm" data-parent="safety">Alarm</option>
+                        <option value="dashcam" data-parent="safety">Dashcam</option>
+                        <option value="kacafilm" data-parent="safety">Kaca Film</option>
+                        <option value="led" data-parent="lighting">LED</option>
+                        <option value="hid" data-parent="lighting">HID</option>
+                        <option value="fog" data-parent="lighting">Fog Lamp</option>
+                    </select>
                     <select id="priceFilter">
                         <option value="all">Semua Harga</option>
                         <option value="0-200000">Rp 0 - 200rb</option>
@@ -142,7 +163,7 @@
 
             <div class="products-grid" id="productsGrid">
                 <!-- Products dengan gambar -->
-                <div class="product-card" data-id="1" data-category="interior" data-price="1250000">
+                <div class="product-card" data-id="1" data-category="interior" data-subcategory="jok" data-price="1250000" data-images='["https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/95/MTA-40163476/oscar_sarung_jok_mobil_ertiga_bahan_kulit_syntetic_original_full_3_baris_full01_m057pk2o.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/9/14/8c5e5e5a-8c5e-4c5e-8c5e-8c5e5e5a8c5e.jpg", "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lm5z3bkwc4si9f"]'>
                     <div class="product-image">
                         <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/95/MTA-40163476/oscar_sarung_jok_mobil_ertiga_bahan_kulit_syntetic_original_full_3_baris_full01_m057pk2o.jpg"
                             alt="Sarung Jok Kulit Premium" class="product-img">
@@ -161,7 +182,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="2" data-category="lighting" data-price="350000">
+                <div class="product-card" data-id="2" data-category="lighting" data-subcategory="led" data-price="350000" data-images='["https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp", "https://5.imimg.com/data5/SELLER/Default/2023/8/334206123/BI/XH/JI/8278968/h4-led-headlight-bulb.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL._AC_UF894,1000_QL80_.jpg"]'>
                     <div class="product-image">
                         <img src="https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp"
                             alt="LED Headlight H4" class="product-img">
@@ -190,7 +211,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="3" data-category="exterior" data-price="2100000">
+                <div class="product-card" data-id="3" data-category="exterior" data-subcategory="spoiler" data-price="2100000" data-images='["https://tiimg.tistatic.com/fp/1/573/carbon-fiber-car-spoiler-192.jpg", "https://5.imimg.com/data5/SELLER/Default/2022/8/VY/QU/YW/39577847/carbon-fiber-spoiler.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL.jpg"]'>
                     <div class="product-image">
                         <img src="https://tiimg.tistatic.com/fp/1/573/carbon-fiber-car-spoiler-192.jpg"
                             alt="Spoiler Carbon Fiber" class="product-img">
@@ -210,7 +231,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="4" data-category="electronics" data-price="1800000">
+                <div class="product-card" data-id="4" data-category="electronics" data-subcategory="audio" data-price="1800000" data-images='["https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg", "https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490"]'>
                     <div class="product-image">
                         <img src="https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg"
                             alt="Audio System Pioneer" class="product-img">
@@ -239,7 +260,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="5" data-category="maintenance" data-price="285000">
+                <div class="product-card" data-id="5" data-category="maintenance" data-subcategory="oli" data-price="285000" data-images='["https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"]'>
                     <div class="product-image">
                         <img src="https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490"
                             alt="Oli Mesin Synthetic" class="product-img">
@@ -262,7 +283,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="6" data-category="safety" data-price="650000">
+                <div class="product-card" data-id="6" data-category="safety" data-subcategory="alarm" data-price="650000" data-images='["https://images.squarespace-cdn.com/content/v1/661bf67da1652b3d5d587880/208af2c3-fb7d-47f4-b5ad-e34d657998f3/Pro+2WG180W.jpg", "https://m.media-amazon.com/images/I/71xKZQx8AFL.jpg"]'>
                     <div class="product-image">
                         <img src="https://images.squarespace-cdn.com/content/v1/661bf67da1652b3d5d587880/208af2c3-fb7d-47f4-b5ad-e34d657998f3/Pro+2WG180W.jpg"
                             alt="Alarm System Advanced" class="product-img">
@@ -285,7 +306,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="7" data-category="interior" data-price="420000">
+                <div class="product-card" data-id="7" data-category="interior" data-subcategory="dashboard" data-price="420000" data-images='["https://www.carcoverusa.com/images/carhartt/carhartt-dashboard-covers-black.webp", "https://m.media-amazon.com/images/I/81xKZQx8AFL.jpg"]'>
                     <div class="product-image">
                         <img src="https://www.carcoverusa.com/images/carhartt/carhartt-dashboard-covers-black.webp"
                             alt="Dashboard Cover Premium" class="product-img">
@@ -307,7 +328,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="8" data-category="exterior" data-price="3200000">
+                <div class="product-card" data-id="8" data-category="exterior" data-subcategory="bodykit" data-price="3200000" data-images='["https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"]'>
                     <div class="product-image">
                         <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="Body Kit Sport" class="product-img">
@@ -330,7 +351,7 @@
                 </div>
 
                 <!-- Produk tambahan untuk testing filter -->
-                <div class="product-card" data-id="9" data-category="electronics" data-price="450000">
+                <div class="product-card" data-id="9" data-category="electronics" data-subcategory="kamera" data-price="450000" data-images='["https://down-id.img.susercontent.com/file/id-11134207-7rash-m13z3bkwc4si9f", "https://m.media-amazon.com/images/I/71xKZQx8AFL.jpg"]'>
                     <div class="product-image">
                         <img src="https://down-id.img.susercontent.com/file/id-11134207-7rash-m13z3bkwc4si9f"
                             alt="Kamera Parkir HD" class="product-img">
@@ -352,7 +373,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="10" data-category="lighting" data-price="150000">
+                <div class="product-card" data-id="10" data-category="lighting" data-subcategory="fog" data-price="150000" data-images='["https://brainboxcar.com/pictures/product/534-02301-FOG-ANGEL-(4).jpg", "https://5.imimg.com/data5/SELLER/Default/2023/8/334206123/BI/XH/JI/8278968/fog-lamp.jpg"]'>
                     <div class="product-image">
                         <img src="https://brainboxcar.com/pictures/product/534-02301-FOG-ANGEL-(4).jpg"
                             alt="Lampu Fog LED" class="product-img">
@@ -374,7 +395,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="11" data-category="maintenance" data-price="85000">
+                <div class="product-card" data-id="11" data-category="maintenance" data-subcategory="filter" data-price="85000" data-images='["https://images.tokopedia.net/img/cache/700/VqbcmM/2024/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL.jpg"]'>
                     <div class="product-image">
                         <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2024/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"
                             alt="Filter Udara Sport" class="product-img">
@@ -396,7 +417,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="12" data-category="safety" data-price="950000">
+                <div class="product-card" data-id="12" data-category="safety" data-subcategory="dashcam" data-price="950000" data-images='["https://m.media-amazon.com/images/I/81gIn+MXtyL._AC_.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"]'>
                     <div class="product-image">
                         <img src="https://m.media-amazon.com/images/I/81gIn+MXtyL._AC_.jpg" alt="Dashcam 4K Pro"
                             class="product-img">
@@ -550,7 +571,9 @@
         function resetFilter() {
             document.getElementById('productSearchInput').value = '';
             document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('subCategoryFilter').value = 'all';
             document.getElementById('priceFilter').value = 'all';
+            currentPage = 1;
 
             const productCards = document.querySelectorAll('.product-card');
             productCards.forEach(card => {
@@ -567,22 +590,33 @@
 
         function setupProductFilters() {
             document.getElementById('searchProductBtn').addEventListener('click', function() {
+                currentPage = 1;
                 applyFilters();
             });
 
             document.getElementById('productSearchInput').addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {
+                    currentPage = 1;
                     applyFilters();
                 } else {
+                    currentPage = 1;
                     applyFilters();
                 }
             });
 
             document.getElementById('categoryFilter').addEventListener('change', function() {
+                currentPage = 1;
+                updateSubCategoryOptions();
+                applyFilters();
+            });
+
+            document.getElementById('subCategoryFilter').addEventListener('change', function() {
+                currentPage = 1;
                 applyFilters();
             });
 
             document.getElementById('priceFilter').addEventListener('change', function() {
+                currentPage = 1;
                 applyFilters();
             });
 
@@ -591,9 +625,35 @@
             });
         }
 
+        function updateSubCategoryOptions() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const subCategoryFilter = document.getElementById('subCategoryFilter');
+            const options = subCategoryFilter.querySelectorAll('option');
+
+            subCategoryFilter.value = 'all';
+
+            options.forEach(option => {
+                if (option.value === 'all') {
+                    option.style.display = 'block';
+                } else {
+                    const parent = option.getAttribute('data-parent');
+                    if (categoryFilter === 'all' || parent === categoryFilter) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Pagination variables
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
         function applyFilters() {
             const searchInput = document.getElementById('productSearchInput').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
+            const subCategoryFilter = document.getElementById('subCategoryFilter').value;
             const priceFilter = document.getElementById('priceFilter').value;
 
             const productCards = Array.from(document.querySelectorAll('.product-card'));
@@ -608,21 +668,38 @@
                 const productName = card.querySelector('h4').textContent.toLowerCase();
                 const productDesc = card.querySelector('p').textContent.toLowerCase();
                 const productCategory = card.getAttribute('data-category');
+                const productSubCategory = card.getAttribute('data-subcategory');
                 const productPrice = parseInt(card.getAttribute('data-price'));
 
                 const matchesSearch = searchInput === '' ||
                     productName.includes(searchInput) ||
                     productDesc.includes(searchInput);
                 const matchesCategory = categoryFilter === 'all' || productCategory === categoryFilter;
+                const matchesSubCategory = subCategoryFilter === 'all' || productSubCategory === subCategoryFilter;
                 const matchesPrice = checkPriceRange(productPrice, priceFilter);
 
-                if (matchesSearch && matchesCategory && matchesPrice) {
-                    card.style.display = 'flex';
+                if (matchesSearch && matchesCategory && matchesSubCategory && matchesPrice) {
                     visibleCards.push(card);
                 } else {
                     card.style.display = 'none';
                 }
             });
+
+            // Apply pagination
+            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            visibleCards.forEach((card, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update pagination UI
+            updatePaginationUI(totalPages, visibleCards.length);
 
             const sectionTitle = document.querySelector('#products .section-title');
             if (searchInput !== '') {
@@ -661,6 +738,54 @@
                 `;
                 productsGrid.appendChild(noProductsMessage);
             }
+        }
+
+        function updatePaginationUI(totalPages, totalItems) {
+            let paginationContainer = document.getElementById('paginationContainer');
+
+            if (!paginationContainer) {
+                paginationContainer = document.createElement('div');
+                paginationContainer.id = 'paginationContainer';
+                paginationContainer.className = 'pagination-container';
+                document.getElementById('productsGrid').parentElement.appendChild(paginationContainer);
+            }
+
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '<div class="pagination">';
+
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+            }
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += '<span class="pagination-dots">...</span>';
+                }
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+            }
+
+            paginationHTML += '</div>';
+            paginationHTML += `<div class="pagination-info">Menampilkan ${((currentPage - 1) * itemsPerPage) + 1}-${Math.min(currentPage * itemsPerPage, totalItems)} dari ${totalItems} produk</div>`;
+
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            applyFilters();
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
         }
 
         function checkPriceRange(price, priceFilter) {
@@ -754,10 +879,26 @@
 
             const categoryColor = categoryColors[productCategory] || '#95a5a6';
 
+            // Get additional images
+            const additionalImagesAttr = productCard.getAttribute('data-images');
+            let additionalImages = [];
+            try {
+                additionalImages = additionalImagesAttr ? JSON.parse(additionalImagesAttr) : [productImgSrc];
+            } catch(e) {
+                additionalImages = [productImgSrc];
+            }
+
             let detailHTML = `
                 <div class="product-detail-container">
                     <div class="product-detail-image">
-                        ${productImgSrc ? `<img src="${productImgSrc}" alt="${productName}" class="detail-product-img">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
+                        ${productImgSrc ? `<img src="${productImgSrc}" alt="${productName}" class="detail-product-img" id="mainProductImg">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
+                        ${additionalImages.length > 1 ? `
+                            <div class="product-image-thumbnails">
+                                ${additionalImages.map((img, index) => `
+                                    <img src="${img}" alt="${productName} ${index + 1}" class="thumbnail-img ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${img}', event)">
+                                `).join('')}
+                            </div>
+                        ` : ''}
                     </div>
 
                     <div class="product-basic-info">
@@ -796,13 +937,6 @@
                             </div>
                         </div>
 
-                        <div class="product-detail-action">
-                            <button class="btn btn-whatsapp btn-detail-order" onclick="orderViaWhatsApp(${productId})">
-                                <i class="fab fa-whatsapp"></i>
-                                <span> Sekarang</span>
-                                <div class="btn-shine"></div>
-                            </button>
-                        </div>
                     </div>
 
                     ${getSimilarProductsHTML(productId, productCategory)}
@@ -908,6 +1042,21 @@
 
         function closeDetailModal() {
             document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function changeMainImage(imgSrc, event) {
+            const mainImg = document.getElementById('mainProductImg');
+            if (mainImg) {
+                mainImg.src = imgSrc;
+            }
+
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail-img').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         function orderViaWhatsApp(productId) {

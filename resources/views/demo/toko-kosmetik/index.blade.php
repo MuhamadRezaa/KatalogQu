@@ -423,7 +423,7 @@
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="#home">
-                <img src="https://via.placeholder.com/45x45/E6397A/FFFFFF?text=CS" alt="Logo"
+                <img src="{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}" alt="Logo"
                     class="brand-logo me-2" style="height: 40px;">
                 <span class="brand-text">Canu Cosmetics</span>
             </a>
@@ -546,9 +546,10 @@
                                 <h5 class="text-muted text-decoration-line-through" id="modalProductOldPrice">Rp 0
                                 </h5>
                             </div>
-                            <h5>Deskripsi</h5>
+                            <strong>Deskripsi</strong>
                             <p id="modalProductDescription">Deskripsi produk...</p>
-                            <h5>Spesifikasi</h5>
+                            <br>
+                            <strong>Spesifikasi</strong>
                             <div id="modalProductSpecs"></div>
                             <div class="d-grid mt-4">
                                 <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg"><i
@@ -573,12 +574,17 @@
             const dummyBanners = [{
                     title: "Temukan Kecantikan Sejati Anda",
                     subtitle: "Koleksi kosmetik premium untuk wanita modern",
-                    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80"
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                 },
                 {
                     title: "Skincare Revolusioner",
                     subtitle: "Formula inovatif untuk kulit sehat dan bercahaya",
-                    image: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?auto=format&fit=crop&w=1920&q=80"
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                },
+                {
+                    title: "Temukan Kecantikan Sejati Anda",
+                    subtitle: "Koleksi kosmetik premium untuk wanita modern",
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                 },
             ];
             const dummyCategories = [{
@@ -605,7 +611,7 @@
                         Bahan: "Hyaluronic Acid"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1629198688000-71f2747c9773?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: true,
                     discount_percentage: null
@@ -624,7 +630,7 @@
                         Finish: "Matte"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1590740685974-98c5666f7f2b?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: 15
@@ -643,7 +649,7 @@
                         SPF: "30"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1588667822765-f93021a590c7?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: true,
                     discount_percentage: null
@@ -661,7 +667,385 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 9,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 11,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 12,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 13,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 14,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 15,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 16,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 17,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 18,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 19,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 20,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 21,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 22,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 23,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 24,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 25,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 26,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 27,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 28,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 29,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
+                    ],
+                    is_new: false,
+                    discount_percentage: null
+                },
+                {
+                    id: 30,
+                    name: "Eyeshadow Palette (Nude)",
+                    brand: "Ethereal Skin",
+                    category_id: 2,
+                    subcategory: "Eyeshadow",
+                    price: 180000,
+                    old_price: null,
+                    description: "Palet eyeshadow nude.",
+                    specs: {
+                        JumlahShade: "12"
+                    },
+                    images: [
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -680,7 +1064,7 @@
                         Aroma: "Floral"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1541108523308-b0a340ddbf58?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: 12
@@ -699,9 +1083,9 @@
                         Finish: "Matte"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
-                    is_new: false,
+                    is_new: true,
                     discount_percentage: 15
                 },
             ];
@@ -924,6 +1308,87 @@
                     }
                 });
             }
+
+            // [BARU] Fungsi untuk mengisi data produk ke modal
+            function populateModal(product) {
+                // 1. Dapatkan elemen-elemen modal
+                const modalBrand = document.getElementById('modalProductBrand');
+                const modalName = document.getElementById('modalProductName');
+                const modalBadge = document.getElementById('modalProductBadge');
+                const modalCategory = document.getElementById('modalProductCategory');
+                const modalPrice = document.getElementById('modalProductPrice');
+                const modalOldPrice = document.getElementById('modalProductOldPrice');
+                const modalDescription = document.getElementById('modalProductDescription');
+                const modalSpecs = document.getElementById('modalProductSpecs');
+                const modalCarouselInner = document.getElementById('modalCarouselInner');
+                const chatButton = document.getElementById('chatButton');
+                const relatedContainer = document.getElementById('related-products-container');
+
+                // 2. Isi data dasar
+                modalBrand.textContent = product.brand;
+                modalName.textContent = product.name;
+                modalCategory.textContent = `${product.category} > ${product.subcategory}`;
+                modalPrice.textContent = product.price_formatted;
+                modalDescription.textContent = product.description;
+
+                // 3. Atur harga lama (jika ada)
+                if (product.old_price_formatted) {
+                    modalOldPrice.textContent = product.old_price_formatted;
+                    modalOldPrice.style.display = 'inline';
+                } else {
+                    modalOldPrice.style.display = 'none';
+                }
+
+                // 4. Atur badge (jika ada)
+                if (product.discount_percentage) {
+                    modalBadge.textContent = 'PROMO';
+                    modalBadge.className = 'badge ms-2 bg-danger'; // Tambah kelas Bootstrap
+                    modalBadge.style.display = 'inline';
+                } else if (product.is_new) {
+                    modalBadge.textContent = 'BARU';
+                    modalBadge.className = 'badge ms-2 bg-success'; // Tambah kelas Bootstrap
+                    modalBadge.style.display = 'inline';
+                } else {
+                    modalBadge.style.display = 'none';
+                }
+
+                // 5. Isi spesifikasi
+                modalSpecs.innerHTML = Object.entries(product.specs).map(([key, value]) =>
+                    `<div class="row gx-2"><div class="col-5 col-md-4"><p>${key}</p></div><div class="col-7 col-md-8">: ${value}</div></div>`
+                ).join('');
+
+                // 6. Isi carousel gambar
+                modalCarouselInner.innerHTML = product.images.map((img, index) =>
+                    `<div class="carousel-item ${index === 0 ? 'active' : ''}">
+                        <img src="${img}" class="d-block w-100" alt="${product.name}" style="aspect-ratio: 1/1; object-fit: cover;">
+                    </div>`
+                ).join('');
+
+                // 7. Isi produk terkait (3 produk dari kategori yang sama)
+                const relatedProducts = allProductsData.filter(p =>
+                    p.category_id === product.category_id && p.id !== product.id
+                ).slice(0, 3); // Ambil maks 3
+
+                if (relatedProducts.length > 0) {
+                    document.getElementById('related-products-section').style.display = 'block';
+                    relatedContainer.innerHTML = relatedProducts.map(rp =>
+                        `<div class="col-4">
+                            <div class="related-product-card" data-product-id="${rp.id}">
+                                <img src="${rp.image}" alt="${rp.name}">
+                                <div class="related-product-title">${rp.name}</div>
+                            </div>
+                        </div>`
+                    ).join('');
+                } else {
+                    document.getElementById('related-products-section').style.display = 'none';
+                }
+
+
+                // 8. Atur tombol chat
+                chatButton.href =
+                    `https://wa.me/6281572505989?text=Hai,%20saya%20tertarik%20dengan%20produk%20${encodeURIComponent(product.name)}`;
+            }
+
 
             function setupProductCardListeners() {
                 document.querySelectorAll('.product-card').forEach(card => {

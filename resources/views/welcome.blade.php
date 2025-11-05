@@ -289,7 +289,7 @@
                                                 {!! $hero->subtitle !!}
                                             </span>
                                             <div
-                                                class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                                                class="mt-3 hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
                                                 @if ($hero->button_text_1 && $hero->button_link_1)
                                                     <a href="{{ $hero->button_link_1 }}"
                                                         class="btn-hero btn-hero-primary">{!! $hero->button_text_1 !!}</a>

@@ -12,6 +12,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Sticky footer setup */
+        /* Make page a column flex container so footer sticks to bottom naturally */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #0f1720;
+            /* ensure page background is dark */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+
+        /* main grows and pushes footer down (flow layout) */
+        main {
+            flex: 1 0 auto;
+            width: 100%;
+        }
+
+        /* footer flows with the page and will be pushed to bottom when content is short */
+        footer {
+            position: relative;
+            margin-top: auto;
+            background-color: #1a1f24;
+            box-sizing: border-box;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+            z-index: 10;
+        }
+
+        .products-section {
+            /* keep a little space above footer for visual separation */
+            padding-bottom: 1.5rem;
+        }
+
         .filter-section {
             background-color: #f7fafc;
         }
@@ -43,387 +83,450 @@
     </style>
 </head>
 
-<body class="bg-gray-100">
-
-    <header class="bg-white  py-4">
-        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-            <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                @if ($userStore->store_logo)
-                    <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                        alt="{{ $userStore->store_name }}" class="rounded-full w-16 h-16 object-cover">
-                @else
-                    <div class="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center">
-                        <span class="text-white font-bold text-2xl">{{ substr($userStore->store_name, 0, 1) }}</span>
+<body class="min-h-screen flex flex-col bg-[#0f1720]">
+    <main class="flex-grow">
+        <div class="bg-gray-100 w-full">
+            <header class="bg-white  py-4">
+                <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
+                    <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                        @if ($userStore->store_logo)
+                            <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
+                                alt="{{ $userStore->store_name }}" class="rounded-full w-16 h-16 object-cover">
+                        @else
+                            <div class="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center">
+                                <span
+                                    class="text-white font-bold text-2xl">{{ substr($userStore->store_name, 0, 1) }}</span>
+                            </div>
+                        @endif
+                        <h1 class="text-2xl font-bold text-teal-600">{{ $userStore->store_name }}</h1>
                     </div>
-                @endif
-                <h1 class="text-2xl font-bold text-teal-600">{{ $userStore->store_name }}</h1>
-            </div>
 
 
-        </div>
-    </header>
-
-    <section class="relative text-white text-center py-5 overflow-hidden" style="max-width: 1920px; margin: 0 auto;">
-        {{-- Container dengan aspect ratio 16:9 --}}
-        {{-- <div aria-hidden="true" class="h-90"></div> --}}
-        <div style="aspect-ratio: 16 / 9; position: relative;">
-            <div id="hero-slider" class="absolute inset-0">
-                @php
-                    $fallbacks = collect([
-                        [
-                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag.webp'),
-                            'title' => 'Banner 1',
-                            'subtitle' => 'sub 1',
-                        ],
-                        [
-                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg'),
-                            'title' => 'Banner 2',
-                            'subtitle' => 'Kartecsgcgsj',
-                        ],
-                        [
-                            'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg'),
-                            'title' => 'Banner 3',
-                            'subtitle' => 'sub 3',
-                        ],
-                    ]);
-
-                    $slides = isset($banners) && $banners->isNotEmpty() ? collect($banners)->take(3) : collect();
-                    if ($slides->count() < 3) {
-                        $slides = $slides->concat($fallbacks->take(3 - $slides->count()));
-                    }
-                @endphp
-
-                @foreach ($slides as $i => $bn)
-                    @php
-                        $isObj = is_object($bn);
-                        $imgSrc = $isObj ? route('tenant.asset.domain', ['path' => $bn->image_url]) : $bn['image_url'];
-                        $title = $isObj ? $bn->title ?? 'Banner' : $bn['title'];
-                        $subtitle = $isObj ? $bn->subtitle ?? '' : $bn['subtitle'];
-                    @endphp
-
-                    <div
-                        class="slide absolute inset-0 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }} transition-opacity duration-1000">
-                        <img src="{{ $imgSrc }}" alt="{{ $title }}"
-                            class="w-full h-full object-cover brightness-75 absolute inset-0">
-                        <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
-
-                        <div
-                            class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
-                            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{!! $title !!}</h1>
-                            <p class="text-lg md:text-xl font-light mb-6">{!! $subtitle !!}</p>
-                        </div>
-                    </div>
-                @endforeach
-                <div class="absolute bottom-4 left-0 right-0 z-20">
-                    <div class="flex justify-center space-x-3">
-                        @for ($i = 0; $i < $slides->count(); $i++)
-                            <span
-                                class="dot w-3 h-3 rounded-full bg-white {{ $i === 0 ? 'opacity-100' : 'opacity-50' }} transition-all duration-500"></span>
-                        @endfor
-                    </div>
                 </div>
-            </div>
-    </section>
+            </header>
 
-
-    <div class="my-8 container mx-auto px-4 filter-section rounded-xl shadow-md p-6">
-        <h2 class="text-xl md:text-2xl font-bold text-center mb-2 text-teal-700">Kategori</h2>
-
-        <div class="flex flex-wrap gap-2 md:gap-4 justify-center" id="category-filter-container">
-
-            <button
-                class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
-                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
-                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
-                data-category="all" data-category-id="all">
-                Semua
-            </button>
-            @foreach ($categories as $category)
-                <button
-                    class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
-                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
-                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
-                    data-category="{{ strtolower($category->name) }}" data-category-id="{{ $category->id }}">
-                    </i> {{ $category->name }}
-                </button>
-            @endforeach
-            <button
-                class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
-                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
-                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
-                data-category="accessory" data-category-id="accessory">
-                Lainnya
-            </button>
-        </div>
-
-        {{-- SUB KATEGORI --}}
-        <div class="my-8 container mx-auto px-4 filter-section rounded-xl">
-            <h2 class="text-lg md:text-2xl font-bold text-center mt-6 mb-2 text-teal-600">Sub Kategori</h2>
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl mx-auto"
-                id="subcategory-filter-container">
-                <button
-                    class="filter-btn subcategory-btn inline-flex items-center whitespace-nowrap px-4 md:px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
-                    data-subcategory="all" data-category="all" data-category-id="all">
-                    Semua
-                </button>
-
-                @if (isset($subCategories) && $subCategories->isNotEmpty())
-                    @foreach ($subCategories as $subCategory)
-                        <button
-                            class="filter-btn subcategory-btn inline-flex items-center whitespace-nowrap px-4 md:px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
-                            data-subcategory="{{ strtolower($subCategory->name) }}"
-                            data-category="{{ strtolower(optional($subCategory->category)->name ?? 'general') }}"
-                            data-category-id="{{ optional($subCategory->category)->id ?? '0' }}">
-                            {{ $subCategory->name }}
-                        </button>
-                    @endforeach
-                @else
-                    <p class="text-gray-500 text-sm text-center mt-2 no-sub-msg">Tidak ada subkategori tersedia</p>
-                @endif
-            </div>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-4 mt-6 justify-center items-center">
-            {{-- Dropdown Urutkan --}}
-            <div class="relative w-full md:w-auto">
-                <select id="sortDropdown"
-                    class="block appearance-none w-auto bg-white border border-teal-500 text-gray-700 py-2 px-4 pr-8 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-teal-500 inline-block"
-                    style="width: auto; min-width: 9rem;">
-                    <option value="baru">Barang Baru</option>
-                    <option value="lama">Barang Lama</option>
-                    {{-- <option value="date_asc">Tanggal Naik (Lama ke Baru)</option>
-                    <option value="date_desc">Tanggal Turun (Baru ke Lama)</option> --}}
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </div>
-            </div>
-
-            {{-- Dropdown Harga --}}
-            <div class="relative w-full md:w-auto">
-                <select id="priceDropdown"
-                    class="block appearance-none w-auto bg-white border border-teal-500 text-gray-700 py-2 px-4 pr-8 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-teal-500 inline-block"
-                    style="width: auto; min-width: 9rem;">
-                    <option value="all">Semua Harga</option>
-                    @if (isset($priceRanges) && $priceRanges->isNotEmpty())
-                        @foreach ($priceRanges as $range)
-                            <option value="{{ $range->name }}" data-min="{{ $range->min ?? 0 }}"
-                                data-max="{{ $range->max ?? '' }}">
-                                {{ $range->name }}
-                            </option>
-                        @endforeach
-                    @endif
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </div>
-            </div>
-
-            <div class="flex items-center md:ml-4">
-                <span id="activePriceLabel" class="text-sm text-teal-700 font-semibold"></span>
-            </div>
-        </div>
-
-        {{-- Kolom Pencarian (diletakkan di bawah dropdown) --}}
-        <div class="flex justify-center mt-4">
-            <div class="w-full sm:w-96">
-                <div class="relative flex items-center border border-gray-300 rounded-full overflow-hidden">
-                    <input type="text" id="searchInput" placeholder="Cari produk..."
-                        class="w-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                    <button id="searchBtn"
-                        class="bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition-all duration-300">
-                        Cari
-                    </button>
-                </div>
-            </div>
-        </div>
-
-
-        @php
-            use Illuminate\Support\Str;
-        @endphp
-
-        <section class="products-section pb-16 mt-4">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-3xl font-bold text-center mb-8">Produk Unggulan</h2>
-
-                {{-- HAPUS @dd($products) DARI SINI SETELAH ANDA MENGGUNAKAN KODE INI --}}
-
-                <div class="products-grid grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                    id="productsGrid">
-                    @forelse ($products as $product)
+            <section class="relative text-white text-center py-5 overflow-hidden"
+                style="max-width: 1920px; margin: 0 auto;">
+                {{-- Container dengan aspect ratio 16:9 --}}
+                {{-- <div aria-hidden="true" class="h-90"></div> --}}
+                <div style="aspect-ratio: 16 / 9; position: relative;">
+                    <div id="hero-slider" class="absolute inset-0">
                         @php
-                            // Tentukan sumber gambar utama
-                            $src = $product->primary_image_src
-                                ? (Str::startsWith($product->primary_image_src, ['http', 'https'])
-                                    ? $product->primary_image_src
-                                    : asset('storage/' . $product->primary_image_src))
-                                : asset('assets/images/no-image-icon.png');
+                            $fallbacks = collect([
+                                [
+                                    'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag.webp'),
+                                    'title' => 'Banner 1',
+                                    'subtitle' => 'sub 1',
+                                ],
+                                [
+                                    'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg'),
+                                    'title' => 'Banner 2',
+                                    'subtitle' => 'Kartecsgcgsj',
+                                ],
+                                [
+                                    'image_url' => asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg'),
+                                    'title' => 'Banner 3',
+                                    'subtitle' => 'sub 3',
+                                ],
+                            ]);
+
+                            $slides =
+                                isset($banners) && $banners->isNotEmpty() ? collect($banners)->take(3) : collect();
+                            if ($slides->count() < 3) {
+                                $slides = $slides->concat($fallbacks->take(3 - $slides->count()));
+                            }
                         @endphp
 
-                        <div class="product-card bg-white rounded-2xl overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105"
-                            {{-- [FIX 1] Menggunakan optional() untuk mencegah error jika relasi null --}}
-                            data-category="{{ strtolower(optional($product->category)->name ?? 'general') }}"
-                            data-subcategory="{{ strtolower(optional($product->subCategory)->name ?? 'general') }}"
-                            data-name="{{ strtolower($product->name) }}" data-price="{{ $product->price }}"
-                            data-created-at="{{ $product->created_at }}">
+                        @foreach ($slides as $i => $bn)
+                            @php
+                                $isObj = is_object($bn);
+                                $imgSrc = $isObj
+                                    ? route('tenant.asset.domain', ['path' => $bn->image_url])
+                                    : $bn['image_url'];
+                                $title = $isObj ? $bn->title ?? 'Banner' : $bn['title'];
+                                $subtitle = $isObj ? $bn->subtitle ?? '' : $bn['subtitle'];
+                            @endphp
 
-                            {{-- Gambar Produk --}}
-                            <div class="aspect-w-1 aspect-h-1 w-full bg-gray-50">
-                                <img src="{{ $src }}" alt="{{ $product->name }}"
-                                    class="w-full h-full object-contain p-3">
+                            <div
+                                class="slide absolute inset-0 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }} transition-opacity duration-2000">
+                                <img src="{{ $imgSrc }}" alt="{{ $title }}"
+                                    class="w-full h-full object-cover brightness-75 absolute inset-0">
+                                <div class="absolute inset-0 bg-teal-800 opacity-50"></div>
+
+                                <div
+                                    class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center">
+                                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{{ $title }}</h1>
+                                    <p class="text-lg md:text-xl font-light mb-6">{{ $subtitle }}</p>
+                                </div>
                             </div>
+                        @endforeach
+                        <div class="absolute bottom-4 left-0 right-0 z-20">
+                            <div class="flex justify-center space-x-3">
+                                @for ($i = 0; $i < $slides->count(); $i++)
+                                    <span
+                                        class="dot w-3 h-3 rounded-full bg-white {{ $i === 0 ? 'opacity-100' : 'opacity-50' }} transition-all duration-500"></span>
+                                @endfor
+                            </div>
+                        </div>
+                    </div>
+            </section>
 
-                            {{-- Informasi Produk --}}
-                            <div class="p-4 flex flex-col flex-grow">
-                                <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-                                    {{ $product->name }}
-                                </h3>
-                                <div class="text-center mt-auto">
-                                    @if ($product->original_price && $product->original_price > $product->price)
-                                        <div class="flex items-center justify-center space-x-1 mb-1">
-                                            <span class="text-gray-400 line-through text-base">
-                                                Rp {{ number_format($product->original_price, 0, ',', '.') }}
-                                            </span>
-                                            <span class="text-xs text-gray-500">(Harga Lama)</span>
+
+            <div class="my-8 container mx-auto px-4 filter-section p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-center mb-2 text-teal-700">Kategori</h2>
+
+                <div class="flex flex-wrap gap-2 md:gap-4 justify-center" id="category-filter-container">
+
+                    <button
+                        class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
+                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
+                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                        data-category="all" data-category-id="all">
+                        Semua
+                    </button>
+                    @foreach ($categories as $category)
+                        <button
+                            class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
+                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
+                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                            data-category="{{ strtolower($category->name) }}" data-category-id="{{ $category->id }}">
+                            </i> {{ $category->name }}
+                        </button>
+                    @endforeach
+                    <button
+                        class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
+                       bg-white text-gray-700 ring-1 ring-gray-200 transition-all
+                       hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                        data-category="accessory" data-category-id="accessory">
+                        Lainnya
+                    </button>
+                </div>
+
+                {{-- SUB KATEGORI --}}
+                <div class="my-8 container mx-auto px-4 filter-section rounded-xl">
+                    <h2 class="text-lg md:text-2xl font-bold text-center mt-6 mb-2 text-teal-600">Sub Kategori</h2>
+                    <div class="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl mx-auto"
+                        id="subcategory-filter-container">
+                        <button
+                            class="filter-btn subcategory-btn inline-flex items-center whitespace-nowrap px-4 md:px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                            data-subcategory="all" data-category="all" data-category-id="all">
+                            Semua
+                        </button>
+
+                        @if (isset($subCategories) && $subCategories->isNotEmpty())
+                            @foreach ($subCategories as $subCategory)
+                                <button
+                                    class="filter-btn subcategory-btn inline-flex items-center whitespace-nowrap px-4 md:px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                                    data-subcategory="{{ strtolower($subCategory->name) }}"
+                                    data-category="{{ strtolower(optional($subCategory->category)->name ?? 'general') }}"
+                                    data-category-id="{{ optional($subCategory->category)->id ?? '0' }}">
+                                    {{ $subCategory->name }}
+                                </button>
+                            @endforeach
+                        @else
+                            <p class="text-gray-500 text-sm text-center mt-2 no-sub-msg">Tidak ada subkategori tersedia
+                            </p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="flex flex-row flex-wrap gap-4 mt-6 justify-center items-center">
+                    {{-- Dropdown Urutkan --}}
+                    <div class="relative">
+                        <select id="sortDropdown"
+                            class="block appearance-none bg-white border border-teal-500 text-gray-700 py-2 px-4 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
+                            style="min-width: 9rem;">
+                            <option value="baru">Barang Baru</option>
+                            <option value="lama">Barang Lama</option>
+                        </select>
+                    </div>
+
+                    {{-- Dropdown Harga --}}
+                    <div class="relative">
+                        <select id="priceDropdown"
+                            class="block appearance-none bg-white border border-teal-500 text-gray-700 py-2 px-4 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
+                            style="min-width: 9rem;">
+                            <option value="all">Semua Harga</option>
+                            @if (isset($priceRanges) && $priceRanges->isNotEmpty())
+                                @foreach ($priceRanges as $range)
+                                    <option value="{{ $range->name }}" data-min="{{ $range->min ?? 0 }}"
+                                        data-max="{{ $range->max ?? '' }}">
+                                        {{ $range->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="flex items-center md:ml-4">
+                        <span id="activePriceLabel" class="text-sm text-teal-700 font-semibold"></span>
+                    </div>
+                </div>
+
+                {{-- Kolom Pencarian (diletakkan di bawah dropdown) --}}
+                <div class="flex justify-center mt-4">
+                    <div class="w-full sm:w-96">
+                        <div class="relative flex items-center border border-gray-300 rounded-full overflow-hidden">
+                            <input type="text" id="searchInput" placeholder="Cari produk..."
+                                class="w-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <button id="searchBtn"
+                                class="bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition-all duration-300">
+                                Cari
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                @php
+                    use Illuminate\Support\Str;
+                @endphp
+
+                <section class="products-section mt-4">
+                    <div class="container mx-auto px-4">
+                        <h2 class="section-title text-3xl font-bold text-center mb-8">Produk Unggulan</h2>
+
+
+
+
+                        {{-- HAPUS @dd($products) DARI SINI SETELAH ANDA MENGGUNAKAN KODE INI --}}
+
+                        <div class="products-grid grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                            id="productsGrid">
+                            @forelse ($products as $product)
+                                @php
+                                    // Tentukan sumber gambar utama
+                                    $src = $product->primary_image_src
+                                        ? (Str::startsWith($product->primary_image_src, ['http', 'https'])
+                                            ? $product->primary_image_src
+                                            : asset('storage/' . $product->primary_image_src))
+                                        : asset('assets/images/no-image-icon.png');
+
+                                    // Support multiple possible old-price field names from different data sources
+                                    $origPrice =
+                                        $product->original_price ??
+                                        ($product->old_price ??
+                                            ($product->harga_lama ?? ($product->price_before ?? null)));
+                                    $isPromo = false;
+                                    $discountPercent = null;
+                                    if ($origPrice && $origPrice > $product->price) {
+                                        $isPromo = true;
+                                        $discountPercent = round((($origPrice - $product->price) / $origPrice) * 100);
+                                    }
+                                @endphp
+
+                                <div class="product-card relative bg-white rounded-2xl overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105"
+                                    {{-- [FIX 1] Menggunakan optional() untuk mencegah error jika relasi null --}}
+                                    data-category="{{ strtolower(optional($product->category)->name ?? 'general') }}"
+                                    data-subcategory="{{ strtolower(optional($product->subCategory)->name ?? 'general') }}"
+                                    data-name="{{ strtolower($product->name) }}" data-price="{{ $product->price }}"
+                                    data-original-price="{{ $origPrice ?? '' }}"
+                                    data-is-promo="{{ $isPromo ? '1' : '0' }}"
+                                    data-created-at="{{ $product->created_at }}">
+
+                                    @if ($isPromo)
+                                        <div
+                                            class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+                                            PROMO
                                         </div>
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <span class="text-red-600 font-bold text-lg product-price">
-                                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                                            </span>
-                                            <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">
-                                                -{{ round((($product->original_price - $product->price) / $product->original_price) * 100) }}%
-                                            </span>
-                                        </div>
-                                    @else
-                                        <span class="text-red-600 font-bold text-lg product-price">
-                                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                                        </span>
                                     @endif
+                                    {{-- Gambar Produk --}}
+                                    <div class="aspect-w-1 aspect-h-1 w-full bg-gray-50">
+                                        <img src="{{ $src }}" alt="{{ $product->name }}"
+                                            class="w-full h-full object-contain p-3">
+                                    </div>
+
+                                    {{-- Informasi Produk --}}
+                                    <div class="p-4 flex flex-col flex-grow">
+                                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                                            {{ $product->name }}
+                                        </h3>
+                                        <div class="text-center mt-auto">
+                                            @if ($isPromo)
+                                                <div>
+                                                    <span class="text-red-600 font-bold text-lg product-price">
+                                                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-gray-400 line-through text-base">
+                                                        Rp {{ number_format($origPrice, 0, ',', '.') }}
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <span class="text-red-600 font-bold text-lg product-price">
+                                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    {{-- Tombol Detail --}}
+                                    <div class="p-4 pt-0">
+                                        <button
+                                            class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal hover:bg-teal-600 transition"
+                                            data-modal-title="{{ $product->name }}"
+                                            data-modal-content='
+                            <div class="text-center mb-4">
+                                <div class="relative inline-block">
+                                    @if ($isPromo)
+<div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+                                            PROMO
+                                        </div>
+@endif
+                                    <img src="{{ $src }}" alt="{{ $product->name }}" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
                                 </div>
                             </div>
 
-                            {{-- Tombol Detail --}}
-                            <div class="p-4 pt-0">
-                                <button
-                                    class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal hover:bg-teal-600 transition"
-                                    data-modal-title="{{ $product->name }}"
-                                    data-modal-content='
+                            <!-- PROMO & HARGA (moved directly under product) -->
                             <div class="text-center mb-4">
-                                <img src="{{ $src }}" alt="{{ $product->name }}" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
-                            </div>
-
-                            <p class="text-gray-700 mb-2">
-                                {{ $product->description ?? 'Produk berkualitas tinggi dengan harga terjangkau.' }}
-                            </p>
-
-                            <div class="text-center mt-2">
-                                @if ($product->original_price && $product->original_price > $product->price)
-<div class="flex items-center justify-center space-x-1 mb-2">
-                                        <span class="text-gray-400 line-through text-lg">
-                                            Rp {{ number_format($product->original_price, 0, ',', '.') }}
-                                        </span>
-                                        <span class="text-xs text-gray-500">(Harga Lama)</span>
-                                    </div>
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <span class="text-teal-500 font-bold text-2xl">
-                                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                                        </span>
-                                        <span class="bg-red-100 text-red-600 text-sm px-2 py-0.5 rounded-full">
-                                            Hemat {{ round((($product->original_price - $product->price) / $product->original_price) * 100) }}%
-                                        </span>
+                                @if ($isPromo)
+<div class="flex items-center justify-center space-x-2">
+                                        <span class="text-teal-500 font-bold text-2xl">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                        <span class="text-gray-400 line-through">Rp {{ number_format($origPrice, 0, ',', '.') }}</span>
                                     </div>
 @else
-<span class="text-teal-500 font-bold text-xl">
-                                        Rp {{ number_format($product->price, 0, ',', '.') }}
-                                    </span>
+<span class="text-teal-500 font-bold text-xl">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
 @endif
                             </div>
 
-                            <div class="text-center mt-3 mb-6">
-                                <a href="https://wa.me/{{ $userStore->whatsapp ?? '6282392184679' }}?text=Halo%20saya%20tertarik%20dengan%20produk%20{{ urlencode($product->name) }}"
-                                    target="_blank"
-                                    class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">
-                                    Chat Penjual
+                            <!-- DESKRIPSI & FITUR -->
+                            <div class="text-gray-700 mb-4">
+                                <p class="mb-2 text-justify">{{ $product->description ?? 'Produk berkualitas tinggi dengan harga terjangkau.' }}</p>
+                                @if (!empty($product->features))
+<ul class="list-disc list-inside text-gray-600 text-sm space-y-1 text-left">
+                                        @foreach (explode("\n", $product->features) as $feat)
+@if (trim($feat) !== '')
+<li>{{ trim($feat) }}</li>
+@endif
+@endforeach
+                                    </ul>
+@endif
+                            </div>
+
+                            <!-- TOMBOL CHAT PENJUAL -->
+                            <div class="pt-6 border-t border-gray-200">
+                                <a href="{{ 'https://wa.me/' . $userStore->store_phone }}" target="_blank" class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                                    <i data-lucide="message-circle" class="h-5 w-5 mr-2"></i>
+                                    Chat Toko
                                 </a>
                             </div>
 
                             {{-- [FIX 2] Logika produk serupa dihapus dari view untuk performa dan perbaikan.
                                  Ini sebaiknya ditangani di Controller jika diperlukan. --}}
                             '>
-                                    Detail
-                                </button>
+                                            Detail
+                                        </button>
+                                    </div>
+                                </div>
+                            @empty
+                                {{-- Jika tidak ada produk --}}
+                                <div class="col-span-full text-center py-12">
+                                    <div class="text-gray-400 text-6xl mb-4">📦</div>
+                                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Produk</h3>
+                                    <p class="text-gray-500">Produk akan segera ditambahkan. Silakan kembali lagi
+                                        nanti!
+                                    </p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    {{-- Pagination (Kode pagination Anda sudah benar) --}}
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-center mt-8 text-sm text-gray-600">
+                            <div id="pagination-info" class="mb-4 sm:mb-0">
+                                Menampilkan <span id="showing-start">1</span> - <span id="showing-end">10</span> dari
+                                <span id="total-entries">{{ $products->total() }}</span> produk
                             </div>
+
+                            <div class="flex items-center space-x-1" id="pagination-container">
+                                {!! $products->links('pagination::tailwind') !!}
+                            </div>
+
                         </div>
-                    @empty
-                        {{-- Jika tidak ada produk --}}
-                        <div class="col-span-full text-center py-12">
-                            <div class="text-gray-400 text-6xl mb-4">📦</div>
-                            <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Produk</h3>
-                            <p class="text-gray-500">Produk akan segera ditambahkan. Silakan kembali lagi nanti!</p>
+                    </div>
+                </section>
+
+
+                <div id="universalModal"
+                    class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="w-6"></div>
+                            <h2 id="universalModalTitle" class="text-xl font-bold text-center"></h2>
+                            <button id="closeUniversalModal" class="text-gray-500 hover:text-gray-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
                         </div>
-                    @endforelse
-                </div>
-            </div>
-
-            {{-- Pagination (Kode pagination Anda sudah benar) --}}
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center mt-8 text-sm text-gray-600">
-                    <div id="pagination-info" class="mb-4 sm:mb-0">
-                        Menampilkan <span id="showing-start">1</span> - <span id="showing-end">10</span> dari <span
-                            id="total-entries">{{ $products->total() }}</span> produk
-                    </div>
-
-                    <div class="flex items-center space-x-1">
-                        {{-- Kode ini akan dirender ulang oleh JavaScript, tapi kita biarkan sebagai fallback --}}
-                        {!! $products->links('pagination::tailwind') !!}
+                        <div id="universalModalContent"></div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <div id="universalModal"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 id="universalModalTitle" class="text-xl font-bold"></h2>
-                    <button id="closeUniversalModal" class="text-gray-500 hover:text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div id="universalModalContent"></div>
-            </div>
-        </div>
+            <footer id="contact" class="bg-[#1a1f24] text-gray-300 py-8">
+                <div
+                    class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center md:items-center justify-between">
 
-        <footer class="bg-gray-800 text-white py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="flex items-center mb-4 md:mb-0">
+                    <!-- Logo / Brand (left) -->
+                    <div class="flex items-center md:w-1/3">
                         @if ($userStore->store_logo)
                             <img src="{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $userStore->store_logo]) }}"
-                                alt="{{ 'Gambar:' . $userStore->store_name }}" class="w-10 h-10 rounded-full mr-3">
-                        @else
-                            <div
-                                class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                                {{ strtoupper(substr($userStore->store_name, 0, 1)) }}
-                            </div>
+                                alt="{{ $userStore->store_name }}"
+                                class="rounded-full w-16 h-16 object-cover mr-4 bg-white p-2" />
                         @endif
                         <div>
-                            <h3 class="font-bold">{{ $userStore->store_name }}</h3>
-                            <p class="text-sm text-gray-400">
-                                {{ $userStore->store_description ?? 'Toko Aksesoris HP Terpercaya' }}</p>
+                            <h3 class="text-2xl font-bold text-white">{{ $userStore->store_name }}</h3>
+                            @if (!empty($userStore->store_description))
+                                <p class="text-sm text-gray-400">{{ $userStore->store_description }}</p>
+                            @endif
                         </div>
                     </div>
-                    <div class="text-center md:text-right">
-                        <p class="text-sm">Alamat: {{ $userStore->store_address }}</p>
-                        <p class="text-sm">Phone: {{ $userStore->store_phone }}</p>
-                        <p class="text-sm">Email: {{ $userStore->store_email }}</p>
+
+                    <!-- Contact (right) -->
+                    <div class="w-full md:w-1/2 mt-6 md:mt-0 md:text-right">
+                        <h4 class="text-xl font-semibold text-white mb-2">Hubungi Kami</h4>
+                        @if ($userStore->store_address)
+                            <p class="text-sm text-gray-300">{!! nl2br(e($userStore->store_address)) !!}</p>
+                        @endif
+                        @if ($userStore->store_phone)
+                            <p class="text-sm">Telp/WhatsApp: <a href="https://wa.me/{{ $userStore->store_phone }}"
+                                    class="text-teal-400">{{ $userStore->store_phone }}</a></p>
+                        @endif
+                        @if ($userStore->store_email)
+                            <p class="text-sm">Email: <a href="mailto:{{ $userStore->store_email }}"
+                                    class="text-teal-400">{{ $userStore->store_email }}</a></p>
+                        @endif
+                        <div class="mt-3">
+                            @if ($userStore->facebook_url)
+                                <a href="{{ $userStore->facebook_url }}" target="_blank"
+                                    class="inline-block mr-3 text-gray-400 hover:text-white"><i
+                                        class="fab fa-facebook"></i></a>
+                            @endif
+                            @if ($userStore->instagram_url)
+                                <a href="{{ $userStore->instagram_url }}" target="_blank"
+                                    class="inline-block mr-3 text-gray-400 hover:text-white"><i
+                                        class="fab fa-instagram"></i></a>
+                            @endif
+                            @if ($userStore->twitter_url)
+                                <a href="{{ $userStore->twitter_url }}" target="_blank"
+                                    class="inline-block text-gray-400 hover:text-white"><i
+                                        class="fab fa-twitter"></i></a>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="text-center mt-8 text-sm text-gray-400">
+                    &copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by PT. Era Cipta Digital.
+                </div>
+        </div>
+
+        {{-- <div class="text-center mt-6 text-sm text-gray-400">
+                    &copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by PT. Era Cipta Digital.
+                </div> --}}
         </footer>
 
         <script>
@@ -519,7 +622,8 @@
 
                 // --- Pagination renderer ---
                 function renderPagination(totalPages) {
-                    const paginationContainer = document.querySelector('.flex.items-center.space-x-1');
+                    const paginationContainer = document.querySelector('#pagination-container');
+
                     if (!paginationContainer) return;
                     paginationContainer.innerHTML = '';
                     // Prev
@@ -871,32 +975,6 @@
                     heroEl.addEventListener('mouseenter', hs_stop);
                     heroEl.addEventListener('mouseleave', hs_start);
 
-                    // prev/next controls (create if missing)
-                    if (!document.querySelector('.hero-prev')) {
-                        const prevBtn = document.createElement('button');
-                        prevBtn.type = 'button';
-                        prevBtn.className =
-                            'hero-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2';
-                        prevBtn.innerHTML = '<i class="fas fa-chevron-left text-gray-800"></i>';
-                        prevBtn.addEventListener('click', function() {
-                            hs_prev();
-                            hs_stop();
-                        });
-                        heroEl.parentElement.appendChild(prevBtn);
-                    }
-                    if (!document.querySelector('.hero-next')) {
-                        const nextBtn = document.createElement('button');
-                        nextBtn.type = 'button';
-                        nextBtn.className =
-                            'hero-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2';
-                        nextBtn.innerHTML = '<i class="fas fa-chevron-right text-gray-800"></i>';
-                        nextBtn.addEventListener('click', function() {
-                            hs_next();
-                            hs_stop();
-                        });
-                        heroEl.parentElement.appendChild(nextBtn);
-                    }
-
                     hs_goTo(0);
                     hs_start();
                 })();
@@ -906,6 +984,7 @@
                 applyFilters();
             });
         </script>
+    </main>
 </body>
 
 </html>

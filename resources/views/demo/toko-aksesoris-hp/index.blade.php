@@ -33,179 +33,355 @@
         </div>
     </header>
 
- <section class="relative text-white text-center overflow-hidden w-full"
-    style="aspect-ratio: 16 / 9; max-width: 1920px; margin: 0 auto;">
+    <section class="relative text-white text-center overflow-hidden w-full"
+        style="aspect-ratio: 16 / 9; max-width: 1920px; margin: 0 auto;">
 
-    <!-- Wrapper Slider -->
-    <div id="hero-slider" class="absolute inset-0">
+        <!-- Wrapper Slider -->
+        <div id="hero-slider" class="absolute inset-0">
 
-        <!-- SLIDE 1 -->
-        <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000">
-            <div class="relative w-full h-full">
-                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag.webp') }}" alt="Background 1"
-                    class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
-                <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
-                <div
-                    class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
-                    <h1
-                        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
-                        Temukan Aksesoris <br><span class="text-teal-300">Handphone Impianmu</span>
-                    </h1>
-                    <p
-                        class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
-                        Koleksi lengkap case, charger, dan aksesori premium untuk semua tipe HP
-                    </p>
-                    <a href="#productsGrid"
-                        class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
-                        Lihat Koleksi
-                    </a>
+            <!-- SLIDE 1 -->
+            <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000">
+                <div class="relative w-full h-full">
+                    <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag.webp') }}" alt="Background 1"
+                        class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
+                    <div
+                        class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
+                            Temukan Aksesoris <br><span class="text-teal-300">Handphone Impianmu</span>
+                        </h1>
+                        <p
+                            class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
+                            Koleksi lengkap case, charger, dan aksesori premium untuk semua tipe HP
+                        </p>
+                        <a href="#productsGrid"
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
+                            Lihat Koleksi
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <div class="relative w-full h-full">
+                    <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg') }}" alt="Background 2"
+                        class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
+                    <div
+                        class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
+                            Promo Spesial & Diskon<br><span class="text-teal-300">Minggu Ini</span>
+                        </h1>
+                        <p
+                            class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
+                            Dapatkan penawaran terbaik untuk produk pilihan kami
+                        </p>
+                        <a href="#productsGrid"
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
+                            Lihat Promo
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <div class="relative w-full h-full">
+                    <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg') }}" alt="Background 3"
+                        class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
+                    <div
+                        class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
+                            Kualitas Premium<br><span class="text-teal-300">Garansi Resmi</span>
+                        </h1>
+                        <p
+                            class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
+                            Semua produk terjamin kualitasnya dan dilengkapi garansi resmi
+                        </p>
+                        <a href="#productsGrid"
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
+                            Lihat Produk
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 2 -->
-        <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <div class="relative w-full h-full">
-                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag2.jpg') }}" alt="Background 2"
-                    class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
-                <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
-                <div
-                    class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
-                    <h1
-                        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
-                        Promo Spesial & Diskon<br><span class="text-teal-300">Minggu Ini</span>
-                    </h1>
-                    <p
-                        class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
-                        Dapatkan penawaran terbaik untuk produk pilihan kami
-                    </p>
-                    <a href="#productsGrid"
-                        class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
-                        Lihat Promo
-                    </a>
-                </div>
+        <!-- Dot Indicators -->
+        <div id="hero-dots" class="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 flex justify-center">
+            <div class="flex justify-center space-x-3 sm:space-x-4">
+                <button
+                    class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
+                <button
+                    class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
+                <button
+                    class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
             </div>
         </div>
+    </section>
 
-        <!-- SLIDE 3 -->
-        <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <div class="relative w-full h-full">
-                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Bag3.jpg') }}" alt="Background 3"
-                    class="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-[7000ms] hover:scale-110" />
-                <div class="absolute inset-0 bg-gradient-to-b from-teal-900/70 to-teal-800/50"></div>
-                <div
-                    class="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
-                    <h1
-                        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight animate-fade-in">
-                        Kualitas Premium<br><span class="text-teal-300">Garansi Resmi</span>
-                    </h1>
-                    <p
-                        class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 max-w-2xl animate-fade-in-delay">
-                        Semua produk terjamin kualitasnya dan dilengkapi garansi resmi
-                    </p>
-                    <a href="#productsGrid"
-                        class="bg-teal-500 hover:bg-teal-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all duration-300 transform hover:scale-105 animate-bounce-subtle">
-                        Lihat Produk
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <style>
+        /* Animasi fade dan bounce */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    <!-- Dot Indicators -->
-    <div id="hero-dots" class="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 flex justify-center">
-        <div class="flex justify-center space-x-3 sm:space-x-4">
-            <button
-                class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
-            <button
-                class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
-            <button
-                class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white opacity-50 transition-all duration-300 hover:opacity-100"></button>
-        </div>
-    </div>
-</section>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-<style>
-/* Animasi fade dan bounce */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .animate-fade-in-delay {
+            animation: fadeIn 1.5s ease-out;
+        }
 
-.animate-fade-in {
-    animation: fadeIn 1s ease-out;
-}
+        @keyframes bounceSubtle {
 
-.animate-fade-in-delay {
-    animation: fadeIn 1.5s ease-out;
-}
+            0%,
+            100% {
+                transform: translateY(0);
+            }
 
-@keyframes bounceSubtle {
-    0%, 100% {
-        transform: translateY(0);
-    }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
 
-    50% {
-        transform: translateY(-5px);
-    }
-}
+        .animate-bounce-subtle {
+            animation: bounceSubtle 3s infinite;
+        }
 
-.animate-bounce-subtle {
-    animation: bounceSubtle 3s infinite;
-}
+        /* Responsif tinggi minimum untuk layar kecil */
+        @media (max-width: 640px) {
+            section[style*="aspect-ratio"] {
+                aspect-ratio: auto;
+                height: 80vh;
+            }
+        }
+    </style>
 
-/* Responsif tinggi minimum untuk layar kecil */
-@media (max-width: 640px) {
-    section[style*="aspect-ratio"] {
-        aspect-ratio: auto;
-        height: 80vh;
-    }
-}
-</style>
+    <script>
+        // Pagination Configuration
+        const PRODUCTS_PER_PAGE = 8; // Changed to 8 products per page for better grid layout
+        let currentPage = 1;
+        let lastFilteredCategory = 'all';
+        let lastSearchQuery = '';
 
-<script>
-// Auto Slide
-const slides = document.querySelectorAll('#hero-slider .slide');
-const dots = document.querySelectorAll('#hero-dots .dot');
-let currentSlide = 0;
+        function showProductsForCurrentPage() {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
 
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.style.opacity = i === index ? '1' : '0';
-    });
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('opacity-100', i === index);
-        dot.classList.toggle('opacity-50', i !== index);
-    });
-}
+            // Get all product cards that match current filters
+            const allCards = Array.from(grid.querySelectorAll('.product-card'));
+            const visibleCards = allCards.filter(card => {
+                // Check if card matches current category
+                if (lastFilteredCategory !== 'all') {
+                    if (card.dataset.category !== lastFilteredCategory) return false;
+                }
 
-dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        currentSlide = index;
-        showSlide(currentSlide);
-    });
-});
+                // Check if card matches search query
+                if (lastSearchQuery) {
+                    const title = card.querySelector('.product-title').textContent.toLowerCase();
+                    if (!title.includes(lastSearchQuery.toLowerCase())) return false;
+                }
 
-setInterval(() => {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-}, 5000);
-</script>
+                return true;
+            });
+
+            // Calculate pagination
+            const totalItems = visibleCards.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / PRODUCTS_PER_PAGE));
+
+            // Ensure current page is valid
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            // Calculate start and end indices
+            const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+            const end = Math.min(start + PRODUCTS_PER_PAGE, totalItems);
+
+            // Show/hide cards based on current page
+            visibleCards.forEach((card, index) => {
+                if (index >= start && index < end) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide all non-matching cards
+            allCards.forEach(card => {
+                if (!visibleCards.includes(card)) {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update pagination info
+            document.getElementById('showing-start').textContent = totalItems ? start + 1 : 0;
+            document.getElementById('showing-end').textContent = end;
+            document.getElementById('total-items').textContent = totalItems;
+
+            // Update pagination controls
+            const controls = document.getElementById('pagination-controls');
+            if (!controls) return;
+
+            let html = '';
+
+            // Previous button
+            html += `<button
+                ${currentPage === 1 ? 'disabled' : ''}
+                onclick="changePage(${currentPage - 1})"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-l-md ${
+                    currentPage === 1
+                    ? 'text-gray-500 bg-gray-100 cursor-not-allowed'
+                    : 'text-gray-700 bg-white hover:bg-gray-50 border border-gray-300'
+                }"
+            >Previous</button>`;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    html += `<button
+                        onclick="changePage(${i})"
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-cyan-500 border border-gray-300 z-10 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    >${i}</button>`;
+                } else {
+                    html += `<button
+                        onclick="changePage(${i})"
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 hover:text-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    >${i}</button>`;
+                }
+            }
+
+            // Next button
+            html += `<button
+                ${currentPage >= totalPages ? 'disabled' : ''}
+                onclick="changePage(${currentPage + 1})"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-r-md ${
+                    currentPage >= totalPages
+                    ? 'text-gray-500 bg-gray-100 cursor-not-allowed'
+                    : 'text-gray-700 bg-white hover:bg-gray-50 border border-gray-300'
+                }"
+            >Next</button>`;
+
+            controls.innerHTML = html;
+        }
+
+        function changePage(newPage) {
+            if (newPage < 1) return;
+
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+
+            const allCards = Array.from(grid.querySelectorAll('.product-card'));
+            const visibleCards = allCards.filter(card => {
+                if (lastFilteredCategory !== 'all' && card.dataset.category !== lastFilteredCategory) return false;
+                if (lastSearchQuery) {
+                    const title = card.querySelector('.product-title').textContent.toLowerCase();
+                    if (!title.includes(lastSearchQuery.toLowerCase())) return false;
+                }
+                return true;
+            });
+
+            const totalPages = Math.ceil(visibleCards.length / PRODUCTS_PER_PAGE);
+            if (newPage > totalPages) return;
+
+            currentPage = newPage;
+            showProductsForCurrentPage();
+
+            // Scroll to top of products grid
+            grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function filterProducts(category, event) {
+            if (event) {
+                // Remove active class from all category buttons
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-teal-500', 'text-white');
+                    btn.classList.add('bg-white');
+                });
+
+                // Add active class to clicked button
+                event.target.classList.add('active', 'bg-teal-500', 'text-white');
+                event.target.classList.remove('bg-white');
+            }
+
+            lastFilteredCategory = category;
+            currentPage = 1; // Reset to first page when changing category
+            showProductsForCurrentPage();
+        }
+
+        function searchProducts() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            lastSearchQuery = searchInput.value.trim();
+            currentPage = 1; // Reset to first page when searching
+            showProductsForCurrentPage();
+        }
+
+        // Initialize pagination when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            currentPage = 1;
+            showProductsForCurrentPage();
+
+            // Add event listener for search input
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchProducts();
+                    }
+                });
+            }
+        });
+
+        // Auto Slide
+        const slides = document.querySelectorAll('#hero-slider .slide');
+        const dots = document.querySelectorAll('#hero-dots .dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('opacity-100', i === index);
+                dot.classList.toggle('opacity-50', i !== index);
+            });
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+    </script>
 
 
     <div class="my-8">
-    <!-- Judul Kategori -->
-    <h2 class="text-xl md:text-2xl font-bold text-center mb-2 text-teal-700">Kategori</h2>
+        <!-- Judul Kategori -->
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-2 text-teal-700">Kategori</h2>
 
-    <!-- Tombol filter kategori -->
-    <div class="flex flex-wrap gap-2 md:gap-4 justify-center">
+        <!-- Tombol filter kategori -->
+        <div class="flex flex-wrap gap-2 md:gap-4 justify-center">
             <button
                 class="category-btn active px-6 py-2 rounded-full border border-gray-300 text-sm font-medium transition-colors"
                 onclick="filterProducts('all', event)">Semua</button>
@@ -230,124 +406,190 @@ setInterval(() => {
         </div>
 
 
-    <!-- Judul Sub Kategori -->
+        <!-- Judul Sub Kategori -->
 
-    <h2 class="text-lg md:text-2xl font-bold text-center mt-6 mb-2 text-teal-600">Sub Kategori</h2>
-    <!-- Button Subkategori Case & Charger -->
+        <h2 class="text-lg md:text-2xl font-bold text-center mt-6 mb-2 text-teal-600">Sub Kategori</h2>
+        <!-- Button Subkategori Case & Charger -->
         <div id="subCategoryCaseWrapper" class="mt-4 hidden">
             <div class="flex flex-wrap gap-2 justify-center">
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('case', ['Case Transparan Clear','Case Transparan untuk iPhone 13','Case Transparan untuk Android'])">Case Transparan Clear</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('case', ['Casing Couple','Case Couple Kartun Motor','Case Love Couple'])">Casing Couple</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('case', 'Casing HP Panda Lucu & Unik')">Casing HP Panda Lucu & Unik</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('case', 'Case Silikon Premium')">Case Silikon Premium</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('case', ['Case Transparan Clear','Case Transparan untuk iPhone 13','Case Transparan untuk Android'])">Case
+                    Transparan Clear</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('case', ['Casing Couple','Case Couple Kartun Motor','Case Love Couple'])">Casing
+                    Couple</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('case', 'Casing HP Panda Lucu & Unik')">Casing HP Panda Lucu &
+                    Unik</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('case', 'Case Silikon Premium')">Case Silikon Premium</button>
             </div>
         </div>
 
         <div id="subCategoryChargerWrapper" class="mt-4 hidden">
             <div class="flex flex-wrap gap-2 justify-center">
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('charger', ['Fast Charger 65W','Charger 65W QC 3.0'])">Fast Charger 65W</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('charger', ['Kabel Data Lucu Karakter','Kabel Charger Karakter Dinosaurus'])">Kabel Data Lucu Karakter</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('charger', ['Wireless Charger Stand','Wireless Charger Stand putih'])">Wireless Charger Stand</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('charger', 'Charger USB-C 20W')">Charger USB-C 20W</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('charger', ['Fast Charger 65W','Charger 65W QC 3.0'])">Fast Charger
+                    65W</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('charger', ['Kabel Data Lucu Karakter','Kabel Charger Karakter Dinosaurus'])">Kabel
+                    Data Lucu Karakter</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('charger', ['Wireless Charger Stand','Wireless Charger Stand putih'])">Wireless
+                    Charger Stand</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('charger', 'Charger USB-C 20W')">Charger USB-C 20W</button>
             </div>
         </div>
 
         <div id="subCategoryKameraWrapper" class="mt-4 hidden">
             <div class="flex flex-wrap gap-2 justify-center">
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('kamera', ['Ring Light LED 26cm Tripod Stand',' Dual Ring Light with Tripod Stand'])">Ring Light LED Tripod Stand</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('kamera', ['Lampu Selfie Clip-On LED Rokeet','Lighting HP Mini'])">Lampu Selfie Clip-On LED</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('kamera', 'Lensa Makro & Wide Clip-On 3-in-1')">Lensa Makro & Wide Clip-On 3in1</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('kamera', ['Ring Light LED 26cm Tripod Stand',' Dual Ring Light with Tripod Stand'])">Ring
+                    Light LED Tripod Stand</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('kamera', ['Lampu Selfie Clip-On LED Rokeet','Lighting HP Mini'])">Lampu
+                    Selfie Clip-On LED</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('kamera', 'Lensa Makro & Wide Clip-On 3-in-1')">Lensa Makro & Wide
+                    Clip-On 3in1</button>
             </div>
         </div>
 
         <div id="subCategoryAudioWrapper" class="mt-4 hidden">
             <div class="flex flex-wrap gap-2 justify-center">
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('audio', ['Earphone Kabel In-Ear','Earphone GROTIC Type-C','KBEAR Flash Type-C',])">Earphone Kabel In-Ear</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('audio', ['TWS Earbuds Pro','Nothing CMF Buds Pro TWS','Samsung Galaxy Buds Pro'])">TWS Earbuds Pro</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('audio', 'Headphone Bluetooth KVIDIO')">Headphone Bluetooth</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('audio', ['Earphone Kabel In-Ear','Earphone GROTIC Type-C','KBEAR Flash Type-C',])">Earphone
+                    Kabel In-Ear</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('audio', ['TWS Earbuds Pro','Nothing CMF Buds Pro TWS','Samsung Galaxy Buds Pro'])">TWS
+                    Earbuds Pro</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('audio', 'Headphone Bluetooth KVIDIO')">Headphone Bluetooth</button>
             </div>
         </div>
 
         <div id="subCategoryPowerbankWrapper" class="mt-4 hidden">
             <div class="flex flex-wrap gap-2 justify-center">
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('powerbank', ['Power Bank 20000mAh','Power Bank 20000mAh 130W','Anker Zolo Power Bank 30W'])">EPower Bank 20000mAh</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('powerbank', ['Power Bank Wireless','Powerbank Wireless JETE A11 10000 mAh'])">Power Bank Wireless</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('powerbank', 'Power Bank Vivan Wireless')">Power Bank Vivan Wireless</button>
-                <button class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100" onclick="filterSubCategory('powerbank', 'Mini Power Bank LED Display')">Mini Power Bank LED</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('powerbank', ['Power Bank 20000mAh','Power Bank 20000mAh 130W','Anker Zolo Power Bank 30W'])">EPower
+                    Bank 20000mAh</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('powerbank', ['Power Bank Wireless','Powerbank Wireless JETE A11 10000 mAh'])">Power
+                    Bank Wireless</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('powerbank', 'Power Bank Vivan Wireless')">Power Bank Vivan
+                    Wireless</button>
+                <button
+                    class="subcat-btn px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium transition-colors hover:bg-teal-100"
+                    onclick="filterSubCategory('powerbank', 'Mini Power Bank LED Display')">Mini Power Bank
+                    LED</button>
             </div>
         </div>
 
         <script>
-        // Tampilkan subkategori jika kategori Case atau Charger dipilih
-        var caseBtn = document.querySelector('button[onclick*="filterProducts(\'case\'"]');
-        var chargerBtn = document.querySelector('button[onclick*="filterProducts(\'charger\'"]');
+            // Tampilkan subkategori jika kategori Case atau Charger dipilih
+            var caseBtn = document.querySelector('button[onclick*="filterProducts(\'case\'"]');
+            var chargerBtn = document.querySelector('button[onclick*="filterProducts(\'charger\'"]');
 
-        function handleCategorySubcat() {
-            setTimeout(function() {
-                var activeCat = document.querySelector('.category-btn.active');
-                var subCatCase = document.getElementById('subCategoryCaseWrapper');
-                var subCatCharger = document.getElementById('subCategoryChargerWrapper');
-                var subCatKamera = document.getElementById('subCategoryKameraWrapper');
-                var subCatAudio = document.getElementById('subCategoryAudioWrapper');
-                var subCatPowerbank = document.getElementById('subCategoryPowerbankWrapper');
+            function handleCategorySubcat() {
+                setTimeout(function() {
+                    var activeCat = document.querySelector('.category-btn.active');
+                    var subCatCase = document.getElementById('subCategoryCaseWrapper');
+                    var subCatCharger = document.getElementById('subCategoryChargerWrapper');
+                    var subCatKamera = document.getElementById('subCategoryKameraWrapper');
+                    var subCatAudio = document.getElementById('subCategoryAudioWrapper');
+                    var subCatPowerbank = document.getElementById('subCategoryPowerbankWrapper');
 
-                if (activeCat) {
-                    var text = activeCat.textContent.trim();
-                    if (text === 'Case') {
-                        subCatCase.classList.remove('hidden');
-                        subCatCharger.classList.add('hidden');
-                        subCatKamera.classList.add('hidden');
-                        subCatCase.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else if (text === 'Charger') {
-                        subCatCharger.classList.remove('hidden');
-                        subCatCase.classList.add('hidden');
-                        subCatKamera.classList.add('hidden');
-                        subCatCharger.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else if (text === 'Kamera & Pencahayaan') {
-                        subCatKamera.classList.remove('hidden');
-                        subCatCase.classList.add('hidden');
-                        subCatCharger.classList.add('hidden');
-                        subCatAudio.classList.add('hidden');
-                        subCatKamera.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else if (text === 'Audio') {
-                        subCatAudio.classList.remove('hidden');
-                        subCatCase.classList.add('hidden');
-                        subCatCharger.classList.add('hidden');
-                        subCatKamera.classList.add('hidden');
-                        subCatPowerbank.classList.add('hidden');
-                        subCatAudio.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else if (text === 'Powerbank') {
-                        subCatPowerbank.classList.remove('hidden');
-                        subCatAudio.classList.add('hidden');
-                        subCatCase.classList.add('hidden');
-                        subCatCharger.classList.add('hidden');
-                        subCatKamera.classList.add('hidden');
-                        subCatPowerbank.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else {
-                        subCatCase.classList.add('hidden');
-                        subCatCharger.classList.add('hidden');
-                        subCatKamera.classList.add('hidden');
-                        subCatAudio.classList.add('hidden');
-                        subCatPowerbank.classList.add('hidden');
+                    if (activeCat) {
+                        var text = activeCat.textContent.trim();
+                        if (text === 'Case') {
+                            subCatCase.classList.remove('hidden');
+                            subCatCharger.classList.add('hidden');
+                            subCatKamera.classList.add('hidden');
+                            subCatCase.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        } else if (text === 'Charger') {
+                            subCatCharger.classList.remove('hidden');
+                            subCatCase.classList.add('hidden');
+                            subCatKamera.classList.add('hidden');
+                            subCatCharger.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        } else if (text === 'Kamera & Pencahayaan') {
+                            subCatKamera.classList.remove('hidden');
+                            subCatCase.classList.add('hidden');
+                            subCatCharger.classList.add('hidden');
+                            subCatAudio.classList.add('hidden');
+                            subCatKamera.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        } else if (text === 'Audio') {
+                            subCatAudio.classList.remove('hidden');
+                            subCatCase.classList.add('hidden');
+                            subCatCharger.classList.add('hidden');
+                            subCatKamera.classList.add('hidden');
+                            subCatPowerbank.classList.add('hidden');
+                            subCatAudio.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        } else if (text === 'Powerbank') {
+                            subCatPowerbank.classList.remove('hidden');
+                            subCatAudio.classList.add('hidden');
+                            subCatCase.classList.add('hidden');
+                            subCatCharger.classList.add('hidden');
+                            subCatKamera.classList.add('hidden');
+                            subCatPowerbank.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        } else {
+                            subCatCase.classList.add('hidden');
+                            subCatCharger.classList.add('hidden');
+                            subCatKamera.classList.add('hidden');
+                            subCatAudio.classList.add('hidden');
+                            subCatPowerbank.classList.add('hidden');
+                        }
                     }
-                }
-            }, 100);
-        }
+                }, 100);
+            }
 
-    var audioBtn = document.querySelector('button[onclick*="filterProducts(\'audio\'"]');
-    var powerbankBtn = document.querySelector('button[onclick*="filterProducts(\'powerbank\'"]');
-    if (caseBtn) caseBtn.addEventListener('click', handleCategorySubcat);
-    if (chargerBtn) chargerBtn.addEventListener('click', handleCategorySubcat);
-    if (audioBtn) audioBtn.addEventListener('click', handleCategorySubcat);
-    if (powerbankBtn) powerbankBtn.addEventListener('click', handleCategorySubcat);
+            var audioBtn = document.querySelector('button[onclick*="filterProducts(\'audio\'"]');
+            var powerbankBtn = document.querySelector('button[onclick*="filterProducts(\'powerbank\'"]');
+            if (caseBtn) caseBtn.addEventListener('click', handleCategorySubcat);
+            if (chargerBtn) chargerBtn.addEventListener('click', handleCategorySubcat);
+            if (audioBtn) audioBtn.addEventListener('click', handleCategorySubcat);
+            if (powerbankBtn) powerbankBtn.addEventListener('click', handleCategorySubcat);
 
-        // Sembunyikan subkategori jika kategori lain dipilih
-        document.querySelectorAll('.category-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                // allow handler to show the right one
-                setTimeout(handleCategorySubcat, 120);
+            // Sembunyikan subkategori jika kategori lain dipilih
+            document.querySelectorAll('.category-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // allow handler to show the right one
+                    setTimeout(handleCategorySubcat, 120);
+                });
             });
-        });
         </script>
 
 
@@ -356,12 +598,16 @@ setInterval(() => {
     <div class="mt-6 mb-4">
         <!-- Row 1: centered sort and price controls -->
         <div class="flex justify-center space-x-3 mb-3">
-            <select id="sortDropdown" class="border border-teal-400 rounded-full px-4 py-2 text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-teal-500" onchange="sortProducts(this.value)">
+            <select id="sortDropdown"
+                class="border border-teal-400 rounded-full px-4 py-2 text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-teal-500"
+                onchange="sortProducts(this.value)">
                 <option value="lama">Barang Baru</option>
                 <option value="baru">Barang Lama</option>
             </select>
 
-            <select id="priceDropdown" class="border border-teal-400 rounded-full px-4 py-2 text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-teal-500" onchange="filterByPrice(this.value)">
+            <select id="priceDropdown"
+                class="border border-teal-400 rounded-full px-4 py-2 text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-teal-500"
+                onchange="filterByPrice(this.value)">
                 <option value="all">Semua Harga</option>
                 <option value="0-50000">Rp 0 - Rp 50.000</option>
                 <option value="50001-100000">Rp 50.001 - Rp 100.000</option>
@@ -374,8 +620,10 @@ setInterval(() => {
         <div class="flex justify-center">
             <div class="w-full sm:w-96">
                 <div class="relative flex items-center border border-gray-300 rounded-full overflow-hidden">
-                    <input type="text" id="searchInput" placeholder="Cari produk..." class="w-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                    <button id="searchBtn" onclick="searchProducts()" class="bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition-all duration-300">Cari</button>
+                    <input type="text" id="searchInput" placeholder="Cari produk..."
+                        class="w-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                    <button id="searchBtn" onclick="searchProducts()"
+                        class="bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition-all duration-300">Cari</button>
                 </div>
             </div>
         </div>
@@ -383,57 +631,81 @@ setInterval(() => {
     <section class="products-section pb-16">
         <div class="container mx-auto px-4">
             <h2 class="section-title text-3xl font-bold text-center mb-8">Produk Unggulan</h2>
-            <div class="products-grid grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+
+            <!-- Products Grid -->
+            <div class="products-grid grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mb-12"
                 id="productsGrid">
 
-                <!-- Pagination controls will be injected here -->
-                <div id="paginationControls" class="col-span-full"></div>
+            <!-- Note: The closing div tag for products-grid will be at the end of all product cards -->
+
+            <!-- Pagination Information and Controls will be added after all product cards, before the closing container and section tags -->
 
 
                 <!-- Produk Case -->
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
                     data-category="case" data-name="Case Silikon Premium">
+
+                    <!-- Gambar produk -->
                     <div class="aspect-w-1 aspect-h-1 w-full">
                         <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/CaseHpp.jpg') }}"
                             alt="Case Silikon Premium" class="w-full h-full object-contain p-2">
                     </div>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+
+                    <!-- Isi card -->
+                    <div class="p-4 flex flex-col flex-grow text-center">
+                        <h3 class="text-lg font-semibold product-title mb-2">
                             Case Silikon Premium
                         </h3>
-                        <div class="text-center mt-auto">
-                            <span class="text-red-600 font-bold text-lg">Rp 85.000</span><br>
+
+                        <div class="mt-2">
+                            <span class="text-teal-500 font-bold text-lg">Rp 85.000</span><br>
                             <span class="text-gray-400 line-through text-sm">Rp 120.000</span>
                         </div>
+
+                        <div class="mt-4">
+                            <button class="w-full px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                                data-modal-title="Case Silikon Premium"
+                                data-modal-content='
+                    <!-- Gambar Produk -->
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/CaseHpp.jpg') }}"
+                             alt="Case Silikon Premium"
+                             class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
                     </div>
-                    <div class="p-4 pt-0">
-                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-                            data-modal-title="Case Silikon Premium"
-                            data-modal-content='
-                            <div class="text-center mb-4">
-                                <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/CaseHpp.jpg') }}" alt="Case Silikon Premium" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
-                            </div>
-                            <p class="text-gray-700 mb-2">Case silikon berkualitas tinggi yang dirancang untuk memberikan perlindungan maksimal pada smartphone Anda.</p>
-                            <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
-                                <li>Material silikon premium</li>
-                                <li>Anti-slip dan anti-fingerprint</li>
-                                <li>Perlindungan terhadap benturan hingga 2 meter</li>
-                                <li>Tersedia dalam berbagai pilihan warna</li>
-                            </ul>
-                            <div class="text-center">
-                                <span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded-full mb-2">Promo</span>
-                            </div>
-                            <div class="text-center mt-2">
-                                <span class="text-teal-500 font-bold text-xl">Rp 85.000</span><br>
-                                <span class="text-gray-400 line-through mr-2">Rp 120.000</span>
-                            </div>
-                            <div class="text-center mt-3">
-                                <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20Case%20Silikon%20Premium" target="_blank"
-                                    class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
-                            </div>
-                        '>Detail</button>
+
+                    <!-- PROMO & HARGA -->
+                    <div class="text-center mb-4">
+                        <span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded-full mb-2">Promo</span><br>
+                        <span class="text-teal-500 font-bold text-xl">Rp 85.000</span><br>
+                        <span class="text-gray-400 line-through">Rp 120.000</span>
+                    </div>
+
+                    <!-- DESKRIPSI & FITUR -->
+                    <div class="text-gray-700 mb-4">
+                        <p class="mb-2 text-justify">
+                            Case silikon berkualitas tinggi yang dirancang untuk memberikan perlindungan maksimal pada smartphone Anda.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 text-left">
+                            <li>Material silikon premium</li>
+                            <li>Anti-slip dan anti-fingerprint</li>
+                            <li>Perlindungan terhadap benturan hingga 2 meter</li>
+                            <li>Tersedia dalam berbagai pilihan warna</li>
+                        </ul>
+                    </div>
+
+                    <!-- TOMBOL CHAT PENJUAL -->
+                    <div class="text-center mt-4">
+                        <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20Case%20Silikon%20Premium"
+                           target="_blank"
+                           class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">
+                           Chat Penjual
+                        </a>
+                    </div>
+                '>Detail</button>
+                        </div>
                     </div>
                 </div>
+
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
                     data-category="case" data-name="Casing HP Panda Lucu & Unik">
@@ -457,7 +729,7 @@ setInterval(() => {
                                 <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/Panda.webp') }}" alt="Casing HP Panda Lucu & Unik" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
                             </div>
                             <p class="text-gray-700 mb-2">Casing HP berbulu dengan desain panda imut, cocok untuk kamu yang ingin tampil beda dan gemas!</p>
-                            <div class="text-yellow-600 text-sm mb-2 text-center">⭐⭐⭐⭐⭐ (128 review)</div>
+
                             <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
                                 <li>Desain panda 3D imut</li>
                                 <li>Bahan lembut dan nyaman digenggam</li>
@@ -521,21 +793,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="case" data-name="Case Couple Kartun Motor" id="caseCoupleMotor">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/casmotoran.png') }}"
-            alt="Case Couple Kartun Motor" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Couple Kartun Motor</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 85.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Case Couple Kartun Motor"
-            data-modal-content='
+                    data-category="case" data-name="Case Couple Kartun Motor" id="caseCoupleMotor">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/casmotoran.png') }}"
+                            alt="Case Couple Kartun Motor" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Couple Kartun
+                            Motor</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 85.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Case Couple Kartun Motor"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/casmotoran.png') }}" alt="Case Couple Kartun Motor" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -552,24 +825,25 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
-<div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="case" data-name="Case Love Couple" id="caseLoveCouple">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/love.png') }}"
-            alt="Case Love Couple" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Love Couple</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 90.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Case Love Couple"
-            data-modal-content='
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="case" data-name="Case Love Couple" id="caseLoveCouple">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/love.png') }}"
+                            alt="Case Love Couple" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Love Couple
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 90.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Case Love Couple"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/love.png') }}" alt="Case Love Couple" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -586,8 +860,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
 
@@ -627,21 +901,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="case" data-name="Case Transparan untuk iPhone 13" id="caseTransparanIphone13">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/transparan 13.jpg') }}"
-            alt="Case Transparan untuk iPhone 13" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Transparan untuk iPhone 13</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 75.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Case Transparan untuk iPhone 13"
-            data-modal-content='
+                    data-category="case" data-name="Case Transparan untuk iPhone 13" id="caseTransparanIphone13">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/transparan 13.jpg') }}"
+                            alt="Case Transparan untuk iPhone 13" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Transparan
+                            untuk iPhone 13</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 75.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Case Transparan untuk iPhone 13"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/transparan 13.jpg') }}" alt="Case Transparan untuk iPhone 13" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -658,24 +933,25 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
-<div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="case" data-name="Case Transparan untuk Android" id="caseTransparanAndroid">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/clear aandroid.png') }}"
-            alt="Case Transparan untuk Android" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Transparan untuk Android</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 70.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Case Transparan untuk Android"
-            data-modal-content='
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="case" data-name="Case Transparan untuk Android" id="caseTransparanAndroid">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/clear aandroid.png') }}"
+                            alt="Case Transparan untuk Android" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Case Transparan
+                            untuk Android</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 70.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Case Transparan untuk Android"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/clear aandroid.png') }}" alt="Case Transparan untuk Android" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -692,8 +968,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
 
@@ -734,21 +1010,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="charger" data-name="Charger 65W QC 3.0" id="charger65WQC3">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/65watkuning.png') }}"
-            alt="Charger 65W QC 3.0" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Charger 65W QC 3.0</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 120.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Charger 65W QC 3.0"
-            data-modal-content='
+                    data-category="charger" data-name="Charger 65W QC 3.0" id="charger65WQC3">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/65watkuning.png') }}"
+                            alt="Charger 65W QC 3.0" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Charger 65W QC 3.0
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 120.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Charger 65W QC 3.0"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/65watkuning.png') }}" alt="Charger 65W QC 3.0" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -766,8 +1043,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
@@ -806,21 +1083,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="charger" data-name="Kabel Charger Karakter Dinosaurus" id="kabelDinoLucu">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/kaabeldatabon.png') }}"
-            alt="Kabel Charger Karakter Dinosaurus" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Kabel Charger Karakter Dinosaurus</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 45.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Kabel Charger Karakter Dinosaurus"
-            data-modal-content='
+                    data-category="charger" data-name="Kabel Charger Karakter Dinosaurus" id="kabelDinoLucu">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/kaabeldatabon.png') }}"
+                            alt="Kabel Charger Karakter Dinosaurus" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Kabel Charger
+                            Karakter Dinosaurus</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 45.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Kabel Charger Karakter Dinosaurus"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/kaabeldatabon.png') }}" alt="Kabel Charger Karakter Dinosaurus" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -838,8 +1116,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
@@ -878,21 +1156,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="charger" data-name="Wireless Charger Stand" id="wirelessChargerStand">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cargerdiri.png') }}"
-            alt="Wireless Charger Stand" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Wireless Charger Stand putih</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 225.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Wireless Charger Stand"
-            data-modal-content='
+                    data-category="charger" data-name="Wireless Charger Stand" id="wirelessChargerStand">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cargerdiri.png') }}"
+                            alt="Wireless Charger Stand" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Wireless Charger
+                            Stand putih</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 225.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Wireless Charger Stand"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cargerdiri.png') }}" alt="Wireless Charger Stand" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -910,8 +1189,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
@@ -985,21 +1264,22 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="audio" data-name="Earphone GROTIC Type-C" id="earphoneGrotic">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/groticputih.png') }}"
-            alt="Earphone GROTIC Type-C" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Earphone GROTIC Type-C</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 89.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Earphone GROTIC Type-C"
-            data-modal-content='
+                    data-category="audio" data-name="Earphone GROTIC Type-C" id="earphoneGrotic">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/groticputih.png') }}"
+                            alt="Earphone GROTIC Type-C" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">Earphone GROTIC
+                            Type-C</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 89.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Earphone GROTIC Type-C"
+                            data-modal-content='
         <div class="text-center mb-4">
             <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/groticputih.png') }}" alt="Earphone GROTIC Type-C" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
@@ -1017,26 +1297,27 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
-<div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="audio" data-name="KBEAR Flash Type-C" id="kbearFlash">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/flash.png') }}"
-            alt="KBEAR Flash Type-C" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">KBEAR Flash Type-C</h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 299.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="KBEAR Flash Type-C"
-            data-modal-content='
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="audio" data-name="KBEAR Flash Type-C" id="kbearFlash">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/flash.png') }}"
+                            alt="KBEAR Flash Type-C" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">KBEAR Flash Type-C
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 299.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="KBEAR Flash Type-C"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/flash.png") }}" alt="KBEAR Flash Type-C" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/flash.png') }}" alt="KBEAR Flash Type-C" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">Earphone KBEAR Flash Type-C menghadirkan kualitas audio premium dengan detail tinggi dan bass yang kuat. Desain ergonomis serta kabel braided yang tahan lama membuatnya ideal untuk musik dan gaming.</p>
         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
@@ -1052,8 +1333,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
 
@@ -1092,25 +1373,26 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="audio" data-name="Nothing CMF Buds Pro TWS" id="nothingCmfBudsPro">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cmf.png') }}"
-            alt="Nothing CMF Buds Pro TWS Headset Earphone Bluetooth - Light Grey" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Nothing CMF Buds Pro TWS
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 1.099.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Nothing CMF Buds Pro TWS - Light Grey"
-            data-modal-content='
+                    data-category="audio" data-name="Nothing CMF Buds Pro TWS" id="nothingCmfBudsPro">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cmf.png') }}"
+                            alt="Nothing CMF Buds Pro TWS Headset Earphone Bluetooth - Light Grey"
+                            class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Nothing CMF Buds Pro TWS
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 1.099.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Nothing CMF Buds Pro TWS - Light Grey"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/cmf.png") }}" alt="Nothing CMF Buds Pro TWS - Light Grey" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/cmf.png') }}" alt="Nothing CMF Buds Pro TWS - Light Grey" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">Nothing CMF Buds Pro menghadirkan kualitas audio premium dengan ANC (Active Noise Cancellation), bass bertenaga, dan daya tahan baterai hingga 39 jam. Desainnya minimalis dan modern dengan warna Light Grey yang elegan.</p>
         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
@@ -1127,28 +1409,28 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
-<div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="audio" data-name="Samsung Galaxy Buds Pro" id="galaxyBudsPro">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/samsung.png') }}"
-            alt="Samsung Galaxy Buds Pro – Earbud" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Samsung Galaxy Buds Pro
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 2.499.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Samsung Galaxy Buds Pro – Earbud"
-            data-modal-content='
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="audio" data-name="Samsung Galaxy Buds Pro" id="galaxyBudsPro">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/samsung.png') }}"
+                            alt="Samsung Galaxy Buds Pro – Earbud" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Samsung Galaxy Buds Pro
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 2.499.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Samsung Galaxy Buds Pro – Earbud"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/samsung.png") }}" alt="Samsung Galaxy Buds Pro" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/samsung.png') }}" alt="Samsung Galaxy Buds Pro" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">Samsung Galaxy Buds Pro menghadirkan pengalaman audio premium dengan Active Noise Cancelling, kualitas suara jernih, serta desain ergonomis untuk kenyamanan sepanjang hari.</p>
         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
@@ -1165,8 +1447,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
 
@@ -1246,7 +1528,8 @@ setInterval(() => {
                             alt=" Dual Ring Light with Tripod Stand" class="w-full h-full object-contain p-2">
                     </div>
                     <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2"> Dual Ring Light with Tripod Stand</h3>
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2"> Dual Ring Light
+                            with Tripod Stand</h3>
                         <div class="text-center mt-auto">
                             <span class="text-red-600 font-bold text-lg">Rp 135.000</span>
                         </div>
@@ -1312,25 +1595,25 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="cahaya" data-name="Lighting HP Mini" id="lightingHpMini">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/lightmini.png') }}"
-            alt="Lighting HP Mini" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Lighting HP Mini
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 89.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Lighting HP Mini"
-            data-modal-content='
+                    data-category="cahaya" data-name="Lighting HP Mini" id="lightingHpMini">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/lightmini.png') }}"
+                            alt="Lighting HP Mini" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Lighting HP Mini
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 89.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Lighting HP Mini"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/lightmini.png") }}" alt="Lighting HP Mini" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/lightmini.png') }}" alt="Lighting HP Mini" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">Lighting HP Mini adalah lampu portabel yang praktis untuk meningkatkan pencahayaan saat foto selfie, video call, atau membuat konten. Desainnya kecil, ringan, dan mudah dibawa ke mana pun.</p>
         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
@@ -1347,8 +1630,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
@@ -1423,25 +1706,25 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="powerbank" data-name="Power Bank 20000mAh 130W" id="powerBank20000">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/powerbankugrin.png') }}"
-            alt="Power Bank 20000mAh 130W" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Power Bank 20000mAh 130W
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 499.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Power Bank 20000mAh 130W"
-            data-modal-content='
+                    data-category="powerbank" data-name="Power Bank 20000mAh 130W" id="powerBank20000">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/powerbankugrin.png') }}"
+                            alt="Power Bank 20000mAh 130W" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Power Bank 20000mAh 130W
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 499.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Power Bank 20000mAh 130W"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/powerbankugrin.png") }}" alt="Power Bank 20000mAh 130W" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/powerbankugrin.png') }}" alt="Power Bank 20000mAh 130W" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">
             Power Bank 20000mAh 130W memiliki kapasitas besar dengan daya keluaran tinggi yang mampu mengisi ulang laptop, smartphone, dan perangkat lainnya dengan cepat. Didesain elegan dengan material premium dan teknologi pengisian cepat.
@@ -1460,28 +1743,28 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
-<div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="powerbank" data-name="Anker Zolo Power Bank 30W" id="ankerZolo30w">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/ankerzolo.png') }}"
-            alt="Anker Zolo Power Bank 30W" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Anker Zolo Power Bank 30W
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 429.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Anker Zolo Power Bank 30W"
-            data-modal-content='
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="powerbank" data-name="Anker Zolo Power Bank 30W" id="ankerZolo30w">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/ankerzolo.png') }}"
+                            alt="Anker Zolo Power Bank 30W" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Anker Zolo Power Bank 30W
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 429.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Anker Zolo Power Bank 30W"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/ankerzolo.png") }}" alt="Anker Zolo Power Bank 30W" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/ankerzolo.png') }}" alt="Anker Zolo Power Bank 30W" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">
             Anker Zolo Power Bank 30W menghadirkan kombinasi antara portabilitas dan kecepatan pengisian. Dilengkapi teknologi PowerIQ 3.0, mampu mengisi perangkat dengan efisiensi tinggi dan perlindungan maksimal dari overcharge atau overheat.
@@ -1500,8 +1783,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
 
@@ -1541,25 +1824,25 @@ setInterval(() => {
                     </div>
                 </div>
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-    data-category="powerbank" data-name="Powerbank Wireless JETE A11 10000 mAh" id="jeteA11">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jete.png') }}"
-            alt="Powerbank Wireless JETE A11 10000 mAh" class="w-full h-full object-contain p-2">
-    </div>
-    <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
-            Powerbank Wireless JETE A11 10000 mAh
-        </h3>
-        <div class="text-center mt-auto">
-            <span class="text-red-600 font-bold text-lg">Rp 299.000</span>
-        </div>
-    </div>
-    <div class="p-4 pt-0">
-        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
-            data-modal-title="Powerbank Wireless JETE A11 10000 mAh"
-            data-modal-content='
+                    data-category="powerbank" data-name="Powerbank Wireless JETE A11 10000 mAh" id="jeteA11">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jete.png') }}"
+                            alt="Powerbank Wireless JETE A11 10000 mAh" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">
+                            Powerbank Wireless JETE A11 10000 mAh
+                        </h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 299.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="Powerbank Wireless JETE A11 10000 mAh"
+                            data-modal-content='
         <div class="text-center mb-4">
-            <img src="{{ asset("assets/demo/toko-aksesoris-hp/images/jete.png") }}" alt="Powerbank Wireless JETE A11 10000 mAh" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+            <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jete.png') }}" alt="Powerbank Wireless JETE A11 10000 mAh" class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
         </div>
         <p class="text-gray-700 mb-2">
             Powerbank Wireless JETE A11 berkapasitas 10000 mAh yang mendukung pengisian cepat dengan dan tanpa kabel. Didesain modern dan praktis, cocok untuk menemani aktivitas harian kamu tanpa khawatir kehabisan daya.
@@ -1578,8 +1861,8 @@ setInterval(() => {
                 class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
         </div>
     '>Detail</button>
-    </div>
-</div>
+                    </div>
+                </div>
 
 
                 <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
@@ -1805,17 +2088,120 @@ setInterval(() => {
                         </button>
                     </div>
                 </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="accessory" data-name="SIM Card Tray Ejector Metal">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jarumsimkart.webp') }}"
+                            alt="SIM Card Tray Ejector Metal" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">SIM Card Tray
+                            Ejector</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 8.000</span><br>
+                            <span class="text-gray-400 line-through text-sm">Rp 15.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="SIM Card Tray Ejector"
+                            data-modal-content='
+                                <div class="text-center mb-4">
+                                    <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jarumsimkart.webp') }}" alt="SIM Card Tray Ejector"
+                                        class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+                                </div>
+                                <p class="text-gray-700 mb-2">
+                                    Alat kecil berbahan logam untuk membuka tray SIM card dengan mudah dan aman. Cocok untuk semua tipe smartphone.
+                                </p>
+                                <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
+                                    <li>Bahan metal kuat dan tahan lama</li>
+                                    <li>Desain tipis, mudah dibawa</li>
+                                    <li>Cocok untuk semua merk hp</li>
+                                    <li>Penggunaan mudah dan aman</li>
+                                </ul>
+                                <div class="text-center mt-4">
+                                    <span class="text-teal-500 font-bold text-xl">Rp 8.500</span><br>
+                                    <span class="text-gray-400 line-through mr-2">Rp 15.000</span>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20ini" target="_blank"
+                                        class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
+                                </div>
+                            '>Detail
+                        </button>
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                    data-category="accessory" data-name="SIM Card Tray Ejector Metal">
+                    <div class="aspect-w-1 aspect-h-1 w-full">
+                        <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jarumsimkart.webp') }}"
+                            alt="SIM Card Tray Ejector Metal" class="w-full h-full object-contain p-2">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold product-title text-center flex-grow mb-2">SIM Card Tray
+                            Ejector</h3>
+                        <div class="text-center mt-auto">
+                            <span class="text-red-600 font-bold text-lg">Rp 8.000</span><br>
+                            <span class="text-gray-400 line-through text-sm">Rp 15.000</span>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button class="w-full mt-auto px-4 py-2 bg-teal-500 text-white rounded-full text-sm show-modal"
+                            data-modal-title="SIM Card Tray Ejector"
+                            data-modal-content='
+                                <div class="text-center mb-4">
+                                    <img src="{{ asset('assets/demo/toko-aksesoris-hp/images/jarumsimkart.webp') }}" alt="SIM Card Tray Ejector"
+                                        class="mx-auto w-60 h-60 object-contain rounded-lg mb-2">
+                                </div>
+                                <p class="text-gray-700 mb-2">
+                                    Alat kecil berbahan logam untuk membuka tray SIM card dengan mudah dan aman. Cocok untuk semua tipe smartphone.
+                                </p>
+                                <ul class="list-disc list-inside text-gray-600 text-sm space-y-1 mb-2 text-left">
+                                    <li>Bahan metal kuat dan tahan lama</li>
+                                    <li>Desain tipis, mudah dibawa</li>
+                                    <li>Cocok untuk semua merk hp</li>
+                                    <li>Penggunaan mudah dan aman</li>
+                                </ul>
+                                <div class="text-center mt-4">
+                                    <span class="text-teal-500 font-bold text-xl">Rp 8.500</span><br>
+                                    <span class="text-gray-400 line-through mr-2">Rp 15.000</span>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="https://wa.me/6282392184679?text=Halo%20saya%20tertarik%20dengan%20produk%20ini" target="_blank"
+                                        class="inline-block bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full">Chat Penjual</a>
+                                </div>
+                            '>Detail
+                        </button>
+                    </div>
+                </div>
 
             </div>
         </div>
+          <div class="flex flex-col items-center justify-between space-y-4">
+            <!-- Showing X of Y items -->
+            <div class="text-sm text-gray-700">
+                Showing <span id="showing-start" class="font-medium">1</span> to <span id="showing-end" class="font-medium"></span> of
+                <span id="total-items" class="font-medium">0</span> items
+            </div>
+            <!-- Pagination Controls -->
+            <div id="pagination-controls" class="inline-flex -space-x-px rounded-md shadow-sm"></div>
+        </div>
+    </div>
+
     </section>
 
+
+
     <!-- Modal Universal -->
-    <div id="universalModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-all duration-300 px-4 sm:px-0 hidden">
+    <div id="universalModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-all duration-300 px-4 sm:px-0 hidden">
         <!-- Dialog: full-screen on small devices, centered box on md+ -->
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg sm:mx-auto sm:my-8 relative animate-fadeIn flex flex-col overflow-hidden h-full sm:h-auto">
-            <!-- Close button (top-right) - on mobile make it more visible and inside header -->
-            <button id="closeUniversalModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-3xl font-bold focus:outline-none transition-colors duration-200">&times;</button>
+        <div
+            class="bg-white rounded-2xl shadow-2xl w-full max-w-lg sm:mx-auto sm:my-8 relative animate-fadeIn flex flex-col overflow-hidden h-full sm:h-auto">
+            <!-- Close button (top-right) -->
+            <button id="closeUniversalModal"
+                class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-3xl font-bold focus:outline-none transition-colors duration-200 z-20">&times;</button>
+
             <div class="p-4 sm:p-6 overflow-auto" style="max-height: calc(100vh - 120px);">
                 <h3 id="universalModalTitle" class="text-2xl font-extrabold mb-4 text-teal-600 text-center"></h3>
                 <div id="universalModalContent" class="text-gray-700"></div>
@@ -1828,11 +2214,13 @@ setInterval(() => {
 
             /* Make modal full-screen on very small devices */
             @media (max-width: 639px) {
-                #universalModal > div {
-                    border-radius: 0.5rem; /* slightly rounded */
+                #universalModal>div {
+                    border-radius: 0.5rem;
+                    /* slightly rounded */
                     height: 100vh;
                     max-width: 100%;
                 }
+
                 #universalModal .absolute.top-3.right-3 {
                     right: 12px;
                     top: 12px;
@@ -1847,8 +2235,50 @@ setInterval(() => {
                 background: #38b2ac;
                 border-radius: 8px;
             }
+
+            /* Spacing inside modal content: ensure clear gaps between image, promo/price, description, and chat */
+            #universalModalContent > *:not(:first-child) {
+                margin-top: 1rem;
+            }
+            /* Slightly larger gap before the chat button area */
+            #universalModalContent .pt-6 {
+                margin-top: 1.25rem;
+            }
         </style>
     </div>
+
+    <div id="pagination-container" class="flex flex-wrap justify-center items-center gap-2 mt-8">
+            <!-- Pagination template -->
+            <template id="pagination-template">
+                <button
+                    class="pagination-prev px-2 py-2 xs:px-3 xs:py-2 sm:px-4 sm:py-2 border rounded-lg hover:bg-gray-100 transition text-xs xs:text-sm sm:text-base min-w-[44px] min-h-[44px] xs:min-w-[48px] xs:min-h-[48px] sm:min-w-auto sm:min-h-auto flex items-center justify-center">
+                    <span class="hidden sm:inline">Previous</span>
+                    <span class="hidden xs:inline sm:hidden">Prev</span>
+                    <span class="xs:hidden">‹</span>
+                </button>
+                <div class="pagination-numbers flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-2">
+                    <!-- Page numbers will be inserted here -->
+                </div>
+                <button
+                    class="pagination-next px-2 py-2 xs:px-3 xs:py-2 sm:px-4 sm:py-2 border rounded-lg hover:bg-gray-100 transition text-xs xs:text-sm sm:text-base min-w-[44px] min-h-[44px] xs:min-w-[48px] xs:min-h-[48px] sm:min-w-auto sm:min-h-auto flex items-center justify-center">
+                    <span class="hidden sm:inline">Next</span>
+                    <span class="hidden xs:inline sm:hidden">Next</span>
+                    <span class="xs:hidden">›</span>
+                </button>
+            </template>
+
+            <!-- Page number button template -->
+            <template id="page-button-template">
+                <button
+                    class="page-button px-2 py-2 xs:px-3 xs:py-2 sm:px-4 sm:py-2 border rounded-lg hover:bg-gray-100 transition text-xs xs:text-sm sm:text-base min-w-[44px] min-h-[44px] xs:min-w-[48px] xs:min-h-[48px] sm:min-w-auto sm:min-h-auto flex items-center justify-center">
+                    1
+                </button>
+            </template>
+
+            <!-- Pagination will be populated by JavaScript -->
+        </div>
+
+
     <!-- Footer dengan informasi toko yang diperbarui -->
     <footer class="bg-gray-800 text-gray-300 py-8">
         <div class="container mx-auto flex flex-col md:flex-row items-center md:items-start justify-between">
@@ -1923,41 +2353,95 @@ setInterval(() => {
                     const modalContent = document.getElementById('universalModalContent');
                     modalTitle.textContent = this.getAttribute('data-modal-title');
                     modalContent.innerHTML = this.getAttribute('data-modal-content');
+                    modal.classList.remove('hidden');
+                    // Ensure promo & price blocks appear directly under the product image
+                    try {
+                        const firstImg = modalContent.querySelector('img');
+                        if (firstImg) {
+                            const imgBlock = firstImg.closest('div') || firstImg.parentElement;
+                            // find any blocks that contain 'Promo' or a price like 'Rp ' and move them after the image
+                            const candidateDivs = Array.from(modalContent.querySelectorAll('div'));
+                            candidateDivs.forEach(d => {
+                                const txt = (d.textContent || '').trim();
+                                if (/promo/i.test(txt) || /Rp\s*[0-9]/.test(txt)) {
+                                    try {
+                                        if (imgBlock && d !== imgBlock) imgBlock.after(d);
+                                    } catch (e) {
+                                        // ignore move errors
+                                    }
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        // non-fatal
+                    }
+                    // Ensure promo element appears before price element (if both exist)
+                    try {
+                        const allEls = Array.from(modalContent.querySelectorAll('*'));
+                        const promoEl = allEls.find(el => /promo/i.test((el.textContent || '').trim()));
+                        const priceEl = allEls.find(el => /Rp\s*[0-9]/.test((el.textContent || '').trim()));
+                        if (promoEl && priceEl) {
+                            const promoIndex = allEls.indexOf(promoEl);
+                            const priceIndex = allEls.indexOf(priceEl);
+                            if (promoIndex > priceIndex) {
+                                // move promoEl before priceEl
+                                priceEl.parentNode.insertBefore(promoEl, priceEl);
+                            }
+                        }
+                    } catch (e) {
+                        // ignore ordering errors
+                    }
                     // Tambahkan bagian "Produk Serupa" otomatis berdasarkan kategori produk yang dibuka
                     try {
                         // Cari card produk yang cocok berdasarkan data-name sama dengan modal title
                         var currentName = modalTitle.textContent.trim();
-                        var currentCard = document.querySelector('.product-card[data-name="' + CSS.escape(currentName) + '"]');
+                        var currentCard = document.querySelector('.product-card[data-name="' + CSS.escape(
+                            currentName) + '"]');
                         if (!currentCard) {
                             // coba matching case-insensitive jika exact match tidak ditemukan
                             var allCards = Array.from(document.querySelectorAll('.product-card'));
-                            currentCard = allCards.find(function(c) { return (c.dataset.name || '').toLowerCase().trim() === currentName.toLowerCase(); });
+                            currentCard = allCards.find(function(c) {
+                                return (c.dataset.name || '').toLowerCase().trim() === currentName
+                                    .toLowerCase();
+                            });
                         }
 
                         if (currentCard) {
                             var cat = currentCard.dataset.category;
                             if (cat) {
-                                var related = Array.from(document.querySelectorAll('.product-card')).filter(function(c) {
-                                    return c.dataset.category === cat && c.dataset.name !== currentCard.dataset.name;
-                                }).slice(0,3);
+                                var related = Array.from(document.querySelectorAll('.product-card')).filter(
+                                    function(c) {
+                                        return c.dataset.category === cat && c.dataset.name !==
+                                            currentCard.dataset.name;
+                                    }).slice(0, 3);
 
                                 if (related.length) {
                                     var relatedHtml = '<hr class="my-4" />';
-                                    relatedHtml += '<h4 class="text-lg font-semibold mb-2">Produk Serupa</h4>';
+                                    relatedHtml +=
+                                        '<h4 class="text-lg font-semibold mb-2">Produk Serupa</h4>';
                                     relatedHtml += '<div class="grid grid-cols-2 gap-3">';
                                     related.forEach(function(r) {
-                                        var img = r.querySelector('img') ? r.querySelector('img').getAttribute('src') : '';
+                                        var img = r.querySelector('img') ? r.querySelector('img')
+                                            .getAttribute('src') : '';
                                         var name = r.dataset.name || '';
                                         // Try to find a visible price inside card
-                                        var priceEl = r.querySelector('.text-red-600') || r.querySelector('.price') || null;
+                                        var priceEl = r.querySelector('.text-red-600') || r
+                                            .querySelector('.price') || null;
                                         var price = priceEl ? priceEl.textContent.trim() : '';
-                                        relatedHtml += '<div class="p-2 border rounded-lg bg-white text-center">';
+                                        relatedHtml +=
+                                            '<div class="p-2 border rounded-lg bg-white text-center">';
                                         if (img) {
-                                            relatedHtml += '<img src="' + img + '" alt="' + name + '" class="mx-auto w-24 h-24 object-contain mb-2">';
+                                            relatedHtml += '<img src="' + img + '" alt="' + name +
+                                                '" class="mx-auto w-24 h-24 object-contain mb-2">';
                                         }
-                                        relatedHtml += '<div class="text-sm font-medium mb-1">' + name + '</div>';
-                                        if (price) relatedHtml += '<div class="text-teal-500 font-bold mb-2">' + price + '</div>';
-                                        relatedHtml += '<button class="open-related inline-block bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-xs" data-target="' + name.replace(/"/g, '&quot;') + '">Lihat</button>';
+                                        relatedHtml += '<div class="text-sm font-medium mb-1">' +
+                                            name + '</div>';
+                                        if (price) relatedHtml +=
+                                            '<div class="text-teal-500 font-bold mb-2">' + price +
+                                            '</div>';
+                                        relatedHtml +=
+                                            '<button class="open-related inline-block bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-xs" data-target="' +
+                                            name.replace(/"/g, '&quot;') + '">Lihat</button>';
                                         relatedHtml += '</div>';
                                     });
                                     relatedHtml += '</div>';
@@ -1966,17 +2450,24 @@ setInterval(() => {
                                     // Pasang event handler untuk tombol 'Lihat' pada produk serupa
                                     modalContent.querySelectorAll('.open-related').forEach(function(btn) {
                                         btn.addEventListener('click', function() {
-                                            var targetName = this.getAttribute('data-target');
+                                            var targetName = this.getAttribute(
+                                                'data-target');
                                             // cari product-card yang memiliki data-name sama
-                                            var targetCard = Array.from(document.querySelectorAll('.product-card')).find(function(c) {
-                                                return (c.dataset.name || '').trim() === targetName;
-                                            });
+                                            var targetCard = Array.from(document
+                                                    .querySelectorAll('.product-card'))
+                                                .find(function(c) {
+                                                    return (c.dataset.name || '')
+                                                    .trim() === targetName;
+                                                });
                                             if (targetCard) {
-                                                var targetBtn = targetCard.querySelector('.show-modal');
+                                                var targetBtn = targetCard.querySelector(
+                                                    '.show-modal');
                                                 if (targetBtn) {
                                                     // Tutup modal saat ini lalu buka modal target
                                                     modal.classList.add('hidden');
-                                                    setTimeout(function() { targetBtn.click(); }, 80);
+                                                    setTimeout(function() {
+                                                        targetBtn.click();
+                                                    }, 80);
                                                 }
                                             }
                                         });
@@ -2007,22 +2498,24 @@ setInterval(() => {
             const products = document.querySelectorAll('.product-card');
             const buttons = document.querySelectorAll('.category-btn');
 
-            // Perbarui status tombol aktif
+            // Update active button state
             buttons.forEach(btn => btn.classList.remove('active', 'bg-teal-500', 'text-white'));
             buttons.forEach(btn => btn.classList.add('bg-white', 'hover:bg-gray-200'));
             event.target.classList.add('active', 'bg-teal-500', 'text-white', 'hover:bg-teal-600');
             event.target.classList.remove('bg-white', 'hover:bg-gray-200');
 
-            // Tampilkan atau sembunyikan produk sesuai kategori
+            // Show/hide products by category
             products.forEach(product => {
                 if (category === 'all' || product.dataset.category === category) {
-                    product.style.display = 'block';
+                    product.style.display = '';
                 } else {
                     product.style.display = 'none';
                 }
             });
-            // Setelah filter diterapkan, sebelumnya kita melakukan scroll otomatis ke produk pertama.
-            // Pengguna meminta agar scrol otomatis dinonaktifkan, jadi tidak melakukan scroll di sini.
+
+            // Reset to first page and update pagination
+            currentPage = 1;
+            updatePagination();
         }
 
         // Scroll ke produk pertama yang terlihat untuk kategori yang dipilih.
@@ -2126,7 +2619,8 @@ setInterval(() => {
         function debounce(fn, delay) {
             var timer = null;
             return function() {
-                var context = this, args = arguments;
+                var context = this,
+                    args = arguments;
                 clearTimeout(timer);
                 timer = setTimeout(function() {
                     fn.apply(context, args);
@@ -2141,7 +2635,9 @@ setInterval(() => {
                 // If empty, clear filters (show all)
                 var v = this.value.trim();
                 if (v === '') {
-                    document.querySelectorAll('.product-card').forEach(function(p) { p.style.display = 'block'; });
+                    document.querySelectorAll('.product-card').forEach(function(p) {
+                        p.style.display = 'block';
+                    });
                 } else {
                     searchProducts();
                 }
@@ -2192,7 +2688,9 @@ setInterval(() => {
             // Mendukung multi subkategori: jika subCategory adalah array, filter dengan semua keyword
             var keywords = Array.isArray(subCategory) ? subCategory : [subCategory];
             var allCards = document.querySelectorAll('.product-card');
-            allCards.forEach(function(c) { c.style.display = ''; });
+            allCards.forEach(function(c) {
+                c.style.display = '';
+            });
 
             var selector = '.product-card[data-category="' + category + '"]';
             var cards = document.querySelectorAll(selector);
@@ -2216,23 +2714,36 @@ setInterval(() => {
             });
 
             if (!found) {
-                cards.forEach(function(card) { card.style.display = ''; });
+                cards.forEach(function(card) {
+                    card.style.display = '';
+                });
             } else {
                 // Scroll to the first matched (visible) card
                 setTimeout(function() {
-                    var firstVisible = Array.from(cards).find(function(c) { return c.style.display !== 'none'; });
+                    var firstVisible = Array.from(cards).find(function(c) {
+                        return c.style.display !== 'none';
+                    });
                     if (firstVisible) {
-                        firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstVisible.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
                     }
                 }, 60);
             }
         }
     </script>
 
+            </div> <!-- Close products grid -->
+        </div> <!-- Close container -->
+    </section>
+
+    <!-- Pagination Information and Controls -->
+
+
     <!-- Universal Checkout Bubble -->
     @include('demo.universal-checkout-bubble', [
         'templateSlug' => 'toko-aksesoris-hp',
     ])
 </body>
-
 </html>

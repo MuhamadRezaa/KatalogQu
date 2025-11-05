@@ -65,9 +65,10 @@
                                 </h2>
                                 <p class="text-lg md:text-xl mb-4 px-4">
                                     {!! $banner->subtitle !!}</p>
+                                <br>
                                 @if ($banner->link)
                                     <a href="{{ $banner->link }}"
-                                        class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">{{ $banner->button_text ?? 'Learn More' }}</a>
+                                        class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-colors mt-4">{{ $banner->button_text ?? 'Learn More' }}</a>
                                 @endif
                             </div>
                         </div>
@@ -293,7 +294,8 @@
                     </div>
                     <div class="p-4">
                         <h3 class="text-base font-semibold text-gray-800 line-clamp-2">{{ $product->name }}</h3>
-                        <p class="text-xs text-gray-500 mb-2">{{ $product->category->name ?? 'Uncategorized' }}</p>
+                        <p class="text-xs text-gray-500 mb-2">{{ $product->category->name ?? 'Uncategorized' }}@if ($product->subcategory && $product->subcategory->name) > {{ $product->subcategory->name }}@endif
+                        </p>
                         <div class="flex flex-col gap-1">
                             <div class="flex flex-wrap items-baseline gap-x-1">
                                 <span class="text-lg font-bold text-gray-900">{{ $product->price_idr }}</span>
@@ -855,8 +857,11 @@
 
                 // Judul & kategori
                 productTitle.textContent = product.name || 'Nama Produk';
-                productCategoryText.textContent = product.category ? product.category.name :
-                    'Tanpa Kategori';
+                let categoryString = product.category ? product.category.name : 'Uncategorized';
+                if (product.subcategory && product.subcategory.name) {
+                    categoryString += ` > ${product.subcategory.name}`;
+                }
+                productCategoryText.textContent = categoryString;
 
                 // Deskripsi
                 productDescription.innerHTML = product.description || 'Tidak ada deskripsi.';
@@ -1158,6 +1163,11 @@
                             '<span class="promo-badge absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Promo</span>' :
                             '';
 
+                        let categoryText = product.category ? product.category.name : 'Uncategorized';
+                        if (product.subcategory && product.subcategory.name) {
+                            categoryText += ` > ${product.subcategory.name}`;
+                        }
+
                         const productCardHtmlContent = `
                                             <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio: 5 / 4;">
                                                 <img class="product-image w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" src="${primaryImage}" alt="${product.name}" />
@@ -1165,7 +1175,7 @@
                                             </div>
                                             <div class="p-4">
                                                 <h3 class="text-base font-semibold text-gray-800 line-clamp-2">${product.name}</h3>
-                                                <p class="text-xs text-gray-500 mb-2">${product.category ? product.category.name : 'Uncategorized'}</p>
+                                                <p class="text-xs text-gray-500 mb-2">${categoryText}</p>
                                                 <div class="flex flex-col gap-1">
                                                     <div class="flex flex-wrap items-baseline gap-x-1">
                                                         <span class="text-lg font-bold text-gray-900">${formatPrice(product.price)}</span>
