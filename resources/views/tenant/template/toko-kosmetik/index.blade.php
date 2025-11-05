@@ -60,15 +60,16 @@
         }
 
         .navbar {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color:rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
         }
 
         .navbar-brand .brand-logo {
-            height: 45px;
+            height: 80px;
             width: auto;
             border-radius: 8px;
+            box-shadow: 0 2px 12px rgb(30, 26, 26);
             object-fit: contain;
         }
 
