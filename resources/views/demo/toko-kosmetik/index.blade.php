@@ -423,7 +423,7 @@
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="#home">
-                <img src="https://via.placeholder.com/45x45/E6397A/FFFFFF?text=CS" alt="Logo"
+                <img src="{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}" alt="Logo"
                     class="brand-logo me-2" style="height: 40px;">
                 <span class="brand-text">Canu Cosmetics</span>
             </a>
@@ -574,17 +574,17 @@
             const dummyBanners = [{
                     title: "Temukan Kecantikan Sejati Anda",
                     subtitle: "Koleksi kosmetik premium untuk wanita modern",
-                    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80"
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                 },
                 {
                     title: "Skincare Revolusioner",
                     subtitle: "Formula inovatif untuk kulit sehat dan bercahaya",
-                    image: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?auto=format&fit=crop&w=1920&q=80"
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                 },
                 {
                     title: "Temukan Kecantikan Sejati Anda",
                     subtitle: "Koleksi kosmetik premium untuk wanita modern",
-                    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1920&q=80"
+                    image: "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                 },
             ];
             const dummyCategories = [{
@@ -611,7 +611,7 @@
                         Bahan: "Hyaluronic Acid"
                     },
                     images: [
-                        "images/kosmetik.jpg"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: true,
                     discount_percentage: null
@@ -630,7 +630,7 @@
                         Finish: "Matte"
                     },
                     images: [
-                        "images/kosmetik.jpg"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: 15
@@ -649,7 +649,7 @@
                         SPF: "30"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1588667822765-f93021a590c7?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: true,
                     discount_percentage: null
@@ -667,7 +667,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -685,7 +685,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -703,7 +703,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -721,7 +721,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -739,7 +739,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -757,7 +757,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -775,7 +775,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -793,7 +793,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -811,7 +811,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -829,7 +829,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -847,7 +847,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -865,7 +865,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -883,7 +883,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -901,7 +901,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -919,7 +919,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -937,7 +937,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -955,7 +955,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -973,7 +973,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -991,7 +991,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -1009,7 +1009,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "images/kosmetik.jpg"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -1027,7 +1027,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -1045,7 +1045,7 @@
                         JumlahShade: "12"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1512496015822-eae5d5ac2956?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: null
@@ -1064,7 +1064,7 @@
                         Aroma: "Floral"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1541108523308-b0a340ddbf58?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: false,
                     discount_percentage: 12
@@ -1083,7 +1083,7 @@
                         Finish: "Matte"
                     },
                     images: [
-                        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80"
+                        "{{ asset('assets/demo/toko-kosmetik/images/kosmetik.jpg') }}"
                     ],
                     is_new: true,
                     discount_percentage: 15
