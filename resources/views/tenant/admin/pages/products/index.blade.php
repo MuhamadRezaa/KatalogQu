@@ -30,6 +30,7 @@
                                     <th scope="col">Gambar</th>
                                     <th scope="col">Nama Produk</th>
                                     <th scope="col">Kategori</th>
+                                    <th scope="col">Sub-Kategori</th>
                                     <th scope="col">Harga</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Aksi</th>
@@ -59,6 +60,9 @@
                                         </td>
                                         <td>
                                             {{ $product->category->name ?? '-' }}
+                                        </td>
+                                        <td>
+                                            {{ $product->subCategory->name ?? '-' }}
                                         </td>
                                         <td>
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
