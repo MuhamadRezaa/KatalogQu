@@ -527,7 +527,7 @@
                 const productName = productCard.getAttribute('data-name');
                 const productPrice = parseInt(productCard.getAttribute('data-price'));
                 const formattedPrice = `Rp ${new Intl.NumberFormat('id-ID').format(productPrice)}`;
-                const phoneNumber = '6285273147673';
+                const phoneNumber = '{{ $userStore->store_phone ?? '' }}';
                 const message =
                     `Halo AutoParts\n\nSaya tertarik untuk memesan produk:\n📦 *${productName}*\n💰 Harga: ${formattedPrice}\n\nBisakah Anda berikan informasi lebih lanjut mengenai:\n- Ketersediaan stock\n- Estimasi pengiriman\n- Metode pembayaran\n\nTerima kasih!`;
                 const encodedMessage = encodeURIComponent(message);
