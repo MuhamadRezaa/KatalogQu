@@ -118,7 +118,7 @@
                 </div>
                 <div class="filter-options">
                     <select id="categoryFilter">
-                        <option value="all">Semua Kategori</option>
+                        <option value="all"> Semua Kategori</option>
                         <option value="interior">Interior</option>
                         <option value="exterior">Eksterior</option>
                         <option value="electronics">Elektronik</option>
@@ -127,25 +127,7 @@
                         <option value="lighting">Lampu</option>
                     </select>
                     <select id="subCategoryFilter">
-                        <option value="all">Semua Sub Kategori</option>
-                        <option value="jok" data-parent="interior">Sarung Jok</option>
-                        <option value="dashboard" data-parent="interior">Dashboard</option>
-                        <option value="karpet" data-parent="interior">Karpet</option>
-                        <option value="spoiler" data-parent="exterior">Spoiler</option>
-                        <option value="bodykit" data-parent="exterior">Body Kit</option>
-                        <option value="emblem" data-parent="exterior">Emblem</option>
-                        <option value="audio" data-parent="electronics">Audio System</option>
-                        <option value="kamera" data-parent="electronics">Kamera</option>
-                        <option value="gps" data-parent="electronics">GPS</option>
-                        <option value="oli" data-parent="maintenance">Oli</option>
-                        <option value="filter" data-parent="maintenance">Filter</option>
-                        <option value="busi" data-parent="maintenance">Busi</option>
-                        <option value="alarm" data-parent="safety">Alarm</option>
-                        <option value="dashcam" data-parent="safety">Dashcam</option>
-                        <option value="kacafilm" data-parent="safety">Kaca Film</option>
-                        <option value="led" data-parent="lighting">LED</option>
-                        <option value="hid" data-parent="lighting">HID</option>
-                        <option value="fog" data-parent="lighting">Fog Lamp</option>
+                        <option value="all">Semua Subkategori</option>
                     </select>
                     <select id="priceFilter">
                         <option value="all">Semua Harga</option>
@@ -163,7 +145,7 @@
 
             <div class="products-grid" id="productsGrid">
                 <!-- Products dengan gambar -->
-                <div class="product-card" data-id="1" data-category="interior" data-subcategory="jok" data-price="1250000" data-images='["https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/95/MTA-40163476/oscar_sarung_jok_mobil_ertiga_bahan_kulit_syntetic_original_full_3_baris_full01_m057pk2o.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/9/14/8c5e5e5a-8c5e-4c5e-8c5e-8c5e5e5a8c5e.jpg", "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lm5z3bkwc4si9f"]'>
+                <div class="product-card" data-id="1" data-category="interior" data-subcategory="jok" data-price="1250000">
                     <div class="product-image">
                         <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/95/MTA-40163476/oscar_sarung_jok_mobil_ertiga_bahan_kulit_syntetic_original_full_3_baris_full01_m057pk2o.jpg"
                             alt="Sarung Jok Kulit Premium" class="product-img">
@@ -182,7 +164,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="2" data-category="lighting" data-subcategory="led" data-price="350000" data-images='["https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp", "https://5.imimg.com/data5/SELLER/Default/2023/8/334206123/BI/XH/JI/8278968/h4-led-headlight-bulb.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL._AC_UF894,1000_QL80_.jpg"]'>
+                <div class="product-card" data-id="2" data-category="lighting" data-subcategory="headlight" data-price="350000">
                     <div class="product-image">
                         <img src="https://image.made-in-china.com/2f0j00YsKkiavzYuqg/Auto-Parts-Car-Light-Bulb-400W-H7-Automotive-Headlamp-H4-LED-Headlight.webp"
                             alt="LED Headlight H4" class="product-img">
@@ -204,14 +186,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(2)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(2)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="3" data-category="exterior" data-subcategory="spoiler" data-price="2100000" data-images='["https://tiimg.tistatic.com/fp/1/573/carbon-fiber-car-spoiler-192.jpg", "https://5.imimg.com/data5/SELLER/Default/2022/8/VY/QU/YW/39577847/carbon-fiber-spoiler.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL.jpg"]'>
+                <div class="product-card" data-id="3" data-category="exterior" data-subcategory="spoiler" data-price="2100000">
                     <div class="product-image">
                         <img src="https://tiimg.tistatic.com/fp/1/573/carbon-fiber-car-spoiler-192.jpg"
                             alt="Spoiler Carbon Fiber" class="product-img">
@@ -231,7 +211,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" data-id="4" data-category="electronics" data-subcategory="audio" data-price="1800000" data-images='["https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg", "https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490"]'>
+                <div class="product-card" data-id="4" data-category="electronics" data-subcategory="audio" data-price="1800000">
                     <div class="product-image">
                         <img src="https://5.imimg.com/data5/UE/BJ/CZ/SELLER-53335017/car-speaker-1000x1000.jpg"
                             alt="Audio System Pioneer" class="product-img">
@@ -253,14 +233,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(4)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(4)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="5" data-category="maintenance" data-subcategory="oli" data-price="285000" data-images='["https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"]'>
+                <div class="product-card" data-id="5" data-category="maintenance" data-subcategory="oli" data-price="285000">
                     <div class="product-image">
                         <img src="https://down-id.img.susercontent.com/file/sg-11134201-7rbm6-lohq87slpvy490"
                             alt="Oli Mesin Synthetic" class="product-img">
@@ -276,14 +254,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(5)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(5)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="6" data-category="safety" data-subcategory="alarm" data-price="650000" data-images='["https://images.squarespace-cdn.com/content/v1/661bf67da1652b3d5d587880/208af2c3-fb7d-47f4-b5ad-e34d657998f3/Pro+2WG180W.jpg", "https://m.media-amazon.com/images/I/71xKZQx8AFL.jpg"]'>
+                <div class="product-card" data-id="6" data-category="safety" data-subcategory="alarm" data-price="650000">
                     <div class="product-image">
                         <img src="https://images.squarespace-cdn.com/content/v1/661bf67da1652b3d5d587880/208af2c3-fb7d-47f4-b5ad-e34d657998f3/Pro+2WG180W.jpg"
                             alt="Alarm System Advanced" class="product-img">
@@ -299,14 +275,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(6)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(6)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="7" data-category="interior" data-subcategory="dashboard" data-price="420000" data-images='["https://www.carcoverusa.com/images/carhartt/carhartt-dashboard-covers-black.webp", "https://m.media-amazon.com/images/I/81xKZQx8AFL.jpg"]'>
+                <div class="product-card" data-id="7" data-category="interior" data-subcategory="dashboard" data-price="420000">
                     <div class="product-image">
                         <img src="https://www.carcoverusa.com/images/carhartt/carhartt-dashboard-covers-black.webp"
                             alt="Dashboard Cover Premium" class="product-img">
@@ -321,14 +295,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(7)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(7)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="8" data-category="exterior" data-subcategory="bodykit" data-price="3200000" data-images='["https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"]'>
+                <div class="product-card" data-id="8" data-category="exterior" data-subcategory="body-kit" data-price="3200000">
                     <div class="product-image">
                         <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="Body Kit Sport" class="product-img">
@@ -343,15 +315,13 @@
                             <button class="btn btn-detail" onclick="showProductDetail(8)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(8)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- Produk tambahan untuk testing filter -->
-                <div class="product-card" data-id="9" data-category="electronics" data-subcategory="kamera" data-price="450000" data-images='["https://down-id.img.susercontent.com/file/id-11134207-7rash-m13z3bkwc4si9f", "https://m.media-amazon.com/images/I/71xKZQx8AFL.jpg"]'>
+                <div class="product-card" data-id="9" data-category="electronics" data-subcategory="kamera" data-price="450000">
                     <div class="product-image">
                         <img src="https://down-id.img.susercontent.com/file/id-11134207-7rash-m13z3bkwc4si9f"
                             alt="Kamera Parkir HD" class="product-img">
@@ -366,14 +336,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(9)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(9)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="10" data-category="lighting" data-subcategory="fog" data-price="150000" data-images='["https://brainboxcar.com/pictures/product/534-02301-FOG-ANGEL-(4).jpg", "https://5.imimg.com/data5/SELLER/Default/2023/8/334206123/BI/XH/JI/8278968/fog-lamp.jpg"]'>
+                <div class="product-card" data-id="10" data-category="lighting" data-subcategory="foglamp" data-price="150000">
                     <div class="product-image">
                         <img src="https://brainboxcar.com/pictures/product/534-02301-FOG-ANGEL-(4).jpg"
                             alt="Lampu Fog LED" class="product-img">
@@ -388,14 +356,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(10)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(10)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="11" data-category="maintenance" data-subcategory="filter" data-price="85000" data-images='["https://images.tokopedia.net/img/cache/700/VqbcmM/2024/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg", "https://m.media-amazon.com/images/I/61xKZQx8AFL.jpg"]'>
+                <div class="product-card" data-id="11" data-category="maintenance" data-subcategory="filter" data-price="85000">
                     <div class="product-image">
                         <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2024/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"
                             alt="Filter Udara Sport" class="product-img">
@@ -410,14 +376,12 @@
                             <button class="btn btn-detail" onclick="showProductDetail(11)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(11)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card" data-id="12" data-category="safety" data-subcategory="dashcam" data-price="950000" data-images='["https://m.media-amazon.com/images/I/81gIn+MXtyL._AC_.jpg", "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/15/fc5f8d1a-536f-40b5-813f-7ce305e378d9.jpg"]'>
+                <div class="product-card" data-id="12" data-category="safety" data-subcategory="dashcam" data-price="950000">
                     <div class="product-image">
                         <img src="https://m.media-amazon.com/images/I/81gIn+MXtyL._AC_.jpg" alt="Dashcam 4K Pro"
                             class="product-img">
@@ -432,13 +396,13 @@
                             <button class="btn btn-detail" onclick="showProductDetail(12)">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>
-                            <button class="btn btn-whatsapp" onclick="orderViaWhatsApp(12)">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Pagination (angka) -->
+            <div id="pagination" class="pagination" style="display:flex;gap:8px;justify-content:center;align-items:center;margin:16px 0;flex-wrap:wrap;"></div>
         </div>
     </section>
 
@@ -498,13 +462,18 @@
     <script>
         let currentSlideIndex = 0;
         let slideInterval;
+        // Pagination state
+        let currentPage = 1;
+        const pageSize = 8; // jumlah produk per halaman
+        let currentFilteredCards = [];
 
         document.addEventListener('DOMContentLoaded', function() {
             startSlider();
             setupEventListeners();
             animateElements();
             setupProductFilters();
-            setupCheckoutBubble();
+            // Render awal agar pagination muncul sejak halaman dimuat
+            applyFilters();
         });
 
         function startSlider() {
@@ -571,9 +540,9 @@
         function resetFilter() {
             document.getElementById('productSearchInput').value = '';
             document.getElementById('categoryFilter').value = 'all';
-            document.getElementById('subCategoryFilter').value = 'all';
+            const subCat = document.getElementById('subCategoryFilter');
+            if (subCat) subCat.value = 'all';
             document.getElementById('priceFilter').value = 'all';
-            currentPage = 1;
 
             const productCards = document.querySelectorAll('.product-card');
             productCards.forEach(card => {
@@ -586,74 +555,122 @@
             }
 
             document.querySelector('#products .section-title').textContent = 'Produk Unggulan';
+            // reset pagination dan terapkan ulang filter
+            currentPage = 1;
+            applyFilters();
         }
 
         function setupProductFilters() {
+            // Setup subkategori options
+            const SUBCATEGORY_MAP = {
+                'interior': [
+                    { value: 'jok', label: 'Jok' },
+                    { value: 'dashboard', label: 'Dashboard' }
+                ],
+                'exterior': [
+                    { value: 'spoiler', label: 'Spoiler' },
+                    { value: 'body-kit', label: 'Body Kit' }
+                ],
+                'electronics': [
+                    { value: 'audio', label: 'Audio' },
+                    { value: 'kamera', label: 'Kamera' }
+                ],
+                'maintenance': [
+                    { value: 'oli', label: 'Oli' },
+                    { value: 'filter', label: 'Filter' }
+                ],
+                'safety': [
+                    { value: 'alarm', label: 'Alarm' },
+                    { value: 'dashcam', label: 'Dashcam' }
+                ],
+                'lighting': [
+                    { value: 'headlight', label: 'Headlight' },
+                    { value: 'foglamp', label: 'Foglamp' }
+                ]
+            };
+
+            function populateSubcategoryOptions(categoryValue) {
+                const subSelect = document.getElementById('subCategoryFilter');
+                if (!subSelect) return;
+
+                // Simpan pilihan sebelumnya untuk UX saat kategori sama
+                const prev = subSelect.value;
+                const prevExists = Array.from(subSelect.options).some(o => o.value === prev);
+
+                subSelect.innerHTML = '';
+                const optAll = document.createElement('option');
+                optAll.value = 'all';
+                optAll.textContent = 'Semua Subkategori';
+                subSelect.appendChild(optAll);
+
+                if (categoryValue === 'all') {
+                    // Gabungkan semua subkategori
+                    const added = new Set();
+                    Object.values(SUBCATEGORY_MAP).forEach(list => {
+                        list.forEach(item => {
+                            if (!added.has(item.value)) {
+                                const opt = document.createElement('option');
+                                opt.value = item.value;
+                                opt.textContent = item.label;
+                                subSelect.appendChild(opt);
+                                added.add(item.value);
+                            }
+                        });
+                    });
+                } else if (SUBCATEGORY_MAP[categoryValue]) {
+                    SUBCATEGORY_MAP[categoryValue].forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item.value;
+                        opt.textContent = item.label;
+                        subSelect.appendChild(opt);
+                    });
+                }
+
+                // Kembalikan pilihan sebelumnya jika masih relevan, jika tidak set 'all'
+                const canRestore = Array.from(subSelect.options).some(o => o.value === prev);
+                subSelect.value = canRestore ? prev : 'all';
+            }
+
             document.getElementById('searchProductBtn').addEventListener('click', function() {
-                currentPage = 1;
                 applyFilters();
             });
 
             document.getElementById('productSearchInput').addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {
-                    currentPage = 1;
                     applyFilters();
                 } else {
-                    currentPage = 1;
                     applyFilters();
                 }
             });
 
             document.getElementById('categoryFilter').addEventListener('change', function() {
-                currentPage = 1;
-                updateSubCategoryOptions();
+                populateSubcategoryOptions(this.value);
                 applyFilters();
             });
 
-            document.getElementById('subCategoryFilter').addEventListener('change', function() {
-                currentPage = 1;
-                applyFilters();
-            });
+            const subCategoryFilter = document.getElementById('subCategoryFilter');
+            if (subCategoryFilter) {
+                subCategoryFilter.addEventListener('change', function() {
+                    applyFilters();
+                });
+            }
 
             document.getElementById('priceFilter').addEventListener('change', function() {
-                currentPage = 1;
                 applyFilters();
             });
 
             document.getElementById('resetFilterBtn').addEventListener('click', function() {
                 resetFilter();
             });
+
+            // initial populate
+            populateSubcategoryOptions('all');
         }
-
-        function updateSubCategoryOptions() {
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const subCategoryFilter = document.getElementById('subCategoryFilter');
-            const options = subCategoryFilter.querySelectorAll('option');
-
-            subCategoryFilter.value = 'all';
-
-            options.forEach(option => {
-                if (option.value === 'all') {
-                    option.style.display = 'block';
-                } else {
-                    const parent = option.getAttribute('data-parent');
-                    if (categoryFilter === 'all' || parent === categoryFilter) {
-                        option.style.display = 'block';
-                    } else {
-                        option.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // Pagination variables
-        let currentPage = 1;
-        const itemsPerPage = 6;
 
         function applyFilters() {
             const searchInput = document.getElementById('productSearchInput').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
-            const subCategoryFilter = document.getElementById('subCategoryFilter').value;
+            const subCategoryFilter = document.getElementById('subCategoryFilter') ? document.getElementById('subCategoryFilter').value : 'all';
             const priceFilter = document.getElementById('priceFilter').value;
 
             const productCards = Array.from(document.querySelectorAll('.product-card'));
@@ -668,8 +685,8 @@
                 const productName = card.querySelector('h4').textContent.toLowerCase();
                 const productDesc = card.querySelector('p').textContent.toLowerCase();
                 const productCategory = card.getAttribute('data-category');
-                const productSubCategory = card.getAttribute('data-subcategory');
                 const productPrice = parseInt(card.getAttribute('data-price'));
+                const productSubCategory = card.getAttribute('data-subcategory');
 
                 const matchesSearch = searchInput === '' ||
                     productName.includes(searchInput) ||
@@ -679,31 +696,33 @@
                 const matchesPrice = checkPriceRange(productPrice, priceFilter);
 
                 if (matchesSearch && matchesCategory && matchesSubCategory && matchesPrice) {
+                    // dorong ke daftar hasil, sembunyikan dulu (pagination yang menampilkan)
                     visibleCards.push(card);
+                    card.style.display = 'none';
                 } else {
                     card.style.display = 'none';
                 }
             });
-
-            // Apply pagination
-            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-
-            visibleCards.forEach((card, index) => {
-                if (index >= startIndex && index < endIndex) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Update pagination UI
-            updatePaginationUI(totalPages, visibleCards.length);
 
             const sectionTitle = document.querySelector('#products .section-title');
             if (searchInput !== '') {
                 sectionTitle.textContent = `Hasil Pencarian: "${searchInput}" (${visibleCards.length} produk)`;
+            } else if (subCategoryFilter !== 'all') {
+                const subCategoryNames = {
+                    'jok': 'Subkategori: Jok',
+                    'dashboard': 'Subkategori: Dashboard',
+                    'spoiler': 'Subkategori: Spoiler',
+                    'body-kit': 'Subkategori: Body Kit',
+                    'audio': 'Subkategori: Audio',
+                    'kamera': 'Subkategori: Kamera',
+                    'oli': 'Subkategori: Oli',
+                    'filter': 'Subkategori: Filter',
+                    'alarm': 'Subkategori: Alarm',
+                    'dashcam': 'Subkategori: Dashcam',
+                    'headlight': 'Subkategori: Headlight',
+                    'foglamp': 'Subkategori: Foglamp'
+                };
+                sectionTitle.textContent = `${subCategoryNames[subCategoryFilter] || 'Subkategori'} (${visibleCards.length} produk)`;
             } else if (categoryFilter !== 'all') {
                 const categoryNames = {
                     'interior': 'Produk Interior',
@@ -727,7 +746,13 @@
                 sectionTitle.textContent = 'Produk Unggulan';
             }
 
+            const paginationEl = document.getElementById('pagination');
             if (visibleCards.length === 0) {
+                // sembunyikan pagination saat tidak ada hasil
+                if (paginationEl) {
+                    paginationEl.innerHTML = '';
+                    paginationEl.style.display = 'none';
+                }
                 const productsGrid = document.getElementById('productsGrid');
                 const noProductsMessage = document.createElement('div');
                 noProductsMessage.className = 'no-products-message';
@@ -737,55 +762,112 @@
                     <p>Coba kata kunci lain atau reset filter</p>
                 `;
                 productsGrid.appendChild(noProductsMessage);
+            } else {
+                // simpan hasil dan render halaman + kontrol
+                currentFilteredCards = visibleCards;
+                currentPage = 1; // reset ke halaman pertama setiap filter berubah
+                renderPagination();
             }
         }
 
-        function updatePaginationUI(totalPages, totalItems) {
-            let paginationContainer = document.getElementById('paginationContainer');
+        function renderPagination() {
+            const container = document.getElementById('pagination');
+            if (!container) return;
 
-            if (!paginationContainer) {
-                paginationContainer = document.createElement('div');
-                paginationContainer.id = 'paginationContainer';
-                paginationContainer.className = 'pagination-container';
-                document.getElementById('productsGrid').parentElement.appendChild(paginationContainer);
-            }
+            const totalItems = currentFilteredCards.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
+            // tampilkan semua jika hanya 1 halaman, dan sembunyikan kontrol
             if (totalPages <= 1) {
-                paginationContainer.innerHTML = '';
+                container.innerHTML = '';
+                container.style.display = 'none';
+                // tampilkan semua item (0..totalItems)
+                currentFilteredCards.forEach(card => (card.style.display = 'flex'));
                 return;
             }
 
-            let paginationHTML = '<div class="pagination">';
+            if (currentPage > totalPages) currentPage = 1;
 
-            // Previous button
-            if (currentPage > 1) {
-                paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
-            }
+            container.innerHTML = '';
+            container.style.display = 'flex';
 
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                    paginationHTML += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-                } else if (i === currentPage - 2 || i === currentPage + 2) {
-                    paginationHTML += '<span class="pagination-dots">...</span>';
+            const showPage = (page, doScroll = false) => {
+                currentPage = page;
+                // sembunyikan semua dulu
+                currentFilteredCards.forEach(card => (card.style.display = 'none'));
+                const startIdx = (currentPage - 1) * pageSize;
+                const endIdx = Math.min(startIdx + pageSize, totalItems);
+                for (let i = startIdx; i < endIdx; i++) {
+                    currentFilteredCards[i].style.display = 'flex';
                 }
+                // update active state tombol
+                container.querySelectorAll('[data-page]').forEach(btn => {
+                    const isActive = parseInt(btn.getAttribute('data-page')) === currentPage;
+                    btn.style.background = isActive ? '#2c3e50' : '#fff';
+                    btn.style.color = isActive ? '#fff' : '#2c3e50';
+                    btn.style.borderColor = isActive ? '#2c3e50' : '#dcdfe3';
+                });
+                if (doScroll) {
+                    const productSection = document.getElementById('products');
+                    if (productSection) {
+                        productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            };
+
+            const createBtn = (label, opts = {}) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.type = 'button';
+                btn.style.padding = '8px 12px';
+                btn.style.border = '1px solid #dcdfe3';
+                btn.style.borderRadius = '6px';
+                btn.style.background = '#fff';
+                btn.style.color = '#2c3e50';
+                btn.style.cursor = 'pointer';
+                btn.style.minWidth = '36px';
+                btn.style.fontSize = '14px';
+                btn.style.lineHeight = '1';
+                btn.style.userSelect = 'none';
+                if (opts.dataPage) btn.setAttribute('data-page', String(opts.dataPage));
+                if (opts.disabled) {
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'not-allowed';
+                }
+                if (opts.onClick && !opts.disabled) btn.addEventListener('click', opts.onClick);
+                return btn;
+            };
+
+            // Prev
+            const prevBtn = createBtn('Sebelumnya', {
+                disabled: currentPage === 1,
+                onClick: () => showPage(currentPage - 1, true)
+            });
+            container.appendChild(prevBtn);
+
+            // Numbered buttons
+            for (let p = 1; p <= totalPages; p++) {
+                const pageBtn = createBtn(String(p), {
+                    dataPage: p,
+                    onClick: () => showPage(p, true)
+                });
+                if (p === currentPage) {
+                    pageBtn.style.background = '#2c3e50';
+                    pageBtn.style.color = '#fff';
+                    pageBtn.style.borderColor = '#2c3e50';
+                }
+                container.appendChild(pageBtn);
             }
 
-            // Next button
-            if (currentPage < totalPages) {
-                paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
-            }
+            // Next
+            const nextBtn = createBtn('Berikutnya', {
+                disabled: currentPage === totalPages,
+                onClick: () => showPage(currentPage + 1, true)
+            });
+            container.appendChild(nextBtn);
 
-            paginationHTML += '</div>';
-            paginationHTML += `<div class="pagination-info">Menampilkan ${((currentPage - 1) * itemsPerPage) + 1}-${Math.min(currentPage * itemsPerPage, totalItems)} dari ${totalItems} produk</div>`;
-
-            paginationContainer.innerHTML = paginationHTML;
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            applyFilters();
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+            // tampilkan halaman pertama (atau current) setelah render
+            showPage(currentPage);
         }
 
         function checkPriceRange(price, priceFilter) {
@@ -879,26 +961,10 @@
 
             const categoryColor = categoryColors[productCategory] || '#95a5a6';
 
-            // Get additional images
-            const additionalImagesAttr = productCard.getAttribute('data-images');
-            let additionalImages = [];
-            try {
-                additionalImages = additionalImagesAttr ? JSON.parse(additionalImagesAttr) : [productImgSrc];
-            } catch(e) {
-                additionalImages = [productImgSrc];
-            }
-
             let detailHTML = `
                 <div class="product-detail-container">
                     <div class="product-detail-image">
-                        ${productImgSrc ? `<img src="${productImgSrc}" alt="${productName}" class="detail-product-img" id="mainProductImg">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
-                        ${additionalImages.length > 1 ? `
-                            <div class="product-image-thumbnails">
-                                ${additionalImages.map((img, index) => `
-                                    <img src="${img}" alt="${productName} ${index + 1}" class="thumbnail-img ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${img}', event)">
-                                `).join('')}
-                            </div>
-                        ` : ''}
+                        ${productImgSrc ? `<img src="${productImgSrc}" alt="${productName}" class="detail-product-img">` : '<div class="detail-no-image"><i class="fas fa-image"></i></div>'}
                     </div>
 
                     <div class="product-basic-info">
@@ -936,7 +1002,13 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="product-detail-action">
+                            <button class="btn btn-whatsapp btn-detail-order" onclick="orderViaWhatsApp(${productId})">
+                                <i class="fab fa-whatsapp"></i>
+                                <span> Pesan</span>
+                                <div class="btn-shine"></div>
+                            </button>
+                        </div>
                     </div>
 
                     ${getSimilarProductsHTML(productId, productCategory)}
@@ -1042,21 +1114,6 @@
 
         function closeDetailModal() {
             document.getElementById('detailModal').classList.remove('active');
-        }
-
-        function changeMainImage(imgSrc, event) {
-            const mainImg = document.getElementById('mainProductImg');
-            if (mainImg) {
-                mainImg.src = imgSrc;
-            }
-
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail-img').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
         }
 
         function orderViaWhatsApp(productId) {
