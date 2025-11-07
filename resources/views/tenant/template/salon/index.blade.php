@@ -294,15 +294,15 @@
                         style="background-image: url('{{ route('tenant.asset.domain', ['tenant' => $userStore->tenant_id, 'path' => $banner->image_url]) }}')"
                         data-caption="{{ $banner->title }} — {{ $banner->subtitle }}">
                         <div class="hero-caption">
-                            <h2 class="text-2xl sm:text-3xl font-bold">{!! $banner->title !!}</h2>
-                            <p class="mt-1">{!! $banner->subtitle !!}</p>
+                            <h2 class="text-2xl sm:text-3xl font-bold">{{ $banner->title }}</h2>
+                            <p class="mt-1">{{ $banner->subtitle }}</p>
                             @if ($banner->link)
                                 <div class="mt-8">
                                     <a href="{{ $banner->link }}"
                                         class="inline-block bg-gradient-to-r from-pink-500 via-pink-600 to-purple-500 text-white
-                                        text-sm font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl
-                                        transform hover:scale-105 transition-all duration-300 ease-in-out
-                                        hover:from-pink-600 hover:via-pink-500 hover:to-purple-600">
+                                                text-sm font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl
+                                                transform hover:scale-105 transition-all duration-300 ease-in-out
+                                                hover:from-pink-600 hover:via-pink-500 hover:to-purple-600">
                                         {{ $banner->button_text ?? 'Lihat Penawaran' }}
                                     </a>
                                 </div>
@@ -320,9 +320,9 @@
                             <div class="mt-8">
                                 <a href="#services"
                                     class="inline-block bg-gradient-to-r from-pink-500 via-pink-600 to-purple-500 text-white
-                                        text-sm font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl
-                                        transform hover:scale-105 transition-all duration-300 ease-in-out
-                                        hover:from-pink-600 hover:via-pink-500 hover:to-purple-600">
+                                                text-sm font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl
+                                                transform hover:scale-105 transition-all duration-300 ease-in-out
+                                                hover:from-pink-600 hover:via-pink-500 hover:to-purple-600">
                                     Mulai Sekarang
                                 </a>
                             </div>
@@ -347,8 +347,8 @@
                 @foreach ($categories as $category)
                     <button
                         class="filter-btn category-btn px-4 md:px-5 py-2 rounded-full text-sm font-medium
-                                             bg-white text-gray-700 ring-1 ring-gray-200 transition-all
-                                             hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
+                                                bg-white text-gray-700 ring-1 ring-gray-200 transition-all
+                                                hover:bg-gray-50 hover:text-gray-900 hover:ring-gray-300 hover:-translate-y-0.5"
                         data-filter="{{ strtolower($category->name) }}">
                         {{ $category->name }}
                     </button>
@@ -379,33 +379,49 @@
             {{-- Product Grid Container (DENGAN LOGIKA PROMO) --}}
             <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
                 @forelse ($products as $product)
-                    @php
-                        // 🔥 Logika Harga
-                        $oldPrice = $product->price_idr ?? 'Rp 0';
-                        $newPrice = $product->discount_price_idr ?? $oldPrice;
-                        // Perbandingan harga harus dilakukan setelah memastikan formatnya sama (misal, tanpa 'Rp ')
-                        $rawOldPrice = (float) str_replace(['Rp ', '.'], '', $oldPrice);
-                        $rawNewPrice = (float) str_replace(['Rp ', '.'], '', $newPrice);
+                  @php
+    // 🔥 Logika Harga
+    $oldPrice = $product->price_idr ?? 'Rp 0';
+    $newPrice = $product->discount_price_idr ?? $oldPrice;
+    // Perbandingan harga harus dilakukan setelah memastikan formatnya sama (misal, tanpa 'Rp ')
+    $rawOldPrice = (float) str_replace(['Rp ', '.'], '', $oldPrice);
+    $rawNewPrice = (float) str_replace(['Rp ', '.'], '', $newPrice);
 
-                        $isPromo = ($rawOldPrice > $rawNewPrice); // Pengecekan promo lebih akurat
+    $isPromo = ($rawOldPrice > $rawNewPrice); // Pengecekan promo lebih akurat
 
-                        // MODIFIKASI: Semua item diperlakukan sama dalam hal tampilan/promo
-                        $categoryName = strtolower($product->category->name ?? 'general');
+    // MODIFIKASI: Semua item diperlakukan sama dalam hal tampilan/promo
+    $categoryName = strtolower($product->category->name ?? 'general');
 
-                        // 🔥 ASUMSI: DATA SPESIFIKASI DIBENTUK DI SINI 🔥
-                        $productSpecs = '';
-                        if (isset($product->duration)) {
-                            $productSpecs .= 'Durasi: ' . $product->duration . '|';
-                        }
-                        if (isset($product->inclusions)) {
-                            $productSpecs .= 'Termasuk: ' . $product->inclusions . '|';
-                        }
-                        if (isset($product->style_options)) {
-                            $productSpecs .= 'Gaya: ' . $product->style_options . '|';
-                        }
-                        $productSpecs = rtrim($productSpecs, '|'); // Hapus | terakhir
-                    @endphp
+    // --- 🔥 PERUBAHAN DIMULAI DI SINI: MEMBUAT DATA SPESIFIKASI ---
 
+    $productSpecs = ''; // Mulai string kosong
+
+    // 1. Cek Estimasi Waktu (Anda bisa ganti 'estimasi_waktu' atau 'duration' sesuai nama kolom Anda)
+    $estimasi = $product->estimasi_waktu ?? $product->duration ?? null;
+
+    if ($estimasi) {
+        // Tambahkan ' Menit' secara otomatis jika datanya angka
+        $estimasiText = is_numeric($estimasi) ? $estimasi . ' Menit' : $estimasi;
+
+        // Gunakan label 'Estimasi' atau 'Durasi'
+        $productSpecs .= 'Estimasi: ' . $estimasiText . '|'; // Gunakan '|' sebagai pemisah
+    }
+
+    // 2. Cek Spesifikasi Lain (Contoh: Inclusions)
+    if (isset($product->inclusions)) {
+        $productSpecs .= 'Termasuk: ' . $product->inclusions . '|';
+    }
+
+    // 3. Cek Spesifikasi Lain (Contoh: Style Options)
+    if (isset($product->style_options)) {
+        $productSpecs .= 'Gaya: ' . $product->style_options . '|';
+    }
+
+    // Hapus | terakhir yang mungkin ada
+    $productSpecs = rtrim($productSpecs, '|');
+
+    // --- 🔥 PERUBAHAN SELESI ---
+@endphp
                     <div class="hairstyle-card group" data-name="{{ strtolower($product->name) }}"
                         data-category="{{ $categoryName }}"
                         data-sub-category="{{ strtolower($product->subCategory->name ?? 'all') }}"
@@ -449,20 +465,23 @@
                                 </p>
                             </div>
 
-                            {{-- Tombol Modal Detail/Universal selalu menggunakan ikon MATA (👁) --}}
+                            {{-- ========================================================== --}}
+                            {{-- 🔥 PERUBAHAN 1: MENGHAPUS 'onclick' & MENAMBAH 'data-' --}}
+                            {{-- ========================================================== --}}
                             <span
-                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow hover:bg-primary-500 hover:text-white transition-colors cursor-pointer"
-                                onclick="openUniversalModal(
-                                        '{{ $product->primary_image_src }}',
-                                        '{{ $product->name }}',
-                                        '{{ $product->description }}',
-                                        '{{ $oldPrice }}',
-                                        '{{ $newPrice }}',
-                                        '{{ $categoryName }}',
-                                        '{{ $productSpecs }}'
-                                    )">
+                                class="absolute top-2 right-2 z-10 bg-white/70 rounded-full p-2 shadow hover:bg-primary-500 hover:text-white transition-colors cursor-pointer open-modal-btn"
+                                data-image="{{ $product->primary_image_src }}"
+                                data-name="{{ $product->name }}"
+                                data-description="{{ $product->description }}"
+                                data-old-price="{{ $oldPrice }}"
+                                data-new-price="{{ $newPrice }}"
+                                data-category="{{ $categoryName }}"
+                                data-specs="{{ $productSpecs }}">
                                 👁
                             </span>
+                            {{-- ========================================================== --}}
+                            {{-- 🔥 AKHIR PERUBAHAN 1                                     --}}
+                            {{-- ========================================================== --}}
 
                             <div
                                 class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -587,7 +606,12 @@
                         </p>
                     </div>
 
-                    {{-- BLOK SPESIFIKASI DIHAPUS --}}
+                    <div id="modal-specs-block" class="hidden mt-4">
+                        <h3 class="text-lg font-bold text-primary-600 mb-2">Estimasi waktu pengerjaan</h3>
+                        <div id="modal-specs-content" class="space-y-1">
+                            {{-- Konten estimasi akan diisi oleh JS di sini --}}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -690,7 +714,7 @@
             if (autoplay) startAutoplay();
         })();
 
-        // FUNGSI MODAL UNIVERSAL BARU (Menangani Layanan & Produk)
+        // === PERBAIKAN: SELURUH FUNGSI openUniversalModal DIPERBARUI ===
         window.openUniversalModal = function(imageUrl, name, description, oldPrice, newPrice, category,
             specifications = '') {
 
@@ -716,6 +740,11 @@
             const descriptionBlock = document.getElementById('modal-description-block');
             const recommendationBlock = document.getElementById('recommendation-block');
 
+            // === PERBAIKAN: Ambil Elemen Spesifikasi ===
+            const specsBlock = document.getElementById('modal-specs-block');
+            const specsContent = document.getElementById('modal-specs-content');
+            // ==========================================
+
             // Membersihkan description
             const cleanDescription = (description ? String(description) : '').replace(/<br\s*[\/]?>/gi, "\n")
                 .trim();
@@ -735,7 +764,35 @@
                 modalDescription.textContent = 'Tidak ada deskripsi rinci untuk layanan atau produk ini.';
             }
 
-            // Logika Spesifikasi Dihapus
+            // === PERBAIKAN: Logika Spesifikasi (Estimasi) ===
+            specsContent.innerHTML = ''; // Kosongkan dulu
+            if (specifications && specifications.trim().length > 0) {
+                specsBlock.classList.remove('hidden');
+
+                // Pecah string berdasarkan tanda '|'
+                const specsArray = specifications.split('|');
+
+                specsArray.forEach(spec => {
+                    if (spec.trim().length > 0) {
+                        // Pecah lagi berdasarkan ':' untuk memisahkan label dan nilai
+                        const parts = spec.split(':');
+                        const label = parts[0] ? parts[0].trim() : '';
+                        const value = parts[1] ? parts[1].trim() : '';
+
+                        // Buat HTML-nya
+                        const p = document.createElement('p');
+                        p.className = 'text-gray-700 text-base';
+                        p.innerHTML = `<span class="font-semibold">${label}:</span> ${value}`;
+
+                        // Tambahkan ke konten spesifikasi
+                        specsContent.appendChild(p);
+                    }
+                });
+
+            } else {
+                specsBlock.classList.add('hidden'); // Sembunyikan jika tidak ada data
+            }
+            // ==============================================
 
             // 4. Logika Penanganan Harga (Mengisi Elemen Overlay)
             const priceToNumber = (price) => {
@@ -791,10 +848,17 @@
             document.body.style.overflow = 'hidden';
 
             setTimeout(() => {
-                modalContent.classList.remove('scale-95', 'opacity-100');
+                // ==========================================================
+                // 🔥 PERUBAHAN 2: MEMPERBAIKI TYPO 'opacity-100' MENJADI 'opacity-0'
+                // ==========================================================
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                // ==========================================================
+                // 🔥 AKHIR PERUBAHAN 2
+                // ==========================================================
                 modalContent.classList.add('scale-100', 'opacity-100');
             }, 10);
         };
+        // === AKHIR PERBAIKAN ===
 
         window.closeProductModal = function() {
             const modal = document.getElementById('product-modal');
@@ -1130,6 +1194,31 @@
             // MODIFIKASI: Inisialisasi tombol sub-kategori saat halaman dimuat
             renderSubCategoryButtons();
             renderPage();
+
+            // ==========================================================
+            // 🔥 PERUBAHAN 3: MENAMBAHKAN EVENT LISTENER UNTUK TOMBOL MODAL
+            // ==========================================================
+            document.querySelectorAll('.open-modal-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari dataset
+                    const data = this.dataset;
+
+                    // Panggil fungsi modal dengan data yang aman
+                    openUniversalModal(
+                        data.image,
+                        data.name,
+                        data.description,
+                        data.oldPrice,
+                        data.newPrice,
+                        data.category,
+                        data.specs
+                    );
+                });
+            });
+            // ==========================================================
+            // 🔥 AKHIR PERUBAHAN 3
+            // ==========================================================
+
 
             let resizeTimer;
             window.addEventListener('resize', () => {
