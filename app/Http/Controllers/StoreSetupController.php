@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Services\WhatsvaServiceContract;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -19,6 +20,13 @@ use Stancl\Tenancy\Database\Models\Domain;
 
 class StoreSetupController extends Controller
 {
+    protected $whatsvaService;
+
+    public function __construct(WhatsvaServiceContract $whatsvaService)
+    {
+        $this->whatsvaService = $whatsvaService;
+    }
+
     /**
      * Menampilkan form setup toko setelah pembayaran.
      * UPDATED: Enhanced to work with UserStore records created during payment initiation
@@ -228,6 +236,30 @@ class StoreSetupController extends Controller
             }
 
             DB::commit();
+
+            // Kirim notifikasi WhatsApp setelah semuanya berhasil
+            try {
+                $user = Auth::user();
+                if ($user && $user->phone_number) {
+                    // Kirim pesan ke pengguna
+                    $messageToUser = $this->whatsvaService->buildMessage('setup_toko_selesai', [
+                        'name' => $user->name,
+                        'store_name' => $request->store_name,
+                    ]);
+                    $this->whatsvaService->sendMessage($user->phone_number, $messageToUser);
+
+                    // Kirim notifikasi ke admin
+                    $this->whatsvaService->notifyAdmins('admin_notifikasi_toko_baru', [
+                        'store_name' => $request->store_name,
+                        'subdomain' => $request->subdomain,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Jangan gagalkan proses utama jika notifikasi gagal
+                \Illuminate\Support\Facades\Log::error('WHATSAPP_NOTIFICATION_ERROR [StoreSetup]: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success'      => true,

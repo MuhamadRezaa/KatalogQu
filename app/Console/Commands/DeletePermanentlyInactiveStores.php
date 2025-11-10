@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\Services\WhatsvaServiceContract;
 use App\Models\UserStore;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,19 @@ class DeletePermanentlyInactiveStores extends Command
      */
     protected $description = 'Delete user stores that have been inactive for 7 days due to expiration, along with their data.';
 
+    protected $whatsvaService;
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct(WhatsvaServiceContract $whatsvaService)
+    {
+        parent::__construct();
+        $this->whatsvaService = $whatsvaService;
+    }
+
     /**
      * Execute the console command.
      */
@@ -32,7 +46,7 @@ class DeletePermanentlyInactiveStores extends Command
     {
         $this->info('Mencari toko non-aktif yang kedaluwarsa untuk dihapus...');
 
-        $storesToDelete = UserStore::where('is_active', false)
+        $storesToDelete = UserStore::with('user')->where('is_active', false)
             ->whereNotNull('deactivated_at')
             ->where('deactivated_at', '<=', now()->subDays(7))
             ->get();
@@ -45,6 +59,33 @@ class DeletePermanentlyInactiveStores extends Command
         foreach ($storesToDelete as $store) {
             try {
                 $this->warn('Memproses penghapusan toko: ' . $store->store_name . ' (ID: ' . $store->id . ')');
+
+                // Simpan data user sebelum dihapus
+                $user = $store->user;
+                $deletionDate = now();
+
+                // Kirim notifikasi WhatsApp SEBELUM menghapus
+                if ($user && $user->phone_number) {
+                    $this->whatsvaService->sendMessage(
+                        $user->phone_number,
+                        $this->whatsvaService->buildMessage('overdue_pengguna_hari_7_terhapus', [
+                            'store_name' => $store->store_name,
+                            'deletion_date' => $deletionDate->format('d M Y'),
+                            'expires_at' => $store->expires_at->format('d M Y'),
+                            'support_link' => route('contact'),
+                        ])
+                    );
+
+                    $this->whatsvaService->notifyAdmins('overdue_admin_hari_7_terhapus', [
+                        'store_name' => $store->store_name,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'expires_at' => $store->expires_at->format('d M Y'),
+                        'deletion_date' => $deletionDate->format('d M Y'),
+                    ]);
+                    $this->info("Notifikasi penghapusan terkirim untuk toko: {$store->store_name}");
+                }
+
 
                 // 1. Hapus direktori storage tenant
                 if ($store->tenant_id) {

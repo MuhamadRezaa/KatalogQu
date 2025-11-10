@@ -391,9 +391,11 @@ class StoreProductController extends Controller
                 'store_products.old_price',
                 'store_products.is_promo',
                 'store_products.image',
-                'product_categories.name as category_name'
+                'product_categories.name as category_name',
+                'product_sub_categories.name as subcategory_name'
             ])
             ->leftJoin('product_categories', 'store_products.product_category_id', '=', 'product_categories.id')
+            ->leftJoin('product_sub_categories', 'store_products.sub_category_id', '=', 'product_sub_categories.id')
             ->where('store_products.user_store_id', $userStore->id)
             ->where('store_products.is_active', true);
 
@@ -456,9 +458,10 @@ class StoreProductController extends Controller
 
         $paginator->getCollection()->transform(function ($product) use ($tenantId) {
             $product->image_url = $product->image ? route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => $product->image]) : null;
-            // We need to shape the category data to match the old structure for the frontend
+            // We need to shape the category and subcategory data to match the old structure for the frontend
             $product->category = ['name' => $product->category_name];
-            unset($product->category_name); // Clean up the extra field
+            $product->subcategory = ['name' => $product->subcategory_name];
+            unset($product->category_name, $product->subcategory_name); // Clean up the extra fields
             return $product;
         });
 

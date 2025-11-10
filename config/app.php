@@ -188,6 +188,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\WhatsvaServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,
         Stancl\Tenancy\TenancyServiceProvider::class,
     

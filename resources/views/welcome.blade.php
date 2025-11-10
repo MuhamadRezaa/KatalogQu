@@ -349,16 +349,6 @@
                         </div>
                     @endforelse
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#heroBgCarousel"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroBgCarousel"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
         </div>
     </section>
@@ -675,127 +665,258 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const scrollTop = document.getElementById('scrollTop');
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-                scrollTop.classList.add('show');
-            } else {
-                navbar.classList.remove('scrolled');
-                scrollTop.classList.remove('show');
-            }
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                // Handle active class on navbar link click for immediate feedback
-                if (this.closest('.navbar-nav')) {
-                    document.querySelectorAll('.navbar-nav .nav-link').forEach(navLink => {
-                        navLink.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                }
-
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        document.getElementById('scrollTop').addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-            const navHeight = document.getElementById('navbar').offsetHeight;
-            let currentId = 'home'; // Default to home
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - navHeight - 50; // Add a 50px buffer
-                if (window.scrollY >= sectionTop) {
-                    currentId = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + currentId) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Variabel Global ---
+            let observerInstance = null;
+            const sections = Array.from(document.querySelectorAll('section[id]'));
+            const navLinks = Array.from(document.querySelectorAll('.navbar-nav .nav-link'));
+            const navbar = document.getElementById('navbar');
+            const scrollTopBtn = document.getElementById('scrollTop');
             const collapseElement = document.getElementById('tutorialCollapseContent');
             const youtubeVideo = document.getElementById('youtubeVideo');
+            const heroCarousel = document.getElementById('heroBgCarousel');
 
-            collapseElement.addEventListener('hidden.bs.collapse', function() {
-                youtubeVideo.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}',
-                    '*');
+            // track arah scroll
+            let lastScrollY = window.scrollY;
+            window.addEventListener('scroll', () => {
+                lastScrollY = window.scrollY;
             });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
-        // --- JavaScript untuk Tombol WhatsApp Mengambang ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const fabToggle = document.getElementById('fab-toggle');
-            const fabDropdown = document.getElementById('fab-dropdown');
 
-            if (fabToggle && fabDropdown) {
-                fabToggle.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Mencegah event 'click' menyebar ke window
-                    fabDropdown.classList.toggle('show');
+            // map section id -> nav link
+            const linkById = {};
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href') || '';
+                if (href.startsWith('#')) linkById[href.replace('#', '')] = link;
+            });
+
+            function clearActiveLinks() {
+                navLinks.forEach(l => l.classList.remove('active'));
+            }
+
+            function setActiveById(id) {
+                if (!id) return;
+                const link = linkById[id];
+                if (!link) return;
+                if (!link.classList.contains('active')) {
+                    clearActiveLinks();
+                    link.classList.add('active');
+                }
+            }
+
+            // ===== IntersectionObserver untuk scroll dinamis =====
+            function createObserver() {
+                if (observerInstance) {
+                    observerInstance.disconnect();
+                    observerInstance = null;
+                }
+                if (!sections.length) return;
+
+                const rootMarginTop = `-${navbar.offsetHeight}px`;
+                const tol = 10;
+
+                const callback = (entries) => {
+                    const visible = entries.filter(e => e.isIntersecting);
+                    if (visible.length > 0) {
+                        visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+                        const id = visible[0].target.getAttribute('id');
+                        if (id) setActiveById(id);
+                        return;
+                    }
+
+                    const navH = navbar.offsetHeight;
+                    const scrollGoingUp = (window.scrollY < lastScrollY);
+                    let candidate = null;
+
+                    if (scrollGoingUp) {
+                        let bestTop = -Infinity;
+                        sections.forEach(s => {
+                            const r = s.getBoundingClientRect();
+                            if (r.top <= navH + tol && r.top > bestTop) {
+                                bestTop = r.top;
+                                candidate = s;
+                            }
+                        });
+                    } else {
+                        let bestTop = Infinity;
+                        sections.forEach(s => {
+                            const r = s.getBoundingClientRect();
+                            if (r.top >= navH - tol && r.top < bestTop) {
+                                bestTop = r.top;
+                                candidate = s;
+                            }
+                        });
+                    }
+
+                    if (candidate) {
+                        setActiveById(candidate.getAttribute('id'));
+                        return;
+                    }
+
+                    const targetPoint = navH + 5;
+                    let bestDist = Infinity;
+                    let bestSection = null;
+                    sections.forEach(s => {
+                        const r = s.getBoundingClientRect();
+                        const dist = Math.abs(r.top - targetPoint);
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            bestSection = s;
+                        }
+                    });
+                    if (bestSection) {
+                        setActiveById(bestSection.getAttribute('id'));
+                        return;
+                    }
+
+                    if (window.scrollY < 10 && linkById['home']) {
+                        setActiveById('home');
+                    }
+                };
+
+                observerInstance = new IntersectionObserver(callback, {
+                    root: null,
+                    rootMargin: `${rootMarginTop} 0px 0px 0px`,
+                    threshold: [0.15, 0.25, 0.5, 0.75]
                 });
 
-                // Menutup dropdown jika pengguna mengklik di luar area tombol
-                window.addEventListener('click', function(event) {
-                    if (!fabToggle.contains(event.target) && !fabDropdown.contains(event.target)) {
-                        fabDropdown.classList.remove('show');
+                sections.forEach(s => observerInstance.observe(s));
+            }
+
+            // ===== Fallback handler =====
+            function fallbackScrollHandler() {
+                const navHeight = navbar.offsetHeight;
+                const scrollY = window.scrollY;
+
+                if (scrollY < 10) {
+                    setActiveById('home');
+                    return;
+                }
+
+                if ((window.innerHeight + scrollY) >= (document.documentElement.scrollHeight - 2)) {
+                    const last = sections[sections.length - 1];
+                    if (last) setActiveById(last.getAttribute('id'));
+                    return;
+                }
+
+                let found = null;
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const sectionTop = rect.top + window.scrollY - navHeight - 10;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        found = section.getAttribute('id');
                     }
                 });
+                if (!found && scrollY < (sections[0] ? sections[0].offsetTop : 0)) found = 'home';
+                setActiveById(found);
             }
-        });
-    </script>
 
-    <script>
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const scrollTop = document.getElementById('scrollTop');
+            // ---------- Event listeners ----------
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', () => window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                }));
+            }
 
-            if (window.scrollY > 100) {
-                // Navbar berubah solid
-                navbar.style.background = "#ffffff";
-                navbar.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
-
-                // Tombol scrollTop muncul
-                if (scrollTop) {
-                    scrollTop.style.display = "block";
+            navLinks.forEach(link => {
+                if ((link.getAttribute('href') || '').startsWith('#')) {
+                    link.addEventListener('click', function() {
+                        navLinks.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                    });
                 }
+            });
+
+            if (collapseElement && youtubeVideo) {
+                collapseElement.addEventListener('hidden.bs.collapse', function() {
+                    try {
+                        youtubeVideo.contentWindow.postMessage(
+                            '{"event":"command","func":"stopVideo","args":""}', '*');
+                    } catch (e) {}
+                });
+            }
+
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if ('IntersectionObserver' in window) createObserver();
+                    else fallbackScrollHandler();
+                }, 150);
+            });
+
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    if ('IntersectionObserver' in window) createObserver();
+                    else fallbackScrollHandler();
+                }, 150);
+            });
+
+            document.querySelectorAll('img').forEach(img => {
+                if (!img.complete) {
+                    img.addEventListener('load', () => {
+                        if ('IntersectionObserver' in window) createObserver();
+                        else fallbackScrollHandler();
+                    });
+                    img.addEventListener('error', () => {
+                        if ('IntersectionObserver' in window) createObserver();
+                        else fallbackScrollHandler();
+                    });
+                }
+            });
+
+            if (heroCarousel) {
+                heroCarousel.addEventListener('slid.bs.carousel', () => {
+                    if ('IntersectionObserver' in window) createObserver();
+                    else fallbackScrollHandler();
+                });
+            }
+
+            const navbarMo = new MutationObserver(() => {
+                if ('IntersectionObserver' in window) createObserver();
+                else fallbackScrollHandler();
+            });
+            navbarMo.observe(navbar, {
+                attributes: true,
+                attributeFilter: ['class', 'style']
+            });
+
+            if ('IntersectionObserver' in window) {
+                createObserver();
             } else {
-                // Navbar transparan
-                navbar.style.background = "transparent";
-                navbar.style.boxShadow = "none";
+                window.addEventListener('scroll', () => {
+                    if (!window._busy) {
+                        window._busy = true;
+                        window.requestAnimationFrame(() => {
+                            fallbackScrollHandler();
+                            window._busy = false;
+                        });
+                    }
+                });
+                fallbackScrollHandler();
+            }
 
-                // Tombol scrollTop hilang
-                if (scrollTop) {
-                    scrollTop.style.display = "none";
+            function updateNavbarAndScrollTop() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                    if (scrollTopBtn) {
+                        scrollTopBtn.classList.add('show');
+                        scrollTopBtn.style.display = "block";
+                    }
+                } else {
+                    navbar.classList.remove('scrolled');
+                    if (scrollTopBtn) {
+                        scrollTopBtn.classList.remove('show');
+                        scrollTopBtn.style.display = "none";
+                    }
                 }
             }
+
+            window.addEventListener('scroll', updateNavbarAndScrollTop);
+            updateNavbarAndScrollTop();
+
+            if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
         });
     </script>
 

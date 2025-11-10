@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\WhatsvaServiceContract;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules;
 
 class AuthController extends Controller
 {
+    protected $whatsvaService;
+
+    public function __construct(WhatsvaServiceContract $whatsvaService)
+    {
+        $this->whatsvaService = $whatsvaService;
+    }
+
     /**
      * Display the registration form.
      */
@@ -23,25 +31,25 @@ class AuthController extends Controller
     /**
      * Handle an incoming registration request.
      */
-            public function store(Request $request)
-        {
-            // Transform phone number input
-            $phoneNumber = $request->input('phone_number');
-            if ($phoneNumber && substr($phoneNumber, 0, 1) === '0') {
-                $phoneNumber = '62' . substr($phoneNumber, 1);
-                $request->merge(['phone_number' => $phoneNumber]);
-            }
+    public function store(Request $request)
+    {
+        // Transform phone number input
+        $phoneNumber = $request->input('phone_number');
+        if ($phoneNumber && substr($phoneNumber, 0, 1) === '0') {
+            $phoneNumber = '62'.substr($phoneNumber, 1);
+            $request->merge(['phone_number' => $phoneNumber]);
+        }
 
-            $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/'],
-                'g-recaptcha-response' => ['required', 'captcha'],
-            ], [
-                'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
-                'g-recaptcha-response.captcha' => 'Verifikasi CAPTCHA gagal, silakan coba lagi.',
-            ]);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/', 'unique:users,phone_number'],
+            'g-recaptcha-response' => ['required', 'captcha'],
+        ], [
+            'g-recaptcha-response.required' => 'Harap konfirmasi bahwa Anda bukan robot.',
+            'g-recaptcha-response.captcha' => 'Verifikasi CAPTCHA gagal, silakan coba lagi.',
+        ]);
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -50,12 +58,25 @@ class AuthController extends Controller
                 'phone_number' => $request->phone_number,
             ]);
 
+            // Kirim pesan WhatsApp ke pengguna
+            $messageToUser = $this->whatsvaService->buildMessage('pengguna_mendaftar_akun', [
+                'name' => $user->name,
+            ]);
+            $this->whatsvaService->sendMessage($user->phone_number, $messageToUser);
+
+            // Kirim notifikasi ke admin
+            $this->whatsvaService->notifyAdmins('admin_notifikasi_pengguna_baru', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+            ]);
+
             Auth::login($user);
 
             return redirect()->route('welcome')->with('success', 'Registrasi berhasil! Selamat datang.');
         } catch (\Exception $e) {
             // Catat error spesifik ke file log
-            Log::error('REGISTRATION_ERROR: ' . $e->getMessage());
+            Log::error('REGISTRATION_ERROR: '.$e->getMessage());
 
             // Kembalikan pengguna dengan pesan error yang jelas
             return back()->with('error', 'Terjadi kesalahan saat mendaftarkan akun. Silakan coba lagi nanti.')->withInput();
@@ -87,7 +108,7 @@ class AuthController extends Controller
         // **PERBARUAN: Cek apakah user ada sebelum mencoba login**
         $user = User::where('email', $credentials['email'])->first();
 
-        if (!$user) {
+        if (! $user) {
             return back()->withErrors([
                 'email' => 'Email tidak terdaftar. Silakan daftar terlebih dahulu.',
             ])->onlyInput('email');
@@ -128,6 +149,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login')->with('success', 'Anda telah berhasil logout.');
     }
 }

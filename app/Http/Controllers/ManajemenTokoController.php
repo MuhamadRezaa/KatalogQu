@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\UserStore;
 use App\Models\TemplatePurchase;
+use App\Services\WhatsvaServiceContract;
 use Illuminate\Http\Request;
 
 class ManajemenTokoController extends Controller
 {
+    protected $whatsvaService;
+
+    public function __construct(WhatsvaServiceContract $whatsvaService)
+    {
+        $this->whatsvaService = $whatsvaService;
+    }
+
     /**
      * Menampilkan daftar semua toko di panel admin pusat.
      */
@@ -63,11 +71,43 @@ class ManajemenTokoController extends Controller
 
             $duration = $purchase->duration_months ?? 12; // Fallback to 12 months if not set
 
+            $activated_at = now();
+            $expires_at = now()->addMonths($duration);
+
             $userStore->update([
                 // Ubah status setup menjadi 'completed' dan set expires_at.
                 'setup_status' => 'completed',
-                'expires_at' => now()->addMonths($duration),
+                'is_active' => true,
+                'activated_at' => $activated_at,
+                'expires_at' => $expires_at,
             ]);
+
+            // Kirim notifikasi WhatsApp
+            try {
+                $user = $userStore->user;
+                if ($user && $user->phone_number) {
+                    // Kirim pesan ke pengguna
+                    $messageToUser = $this->whatsvaService->buildMessage('toko_aktif', [
+                        'name' => $user->name,
+                        'store_name' => $userStore->store_name,
+                        'activated_at' => $activated_at->format('d M Y'),
+                        'expires_at' => $expires_at->format('d M Y'),
+                    ]);
+                    $this->whatsvaService->sendMessage($user->phone_number, $messageToUser);
+
+                    // Kirim notifikasi ke admin
+                    $this->whatsvaService->notifyAdmins('admin_notifikasi_toko_aktif', [
+                        'store_name' => $userStore->store_name,
+                        'activated_at' => $activated_at->format('d M Y'),
+                        'expires_at' => $expires_at->format('d M Y'),
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Jangan gagalkan proses utama jika notifikasi gagal
+                \Illuminate\Support\Facades\Log::error('WHATSAPP_NOTIFICATION_ERROR [ApproveStore]: ' . $e->getMessage());
+            }
 
             return back()->with('success', 'Toko berhasil disetujui dan sekarang siap untuk diaktifkan.');
         }

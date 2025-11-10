@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\WhatsvaServiceContract;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Log;
 
 class GoogleController extends Controller
 {
+    protected $whatsvaService;
+
+    public function __construct(WhatsvaServiceContract $whatsvaService)
+    {
+        $this->whatsvaService = $whatsvaService;
+    }
+
     /**
      * Alihkan pengguna ke halaman otentikasi Google.
      */
@@ -28,7 +36,7 @@ class GoogleController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         // Cek apakah ada parameter 'code' yang menandakan otentikasi berhasil
-        if (!$request->has('code')) {
+        if (! $request->has('code')) {
             // Pengguna kemungkinan membatalkan otentikasi
             return redirect()->route('login')->with('error', 'Otentikasi Google dibatalkan.');
         }
@@ -40,7 +48,7 @@ class GoogleController extends Controller
             $user = User::withTrashed()->where('google_id', $googleUser->getId())->first();
 
             // 2. Jika tidak ketemu, cari berdasarkan email, termasuk yang di-soft-delete
-            if (!$user) {
+            if (! $user) {
                 $user = User::withTrashed()->where('email', $googleUser->getEmail())->first();
 
                 // Jika pengguna ditemukan via email (mungkin daftar manual sebelumnya),
@@ -53,7 +61,7 @@ class GoogleController extends Controller
             // 3. Jika pengguna ditemukan, aktif, DAN memiliki nomor telepon, langsung login.
             //    Jika tidak memenuhi kriteria di atas (pengguna baru, di-soft-delete, atau nomor telepon kosong),
             //    arahkan ke proses registrasi/konfirmasi.
-            if ($user && !$user->trashed() && !empty($user->phone_number)) { // User found, NOT soft-deleted, AND has phone number
+            if ($user && ! $user->trashed() && ! empty($user->phone_number)) { // User found, NOT soft-deleted, AND has phone number
                 // Update google_id jika belum ada (misal: daftar manual lalu login Google)
                 if (empty($user->google_id)) {
                     $user->google_id = $googleUser->getId();
@@ -61,6 +69,7 @@ class GoogleController extends Controller
                 }
                 Auth::login($user, true);
                 session()->forget('google_user_data'); // Hapus data dari session
+
                 return redirect()->route('welcome')->with('success', 'Selamat datang kembali!');
             }
 
@@ -80,10 +89,12 @@ class GoogleController extends Controller
             }
 
             session(['google_user_data' => $sessionData]);
+
             return redirect()->route('google.register.view'); // Arahkan ke route view registrasi baru
 
         } catch (Exception $e) {
-            Log::error('GOOGLE_CALLBACK_ERROR: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            Log::error('GOOGLE_CALLBACK_ERROR: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
             return redirect()->route('login')->with('error', 'Terjadi kesalahan saat otentikasi dengan Google. Silakan coba lagi.');
         }
     }
@@ -93,11 +104,12 @@ class GoogleController extends Controller
      */
     public function showGoogleRegisterView()
     {
-        if (!session()->has('google_user_data')) {
+        if (! session()->has('google_user_data')) {
             return redirect()->route('register')->with('error', 'Data Google tidak ditemukan. Silakan coba mendaftar lagi.');
         }
 
         $googleUserData = session('google_user_data');
+
         return view('auth.google-register', ['google_user' => $googleUserData]); // Pastikan Anda membuat view ini
     }
 
@@ -109,7 +121,7 @@ class GoogleController extends Controller
         // Transform phone number input
         $phoneNumber = $request->input('phone_number');
         if ($phoneNumber && substr($phoneNumber, 0, 1) === '0') {
-            $phoneNumber = '62' . substr($phoneNumber, 1);
+            $phoneNumber = '62'.substr($phoneNumber, 1);
             $request->merge(['phone_number' => $phoneNumber]);
         }
 
@@ -118,14 +130,14 @@ class GoogleController extends Controller
             'email' => 'required|string|email|max:255',
             'google_id' => 'required|string',
             'avatar' => 'nullable|string|url',
-            'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/'],
+            'phone_number' => ['required', 'string', 'regex:/^62[0-9]{8,13}$/', 'unique:users,phone_number'],
         ]);
 
         try {
             // Coba cari pengguna yang sudah ada (termasuk yang di-soft-delete)
             $user = User::withTrashed()->where('google_id', $request->google_id)->first();
 
-            if (!$user) {
+            if (! $user) {
                 $user = User::withTrashed()->where('email', $request->email)->first();
             }
 
@@ -144,7 +156,7 @@ class GoogleController extends Controller
                 if (empty($user->phone_number)) {
                     $user->phone_number = $request->phone_number;
                 }
-                
+
                 $user->save(); // Simpan semua perubahan
 
                 Auth::login($user, true);
@@ -164,12 +176,25 @@ class GoogleController extends Controller
                 'phone_number' => $request->phone_number,
             ]);
 
+            // Kirim notifikasi WhatsApp untuk pengguna baru
+            $messageToUser = $this->whatsvaService->buildMessage('pengguna_mendaftar_akun', [
+                'name' => $user->name,
+            ]);
+            $this->whatsvaService->sendMessage($user->phone_number, $messageToUser);
+
+            $this->whatsvaService->notifyAdmins('admin_notifikasi_pengguna_baru', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+            ]);
+
             Auth::login($user, true);
             session()->forget('google_user_data'); // Hapus data dari session
 
             return redirect()->route('welcome')->with('success', 'Akun berhasil dibuat dengan Google! Selamat datang.');
         } catch (\Exception $e) {
-            Log::error('GOOGLE_REGISTER_PROCESS_ERROR: ' . $e->getMessage());
+            Log::error('GOOGLE_REGISTER_PROCESS_ERROR: '.$e->getMessage());
+
             return redirect()->route('register')->with('error', 'Gagal menyimpan data pengguna. Silakan coba lagi.');
         }
     }

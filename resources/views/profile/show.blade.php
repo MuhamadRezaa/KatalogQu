@@ -316,6 +316,11 @@
 
     <main class="profile-container">
         <div class="container">
+            <div class="mb-4">
+                <a href="{{ route('home') }}" class="btn btn-outline-success btn-sm">
+                    <i class="fas fa-arrow-left me-2"></i> Kembali
+                </a>
+            </div>
             <div class="row">
                 <div class="col-lg-4 profile-sidebar">
                     <div class="card">

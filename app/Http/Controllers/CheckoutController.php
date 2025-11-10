@@ -268,11 +268,12 @@ class CheckoutController extends Controller
             $details = json_decode((string) $templatePurchase->payment_details, true);
             if (isset($details['xendit_invoice_id'])) {
                 $xenditInvoiceId = $details['xendit_invoice_id'];
-                Log::info('Attempting to expire Xendit invoice.', ['xendit_invoice_id' => $xenditInvoiceId]);
+                Log::info('Attempting to cancel Xendit payment request.', ['xendit_payment_request_id' => $xenditInvoiceId]);
 
-                $this->xenditService->expireInvoice($xenditInvoiceId);
+                // Gunakan metode baru untuk API v3
+                $this->xenditService->cancelPaymentRequest($xenditInvoiceId);
 
-                Log::info('Successfully expired Xendit invoice.', ['xendit_invoice_id' => $xenditInvoiceId]);
+                Log::info('Successfully sent cancellation request for Xendit payment request.', ['xendit_payment_request_id' => $xenditInvoiceId]);
             } else {
                 Log::warning('No Xendit invoice ID found for cancellation.', ['order_id' => $orderId]);
             }

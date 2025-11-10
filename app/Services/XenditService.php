@@ -79,6 +79,51 @@ class XenditService
     }
 
     /**
+     * Cancel a payment request using the v3 API.
+     *
+     * @param string $paymentRequestId The ID of the payment request to cancel.
+     * @return bool
+     */
+    public function cancelPaymentRequest(string $paymentRequestId): bool
+    {
+        try {
+            $secretKey = config('services.xendit.secret_key');
+            $url = "https://api.xendit.co/v3/payment_requests/{$paymentRequestId}/cancel";
+
+            $client = new Client([
+                'verify' => storage_path('cacert.pem')
+            ]);
+
+            $response = $client->post($url, [
+                'auth' => [$secretKey, ''], // Basic Auth
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+
+            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                Log::info("Xendit payment request {$paymentRequestId} cancelled successfully.");
+                return true;
+            }
+
+            Log::error("Failed to cancel Xendit payment request {$paymentRequestId}. Status: " . $response->getStatusCode(), [
+                'response' => json_decode($response->getBody()->getContents(), true)
+            ]);
+            return false;
+
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $responseBody = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : 'No response body';
+            Log::error("Xendit Cancel Payment Request API Error for ID {$paymentRequestId}: " . $e->getMessage(), [
+                'response' => json_decode($responseBody, true)
+            ]);
+            return false;
+        } catch (\Exception $e) {
+            Log::critical("XenditService General Exception during cancelPaymentRequest for ID {$paymentRequestId}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Handle incoming Xendit notifications and update database.
      */
     public function handleNotification(array $payload)

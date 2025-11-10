@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\TemplatePurchase;
 // Tambahkan service dan model yang diperlukan
+use App\Services\WhatsvaServiceContract;
 use App\Services\XenditService;
 use App\Models\UserStore;
 use Carbon\Carbon;
@@ -13,10 +14,12 @@ use Carbon\Carbon;
 class XenditController extends Controller
 {
     protected $xenditService;
+    protected $whatsvaService;
 
-    public function __construct(XenditService $xenditService)
+    public function __construct(XenditService $xenditService, WhatsvaServiceContract $whatsvaService)
     {
         $this->xenditService = $xenditService;
+        $this->whatsvaService = $whatsvaService;
     }
 
     /**
@@ -122,12 +125,61 @@ class XenditController extends Controller
                             'expires_at' => $newExpiryDate,
                         ]);
                         Log::info('User store ' . $userStore->id . ' expires_at updated successfully to ' . $newExpiryDate->toDateTimeString());
+
+                        // Kirim notifikasi perpanjangan berhasil
+                        try {
+                            $user = $userStore->user;
+                            if ($user && $user->phone_number) {
+                                $this->whatsvaService->sendMessage(
+                                    $user->phone_number,
+                                    $this->whatsvaService->buildMessage('perpanjangan_berhasil_pengguna', [
+                                        'name' => $user->name,
+                                        'store_name' => $userStore->store_name,
+                                        'new_expires_at' => $newExpiryDate->format('d M Y'),
+                                    ])
+                                );
+
+                                $this->whatsvaService->notifyAdmins('admin_notifikasi_perpanjangan_berhasil', [
+                                    'store_name' => $userStore->store_name,
+                                    'name' => $user->name,
+                                    'email' => $user->email,
+                                    'new_expires_at' => $newExpiryDate->format('d M Y'),
+                                ]);
+                            }
+                        } catch (\Exception $e) {
+                            Log::error('WHATSAPP_RENEWAL_NOTIFICATION_ERROR: ' . $e->getMessage(), ['user_store_id' => $userStore->id]);
+                        }
+
                     } else {
                         Log::error('RENEWAL_WEBHOOK: Toko Pengguna tidak ditemukan', ['user_store_id' => $paymentDetails['user_store_id']]);
                     }
-                }
+                } else {
+                    // Logika untuk pembelian baru (bukan perpanjangan)
+                    Log::info('Status pembayaran diperbarui menjadi LUNAS untuk pesanan: ' . $orderId);
 
-                Log::info('Status pembayaran diperbarui menjadi LUNAS untuk pesanan: ' . $orderId);
+                    // Kirim notifikasi WhatsApp untuk pembelian baru
+                    try {
+                        $user = $purchase->user;
+                        if ($user && $user->phone_number) {
+                            // Kirim pesan ke pengguna
+                            $messageToUser = $this->whatsvaService->buildMessage('setelah_checkout', [
+                                'name' => $user->name,
+                                'order_id' => $purchase->transaction_id,
+                                'total_amount' => 'Rp ' . number_format($purchase->final_amount, 0, ',', '.'),
+                            ]);
+                            $this->whatsvaService->sendMessage($user->phone_number, $messageToUser);
+
+                            // Kirim notifikasi ke admin
+                            $this->whatsvaService->notifyAdmins('admin_notifikasi_pesanan_baru', [
+                                'order_id' => $purchase->transaction_id,
+                                'name' => $user->name,
+                                'total_amount' => 'Rp ' . number_format($purchase->final_amount, 0, ',', '.'),
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('WHATSAPP_NOTIFICATION_ERROR: ' . $e->getMessage(), ['order_id' => $orderId]);
+                    }
+                }
             } else {
                 Log::warning('Menerima notifikasi Xendit untuk pesanan yang tidak dikenal atau sudah diproses: ' . $orderId);
             }
