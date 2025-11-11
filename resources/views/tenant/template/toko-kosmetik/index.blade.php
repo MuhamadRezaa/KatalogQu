@@ -66,7 +66,7 @@
         }
 
         .navbar-brand .brand-logo {
-            height: 80px;
+            height: 100px;
             width: auto;
             border-radius: 8px;
             box-shadow: 0 2px 12px rgb(30, 26, 26);
@@ -237,11 +237,11 @@
             }
 
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .hero-subtitle {
-                font-size: 2.5rem;
+                font-size: 1.5rem;
             }
 
             /* [PENYESUAIAN MOBILE] Kontrol Carousel Hero */
