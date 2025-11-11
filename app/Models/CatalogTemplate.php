@@ -20,6 +20,7 @@ class CatalogTemplate extends Model
         'is_active',
         'status',
         'tags',
+        'features',
     ];
 
     /**
@@ -27,6 +28,7 @@ class CatalogTemplate extends Model
      */
     protected $casts = [
         'tags' => 'array',
+        'features' => 'array',
         'is_active' => 'boolean',
         'price' => 'decimal:2',
     ];

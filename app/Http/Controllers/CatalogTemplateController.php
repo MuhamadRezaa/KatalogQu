@@ -23,6 +23,7 @@ class CatalogTemplateController extends Controller
             'categories_store_id' => 'required|exists:store_categories,id',
             'name' => 'required|string|max:255|unique:catalog_templates,name',
             'description' => 'nullable|string',
+            'features' => 'nullable|string',
             'preview_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'price' => 'required|numeric|min:0',
         ]);
@@ -35,6 +36,14 @@ class CatalogTemplateController extends Controller
             'price' => $request->price,
             'demo_url' => '/demo/' . Str::slug($request->name),
         ];
+
+        // Handle features
+        if ($request->filled('features')) {
+            // Convert comma-separated string to array, trim whitespace, and filter empty values
+            $data['features'] = array_filter(array_map('trim', explode(',', $request->features)));
+        } else {
+            $data['features'] = [];
+        }
 
         // Handle image upload
         if ($request->hasFile('preview_image')) {
@@ -65,6 +74,7 @@ class CatalogTemplateController extends Controller
             'categories_store_id' => 'sometimes|required|exists:store_categories,id',
             'name' => 'sometimes|required|string|max:255|unique:catalog_templates,name,' . $template->id,
             'description' => 'nullable|string',
+            'features' => 'nullable|string',
             'preview_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'price' => 'sometimes|required|numeric|min:0',
         ]);
@@ -88,6 +98,17 @@ class CatalogTemplateController extends Controller
 
         if ($request->has('price')) {
             $data['price'] = $request->price;
+        }
+
+        // Handle features. Check if the field is present in the request.
+        if ($request->has('features')) {
+            if ($request->filled('features')) {
+                // Convert comma-separated string to array, trim whitespace, and filter empty values
+                $data['features'] = array_filter(array_map('trim', explode(',', $request->features)));
+            } else {
+                // If features is submitted but empty, save it as an empty array
+                $data['features'] = [];
+            }
         }
 
         // Handle image upload
