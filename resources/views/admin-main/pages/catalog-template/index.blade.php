@@ -38,6 +38,7 @@
                             <th>Nama Template</th>
                             <th>Kategori</th>
                             <th>Deskripsi</th>
+                            <th>Fitur</th>
                             <th>Harga</th>
                             <th>Aksi</th>
                         </tr>
@@ -56,6 +57,18 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->category->name ?? 'N/A' }}</td>
                                 <td>{{ Str::limit($item->description ?? 'Tidak ada deskripsi', 50) }}</td>
+                                <td>
+                                    {{-- Cek apakah data memang array dan tidak kosong --}}
+                                    @if (is_array($item->features) && count($item->features) > 0)
+                                        <ul>
+                                            @foreach ($item->features as $feature)
+                                                <li>{{ $feature }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        - Tidak ada fitur tersedia -
+                                    @endif
+                                </td>
                                 <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td>
                                     <ul class="action">
@@ -71,7 +84,8 @@
                                             </a>
                                         </li>
                                         <li class="delete">
-                                            <form action="{{ route('template.destroy', $item->id) }}" method="POST" class="delete-form">
+                                            <form action="{{ route('template.destroy', $item->id) }}" method="POST"
+                                                class="delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn-delete"
@@ -135,9 +149,17 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label for="features" class="form-label">Fitur (pisahkan dengan koma)</label>
+                            <input type="text" class="form-control" name="features" value="{{ old('features') }}"
+                                placeholder="Contoh: Fitur 1, Fitur 2, Fitur 3">
+                            @error('features')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label for="price" class="form-label">Harga</label>
-                            <input type="number" class="form-control" name="price" value="{{ old('price') }}" required
-                                min="0" step="any">
+                            <input type="number" class="form-control" name="price" value="{{ old('price') }}"
+                                required min="0" step="any">
                             @error('price')
                                 <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
                             @enderror
@@ -195,6 +217,14 @@
                             <label for="description_edit" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
                             @error('description')
+                                <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="features_edit" class="form-label">Fitur (pisahkan dengan koma)</label>
+                            <input type="text" class="form-control" id="features_edit" name="features"
+                                placeholder="Contoh: Fitur 1, Fitur 2, Fitur 3">
+                            @error('features')
                                 <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
                             @enderror
                         </div>
@@ -259,6 +289,8 @@
                     editForm.find('#name_edit').val(template.name);
                     editForm.find('#categories_store_id_edit').val(template.categories_store_id);
                     editForm.find('#description_edit').val(template.description || '');
+                    editForm.find('#features_edit').val(
+                        template.features ? template.features.join(', ') : '');
                     editForm.find('#price_edit').val(template.price);
 
                     // Set form action URL

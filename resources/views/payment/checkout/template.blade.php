@@ -218,6 +218,22 @@
                         document.getElementById('back-to-demo').href = templateData.demo_url;
                     }
 
+                    // Populate features
+                    const featuresContainer = document.getElementById('template-features');
+                    featuresContainer.innerHTML = '';
+                    if (templateData.features && templateData.features.length > 0) {
+                        templateData.features.forEach(featureText => {
+                            const li = document.createElement('li');
+                            li.textContent = featureText;
+                            featuresContainer.appendChild(li);
+                        });
+                    } else {
+                        const li = document.createElement('li');
+                        li.textContent = 'Tidak ada fitur yang terdaftar untuk template ini.';
+                        li.className = 'text-gray-500';
+                        featuresContainer.appendChild(li);
+                    }
+
                     // Populate duration options
                     const durationContainer = document.getElementById('duration-options');
                     durationContainer.innerHTML = '';
