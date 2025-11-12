@@ -1290,7 +1290,7 @@
                 });
             }
 
-            {{-- INI KODE BARU --}}
+            // {{-- INI KODE BARU --}}
 
             function applyFilters() {
                 const search = document.getElementById('searchInput').value;
