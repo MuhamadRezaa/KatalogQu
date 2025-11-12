@@ -60,7 +60,7 @@
         }
 
         .navbar {
-            background-color:rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
         }
@@ -570,6 +570,174 @@
         /* * [DIHAPUS] Gaya Pagination Modern tidak diperlukan lagi
          * karena kita menggunakan tombol "Lihat Selengkapnya"
         */
+
+
+        /*
+        ================================================================================
+        [BARU] STYLING UNTUK MODAL PRODUK (SESUAI REFERENSI)
+        ================================================================================
+        */
+        .modal-image-col {
+            /* Latar belakang soft-pink dari tema */
+            background-color: var(--secondary-color);
+        }
+
+        .modal-main-image-container {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            /* Ukuran kotak 1:1 */
+            background-color: #f8f9fa;
+            /* Setara 'gray-100' */
+            border-radius: 0.5rem;
+            /* Setara 'rounded-lg' */
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+            /* Border tipis */
+        }
+
+        #modalMainImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Setara 'object-contain' */
+            cursor: zoom-in;
+        }
+
+        #modalFullscreenBtn {
+            position: absolute;
+            top: 0.75rem;
+            /* Setara 'top-3' */
+            right: 0.75rem;
+            /* Setara 'right-3' */
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            padding: 0.5rem;
+            /* Setara 'p-2' */
+            color: white;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+
+        #modalFullscreenBtn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        #modalProductBadge {
+            /* Badge Promo/Baru */
+            position: absolute;
+            top: 0.75rem;
+            /* Setara 'top-3' */
+            left: 0.75rem;
+            /* Setara 'left-3' */
+            z-index: 10;
+        }
+
+        .thumbnail-button {
+            aspect-ratio: 1 / 1;
+            background-color: #f8f9fa;
+            border-radius: 0.375rem;
+            /* Setara 'rounded-md' */
+            overflow: hidden;
+            border: 2px solid transparent;
+            padding: 0;
+            width: 100%;
+            /* Pastikan tombol mengisi kolom grid */
+        }
+
+        .thumbnail-button:hover {
+            border-color: #ced4da;
+            /* Setara 'gray-300' */
+        }
+
+        .thumbnail-button.active {
+            border-color: var(--primary-color);
+            /* Warna aksen tema */
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* [BARU] Styles untuk Lightbox (diambil dari toko-komputer) */
+        #image-lightbox {
+            display: none;
+            /* Default 'hidden' */
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            /* Sedikit lebih gelap */
+            z-index: 9999;
+            /* Di atas segalanya */
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        #image-lightbox.show {
+            display: flex;
+            /* 'flex' saat aktif */
+        }
+
+        #lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        #lightbox-close,
+        #lightbox-prev,
+        #lightbox-next {
+            position: absolute;
+            background-color: rgba(30, 30, 30, 0.6);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
+            padding: 0.75rem;
+            /* Sedikit lebih besar */
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            /* Ukuran tetap */
+            height: 44px;
+            /* Ukuran tetap */
+        }
+
+        #lightbox-close:hover,
+        #lightbox-prev:hover,
+        #lightbox-next:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        #lightbox-close {
+            top: 1rem;
+            right: 1rem;
+        }
+
+        #lightbox-prev {
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #lightbox-next {
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Helper untuk deskripsi */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 
@@ -904,61 +1072,90 @@
     {{-- ============================================= --}}
 
 
+    {{--
+    ================================================================================
+    [PERUBAHAN TOTAL] MODAL PRODUK
+    ================================================================================
+    --}}
     <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        {{-- [PERUBAHAN 1] Menambahkan 'modal-dialog-scrollable' agar modal bisa di-scroll --}}
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body p-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; top: 1rem; right: 1rem; z-index: 10; background-color: white; border-radius: 50%; padding: 0.5rem;"></button>
                     <div class="row m-0">
-                        <div class="col-lg-6 modal-image-col">
-                            <div id="modalCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner" id="modalCarouselInner">
-                                    {{-- Images will be loaded here by JS --}}
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#modalCarousel"
-                                    data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
+                        <div class="col-lg-6 modal-image-col p-3 p-lg-4">
+
+                            <div class="modal-main-image-container mb-3">
+                                <img id="modalMainImage"
+                                    src="{{ asset('assets/demo/toko-kosmetik/img/placeholder.png') }}"
+                                    alt="Product Image" class="img-fluid" />
+
+                                <button id="modalFullscreenBtn" title="Lihat gambar penuh">
+                                    <i class="fas fa-expand"></i>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#modalCarousel"
-                                    data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
+
+                                <span id="modalProductBadge" class="badge d-none"></span>
                             </div>
+
+                            <div id="modalThumbnailContainer" class="row g-2">
+                                </div>
+
+                            <template id="modalThumbnailTemplate">
+                                <div class="col-3">
+                                    <button class="thumbnail-button">
+                                        <img class="thumbnail-image" src="" alt="" />
+                                    </button>
+                                </div>
+                            </template>
+
                         </div>
-                        <div class="col-lg-6 modal-details-col">
-                            {{-- [DIUBAH] Penambahan elemen untuk brand --}}
+
+                        {{-- [PERUBAHAN 2] Menghapus style="max-height: 80vh; overflow-y: auto;" --}}
+                        <div class="col-lg-6 modal-details-col p-3 p-lg-4">
                             <p id="modalProductBrand">BRAND</p>
+
                             <div class="d-flex align-items-center mb-2">
                                 <h3 id="modalProductName" class="mb-0">Nama Produk</h3>
-                                <span id="modalProductBadge" class="badge ms-2"></span>
                             </div>
+
                             <p class="text-muted" id="modalProductCategory">Kategori</p>
+
                             <div class="d-flex align-items-baseline mb-3">
                                 <h4 class="fw-bold me-2" id="modalProductPrice">Rp 0</h4>
                                 <h5 class="text-muted text-decoration-line-through" id="modalProductOldPrice">Rp 0
                                 </h5>
                             </div>
 
-                            {{-- [PERBAIKAN] Menukar Posisi Spesifikasi dan Deskripsi --}}
-                            <h5>Spesifikasi</h5>
-                            <div id="modalProductSpecs"></div>
-                            <h5>Deskripsi</h5>
-                            <p id="modalProductDescription">Deskripsi produk...</p>
-                            {{-- Akhir Perbaikan Posisi --}}
+                            <h5 class="fw-bold">Deskripsi</h5>
+                            <p id="modalProductDescription" class="mb-4">Deskripsi produk...</p>
 
+                            <h5 class="fw-bold">Spesifikasi</h5>
+                            <div id="modalProductSpecs" class="mb-3"></div>
                             <div class="d-grid mt-4">
-                                <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg">
+                                <a id="chatButton" href="#" target="_blank"
+                                    class="btn btn-success btn-lg">
                                     <i class="fab fa-whatsapp me-2"></i> Chat Toko</a>
                             </div>
 
+                            <div class="pt-4 d-flex flex-wrap gap-2">
+                                <button id="modalShareButton"
+                                    class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                                    <i class="fas fa-share-alt fa-fw"></i>
+                                    Share Produk
+                                </button>
+                                <button id="modalCopyLinkButton"
+                                    class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                                    <i class="fas fa-copy fa-fw"></i>
+                                    Salin Link
+                                </button>
+                            </div>
                             <div id="related-products-section" class="mt-4 pt-4 border-top">
-                                <h6 class="mb-3">Anda Mungkin Juga Suka</h6>
+                                <h6 class="mb-3 fw-bold">Produk Serupa</h6>
                                 <div id="related-products-container" class="row g-2">
-                                    {{-- Related products will be loaded here by JS --}}
-                                </div>
+                                    T</div>
                             </div>
                         </div>
                     </div>
@@ -966,7 +1163,15 @@
             </div>
         </div>
     </div>
+    {{-- [AKHIR PERUBAHAN TOTAL] MODAL PRODUK --}}
 
+
+    <div id="image-lightbox">
+        <img id="lightbox-image" src="" alt="Fullscreen product image" />
+        <button id="lightbox-close" title="Tutup"><i class="fas fa-times fa-fw"></i></button>
+        <button id="lightbox-prev" title="Sebelumnya"><i class="fas fa-chevron-left fa-fw"></i></button>
+        <button id="lightbox-next" title="Berikutnya"><i class="fas fa-chevron-right fa-fw"></i></button>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
@@ -991,6 +1196,9 @@
                 if ($product->primary_image_src) {
                     array_unshift($images, $product->primary_image_src);
                 }
+                // [PERBAIKAN] Pastikan gambar unik jika primary_image_src ada di $product->images
+                $images = array_values(array_unique($images));
+
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
@@ -1002,7 +1210,7 @@
                     'old_price_formatted' => $product->old_price_idr,
                     'description' => $product->description,
                     'specs' => $product->specification,
-                    'images' => array_unique($images),
+                    'images' => $images, // [PERBAIKAN] Menggunakan array gambar yang sudah di-merge
                     'image' => $product->primary_image_src ?: asset('assets/demo/toko-kosmetik/img/placeholder.png'),
                     'is_new' => $product->is_new,
                     'discount_percentage' => $product->discount_percentage,
@@ -1032,6 +1240,24 @@
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
             // [PERBAIKAN FOOTER] Gunakan 'whatsapp_number' jika ada, fallback ke 'store_phone'
             const storePhoneNumber = "{{ $userStore->whatsapp_number ?? ($userStore->store_phone ?? '') }}";
+
+            // [BARU] Elemen Modal & Lightbox
+            const modalMainImage = document.getElementById('modalMainImage');
+            const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
+            const modalProductBadge = document.getElementById('modalProductBadge');
+            const modalThumbnailContainer = document.getElementById('modalThumbnailContainer');
+            const modalThumbnailTemplate = document.getElementById('modalThumbnailTemplate');
+
+            const modalShareButton = document.getElementById('modalShareButton');
+            const modalCopyLinkButton = document.getElementById('modalCopyLinkButton');
+
+            const imageLightbox = document.getElementById('image-lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const lightboxPrev = document.getElementById('lightbox-prev');
+            const lightboxNext = document.getElementById('lightbox-next');
+
+            let currentLightboxImages = []; // Untuk galeri lightbox
 
 
             // Inisialisasi Swiper/Carousel
@@ -1065,9 +1291,11 @@
                 });
             }
 
-            // Fungsi untuk mengisi detail produk di modal
+            // [PERUBAHAN TOTAL] Fungsi untuk mengisi detail produk di modal
             function populateModal(product) {
                 if (!product) return;
+
+                // --- Kolom Kanan (Info) ---
                 document.getElementById('modalProductBrand').textContent = product.brand || '';
                 document.getElementById('modalProductName').textContent = product.name;
                 document.getElementById('modalProductCategory').textContent = product.category + (product
@@ -1079,52 +1307,112 @@
                 oldPriceEl.textContent = product.old_price_formatted || '';
 
                 document.getElementById('modalProductDescription').innerHTML = product.description ||
-                    'Tidak ada deskripsi.';
+                    '<p class="text-muted">Tidak ada deskripsi.</p>';
 
-                const badgeEl = document.getElementById('modalProductBadge');
-                badgeEl.textContent = '';
-                badgeEl.className = 'badge ms-2';
-
-                if (product.discount_percentage) {
-                    badgeEl.classList.add('bg-danger');
-                    badgeEl.textContent = 'PROMO';
-                } else if (product.is_new) {
-                    badgeEl.classList.add('bg-success');
-                    badgeEl.textContent = 'BARU';
-                }
-
-                const carouselInner = document.getElementById('modalCarouselInner');
-                carouselInner.innerHTML = product.images && product.images.length > 0 ?
-                    product.images.map((src, i) =>
-                        `<div class="carousel-item ${i === 0 ? 'active' : ''}"><img src="${src}" class="d-block w-100" alt="Gambar produk"></div>`
-                    ).join('') :
-                    `<div class="carousel-item active"><img src="{{ asset('assets/demo/toko-kosmetik/img/placeholder.png') }}" class="d-block w-100" alt="Placeholder"></div>`;
-
-                new bootstrap.Carousel(document.getElementById('modalCarousel')).to(0);
-
+                // Spesifikasi
                 const specsContainer = document.getElementById('modalProductSpecs');
                 specsContainer.innerHTML = '';
                 if (product.specs && Object.keys(product.specs).length > 0) {
                     let listHtml = '<ul class="list-unstyled">';
+                    // [PERBAIKAN] Tampilan spesifikasi seperti di referensi
                     for (const [key, value] of Object.entries(product.specs)) {
-                        listHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+                        listHtml +=
+                            `<li class="d-flex justify-content-between py-1 border-bottom"><span class="text-muted">${key}</span><span class="fw-medium text-dark">${value}</span></li>`;
                     }
                     specsContainer.innerHTML = listHtml + '</ul>';
                 } else {
-                    specsContainer.innerHTML = '<p>Tidak ada spesifikasi.</p>';
+                    specsContainer.innerHTML = '<p class="text-muted">Tidak ada spesifikasi.</p>';
                 }
 
+                // Tombol Chat
                 const message = `Halo, saya tertarik dengan produk "${product.name}".`;
                 // [PERBAIKAN FOOTER] Pastikan nomor telepon bersih dari karakter non-numerik
                 const cleanPhoneNumber = storePhoneNumber.replace(/[^0-9]/g, '');
                 document.getElementById('chatButton').href =
                     `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(message)}`;
 
-                // Logika untuk menampilkan produk terkait (related products)
+                // [BARU] Tombol Share & Salin
+                const productUrl =
+                    `${window.location.origin}/produk/${product.id}`; // Menggunakan ID karena slug tidak ada
+                modalCopyLinkButton.onclick = () => {
+                    navigator.clipboard.writeText(productUrl).then(() => alert(
+                        'Link produk disalin!'));
+                };
+                modalShareButton.onclick = () => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: product.name,
+                            text: `Lihat produk ini: ${product.name}`,
+                            url: productUrl
+                        });
+                    } else {
+                        alert('Fitur share tidak didukung di browser ini.');
+                    }
+                };
+
+                // --- Kolom Kiri (Gambar) ---
+
+                // Badge (Promo/Baru)
+                modalProductBadge.textContent = '';
+                modalProductBadge.className = 'badge d-none'; // Reset
+                if (product.discount_percentage) {
+                    modalProductBadge.classList.add('bg-danger');
+                    modalProductBadge.textContent = 'PROMO';
+                    modalProductBadge.classList.remove('d-none');
+                } else if (product.is_new) {
+                    modalProductBadge.classList.add('bg-success');
+                    modalProductBadge.textContent = 'BARU';
+                    modalProductBadge.classList.remove('d-none');
+                }
+
+                // Gambar & Thumbnail
+                modalThumbnailContainer.innerHTML = '';
+                currentLightboxImages = []; // Reset lightbox gallery
+                const images = (product.images || []);
+
+                if (images.length > 0) {
+                    modalMainImage.src = images[0];
+                    modalFullscreenBtn.style.display = 'block';
+
+                    images.forEach((imgSrc, idx) => {
+                        // 1. Tambah ke galeri lightbox
+                        currentLightboxImages.push(imgSrc);
+
+                        // 2. Buat thumbnail
+                        const node = modalThumbnailTemplate.content.cloneNode(true);
+                        const btn = node.querySelector('.thumbnail-button');
+                        const img = node.querySelector('.thumbnail-image');
+
+                        img.src = imgSrc;
+                        img.alt = `Thumbnail ${idx + 1}`;
+                        btn.dataset.fullSrc = imgSrc;
+
+                        if (idx === 0) btn.classList.add('active');
+
+                        btn.addEventListener('click', () => {
+                            modalMainImage.src = imgSrc;
+                            // Update status 'active'
+                            document.querySelectorAll(
+                                    '#modalThumbnailContainer .thumbnail-button')
+                                .forEach(el => el.classList.remove('active'));
+                            btn.classList.add('active');
+                        });
+
+                        modalThumbnailContainer.appendChild(node);
+                    });
+                } else {
+                    // Placeholder jika tidak ada gambar
+                    modalMainImage.src =
+                        "{{ asset('assets/demo/toko-kosmetik/img/placeholder.png') }}";
+                    modalFullscreenBtn.style.display = 'none';
+                }
+
+                // Produk Terkait (Related Products)
                 const relatedContainer = document.getElementById('related-products-container');
                 relatedContainer.innerHTML = '';
-                const relatedProducts = allProductsData.filter(p => p.category_id === product.category_id && p
-                    .id !== product.id).slice(0, 3);
+                const relatedProducts = allProductsData.filter(p => p.category_id === product
+                    .category_id && p.id !== product.id).slice(0, 3);
+
                 if (relatedProducts.length > 0) {
                     document.getElementById('related-products-section').style.display = 'block';
                     relatedProducts.forEach(rp => {
@@ -1132,18 +1420,22 @@
                         col.className = 'col-4';
                         col.innerHTML = `
                         <div class="related-product-card" data-product-id="${rp.id}" style="cursor:pointer;">
-                            <img src="${rp.image}" alt="${rp.name}" class="img-fluid rounded">
-                            <div class="small mt-1">${rp.name}</div>
+                            <img src="${rp.image}" alt="${rp.name}" class="img-fluid rounded mb-1 border">
+                            <p class="small fw-medium text-dark line-clamp-2" style="font-size: 0.8rem;">${rp.name}</p>
+                            <p class="small text-muted" style="font-size: 0.8rem;">${rp.price_formatted}</p>
                         </div>
                     `;
                         relatedContainer.appendChild(col);
                     });
                 } else {
                     document.getElementById('related-products-section').style.display = 'none';
+                    relatedContainer.innerHTML =
+                        '<p class="text-muted small">Tidak ada produk serupa.</p>';
                 }
             }
+            // [AKHIR PERUBAHAN FUNGSI]
 
-            // [PERBARUAN] Menggunakan Event Delegation untuk klik produk
+
             // [PERBARUAN] Menggunakan Event Delegation untuk klik produk
             function handleProductClick(event) {
                 // Cari elemen kartu terdekat dari target yang diklik
@@ -1175,8 +1467,10 @@
                         .then(response => {
                             if (!response.ok) {
                                 // [PERBAIKAN] Memberi log error yang lebih detail di console
-                                console.error('Fetch response not OK:', response.status, response.statusText);
-                                throw new Error(`Gagal mengambil data produk (Status: ${response.status}).`);
+                                console.error('Fetch response not OK:', response.status, response
+                                    .statusText);
+                                throw new Error(
+                                    `Gagal mengambil data produk (Status: ${response.status}).`);
                             }
                             return response.json();
                         })
@@ -1584,6 +1878,59 @@
             // [AKHIR] Logika Pagination AJAX
             // ========================================================================
 
+
+            // [BARU] Event Listeners untuk Lightbox
+            function showLightbox(src) {
+                lightboxImage.src = src;
+                imageLightbox.classList.add('show');
+            }
+
+            function closeLightbox() {
+                imageLightbox.classList.remove('show');
+            }
+
+            // Buka lightbox
+            modalMainImage.addEventListener('click', () => {
+                if (modalMainImage.src && !modalMainImage.src.includes('placeholder.png'))
+                    showLightbox(modalMainImage.src);
+            });
+            modalFullscreenBtn.addEventListener('click', () => {
+                if (modalMainImage.src && !modalMainImage.src.includes('placeholder.png'))
+                    showLightbox(modalMainImage.src);
+            });
+
+            // Tutup lightbox
+            lightboxClose.addEventListener('click', closeLightbox);
+            imageLightbox.addEventListener('click', (e) => {
+                if (e.target === imageLightbox) closeLightbox();
+            });
+
+            // Navigasi Lightbox
+            lightboxNext.addEventListener('click', () => {
+                const i = currentLightboxImages.indexOf(lightboxImage.src);
+                if (i === -1) return;
+                const next = (i + 1) % currentLightboxImages.length;
+                lightboxImage.src = currentLightboxImages[next];
+            });
+            lightboxPrev.addEventListener('click', () => {
+                const i = currentLightboxImages.indexOf(lightboxImage.src);
+                if (i === -1) return;
+                const prev = (i - 1 + currentLightboxImages.length) % currentLightboxImages
+                    .length;
+                lightboxImage.src = currentLightboxImages[prev];
+            });
+
+            // Keyboard support for modal & lightbox
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (imageLightbox.classList.contains('show')) {
+                        closeLightbox();
+                    } else if (productModal._isShown) {
+                        productModal.hide();
+                    }
+                }
+            });
+            // [AKHIR BARU] Lightbox Logic
         });
     </script>
 </body>
