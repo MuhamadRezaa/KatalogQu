@@ -437,7 +437,7 @@
         </div>
     </section>
 
-    <section class="promo-products-section">
+    {{-- <section class="promo-products-section">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 text-center">
@@ -450,7 +450,7 @@
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="search-filter-section pt-5" id="products">
         <div class="container">
@@ -1098,7 +1098,7 @@
                 image: p.images[0]
             }));
 
-            const promoProducts = allProductsData.filter(p => p.discount_percentage !== null);
+            // const promoProducts = allProductsData.filter(p => p.discount_percentage !== null);
             //{{-- INI KODE YANG BENAR --}}
             const productModal = new bootstrap.Modal(document.getElementById('productModal'));
 
@@ -1118,6 +1118,7 @@
                 ).join('');
             }
 
+            /*
             function populateSwiper(containerId, products) {
                 const swiperContainer = document.getElementById(containerId);
                 if (products.length === 0) {
@@ -1127,6 +1128,7 @@
                 swiperContainer.innerHTML = products.map(p =>
                     `<div class="swiper-slide h-100">${createProductCardHtml(p)}</div>`).join('');
             }
+            */
 
             function createProductCardHtml(product) {
                 let badgeHtml = '';
@@ -1418,8 +1420,9 @@
 
             // --- INITIALIZATION ---
             populateBanners();
-            populateSwiper('promoProductsSwiper', promoProducts);
+            // populateSwiper('promoProductsSwiper', promoProducts);
 
+            /*
             new Swiper('.promo-swiper', {
                 effect: 'coverflow',
                 grabCursor: true,
@@ -1447,6 +1450,7 @@
                     }
                 }
             });
+            */
 
             populateFilters();
             // filterProducts(); // [DIGANTI]
@@ -1455,7 +1459,6 @@
         });
     </script>
 
-    <!-- Universal Checkout Bubble -->
     @include('demo.universal-checkout-bubble', [
         'templateSlug' => 'toko-kosmetik',
     ])
