@@ -737,7 +737,114 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            /* [PERBAIKAN] Pastikan ada tinggi minimum untuk 2 baris */
+            height: 2.4em;
+            /* 1.2em (line-height) * 2 */
+            line-height: 1.2em;
         }
+
+        /*
+        ================================================================================
+        [PERUBAHAN] STYLING UNTUK SLIDER PRODUK TERKAIT
+        ================================================================================
+        */
+
+        /* [PERBAIKAN] Styling untuk Navigasi Swiper Produk Terkait */
+        #related-products-swiper {
+            padding-left: 10px;
+            /* Padding untuk tombol prev */
+            padding-right: 10px;
+            /* Padding untuk tombol next */
+            margin-left: -10px;
+            /* Offset padding */
+            margin-right: -10px;
+            /* Offset padding */
+
+            /* [FIX] Ganti 'visibility: visible' dengan 'overflow: hidden'
+               Ini akan "memotong" slide yang tidak aktif dan mengatasi masalah 'bocor' */
+            overflow: hidden;
+
+            /* Pastikan position: relative sudah ada di HTML (class="position-relative")
+               agar tombol navigasi absolut berfungsi */
+        }
+
+        .swiper-button-next-related,
+        .swiper-button-prev-related {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            cursor: pointer;
+            color: var(--primary-color);
+            width: 30px;
+            /* Buat tombol lebih besar */
+            height: 30px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swiper-button-next-related::after,
+        .swiper-button-prev-related::after {
+            font-size: 0.8rem;
+            /* Ukuran panah */
+            font-weight: 900;
+        }
+
+        .swiper-button-prev-related {
+            left: 0px;
+        }
+
+        .swiper-button-next-related {
+            right: 0px;
+        }
+
+        .swiper-button-disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* [PERUBAHAN] Penyesuaian Kartu Produk Terkait untuk Slider */
+        .related-product-card {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .related-product-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #eee;
+        }
+
+        /* [PERUBAHAN] Ukuran font di kartu terkait */
+        .related-product-title {
+            font-size: 0.8rem;
+            color: var(--text-color);
+            font-weight: 500;
+            /* line-clamp-2 sudah di-handle oleh class .line-clamp-2 */
+        }
+
+        .related-product-price {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-color);
+            /* Warna teks biasa */
+            margin-top: 4px;
+        }
+
+        /* [AKHIR PERUBAHAN] */
     </style>
 </head>
 
@@ -909,37 +1016,60 @@
 
             {{--
              ================================================================================
-             [PERUBAHAN] PENYESUAIAN GRID FILTER SMARTPHONE
+             [PERBAIKAN] PENYESUAIAN GRID FILTER DAN KONEKSI KE MANAJEMEN MENU
              ================================================================================
-             Menambahkan kelas col-6 dan col-12 untuk tata letak 2 kolom di HP
             --}}
             <div class="row align-items-center g-3 mt-3">
-                <div class="col-lg-3 col-6"><input type="text" id="searchInput"
-                        class="form-control filter-control" placeholder="Cari produk..."
-                        value="{{ request('search') }}"></div>
-                <div class="col-lg-2 col-md-3 col-6"><select id="categoryFilter" class="form-select filter-control">
+                {{-- Baris 1 (atau item-item) --}}
+                <div class="col-lg-3 col-md-3 col-12">
+                    <input type="text" id="searchInput" class="form-control filter-control"
+                        placeholder="Cari produk..." value="{{ request('search') }}">
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <select id="categoryFilter" class="form-select filter-control">
                         <option value="">Semua Kategori</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}"
                                 {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
-                    </select></div>
-                <div class="col-lg-2 col-md-3 col-6"><select id="subcategoryFilter"
-                        class="form-select filter-control">
-                        <option value="">Semua Sub Kategori</option>
-                    </select></div>
-                <div class="col-lg-2 col-md-3 col-6"><select id="brandFilter" class="form-select filter-control">
-                        <option value="">Semua Brand</option>
-                    </select></div>
-                <div class="col-lg-2 col-md-3 col-6"><select id="priceFilter" class="form-select filter-control">
+                    </select>
+                </div>
+
+                {{-- [BARU] Filter Sub Kategori Dinamis --}}
+                @if (in_array('subkategoriproduk', $menus ?? []))
+                    <div class="col-lg-3 col-md-3 col-6">
+                        <select id="subcategoryFilter" class="form-select filter-control">
+                            <option value="">Semua Sub Kategori</option>
+                            {{-- Opsi diisi oleh JS --}}
+                        </select>
+                    </div>
+                @endif
+
+                {{-- [BARU] Filter Brand Dinamis --}}
+                @if (in_array('brandproduk', $menus ?? []))
+                    <div class="col-lg-3 col-md-3 col-6">
+                        <select id="brandFilter" class="form-select filter-control">
+                            <option value="">Semua Brand</option>
+                            {{-- Opsi diisi oleh JS --}}
+                        </select>
+                    </div>
+                @endif
+
+                {{-- Filter Harga (Selalu Tampil) --}}
+                <div class="col-lg-3 col-md-3 col-6">
+                    <select id="priceFilter" class="form-select filter-control">
                         <option value="">Semua Harga</option>
                         @foreach ($priceRanges as $range)
                             <option data-min="{{ $range->min ?? '' }}" data-max="{{ $range->max ?? '' }}"
                                 {{ request('price_min') == $range->min && request('price_max') == $range->max ? 'selected' : '' }}>
                                 {{ $range->name }}</option>
                         @endforeach
-                    </select></div>
-                <div class="col-lg-2 col-md-3 col-6"><select id="sortFilter" class="form-select filter-control">
+                    </select>
+                </div>
+
+                {{-- Filter Urutkan (Selalu Tampil) --}}
+                <div class="col-lg-3 col-md-3 col-6">
+                    <select id="sortFilter" class="form-select filter-control">
                         <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>Terbaru
                         </option>
                         <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Harga
@@ -947,11 +1077,15 @@
                         <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Harga
                             Tertinggi</option>
                         <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nama A-Z</option>
-                    </select></div>
-                <div class="col-lg-1 col-md-3 col-12"><a href="{{ url()->current() }}#products"
-                        class="btn btn-outline-secondary w-100">Reset</a></div>
+                    </select>
+                </div>
+
+                {{-- Tombol Reset (Selalu Tampil) --}}
+                <div class="col-lg-3 col-md-3 col-12">
+                    <a href="{{ url()->current() }}#products" class="btn btn-outline-secondary w-100">Reset</a>
+                </div>
             </div>
-            {{-- [AKHIR PERUBAHAN] --}}
+            {{-- [AKHIR PERBAIKAN] --}}
         </div>
     </section>
 
@@ -1101,7 +1235,7 @@
                             </div>
 
                             <div id="modalThumbnailContainer" class="row g-2">
-                                </div>
+                            </div>
 
                             <template id="modalThumbnailTemplate">
                                 <div class="col-3">
@@ -1135,8 +1269,7 @@
                             <h5 class="fw-bold">Spesifikasi</h5>
                             <div id="modalProductSpecs" class="mb-3"></div>
                             <div class="d-grid mt-4">
-                                <a id="chatButton" href="#" target="_blank"
-                                    class="btn btn-success btn-lg">
+                                <a id="chatButton" href="#" target="_blank" class="btn btn-success btn-lg">
                                     <i class="fab fa-whatsapp me-2"></i> Chat Toko</a>
                             </div>
 
@@ -1152,11 +1285,23 @@
                                     Salin Link
                                 </button>
                             </div>
+
+                            {{--
+                            ================================================================================
+                            [PERUBAHAN] HTML UNTUK SLIDER PRODUK TERKAIT
+                            ================================================================================
+                            --}}
                             <div id="related-products-section" class="mt-4 pt-4 border-top">
                                 <h6 class="mb-3 fw-bold">Produk Serupa</h6>
-                                <div id="related-products-container" class="row g-2">
-                                    T</div>
+                                <div id="related-products-swiper" class="swiper-container position-relative">
+                                    <div id="related-products-container" class="swiper-wrapper">
+                                    </div>
+                                    <div class="swiper-button-next swiper-button-next-related"></div>
+                                    <div class="swiper-button-prev swiper-button-prev-related"></div>
+                                </div>
                             </div>
+                            {{-- [AKHIR PERUBAHAN] --}}
+
                         </div>
                     </div>
                 </div>
@@ -1258,6 +1403,7 @@
             const lightboxNext = document.getElementById('lightbox-next');
 
             let currentLightboxImages = []; // Untuk galeri lightbox
+            let relatedSwiper = null; // [BARU] Variabel untuk Swiper produk terkait
 
 
             // Inisialisasi Swiper/Carousel
@@ -1407,31 +1553,94 @@
                     modalFullscreenBtn.style.display = 'none';
                 }
 
-                // Produk Terkait (Related Products)
-                const relatedContainer = document.getElementById('related-products-container');
-                relatedContainer.innerHTML = '';
+                // ========================================================================
+                // [PERUBAHAN TOTAL] Logika Produk Terkait (Related Products)
+                // ========================================================================
+                const relatedSection = document.getElementById('related-products-section');
+                const relatedContainer = document.getElementById(
+                    'related-products-container'); // Ini adalah swiper-wrapper
+                relatedContainer.innerHTML = ''; // Kosongkan slide lama
+
+                // [PERUBAHAN] Ambil lebih banyak produk, misal 8
                 const relatedProducts = allProductsData.filter(p => p.category_id === product
-                    .category_id && p.id !== product.id).slice(0, 3);
+                    .category_id && p.id !== product.id).slice(0, 8);
 
                 if (relatedProducts.length > 0) {
-                    document.getElementById('related-products-section').style.display = 'block';
+                    relatedSection.style.display = 'block';
+
                     relatedProducts.forEach(rp => {
-                        const col = document.createElement('div');
-                        col.className = 'col-4';
-                        col.innerHTML = `
-                        <div class="related-product-card" data-product-id="${rp.id}" style="cursor:pointer;">
-                            <img src="${rp.image}" alt="${rp.name}" class="img-fluid rounded mb-1 border">
-                            <p class="small fw-medium text-dark line-clamp-2" style="font-size: 0.8rem;">${rp.name}</p>
-                            <p class="small text-muted" style="font-size: 0.8rem;">${rp.price_formatted}</p>
+                        // [PERUBAHAN] Buat swiper-slide, bukan col-4
+                        const slide = document.createElement('div');
+                        slide.className = 'swiper-slide';
+                        slide.innerHTML = `
+                        <div class="related-product-card" data-product-id="${rp.id}">
+                            <img src="${rp.image}" alt="${rp.name}">
+                            <div class="related-product-title line-clamp-2">${rp.name}</div>
+                            <div class="related-product-price">${rp.price_formatted}</div>
                         </div>
                     `;
-                        relatedContainer.appendChild(col);
+                        relatedContainer.appendChild(slide);
                     });
+
+                    // [BARU] Hancurkan Swiper lama jika ada
+                    if (relatedSwiper) {
+                        relatedSwiper.destroy(true, true);
+                        relatedSwiper = null;
+                    }
+
+                    // [BARU] Inisialisasi Swiper baru
+                    relatedSwiper = new Swiper('#related-products-swiper', {
+                        slidesPerView: 3, // Tampilkan 3 produk
+                        spaceBetween: 15,
+                        // Aktifkan navigasi
+                        navigation: {
+                            nextEl: '.swiper-button-next-related',
+                            prevEl: '.swiper-button-prev-related',
+                        },
+                        // Buat responsif
+                        breakpoints: {
+                            0: { // Mobile
+                                slidesPerView: 2,
+                                spaceBetween: 10,
+                            },
+                            576: { // Tablet
+                                slidesPerView: 3,
+                                spaceBetween: 15,
+                            }
+                        }
+                    });
+
+                    // [PENTING] [FIX] Logika update Swiper yang diperbaiki
+                    // Ini untuk mengatasi bug inisialisasi pada elemen tersembunyi
+                    const modalEl = document.getElementById('productModal');
+
+                    if (productModal._isShown) {
+                        // [FIX] Jika modal SUDAH terlihat (misal klik dari related product),
+                        // update Swiper segera setelah 10ms (memberi waktu render).
+                        if (relatedSwiper && typeof relatedSwiper.update === 'function') {
+                            setTimeout(() => relatedSwiper.update(), 10);
+                        }
+                    } else {
+                        // [FIX] Jika modal BARU AKAN terlihat,
+                        // tunggu event 'shown.bs.modal'
+                        modalEl.addEventListener('shown.bs.modal', function onModalShow() {
+                            if (relatedSwiper && typeof relatedSwiper.update === 'function') {
+                                relatedSwiper.update(); // Update layout Swiper
+                            }
+                        }, {
+                            once: true
+                        }); // 'once: true' akan otomatis menghapus listener
+                    }
+
+
                 } else {
-                    document.getElementById('related-products-section').style.display = 'none';
-                    relatedContainer.innerHTML =
-                        '<p class="text-muted small">Tidak ada produk serupa.</p>';
+                    relatedSection.style.display = 'none';
+                    if (relatedSwiper) { // [BARU] Hancurkan juga jika tidak ada produk
+                        relatedSwiper.destroy(true, true);
+                        relatedSwiper = null;
+                    }
                 }
+                // --- [AKHIR PERUBAHAN] Logika Produk Terkait ---
             }
             // [AKHIR PERUBAHAN FUNGSI]
 
@@ -1532,7 +1741,7 @@
                 const currentSubcategoryValue = new URLSearchParams(window.location.search).get('subcategory');
 
                 subcategoryFilter.innerHTML = '<option value="">Semua Sub Kategori</option>'; // Reset
-                subcategoryFilter.disabled = true; // Nonaktifkan by default
+                // subcategoryFilter.disabled = true; // Nonaktifkan by default
 
                 // Cek jika categoryId ada, dan ada datanya di categoriesData
                 if (categoryId && categoriesData[categoryId] && categoriesData[categoryId].length > 0) {
