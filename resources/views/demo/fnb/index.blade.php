@@ -44,6 +44,7 @@
             width: auto !important;
             max-width: 90vw !important;
             object-fit: contain !important;
+            object-position: center !important;
         }
 
         .modal-img-container {
@@ -370,7 +371,7 @@
                     <div
                         class="card-category {{ $index >= 4 ? 'hidden category-hidden' : '' }} transition-all duration-300 ease-in-out transform hover:scale-105">
                         <img src="{{ asset('assets/demo/fnb/images/' . $category['image']) }}"
-                            alt="{{ $category['name'] }}" class="w-full h-40 object-cover">
+                            alt="{{ $category['name'] }}" class="w-full h-40 object-contain object-center">
                         <div class="p-4 text-center">
                             <h3 class="card-title">{{ $category['name'] }}</h3>
                             <p class="card-description">{{ $category['description'] }}</p>
@@ -1808,7 +1809,7 @@
                                 <div class="flex flex-col md:flex-row items-start gap-8">
                                     <div class="w-full md:w-1/2">
                                         <div class="modal-img-container" style="aspect-ratio: 4/5;">
-                                            <img src="${item.image}" alt="${item.name}" class="w-full h-full rounded-xl object-cover" style="width: 640px; max-width: 100%;" />
+                                            <img src="${item.image}" alt="${item.name}" class="w-full h-full rounded-xl object-contain object-center" style="width: 640px; max-width: 100%;" />
                                             ${!item.isAvailable ? '<div class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl">Stok Habis</div>' : ''}
                                             <button class="fullscreen-button" title="Lihat gambar penuh">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1876,7 +1877,7 @@
         <button class="detail-btn mt-2 bg-[#994d51] hover:bg-[#7a3c3f] text-white font-semibold px-4 py-1 text-sm rounded-full shadow transition duration-200" data-modal="product-modal-${item.id}">Detail</button>
     </div>
     <div class="relative w-32 ml-6" style="aspect-ratio: 4/5;">
-        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
+        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain object-center rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
         ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
     </div>
 </div>
@@ -1885,7 +1886,7 @@
                         itemHTML = `
 <div class="relative flex flex-col items-center border border-gray-200 rounded-lg p-4 text-center transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
     <div class="relative w-full mb-2" style="aspect-ratio: 4/5;">
-        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
+        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain object-center rounded-lg ${!item.isAvailable ? 'opacity-50' : ''}" />
         ${!item.isAvailable ? '<div class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-lg text-sm">Stok Habis</div>' : ''}
     </div>
     <h3 class="font-semibold text-sm">${item.name}</h3>
