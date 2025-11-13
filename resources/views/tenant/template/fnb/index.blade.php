@@ -506,6 +506,52 @@
                         </div>
                     </div>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            try {
+                                // 1. Dapatkan semua subkategori unik dari data produk
+                                const uniqueSubcategories = {};
+                                if (window.productsData && Array.isArray(window.productsData)) {
+                                    window.productsData.forEach(product => {
+                                        if (product && product.sub_category && product.sub_category.name) {
+                                            uniqueSubcategories[product.sub_category.name] = {
+                                                name: product.sub_category.name,
+                                                category_id: product.category ? product.category.id : null
+                                            };
+                                        }
+                                    });
+                                }
+
+                                const subcategoryList = Object.values(uniqueSubcategories);
+
+                                // 2. Dapatkan kontainer dropdown
+                                const subcategoryOptionsContainer = document.querySelector('#subcategory-options .py-1');
+
+                                if (subcategoryOptionsContainer && subcategoryList.length > 0) {
+                                    // 3. Kosongkan opsi yang ada (dari Blade)
+                                    subcategoryOptionsContainer.innerHTML = '';
+
+                                    // 4. Tambahkan opsi subkategori yang unik
+                                    subcategoryList.forEach(sub => {
+                                        const link = document.createElement('a');
+                                        link.href = '#';
+                                        link.className = 'subcategory-option text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100';
+                                        link.dataset.subcategory = sub.name;
+                                        if (sub.category_id) {
+                                            link.dataset.categoryId = sub.category_id;
+                                        }
+                                        link.textContent = sub.name;
+                                        subcategoryOptionsContainer.appendChild(link);
+                                    });
+                                } else if (subcategoryOptionsContainer) {
+                                    subcategoryOptionsContainer.innerHTML = '<span class="text-xs text-gray-500 px-4 py-2">No subcategories found</span>';
+                                }
+                            } catch (error) {
+                                console.error("Error rebuilding subcategory dropdown:", error);
+                            }
+                        });
+                    </script>
+
                     <div class="w-full flex gap-4 mt-2 lg:mt-0 lg:w-auto">
 
                         {{-- Mengubah w-1/2 menjadi w-2/3 agar tombol Grid/List mendapat ruang --}}
