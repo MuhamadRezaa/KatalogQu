@@ -10,6 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ $userStore->store_name ?? 'Kopi Seduh Pagi' }}</title>
 
+    {{-- Catatan: Untuk memastikan gambar tidak buram dan terlihat jelas, pastikan gambar sumber memiliki resolusi yang cukup tinggi dan sesuai dengan ukuran tampilan yang diharapkan. --}}
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
         rel="stylesheet">
@@ -264,9 +266,15 @@
                             <img src="{{ $category->image
                                 ? route('tenant.asset.domain', ['path' => ltrim($category->image, '/')])
                                 : asset('assets/images/no-image-icon.png') }}"
-                                alt="{{ $category->name }}" class="w-full h-40 object-cover">
+                                alt="{{ $category->name }}" class="w-full h-40 object-contain object-center">
                             <div class="p-4 text-center">
-                                <h3 class="card-title">{{ $category->name }}</h3>
+                                <h3 class="card-title font-light text-l">
+                                    {{ $category->name }}
+                                </h3>
+
+                                <p class="text-sm font-normal text-gray-600 mt-1">
+                                    {{ $category->description }}
+                                </p>
                             </div>
                         </div>
                     @endforeach
@@ -879,7 +887,7 @@
     </div>
     <div class="relative w-40 h-50 rounded-lg ml-6 overflow-hidden">
         <div class="relative w-full pb-[125%]">
-            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
+            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-contain rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
             ${stockOverlay}
         </div>
     </div>
@@ -888,7 +896,7 @@
 <div class="relative flex flex-col items-center border border-gray-200 rounded-lg p-4 text-center transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
     <div class="relative w-full overflow-hidden rounded-lg mb-2">
         <div class="relative w-full pb-[125%]">
-            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-cover rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
+            <img src="${safeItem.image}" alt="${safeItem.name}" class="absolute inset-0 w-full h-full object-contain rounded-lg ${!safeItem.isAvailable ? 'opacity-50' : ''}" />
             ${stockOverlay}
         </div>
     </div>
@@ -1426,7 +1434,7 @@
                     <div class="w-full md:w-1/2 relative">
                         <div class="relative w-full pb-[125%] overflow-hidden rounded-xl">
                             <img id="modal-product-image" src="" alt=""
-                                class="absolute inset-0 w-full h-full object-cover rounded-xl cursor-pointer" />
+                                class="absolute inset-0 w-full h-full object-contain rounded-xl cursor-pointer" />
                             <div id="modal-stock-overlay"
                                 class="stock-overlay absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 text-white font-bold rounded-xl text-xl hidden">
                                 Stok Habis
@@ -1688,8 +1696,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <img id="fullscreen-image" src="" alt=""
-                class="max-h-[90vh] max-w-[90vw] object-contain" />
+            <img id="fullscreen-image" src="" alt="" class="w-[80vh] h-[80vh] object-contain" />
         </div>
     </div>
 
