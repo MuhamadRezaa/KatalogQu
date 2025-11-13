@@ -676,6 +676,27 @@
             const youtubeVideo = document.getElementById('youtubeVideo');
             const heroCarousel = document.getElementById('heroBgCarousel');
 
+            // --- AWAL PERBAIKAN KODE FAB ---
+            const fabToggle = document.getElementById('fab-toggle');
+            const fabDropdown = document.getElementById('fab-dropdown');
+
+            if (fabToggle && fabDropdown) {
+                fabToggle.addEventListener('click', function(event) {
+                    // Mencegah event 'click' ini memicu event di window
+                    event.stopPropagation();
+                    // Toggle class 'show' pada dropdown
+                    fabDropdown.classList.toggle('show');
+                });
+
+                // Menutup dropdown jika pengguna mengklik di tempat lain
+                window.addEventListener('click', function(event) {
+                    if (fabDropdown.classList.contains('show')) {
+                        fabDropdown.classList.remove('show');
+                    }
+                });
+            }
+            // --- AKHIR PERBAIKAN KODE FAB ---
+
             // track arah scroll
             let lastScrollY = window.scrollY;
             window.addEventListener('scroll', () => {
