@@ -488,7 +488,7 @@
 
         /*
          ================================================================================
-         [BARU] STYLING PAGINATION MODERN (Menggantikan Bawaan Bootstrap)
+         [PERBAIKAN] STYLING PAGINATION MODERN (Menggantikan Bawaan Bootstrap)
          ================================================================================
         */
         .pagination {
@@ -504,67 +504,88 @@
         }
 
         .pagination .page-link {
+            /* [PERUBAHAN] Ini adalah style dasar untuk SEMUA link */
             font-family: var(--font-secondary);
             font-weight: 700;
             font-size: 1rem;
             color: var(--primary-color);
-            /* Warna teks pink (dari variabel Anda) */
 
-            /* Bentuk Bulat Sempurna */
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
             height: 45px;
+            /* <-- Ketinggian disamakan untuk semua */
 
             border: none;
-            /* Hapus border default Bootstrap */
-            border-radius: 50%;
-            /* Membuat link menjadi bulat sempurna */
+            /* Hapus border-radius, width, dan padding tetap dari sini */
             background-color: var(--white-bg);
-            /* Latar belakang putih (dari variabel Anda) */
 
-            /* Shadow dan Transisi (mengikuti gaya .product-card) */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
+
+        /* [BARU] Style untuk tombol "Previous" (pertama) dan "Next" (terakhir) */
+        .pagination .page-item:first-child .page-link,
+        .pagination .page-item:last-child .page-link {
+            width: auto;
+            /* <-- KUNCI PERBAIKAN: Lebar otomatis */
+            border-radius: 50px;
+            /* <-- Bentuk Kapsul/Pill */
+            padding: 0 1.25rem;
+            /* <-- Padding horizontal */
+        }
+
+        /* [BARU] Style untuk tombol ANGKA (semua kecuali pertama dan terakhir) */
+        .pagination .page-item:not(:first-child):not(:last-child) .page-link {
+            width: 45px;
+            /* <-- Tetap 45px */
+            border-radius: 50%;
+            /* <-- Bentuk Bulat */
+            padding: 0;
+            /* <-- Hapus padding agar angka di tengah */
+        }
+
 
         .pagination .page-link:hover,
         .pagination .page-link:focus {
             /* Efek hover: naik dan shadow lebih kuat */
             transform: translateY(-4px);
             box-shadow: 0 8px 25px rgba(230, 57, 122, 0.2);
-            /* Shadow pink (sesuai .btn-primary) */
             background-color: var(--white-bg);
-            /* Tetap putih */
             color: var(--primary-color);
-            /* Tetap pink */
         }
 
         .pagination .page-item.active .page-link {
-            /* Status Aktif */
+            /* Status Aktif (selalu berupa angka, jadi bulat) */
+            width: 45px;
+            /* <-- Pastikan tetap bulat */
+            height: 45px;
+            border-radius: 50%;
+            padding: 0;
+
             background-color: var(--primary-color);
-            /* Latar belakang pink */
             color: #fff;
-            /* Teks putih */
             box-shadow: 0 6px 20px rgba(230, 57, 122, 0.4);
-            /* Shadow pink kuat */
             transform: translateY(-2px);
-            /* Sedikit terangkat */
         }
 
         .pagination .page-item.disabled .page-link {
-            /* Status Disabled */
+            /* Status Disabled (berlaku untuk kapsul dan bulat) */
             background-color: #f8f9fa;
-            /* Warna abu-abu sangat muda */
             color: #b0b0b0;
             box-shadow: none;
-            /* Hapus shadow */
             transform: none;
-            /* Hapus efek hover */
         }
 
-        /* [AKHIR STYLING PAGINATION] */
+        /* [BARU] Pastikan tombol angka yg disabled tetap bulat */
+        .pagination .page-item.disabled:not(:first-child):not(:last-child) .page-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            padding: 0;
+        }
+
+        /* [AKHIR PERBAIKAN STYLING PAGINATION] */
 
 
         /* * [DIHAPUS] Gaya Pagination Modern tidak diperlukan lagi
@@ -1128,10 +1149,36 @@
 
     {{-- [PERBARUAN] Menggunakan Pagination Tradisional --}}
     <div class="my-5 d-flex justify-content-center" id="paginationContainer">
-        {{-- Pastikan $products adalah objek Paginator dan merender link Bootstrap 5 --}}
+
         @if ($products instanceof \Illuminate\Pagination\AbstractPaginator)
-            {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
+
+            @if ($products->hasPages())
+                {{-- [DEFAULT] Jika ada LEBIH DARI 1 halaman, tampilkan link pagination normal --}}
+                {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
+            @elseif ($products->total() > 0)
+                {{-- [PERBAIKAN] Jika HANYA 1 halaman (total() > 0), render "Page 1" secara manual --}}
+                {{-- Ini untuk memaksa nomor '1' tetap muncul di mobile/desktop --}}
+                <nav>
+                    <ul class="pagination">
+                        {{-- Tombol Previous (Disabled) --}}
+                        <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                            <span class="page-link" aria-hidden="true">&laquo; Previous</span>
+                        </li>
+
+                        {{-- Tombol Halaman 1 (Aktif) --}}
+                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+
+                        {{-- Tombol Next (Disabled) --}}
+                        <li class="page-item disabled" aria-disabled="true" aria-label="Next &raquo;">
+                            <span class="page-link" aria-hidden="true">Next &raquo;</span>
+                        </li>
+                    </ul>
+                </nav>
+            @endif
+            {{-- Jika $products->total() == 0 (Tidak ada produk), tidak ada yg ditampilkan --}}
+
         @endif
+
     </div>
     {{-- AKHIR PERBARUAN --}}
 
