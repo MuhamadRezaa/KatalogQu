@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#991b1b"/>
+      <stop offset="1" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="600" fill="url(#g5)"/>
+  <g fill="#ffffff">
+    <rect x="260" y="200" width="280" height="220" rx="20" opacity="0.35"/>
+    <path d="M400 250 L470 300 L400 350 L330 300 Z" opacity="0.6"/>
+    <circle cx="400" cy="300" r="22" opacity="0.7"/>
+  </g>
+  <text x="400" y="520" font-family="Segoe UI, Roboto, Arial" font-size="36" text-anchor="middle" fill="#ffffff">Keamanan</text>
+</svg>
