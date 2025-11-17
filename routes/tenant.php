@@ -59,7 +59,12 @@ Route::middleware([
     Route::get('/template/{slug}', [StoreController::class, 'showTemplate'])->name('tenant.template.show');
 
     // Product routes
-    Route::get('/product/{productSlug}', [StoreController::class, 'showProduct'])->name('tenant.store.product');
+    // UBAH '/product/' MENJADI '/produk/' agar sesuai dengan link di index.blade.php
+    Route::get('/produk/{productSlug}', [StoreController::class, 'showProduct'])->name('tenant.store.product');
+
+    // Category routes
+    // (Opsional) Sebaiknya ubah juga category menjadi kategori agar konsisten
+    Route::get('/kategori/{categorySlug}', [StoreController::class, 'showCategory'])->name('tenant.store.category');
 
     // Category routes
     Route::get('/category/{categorySlug}', [StoreController::class, 'showCategory'])->name('tenant.store.category');
