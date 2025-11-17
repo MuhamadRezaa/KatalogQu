@@ -560,8 +560,8 @@
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                <input type="text" class="form-control" name="specification[${index}][key]" placeholder="Key (e.g., CPU)" value="${key}">
-                <input type="text" class="form-control" name="specification[${index}][value]" placeholder="Value (e.g., i5-12500h)" value="${value}">
+                <input type="text" class="form-control" name="specification[${index}][key]" placeholder="Kata Kunci" value="${key}">
+                <input type="text" class="form-control" name="specification[${index}][value]" placeholder="Isi" value="${value}">
                 <button type="button" class="btn btn-outline-danger remove-spec-field"><i class="fa fa-times"></i></button>
             `;
             container.appendChild(div);

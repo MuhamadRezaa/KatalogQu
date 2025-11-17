@@ -221,7 +221,8 @@
                             @error('store_logo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Ukuran file maksimal: 2MB. Rekomendasi: Rasio 1:1 (persegi), ukuran maksimal 512x512 piksel, format PNG.</div>
+                            <div class="form-text">Ukuran file maksimal: 2MB. Rekomendasi: Rasio 1:1 (persegi), ukuran
+                                maksimal 512x512 piksel, format PNG.</div>
                         </div>
 
                         <!-- Pratinjau Logo Baru -->
@@ -271,7 +272,7 @@
                                 class="btn btn-secondary">
                                 <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
                             </a>
-                            <a href="http://{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}"
+                            <a href="//{{ $userStore->subdomain }}.{{ config('app.domain', 'localhost') }}"
                                 target="_blank" class="btn btn-info">
                                 <i class="fa fa-external-link"></i> Pratinjau Toko
                             </a>
