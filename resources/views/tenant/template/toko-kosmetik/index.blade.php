@@ -1242,8 +1242,7 @@
             </div>
             <div class="row mt-4 pt-4 border-top border-secondary">
                 <div class="col-12 text-center">
-                    <p class="mb-0 small">&copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by PT. Era
-                        Cipta Digital.</p>
+                    <p class="mb-0 small">&copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by KatalogQu.</p>
                 </div>
             </div>
         </div>
@@ -1393,6 +1392,7 @@
 
                 return [
                     'id' => $product->id,
+                    'slug' => $product->slug, // <--- PENTING: Tambahkan ini
                     'name' => $product->name,
                     'brand' => $product->brand->name ?? '',
                     'category_id' => $product->product_category_id,
@@ -1524,12 +1524,37 @@
                 document.getElementById('chatButton').href =
                     `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(message)}`;
 
-                // [BARU] Tombol Share & Salin
-                const productUrl =
-                    `${window.location.origin}/produk/${product.id}`; // Menggunakan ID karena slug tidak ada
+                // [PERBAIKAN TOTAL] Tombol Share & Salin
+                // Menggunakan slug agar link valid dan tidak 404
+                const identifier = product.slug ? product.slug : product.id;
+                const productUrl = `${window.location.origin}/produk/${identifier}`;
+
                 modalCopyLinkButton.onclick = () => {
-                    navigator.clipboard.writeText(productUrl).then(() => alert(
-                        'Link produk disalin!'));
+                    // Cek ketersediaan API Clipboard
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(productUrl)
+                            .then(() => alert('Link produk berhasil disalin!'))
+                            .catch(err => {
+                                console.error('Gagal menyalin: ', err);
+                                prompt("Salin link manual:", productUrl);
+                            });
+                    } else {
+                        prompt("Salin link manual:", productUrl);
+                    }
+                };
+
+                modalShareButton.onclick = () => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: product.name,
+                            text: `Lihat produk ini: ${product.name}`,
+                            url: productUrl
+                        }).catch(console.error);
+                    } else {
+                        // Jika browser tidak mendukung Web Share API (misal desktop Chrome lama), fallback ke copy link
+                        alert('Browser ini tidak mendukung fitur share native. Link akan disalin.');
+                        modalCopyLinkButton.click();
+                    }
                 };
                 modalShareButton.onclick = () => {
                     if (navigator.share) {
