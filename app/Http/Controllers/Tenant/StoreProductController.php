@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Http\Controllers\Controller;
+use App\Models\ProductCategory;
+use App\Models\ProductImage;
+use App\Models\ProductSubCategory;
+use App\Models\ProductUnit;
+use App\Models\StoreBrand;
+use App\Models\StoreCategory;
+use App\Models\StoreProduct;
 use App\Models\Tenant;
 use App\Models\UserStore;
-use App\Models\StoreBrand;
-use App\Models\ProductUnit;
-use App\Models\ProductImage;
-use App\Models\StoreProduct;
 use Illuminate\Http\Request;
-use App\Models\StoreCategory;
-use App\Models\ProductCategory;
-use App\Models\ProductSubCategory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
-use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class StoreProductController extends Controller
 {
     private function processAndStoreProductImage($imageFile, $slug, $folder, $position = null)
     {
-        $manager = new ImageManager(new Driver());
+        $manager = new ImageManager(new Driver);
         $filename = $slug;
         if ($position) {
-            $filename .= '-' . $position;
+            $filename .= '-'.$position;
         }
-        $filename .= '-' . \Illuminate\Support\Str::random(6) . '.webp'; // Add random string to ensure uniqueness
-        $path = $folder . '/' . $filename;
+        $filename .= '-'.\Illuminate\Support\Str::random(6).'.webp'; // Add random string to ensure uniqueness
+        $path = $folder.'/'.$filename;
 
         // Check if the uploaded file is already a WEBP
         if ($imageFile->getClientMimeType() === 'image/webp') {
@@ -51,22 +51,21 @@ class StoreProductController extends Controller
             // Encode to WEBP
             $encodedWebp = $img->toWebp(80); // Quality 80
 
-                    try {
+            try {
 
-                        Storage::disk('public')->put($path, (string) $encodedWebp);
+                Storage::disk('public')->put($path, (string) $encodedWebp);
 
-                        Log::info('Image successfully stored at: ' . $path);
+                Log::info('Image successfully stored at: '.$path);
 
-                    } catch (\Exception $e) {
+            } catch (\Exception $e) {
 
-                        Log::error('Failed to store processed image at ' . $path . ': ' . $e->getMessage());
+                Log::error('Failed to store processed image at '.$path.': '.$e->getMessage());
 
-                        throw $e; // Re-throw the exception to propagate the error
-
-                    }
-
+                throw $e; // Re-throw the exception to propagate the error
+            }
 
         }
+
         return $path;
     }
 
@@ -98,7 +97,6 @@ class StoreProductController extends Controller
         }
         // --- End of new logic for dynamic menus ---
 
-
         $categories = ProductCategory::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
         $subCategories = ProductSubCategory::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
         $brands = StoreBrand::where('user_store_id', $userStore->id)->active()->orderBy('name')->get();
@@ -121,11 +119,11 @@ class StoreProductController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:store_products,name,NULL,id,user_store_id,' . $userStore->id,
+            'name' => 'required|string|max:255|unique:store_products,name,NULL,id,user_store_id,'.$userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,webp|max:5120', // Removed jpg, as output is webp
-            'product_category_id' => 'nullable|exists:product_categories,id,user_store_id,' . $userStore->id . ',is_active,1',
+            'product_category_id' => 'nullable|exists:product_categories,id,user_store_id,'.$userStore->id.',is_active,1',
             'brand_id' => 'nullable|exists:product_brands,id',
             'sub_category_id' => 'nullable|exists:product_sub_categories,id',
             'product_unit_id' => 'nullable|exists:product_units,id',
@@ -139,7 +137,7 @@ class StoreProductController extends Controller
             'is_featured' => 'boolean',
             'is_promo' => 'boolean', // Add this line
             'estimasi_waktu' => 'nullable|integer|min:0',
-            'sku' => 'nullable|string|max:255',
+            'sku' => 'nullable|string|max:30',
             'additional_images' => 'array|max:3',
             'additional_images.*' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
@@ -154,7 +152,7 @@ class StoreProductController extends Controller
 
         // Generate SKU if not provided or empty
         if (empty($validated['sku'])) {
-            $validated['sku'] = \Illuminate\Support\Str::slug($validated['name']) . '-' . \Illuminate\Support\Str::random(6);
+            $validated['sku'] = $this->generateSku($validated['name']);
         }
 
         if ($request->hasFile('image')) {
@@ -165,7 +163,7 @@ class StoreProductController extends Controller
         $specifications = [];
         if (isset($validated['specification']) && is_array($validated['specification'])) {
             foreach ($validated['specification'] as $spec) {
-                if (!empty($spec['key']) && !empty($spec['value'])) {
+                if (! empty($spec['key']) && ! empty($spec['value'])) {
                     $specifications[$spec['key']] = $spec['value'];
                 }
             }
@@ -174,10 +172,11 @@ class StoreProductController extends Controller
 
         try {
             $product = StoreProduct::create($validated);
-            Log::info('Product created successfully: ' . $product->id);
+            Log::info('Product created successfully: '.$product->id);
         } catch (\Exception $e) {
-            Log::error('Failed to create product: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Gagal membuat produk: ' . $e->getMessage());
+            Log::error('Failed to create product: '.$e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'Gagal membuat produk: '.$e->getMessage());
         }
 
         // Handle additional images
@@ -195,11 +194,11 @@ class StoreProductController extends Controller
                             'product_id' => $product->id,
                             'image_url' => $imagePath,
                             'position' => $position + 1, // 1-based position
-                            'alt' => $product->name . ' - ' . ($position + 1),
+                            'alt' => $product->name.' - '.($position + 1),
                         ]);
-                        Log::info('Additional image created successfully for product ' . $product->id . ': ' . $imagePath);
+                        Log::info('Additional image created successfully for product '.$product->id.': '.$imagePath);
                     } catch (\Exception $e) {
-                        Log::error('Failed to create additional image for product ' . $product->id . ': ' . $e->getMessage());
+                        Log::error('Failed to create additional image for product '.$product->id.': '.$e->getMessage());
                         // Continue to process other images or handle as needed
                     }
                 }
@@ -250,7 +249,7 @@ class StoreProductController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:store_products,name,' . $product->id . ',id,user_store_id,' . $userStore->id,
+            'name' => 'required|string|max:255|unique:store_products,name,'.$product->id.',id,user_store_id,'.$userStore->id,
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,webp|max:5120', // Removed jpg, as output is webp
@@ -268,7 +267,7 @@ class StoreProductController extends Controller
             'is_featured' => 'boolean',
             'is_promo' => 'boolean', // Add this line
             'estimasi_waktu' => 'nullable|integer|min:0',
-            'sku' => 'nullable|string|max:255',
+            'sku' => 'nullable|string|max:30',
             'additional_images' => 'array|max:3', // Max 3 additional images
             'additional_images.*' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
             'existing_images_ids' => 'nullable|array', // IDs of images to keep
@@ -284,7 +283,7 @@ class StoreProductController extends Controller
 
         // Generate SKU if not provided or empty
         if (empty($validated['sku'])) {
-            $validated['sku'] = \Illuminate\Support\Str::slug($validated['name']) . '-' . \Illuminate\Support\Str::random(6);
+            $validated['sku'] = $this->generateSku($validated['name']);
         }
 
         if ($request->hasFile('image')) {
@@ -299,7 +298,7 @@ class StoreProductController extends Controller
         $specifications = [];
         if (isset($validated['specification']) && is_array($validated['specification'])) {
             foreach ($validated['specification'] as $spec) {
-                if (!empty($spec['key']) && !empty($spec['value'])) {
+                if (! empty($spec['key']) && ! empty($spec['value'])) {
                     $specifications[$spec['key']] = $spec['value'];
                 }
             }
@@ -333,7 +332,7 @@ class StoreProductController extends Controller
                         'product_id' => $product->id,
                         'image_url' => $imagePath,
                         'position' => $product->images()->max('position') + 1, // Next available position
-                        'alt' => $product->name . ' - ' . ($product->images()->max('position') + 1),
+                        'alt' => $product->name.' - '.($product->images()->max('position') + 1),
                     ]);
                     $allowedNewImages--;
                 }
@@ -386,14 +385,23 @@ class StoreProductController extends Controller
         $query = StoreProduct::query()
             ->select([
                 'store_products.id',
+                'store_products.slug',
+                'store_products.sku',
                 'store_products.name',
                 'store_products.price',
                 'store_products.old_price',
                 'store_products.is_promo',
                 'store_products.image',
+                'store_products.description',
+                'store_products.stock',
+                'store_products.specification',
+                'store_products.created_at',
+                'product_categories.id as category_id',
                 'product_categories.name as category_name',
-                'product_sub_categories.name as subcategory_name'
+                'product_sub_categories.id as subcategory_id',
+                'product_sub_categories.name as subcategory_name',
             ])
+            ->with(['images']) // Eager load images
             ->leftJoin('product_categories', 'store_products.product_category_id', '=', 'product_categories.id')
             ->leftJoin('product_sub_categories', 'store_products.sub_category_id', '=', 'product_sub_categories.id')
             ->where('store_products.user_store_id', $userStore->id)
@@ -401,7 +409,7 @@ class StoreProductController extends Controller
 
         // Apply search filter
         if ($request->filled('search')) {
-            $query->where('store_products.name', 'like', '%' . $request->input('search') . '%');
+            $query->where('store_products.name', 'like', '%'.$request->input('search').'%');
         }
 
         // Apply category filter
@@ -457,11 +465,50 @@ class StoreProductController extends Controller
         $paginator = $query->paginate(12);
 
         $paginator->getCollection()->transform(function ($product) use ($tenantId) {
-            $product->image_url = $product->image ? route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => $product->image]) : null;
-            // We need to shape the category and subcategory data to match the old structure for the frontend
-            $product->category = ['name' => $product->category_name];
-            $product->subcategory = ['name' => $product->subcategory_name];
-            unset($product->category_name, $product->subcategory_name); // Clean up the extra fields
+            // Process specs to match frontend expectation
+            $rawSpecs = $product->specification ?? null;
+            $specs = [];
+            if (is_string($rawSpecs)) {
+                $specs = json_decode($rawSpecs, true) ?: [];
+            } elseif (is_array($rawSpecs)) {
+                $specs = $rawSpecs;
+            } elseif (is_object($rawSpecs)) {
+                $specs = (array) $rawSpecs;
+            }
+            $product->specs = $specs;
+            unset($product->specification); // Remove original specification field
+
+            // Process images to match frontend expectation (productimgs)
+            $imgs = $product->images ? $product->images
+                ->sortBy('position')
+                ->map(fn ($img) => [
+                    'image_url' => route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => ltrim($img->image_url, '/')]),
+                ],
+                )
+                ->values()
+                ->all()
+                : [];
+
+            $primary = $product->image ? route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => ltrim($product->image, '/')]) : null;
+
+            if ($primary) {
+                $already = collect($imgs)->contains(function ($x) use ($primary) {
+                    return rtrim($x['image_url'], '/') === rtrim($primary, '/');
+                });
+                if (! $already) {
+                    array_unshift($imgs, ['image_url' => $primary]);
+                }
+            }
+            $product->productimgs = $imgs;
+            unset($product->images); // Remove original images relationship
+
+            $product->image_url = $primary; // Keep image_url for product card display
+
+            // Shape category and subcategory data
+            $product->category = ['id' => $product->category_id, 'name' => $product->category_name];
+            $product->subcategory = ['id' => $product->subcategory_id, 'name' => $product->subcategory_name];
+            unset($product->category_id, $product->category_name, $product->subcategory_id, $product->subcategory_name); // Clean up the extra fields
+
             return $product;
         });
 
@@ -472,6 +519,79 @@ class StoreProductController extends Controller
         Log::info("filterProductsAjax: Finished processing AJAX request in {$executionTime} ms.");
 
         return $paginator;
+    }
+
+    public function getSimilarProducts(Request $request)
+    {
+        $validated = $request->validate([
+            'category_id' => 'required|integer',
+            'product_id' => 'required|integer',
+        ]);
+
+        $userStore = $this->getCurrentStore();
+        if (! $userStore) {
+            return response()->json([], 404);
+        }
+        $tenantId = $userStore->tenant_id;
+
+        $similarProducts = StoreProduct::where('user_store_id', $userStore->id)
+            ->where('is_active', true)
+            ->where('product_category_id', $validated['category_id'])
+            ->where('id', '!=', $validated['product_id'])
+            ->with('images')
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        if ($similarProducts->isEmpty()) {
+            // If no products are found, return debug info
+            $categoryUsed = \App\Models\ProductCategory::find($validated['category_id']);
+            $allProductsWithCategory = StoreProduct::where('user_store_id', $userStore->id)
+                ->where('is_active', true)
+                ->select('name', 'product_category_id')
+                ->get();
+
+            return response()->json([
+                'debug' => true,
+                'message' => 'Tidak ada produk serupa yang ditemukan.',
+                'searched_category_id' => $validated['category_id'],
+                'searched_category_name' => $categoryUsed ? $categoryUsed->name : 'Unknown',
+                'available_products' => $allProductsWithCategory->map(fn ($p) => "{$p->name} (Cat ID: {$p->product_category_id})")->toArray(),
+            ]);
+        }
+
+        $productsForJs = $similarProducts->map(function ($product) use ($tenantId) {
+            // This transformation logic is copied from filterProductsAjax to ensure consistency
+            $imgs = $product->images ? $product->images
+                ->sortBy('position')
+                ->map(fn ($img) => [
+                    'image_url' => route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => ltrim($img->image_url, '/')]),
+                ])
+                ->values()
+                ->all()
+                : [];
+
+            $primary = $product->image ? route('tenant.asset.domain', ['tenant' => $tenantId, 'path' => ltrim($product->image, '/')]) : null;
+
+            if ($primary) {
+                $already = collect($imgs)->contains(function ($x) use ($primary) {
+                    return rtrim($x['image_url'], '/') === rtrim($primary, '/');
+                });
+                if (! $already) {
+                    array_unshift($imgs, ['image_url' => $primary]);
+                }
+            }
+
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => $product->price,
+                'productimgs' => $imgs,
+            ];
+        });
+
+        return response()->json($productsForJs);
     }
 
     private function getCurrentStore()
@@ -486,5 +606,20 @@ class StoreProductController extends Controller
                 ->where('tenant_created', true)
                 ->first();
         });
+    }
+
+    private function generateSku(string $name): string
+    {
+        $words = array_slice(str_word_count($name, 1), 0, 3);
+        $initials = '';
+        foreach ($words as $word) {
+            $initials .= strtoupper(substr($word, 0, 1));
+        }
+
+        if (empty($initials)) {
+            $initials = 'SKU';
+        }
+
+        return $initials.'-'.strtoupper(\Illuminate\Support\Str::random(6));
     }
 }

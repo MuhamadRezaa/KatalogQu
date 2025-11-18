@@ -22,7 +22,7 @@
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <style>
         .category-card.category-active {
             border-color: #06b6d4;
@@ -60,10 +60,10 @@
                         <img src="{{ route('tenant.asset.domain', ['path' => $banner->image_url]) }}"
                             class="w-full h-full object-cover" alt="{!! $banner->title !!}">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                            <div class="text-center text-white p-4">
+                            <div class="text-center text-white px-20">
                                 <h2 class="text-2xl md:text-4xl font-bold mb-2">{!! $banner->title !!}
                                 </h2>
-                                <p class="text-lg md:text-xl mb-4 px-4">
+                                <p class="text-xs sm:text:lg md:text-xl mb-4 max-w-xl mx-auto">
                                     {!! $banner->subtitle !!}</p>
                                 <br>
                                 @if ($banner->link)
@@ -294,7 +294,10 @@
                     </div>
                     <div class="p-4">
                         <h3 class="text-base font-semibold text-gray-800 line-clamp-2">{{ $product->name }}</h3>
-                        <p class="text-xs text-gray-500 mb-2">{{ $product->category->name ?? 'Uncategorized' }}@if ($product->subcategory && $product->subcategory->name) > {{ $product->subcategory->name }}@endif
+                        <p class="text-xs text-gray-500 mb-2">{{ $product->category->name ?? 'Uncategorized' }}
+                            @if ($product->subcategory && $product->subcategory->name)
+                                > {{ $product->subcategory->name }}
+                            @endif
                         </p>
                         <div class="flex flex-col gap-1">
                             <div class="flex flex-wrap items-baseline gap-x-1">
@@ -470,7 +473,19 @@
                                         <i data-lucide="copy" class="h-4 w-4"></i>
                                         Salin Link
                                     </button>
+                                    @if (in_array('barcodeproduk', $menus))
+                                        <button id="show-barcode-button"
+                                            class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm">
+                                            <i data-lucide="barcode" class="h-4 w-4"></i>
+                                            Tampilkan Barcode
+                                        </button>
+                                    @endif
                                 </div>
+                            </div>
+
+                            <!-- Barcode Display Area -->
+                            <div id="barcode-display-area" class="hidden mt-4 text-center border-t pt-4">
+                                <!-- Barcode will be generated here by JS -->
                             </div>
 
                             <!-- Similar Products Section -->
@@ -619,7 +634,8 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script>
         // Icon
         lucide.createIcons();
@@ -712,6 +728,7 @@
             @endphp
 
             window.productsData = @json($productsForJs);
+            window.allProductsData = [...window.productsData]; // Create a persistent copy
             window.categorySubcategoryMap = @json($categorySubcategoryMap ?? []);
 
             // ====== Elemen ======
@@ -982,7 +999,7 @@
                 chatButton.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
                 // Share & salin link
-                const productUrl = `${window.location.origin}/produk/${product.slug || product.id}`;
+                const productUrl = `${window.location.origin}/produk/${product.slug}`;
                 copyLinkButton.onclick = () => {
                     navigator.clipboard.writeText(productUrl).then(() => alert('Link produk disalin!'));
                 };
@@ -998,39 +1015,135 @@
                     }
                 };
 
-                // Similar Products Logic
-                const similarProductsContainer = document.getElementById('similar-products-container');
-                similarProductsContainer.innerHTML = ''; // Clear previous similar products
+                // Barcode Logic
+                const showBarcodeBtn = document.getElementById('show-barcode-button');
+                const barcodeDisplayArea = document.getElementById('barcode-display-area');
 
-                const similarProducts = window.productsData.filter(p =>
-                    p.category && product.category && p.category.id === product.category.id && p.id !== product
-                    .id
-                );
+                // Reset barcode area for new product
+                barcodeDisplayArea.classList.add('hidden');
+                barcodeDisplayArea.innerHTML = ''; // Clear old content
 
-                // Shuffle and take up to 3
-                const shuffledSimilar = similarProducts.sort(() => 0.5 - Math.random());
-                const selectedSimilar = shuffledSimilar.slice(0, 3);
+                if (showBarcodeBtn) {
+                    // Clone and replace the button to remove old event listeners
+                    const newShowBarcodeBtn = showBarcodeBtn.cloneNode(true);
+                    showBarcodeBtn.parentNode.replaceChild(newShowBarcodeBtn, showBarcodeBtn);
 
-                if (selectedSimilar.length > 0) {
-                    selectedSimilar.forEach(similarProd => {
-                        const similarProdCard = document.createElement('div');
-                        similarProdCard.className = 'cursor-pointer';
-                        const similarImgSrc = (similarProd.productimgs && similarProd.productimgs.length >
-                                0) ? similarProd.productimgs[0].image_url :
-                            "{{ asset('assets/images/no-image-icon.png') }}";
-                        similarProdCard.innerHTML = `
-                            <img src="${similarImgSrc}" alt="${similarProd.name}" class="w-full h-auto object-cover rounded-lg mb-1">
-                            <p class="text-xs font-medium text-gray-800 line-clamp-2">${similarProd.name}</p>
-                            <p class="text-xs text-gray-600">${formatRupiah(similarProd.price)}</p>
-                        `;
-                        similarProdCard.addEventListener('click', () => {
-                            openProductModal(similarProd);
-                        });
-                        similarProductsContainer.appendChild(similarProdCard);
+                    newShowBarcodeBtn.addEventListener('click', () => {
+                        // If area is hidden, generate barcode and show it
+                        if (barcodeDisplayArea.classList.contains('hidden')) {
+                            const barcodeValue = product.sku || product.id;
+                            if (barcodeValue) {
+                                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                svg.id = 'barcode-svg-generated';
+                                svg.classList.add('mx-auto');
+
+                                barcodeDisplayArea.innerHTML = ''; // Clear first
+                                barcodeDisplayArea.appendChild(svg);
+                                barcodeDisplayArea.insertAdjacentHTML('beforeend',
+                                    `<p class="text-sm text-gray-500 mt-2">SKU: ${product.sku || 'N/A'}</p>`
+                                );
+
+                                try {
+                                    JsBarcode(svg, barcodeValue, {
+                                        format: "CODE128",
+                                        lineColor: "#000",
+                                        displayValue: true,
+                                        width: 2,
+                                        height: 80
+                                    });
+                                    barcodeDisplayArea.classList.remove('hidden');
+                                } catch (e) {
+                                    console.error("Barcode generation failed:", e);
+                                    barcodeDisplayArea.innerHTML =
+                                        '<p class="text-red-500">Gagal membuat barcode.</p>';
+                                    barcodeDisplayArea.classList.remove('hidden');
+                                }
+                            }
+                        } else {
+                            // If area is visible, just hide it
+                            barcodeDisplayArea.classList.add('hidden');
+                        }
                     });
+                }
+
+                // Similar Products Logic (AJAX-based)
+
+                const similarProductsContainer = document.getElementById('similar-products-container');
+
+                similarProductsContainer.innerHTML =
+                    '<p class="text-sm text-gray-500 col-span-3">Memuat produk serupa...</p>';
+
+                if (product && product.category && product.category.id) {
+
+                    $.ajax({
+                        url: "{{ route('tenant.products.similar') }}",
+                        type: 'GET',
+                        data: {
+                            category_id: product.category.id,
+                            product_id: product.id
+                        },
+                        success: function(response) {
+                            similarProductsContainer.innerHTML = ''; // Clear loading text
+
+                            const similarProducts =
+                                response; // It's not a debug response, it's the array
+
+                            if (similarProducts && similarProducts.length > 0) {
+
+                                similarProducts.forEach(similarProd => {
+
+                                    const similarProdCard = document.createElement('div');
+
+                                    // Make it a link to the product page
+
+                                    const link = document.createElement('a');
+
+                                    link.href = `/produk/${similarProd.slug || similarProd.id}`;
+
+
+
+                                    const similarImgSrc = (similarProd.productimgs &&
+                                            similarProd.productimgs.length > 0) ?
+
+                                        similarProd.productimgs[0].image_url :
+
+                                        "{{ asset('assets/images/no-image-icon.png') }}";
+
+
+
+                                    link.innerHTML = `
+                                        <img src="${similarImgSrc}" alt="${similarProd.name}" class="w-full h-auto object-cover rounded-lg mb-1 aspect-square">
+                                        <p class="text-xs font-medium text-gray-800 line-clamp-2">${similarProd.name}</p>
+                                        <p class="text-xs text-gray-600">${formatRupiah(similarProd.price)}</p>
+                                    `;
+
+                                    similarProdCard.appendChild(link);
+                                    similarProductsContainer.appendChild(similarProdCard);
+
+                                });
+
+                            } else {
+                                similarProductsContainer.innerHTML =
+                                    '<p class="text-sm text-gray-500 col-span-3">Tidak ada produk serupa.</p>';
+                            }
+                        },
+
+                        error: function() {
+
+                            similarProductsContainer.innerHTML =
+                                '<p class="text-sm text-red-500 col-span-3">Gagal memuat produk serupa.</p>';
+
+                        }
+
+                    });
+
                 } else {
+
+                    // This case handles products without a category
+
                     similarProductsContainer.innerHTML =
                         '<p class="text-sm text-gray-500 col-span-3">Tidak ada produk serupa.</p>';
+
                 }
 
                 // Tampilkan modal
@@ -1296,6 +1409,20 @@
                     data: filterData,
                     success: function(response) {
                         console.time('AJAX success processing');
+
+                        // Merge new products into the master list, ensuring data is always fresh
+                        if (response.data && Array.isArray(response.data)) {
+                            // Use a Map for efficient updating (O(n) instead of O(n*m))
+                            const productMap = new Map(window.allProductsData.map(p => [p.id, p]));
+                            response.data.forEach(newProduct => {
+                                productMap.set(newProduct.id, newProduct); // Add or update
+                            });
+                            window.allProductsData = Array.from(productMap.values());
+                        }
+
+                        // Update window.productsData with the new data for the current view
+                        window.productsData = response.data;
+
                         // Render the new products and pagination
                         updateProductGrid(response.data);
                         updatePagination(response);

@@ -75,6 +75,8 @@ Route::middleware([
     // AJAX ROUTE
     Route::get('/filter-products', [StoreProductController::class, 'filterProductsAjax'])->name('products.filter.ajax');
 
+    Route::get('/similar-products', [StoreProductController::class, 'getSimilarProducts'])->name('tenant.products.similar');
+
     // API routes for AJAX
     Route::prefix('api')->name('tenant.api.')->group(function () {
         Route::get('/products', [StoreController::class, 'getProducts'])->name('products');

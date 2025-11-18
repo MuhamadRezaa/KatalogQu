@@ -1242,7 +1242,8 @@
             </div>
             <div class="row mt-4 pt-4 border-top border-secondary">
                 <div class="col-12 text-center">
-                    <p class="mb-0 small">&copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by KatalogQu.</p>
+                    <p class="mb-0 small">&copy; {{ date('Y') }} {{ $userStore->store_name }}. Powered by
+                        KatalogQu.</p>
                 </div>
             </div>
         </div>
@@ -1330,6 +1331,18 @@
                                     <i class="fas fa-copy fa-fw"></i>
                                     Salin Link
                                 </button>
+                                @if (in_array('barcodeproduk', $menus))
+                                    <button id="modalShowBarcodeButton"
+                                        class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                                        <i class="fas fa-barcode fa-fw"></i>
+                                        Tampilkan Barcode
+                                    </button>
+                                @endif
+                            </div>
+
+                            <!-- Barcode Display Area -->
+                            <div id="modalBarcodeArea" class="d-none mt-4 text-center border-top pt-4">
+                                <!-- Barcode will be generated here -->
                             </div>
 
                             {{--
@@ -1365,6 +1378,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
     @php
         // Menggabungkan semua produk yang ada di halaman untuk Javascript
@@ -1392,7 +1406,8 @@
 
                 return [
                     'id' => $product->id,
-                    'slug' => $product->slug, // <--- PENTING: Tambahkan ini
+                    'slug' => $product->slug,
+                    'sku' => $product->sku,
                     'name' => $product->name,
                     'brand' => $product->brand->name ?? '',
                     'category_id' => $product->product_category_id,
@@ -1556,17 +1571,47 @@
                         modalCopyLinkButton.click();
                     }
                 };
-                modalShareButton.onclick = () => {
-                    if (navigator.share) {
-                        navigator.share({
-                            title: product.name,
-                            text: `Lihat produk ini: ${product.name}`,
-                            url: productUrl
-                        });
-                    } else {
-                        alert('Fitur share tidak didukung di browser ini.');
-                    }
-                };
+
+                // Barcode Logic
+                const showBarcodeBtn = document.getElementById('modalShowBarcodeButton');
+                const barcodeDisplayArea = document.getElementById('modalBarcodeArea');
+
+                // Reset barcode area for new product
+                barcodeDisplayArea.classList.add('d-none');
+                barcodeDisplayArea.innerHTML = '';
+
+                if (showBarcodeBtn) {
+                    // Clone and replace button to remove old event listeners
+                    const newShowBarcodeBtn = showBarcodeBtn.cloneNode(true);
+                    showBarcodeBtn.parentNode.replaceChild(newShowBarcodeBtn, showBarcodeBtn);
+
+                    newShowBarcodeBtn.addEventListener('click', () => {
+                        if (barcodeDisplayArea.classList.contains('d-none')) {
+                            const barcodeValue = product.sku || product.id;
+                            if (barcodeValue) {
+                                barcodeDisplayArea.innerHTML = `
+                                    <svg id="modalBarcodeSvg" class="mx-auto" style="width: 100%; max-width: 100%; height: auto;"></svg>
+                                    <p class="text-muted mt-2 mb-0">SKU: ${product.sku || 'N/A'}</p>
+                                `;
+                                try {
+                                    JsBarcode("#modalBarcodeSvg", barcodeValue, {
+                                        format: "CODE128",
+                                        lineColor: "#4A4A4A",
+                                        displayValue: true
+                                    });
+                                    barcodeDisplayArea.classList.remove('d-none');
+                                } catch (e) {
+                                    console.error("Barcode generation failed:", e);
+                                    barcodeDisplayArea.innerHTML =
+                                        '<p class="text-danger">Gagal membuat barcode.</p>';
+                                    barcodeDisplayArea.classList.remove('d-none');
+                                }
+                            }
+                        } else {
+                            barcodeDisplayArea.classList.add('d-none');
+                        }
+                    });
+                }
 
                 // --- Kolom Kiri (Gambar) ---
 

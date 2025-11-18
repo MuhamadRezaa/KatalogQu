@@ -431,6 +431,14 @@
                                     <i class="fab fa-whatsapp me-2"></i> Hubungi
                                 </button>
                             </div>
+                            @if (in_array('barcodeproduk', $menus))
+                                <div class="text-center mt-3">
+                                    <button id="show-barcode-button"
+                                        class="btn btn-outline-secondary btn-sm rounded-pill">
+                                        <i class="fas fa-barcode me-1"></i> Tampilkan Barcode
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -469,11 +477,26 @@
         </div>
     </footer>
 
+    <!-- Barcode Modal -->
+    <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="barcodeModalLabel">Barcode Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <svg id="barcode" class="mx-auto" style="width: 100%; max-width: 100%; height: auto;"></svg>
+                    <p class="text-muted mt-2 mb-0">SKU: {{ $product->sku ?: 'N/A' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
     <script>
         // Inisialisasi Lightbox
@@ -520,6 +543,31 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.open(url, '_blank');
+                }
+            });
+        }
+
+        // --- Barcode Modal Logic ---
+        const showBarcodeBtn = document.getElementById('show-barcode-button');
+        const barcodeModalEl = document.getElementById('barcodeModal');
+
+        if (showBarcodeBtn && barcodeModalEl) {
+            const barcodeModal = new bootstrap.Modal(barcodeModalEl);
+            const barcodeValue = '{{ $product->sku ?: $product->id }}';
+
+            showBarcodeBtn.addEventListener('click', () => {
+                try {
+                    JsBarcode("#barcode", barcodeValue, {
+                        format: "CODE128",
+                        lineColor: "#4A4A4A", // Match theme text color
+                        displayValue: true
+                    });
+                    barcodeModal.show();
+                } catch (e) {
+                    console.error("Error generating barcode:", e);
+                    document.getElementById('barcode').parentElement.innerHTML =
+                        '<p class="text-danger">Error: Gagal membuat barcode.</p>';
+                    barcodeModal.show();
                 }
             });
         }

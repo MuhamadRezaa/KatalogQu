@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\Models\StoreProduct;
-use App\Models\ProductCategory;
-use App\Models\UserStore;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\StoreHero; // Added
-use App\Models\PriceRange; // Added
-use Illuminate\Support\Facades\Cache;
-// Add ProductSubCategory model
+use App\Models\PriceRange;
+use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
-// [PERBAIKAN] Tambahkan model StoreCategory
 use App\Models\StoreCategory;
-
+// Added
+use App\Models\StoreProduct; // Added
+use App\Models\UserStore;
+// Add ProductSubCategory model
+use Illuminate\Http\Request;
+// [PERBAIKAN] Tambahkan model StoreCategory
+use Illuminate\Support\Facades\Cache;
 
 class StoreController extends Controller
 {
@@ -36,7 +35,6 @@ class StoreController extends Controller
             }
         }
         // [AKHIR PERBAIKAN]
-
 
         $featuredProducts = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -88,7 +86,7 @@ class StoreController extends Controller
         if ($request->filled('brand_ids')) {
             $ids = collect(explode(',', $request->brand_ids))
                 ->filter()->map('intval')->all();
-            if (!empty($ids)) {
+            if (! empty($ids)) {
                 $query->whereIn('brand_id', $ids);
             }
         }
@@ -185,7 +183,7 @@ class StoreController extends Controller
 
         if ($catalogTemplate) {
             $templateSlug = $catalogTemplate->slug;
-            $potentialView = 'tenant.template.' . $templateSlug . '.index';
+            $potentialView = 'tenant.template.'.$templateSlug.'.index';
 
             if (view()->exists($potentialView)) {
                 $templateView = $potentialView;
@@ -235,7 +233,7 @@ class StoreController extends Controller
         $images = $product->images
             ? $product->images
                 ->sortBy('position')
-                ->map(fn($img) => route('tenant.asset.domain', ['path' => ltrim($img->image_url, '/')]))
+                ->map(fn ($img) => route('tenant.asset.domain', ['path' => ltrim($img->image_url, '/')]))
                 ->values()
                 ->all()
             : [];
@@ -274,7 +272,20 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
+        // --- Start of new logic for dynamic menus ---
+        $menus = []; // Initialize as empty array
 
+        // Get the store category ID for the current user's store
+        $currentStoreCategoryId = $userStore->catalogTemplate->categories_store_id;
+
+        // Fetch the StoreCategory model with its associated menus
+        $storeCategory = StoreCategory::find($currentStoreCategoryId);
+
+        if ($storeCategory) {
+            // Pluck the 'code' from the associated menus and convert to an array
+            $menus = $storeCategory->menus->pluck('code')->toArray();
+        }
+        // --- End of new logic for dynamic menus ---
 
         // Find product by slug or ID
         $product = StoreProduct::where('user_store_id', $userStore->id)
@@ -292,6 +303,7 @@ class StoreController extends Controller
             ->where('sub_category_id', $product->sub_category_id) // Change to sub-category
             ->where('id', '!=', $product->id)
             ->with('images') // Add images
+            ->inRandomOrder()
             ->take(4)
             ->get();
 
@@ -302,6 +314,7 @@ class StoreController extends Controller
                 ->where('product_category_id', $product->product_category_id)
                 ->where('id', '!=', $product->id)
                 ->with('images') // Add images
+                ->inRandomOrder()
                 ->take(4)
                 ->get();
         }
@@ -319,7 +332,7 @@ class StoreController extends Controller
         $templateView = 'tenant.store.product'; // default fallback
 
         if ($catalogTemplate) {
-            $potentialView = 'tenant.template.' . $catalogTemplate->slug . '.product';
+            $potentialView = 'tenant.template.'.$catalogTemplate->slug.'.product';
             if (view()->exists($potentialView)) {
                 $templateView = $potentialView;
             } else {
@@ -336,7 +349,8 @@ class StoreController extends Controller
             'product',
             'relatedProducts',
             'brands',
-            'banners'
+            'banners',
+            'menus'
         ));
     }
 
@@ -346,8 +360,6 @@ class StoreController extends Controller
     public function showCategory(Request $request, $categorySlug)
     {
         $userStore = $this->getCurrentStore();
-
-
 
         // Find category
         $category = ProductCategory::where('is_active', true)
@@ -457,7 +469,7 @@ class StoreController extends Controller
         $templateView = 'tenant.store.category'; // default fallback
 
         if ($catalogTemplate) {
-            $potentialView = 'tenant.template.' . $catalogTemplate->slug . '.category';
+            $potentialView = 'tenant.template.'.$catalogTemplate->slug.'.category';
             if (view()->exists($potentialView)) {
                 $templateView = $potentialView;
             } else {
@@ -590,7 +602,7 @@ class StoreController extends Controller
         $templateView = 'tenant.store.sub-category'; // default fallback
 
         if ($catalogTemplate) {
-            $potentialView = 'tenant.template.' . $catalogTemplate->slug . '.sub-category';
+            $potentialView = 'tenant.template.'.$catalogTemplate->slug.'.sub-category';
             if (view()->exists($potentialView)) {
                 $templateView = $potentialView;
             } else {
@@ -620,8 +632,6 @@ class StoreController extends Controller
     public function search(Request $request)
     {
         $userStore = $this->getCurrentStore();
-
-
 
         $searchTerm = $request->get('q', '');
         $products = collect();
@@ -683,7 +693,7 @@ class StoreController extends Controller
         $templateView = 'tenant.store.search'; // default fallback
 
         if ($catalogTemplate) {
-            $potentialView = 'tenant.template.' . $catalogTemplate->slug . '.search';
+            $potentialView = 'tenant.template.'.$catalogTemplate->slug.'.search';
             if (view()->exists($potentialView)) {
                 $templateView = $potentialView;
             } else {
@@ -734,7 +744,7 @@ class StoreController extends Controller
 
         // Try to load template-specific maintenance page
         if ($catalogTemplate) {
-            $maintenanceView = 'tenant.template.' . $catalogTemplate->slug . '.maintenance';
+            $maintenanceView = 'tenant.template.'.$catalogTemplate->slug.'.maintenance';
 
             // Check if template maintenance view exists, fallback to default if not
             if (view()->exists($maintenanceView)) {
@@ -758,8 +768,6 @@ class StoreController extends Controller
     public function getProducts(Request $request)
     {
         $userStore = $this->getCurrentStore();
-
-
 
         $query = StoreProduct::where('user_store_id', $userStore->id)
             ->where('is_active', true)
@@ -785,8 +793,12 @@ class StoreController extends Controller
 
         if ($request->has('price_range') && $request->price_range) {
             [$min, $max] = explode('-', $request->price_range);
-            if ($min !== '') $query->where('price', '>=', $min);
-            if ($max !== '') $query->where('price', '<=', $max);
+            if ($min !== '') {
+                $query->where('price', '>=', $min);
+            }
+            if ($max !== '') {
+                $query->where('price', '<=', $max);
+            }
         }
 
         // Sort
@@ -814,8 +826,8 @@ class StoreController extends Controller
             'pagination' => [
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
-                'total' => $products->total()
-            ]
+                'total' => $products->total(),
+            ],
         ]);
     }
 
@@ -825,8 +837,6 @@ class StoreController extends Controller
     public function getCategories()
     {
         $userStore = $this->getCurrentStore();
-
-
 
         $categories = ProductCategory::where('is_active', true)
             ->whereHas('products', function ($query) use ($userStore) {
@@ -840,7 +850,7 @@ class StoreController extends Controller
 
         return response()->json([
             'success' => true,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -872,7 +882,7 @@ class StoreController extends Controller
 
         return response()->json([
             'success' => true,
-            'subCategories' => $subCategories
+            'subCategories' => $subCategories,
         ]);
     }
 
@@ -883,25 +893,23 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-
-
         // Get the catalog template based on the slug
         $catalogTemplate = $userStore->catalogTemplate;
 
-        if (!$catalogTemplate || $catalogTemplate->slug !== $slug) {
+        if (! $catalogTemplate || $catalogTemplate->slug !== $slug) {
             abort(404, 'Template not found');
         }
 
         // Load template-specific view based on catalog template slug
-        $templateView = 'tenant.template.' . $catalogTemplate->slug . '.index';
+        $templateView = 'tenant.template.'.$catalogTemplate->slug.'.index';
 
         // Check if template view exists, fallback to default if not
-        if (!view()->exists($templateView)) {
+        if (! view()->exists($templateView)) {
             // Fallback to default template if specific template doesn't exist
             $templateView = 'tenant.template.default.index';
 
             // If default template also doesn't exist, fallback to regular store page
-            if (!view()->exists($templateView)) {
+            if (! view()->exists($templateView)) {
                 return $this->index($request);
             }
         }
@@ -1016,15 +1024,15 @@ class StoreController extends Controller
                 'alt_text' => 'Banner 1',
                 'title' => 'Special Offer',
                 'subtitle' => 'Up to 50% off on selected items',
-                'link' => '#'
+                'link' => '#',
             ],
             (object) [
                 'image_url' => 'assets/img/temp/banner2.jpg',
                 'alt_text' => 'Banner 2',
                 'title' => 'New Arrivals',
                 'subtitle' => 'Check out our latest products',
-                'link' => '#'
-            ]
+                'link' => '#',
+            ],
         ];
 
         return view($templateView, compact(
@@ -1047,12 +1055,10 @@ class StoreController extends Controller
     {
         $userStore = $this->getCurrentStore();
 
-
-
         // Get the catalog template slug
         $catalogTemplate = $userStore->catalogTemplate;
 
-        if (!$catalogTemplate) {
+        if (! $catalogTemplate) {
             // Fallback to regular store page if no template found
             return $this->index(request());
         }
