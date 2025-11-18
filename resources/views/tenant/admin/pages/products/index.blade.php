@@ -31,6 +31,9 @@
                                     <th scope="col">Nama Produk</th>
                                     <th scope="col">Kategori</th>
                                     <th scope="col">Sub-Kategori</th>
+                                    @if (in_array('barcodeproduk', $menus))
+                                        <th scope="col">Barcode</th>
+                                    @endif
                                     <th scope="col">Harga</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Aksi</th>
@@ -64,6 +67,19 @@
                                         <td>
                                             {{ $product->subCategory->name ?? '-' }}
                                         </td>
+                                        @if (in_array('barcodeproduk', $menus))
+                                            <td>
+                                                @if ($product->sku)
+                                                    <svg class="barcode" jsbarcode-format="CODE128"
+                                                        jsbarcode-value="{{ $product->sku }}" jsbarcode-textmargin="0"
+                                                        jsbarcode-fontoptions="bold" jsbarcode-width="2"
+                                                        jsbarcode-height="50" jsbarcode-fontSize="14">
+                                                    </svg>
+                                                @else
+                                                    <span class="f-light">N/A</span>
+                                                @endif
+                                            </td>
+                                        @endif
                                         <td>
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                             @if ($product->old_price && $product->old_price > $product->price)
@@ -136,12 +152,16 @@
                                 <div class="mb-3">
                                     <label for="add_name" class="form-label">Nama Produk <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="add_name" name="name" required>
+                                    <input type="text" class="form-control" id="add_name" name="name" required
+                                        maxlength="255">
+                                    <div id="add_name_error" class="text-danger mt-1 text-sm" style="display:none;"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="add_description" class="form-label">Deskripsi (Opsional)</label>
                                     <textarea class="form-control" id="add_description" name="description" rows="3"
-                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata"></textarea>
+                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata" maxlength="1000"></textarea>
+                                    <div id="add_description_error" class="text-danger mt-1 text-sm"
+                                        style="display:none;"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="add_image" class="form-label">Gambar Utama Produk <span
@@ -174,16 +194,24 @@
                                             class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="add_price" name="price"
                                         min="0" step="0.01" required>
+                                    <div id="add_price_error" class="text-danger mt-1 text-sm" style="display:none;">
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="add_old_price" class="form-label">Harga Lama (Opsional)</label>
                                     <input type="number" class="form-control" id="add_old_price" name="old_price"
                                         min="0" step="0.01">
+                                    <div id="add_old_price_error" class="text-danger mt-1 text-sm" style="display:none;">
+                                    </div>
                                 </div>
-                                {{-- <div class="mb-3">
-                                    <label for="add_sku" class="form-label">SKU</label>
-                                    <input type="text" class="form-control" id="add_sku" name="sku" readonly>
-                                </div> --}}
+                                <div class="mb-3">
+                                    <label for="add_sku" class="form-label">SKU (Opsional)</label>
+                                    <input type="text" class="form-control" id="add_sku" name="sku"
+                                        maxlength="30">
+                                    <div class="form-text">Biarkan kosong untuk dibuat otomatis. Maksimal 30 karakter.
+                                    </div>
+                                    <div id="add_sku_error" class="text-danger mt-1 text-sm" style="display:none;"></div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -195,6 +223,8 @@
                                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                         @endforeach
                                     </select>
+                                    <div id="add_product_category_id_error" class="text-danger mt-1 text-sm"
+                                        style="display:none;"></div>
                                 </div>
 
                                 @if (in_array('subkategoriproduk', $menus))
@@ -256,6 +286,8 @@
                                         <label for="add_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
                                         <input type="number" class="form-control" id="add_estimasi_waktu"
                                             name="estimasi_waktu" min="0">
+                                        <div id="add_estimasi_waktu_error" class="text-danger mt-1 text-sm"
+                                            style="display:none;"></div>
                                     </div>
                                 @endif
 
@@ -324,7 +356,8 @@
                                 <div class="mb-3">
                                     <label for="edit_name" class="form-label">Nama Produk <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="edit_name" name="name" required>
+                                    <input type="text" class="form-control" id="edit_name" name="name" required
+                                        maxlength="255">
                                     @error('name')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
@@ -332,7 +365,7 @@
                                 <div class="mb-3">
                                     <label for="edit_description" class="form-label">Deskripsi (Opsional)</label>
                                     <textarea class="form-control" id="edit_description" name="description" rows="3"
-                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata"></textarea>
+                                        placeholder="Mohon deskripsikan Produk / Layanan / Jasa Anda disini. Maksimal 1000 kata" maxlength="1000"></textarea>
                                     @error('description')
                                         <div class="text-danger mt-1 text-sm">{{ $message }}</div>
                                     @enderror
@@ -383,24 +416,24 @@
                                             class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="edit_price" name="price"
                                         min="0" step="0.01" required>
-                                    @error('price')
-                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                    @enderror
+                                    <div id="edit_price_error" class="text-danger mt-1 text-sm" style="display:none;">
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_old_price" class="form-label">Harga Lama (Opsional)</label>
                                     <input type="number" class="form-control" id="edit_old_price" name="old_price"
                                         min="0" step="0.01">
-                                    @error('old_price')
-                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                    @enderror
+                                    <div id="edit_old_price_error" class="text-danger mt-1 text-sm"
+                                        style="display:none;"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_sku" class="form-label">SKU</label>
-                                    <input type="text" class="form-control" id="edit_sku" name="sku">
-                                    @error('sku')
-                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                    @enderror
+                                    <input type="text" class="form-control" id="edit_sku" name="sku"
+                                        maxlength="30">
+                                    <div class="form-text">Biarkan kosong untuk dibuat otomatis. Maksimal 30 karakter.
+                                    </div>
+                                    <div id="edit_sku_error" class="text-danger mt-1 text-sm" style="display:none;">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -414,9 +447,8 @@
                                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('product_category_id')
-                                        <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                    @enderror
+                                    <div id="edit_product_category_id_error" class="text-danger mt-1 text-sm"
+                                        style="display:none;"></div>
                                 </div>
 
                                 @if (in_array('subkategoriproduk', $menus))
@@ -484,9 +516,8 @@
                                         <label for="edit_estimasi_waktu" class="form-label">Estimasi Waktu (menit)</label>
                                         <input type="number" class="form-control" id="edit_estimasi_waktu"
                                             name="estimasi_waktu" min="0">
-                                        @error('estimasi_waktu')
-                                            <div class="text-danger mt-1 text-sm">{{ $message }}</div>
-                                        @enderror
+                                        <div id="edit_estimasi_waktu_error" class="text-danger mt-1 text-sm"
+                                            style="display:none;"></div>
                                     </div>
                                 @endif
 
@@ -545,13 +576,23 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script>
         $(function() {
+            // Initialize DataTable
             $('#table-1').DataTable({
                 responsive: true,
                 paging: true,
                 info: true,
-                searching: true
+                searching: true,
+                "drawCallback": function(settings) {
+                    // Re-generate barcodes on every table draw
+                    try {
+                        JsBarcode(".barcode").init();
+                    } catch (e) {
+                        console.error("Error initializing JsBarcode on table draw:", e);
+                    }
+                }
             });
         });
 
@@ -885,5 +926,301 @@
         if (addSpecFieldsContainer) {
             addSpecField('add_specification_fields', addSpecIndex++);
         }
+
+        // Generic client-side validation function
+        function validateField(inputElement, errorElement, rules) {
+            let isValid = true;
+            let errorMessage = '';
+
+            errorElement.style.display = 'none';
+            errorElement.textContent = '';
+
+            const value = inputElement.value.trim();
+
+            if (rules.required && value === '') {
+                isValid = false;
+                errorMessage = inputElement.labels[0].textContent.replace(' <span class="text-danger">*</span>', '') +
+                    ' wajib diisi.';
+            } else if (rules.maxLength && value.length > rules.maxLength) {
+                isValid = false;
+                errorMessage = inputElement.labels[0].textContent.replace(' <span class="text-danger">*</span>', '') +
+                    ' tidak boleh lebih dari ' + rules.maxLength + ' karakter.';
+            } else if (rules.numeric && value !== '' && isNaN(value)) {
+                isValid = false;
+                errorMessage = inputElement.labels[0].textContent.replace(' <span class="text-danger">*</span>', '') +
+                    ' harus berupa angka.';
+            } else if (rules.min && value !== '' && parseFloat(value) < rules.min) {
+                isValid = false;
+                errorMessage = inputElement.labels[0].textContent.replace(' <span class="text-danger">*</span>', '') +
+                    ' tidak boleh kurang dari ' + rules.min + '.';
+            } else if (rules.selectRequired && value === '') {
+                isValid = false;
+                errorMessage = inputElement.labels[0].textContent.replace(' <span class="text-danger">*</span>', '') +
+                    ' wajib dipilih.';
+            }
+
+            if (!isValid) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+            }
+            return isValid;
+        }
+
+        // Add Product Modal Validation
+        const addProductForm = document.getElementById('addProductForm');
+        const addNameInput = document.getElementById('add_name');
+        const addDescriptionInput = document.getElementById('add_description');
+        const addPriceInput = document.getElementById('add_price');
+        const addOldPriceInput = document.getElementById('add_old_price');
+        const addSkuInput = document.getElementById('add_sku');
+        const addProductCategoryIdInput = document.getElementById('add_product_category_id');
+        const addEstimasiWaktuInput = document.getElementById('add_estimasi_waktu');
+
+        const addNameError = document.getElementById('add_name_error');
+        const addDescriptionError = document.getElementById('add_description_error');
+        const addPriceError = document.getElementById('add_price_error');
+        const addOldPriceError = document.getElementById('add_old_price_error');
+        const addSkuError = document.getElementById('add_sku_error');
+        const addProductCategoryIdError = document.getElementById('add_product_category_id_error');
+        const addEstimasiWaktuError = document.getElementById('add_estimasi_waktu_error');
+
+        if (addProductForm) {
+            addProductForm.addEventListener('submit', function(event) {
+                let formIsValid = true;
+
+                formIsValid = validateField(addNameInput, addNameError, {
+                    required: true,
+                    maxLength: 255
+                }) && formIsValid;
+                formIsValid = validateField(addDescriptionInput, addDescriptionError, {
+                    maxLength: 1000
+                }) && formIsValid;
+                formIsValid = validateField(addPriceInput, addPriceError, {
+                    required: true,
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+                formIsValid = validateField(addOldPriceInput, addOldPriceError, {
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+                formIsValid = validateField(addSkuInput, addSkuError, {
+                    maxLength: 30
+                }) && formIsValid;
+                // product_category_id is nullable in backend, so not required client-side unless changed
+                // formIsValid = validateField(addProductCategoryIdInput, addProductCategoryIdError, { selectRequired: true }) && formIsValid;
+                formIsValid = validateField(addEstimasiWaktuInput, addEstimasiWaktuError, {
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+
+                if (!formIsValid) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+
+            // Real-time validation on input
+            addNameInput.addEventListener('input', () => validateField(addNameInput, addNameError, {
+                required: true,
+                maxLength: 255
+            }));
+            addDescriptionInput.addEventListener('input', () => validateField(addDescriptionInput, addDescriptionError, {
+                maxLength: 1000
+            }));
+            addPriceInput.addEventListener('input', () => validateField(addPriceInput, addPriceError, {
+                required: true,
+                numeric: true,
+                min: 0
+            }));
+            addOldPriceInput.addEventListener('input', () => validateField(addOldPriceInput, addOldPriceError, {
+                numeric: true,
+                min: 0
+            }));
+            addSkuInput.addEventListener('input', () => validateField(addSkuInput, addSkuError, {
+                maxLength: 30
+            }));
+            addProductCategoryIdInput.addEventListener('change', () => validateField(addProductCategoryIdInput,
+                addProductCategoryIdError, {
+                    selectRequired: true
+                }));
+            addEstimasiWaktuInput.addEventListener('input', () => validateField(addEstimasiWaktuInput,
+                addEstimasiWaktuError, {
+                    numeric: true,
+                    min: 0
+                }));
+        }
+
+        // Edit Product Modal Validation
+        const editProductForm = document.getElementById('editProductForm');
+        const editNameInput = document.getElementById('edit_name');
+        const editDescriptionInput = document.getElementById('edit_description');
+        const editPriceInput = document.getElementById('edit_price');
+        const editOldPriceInput = document.getElementById('edit_old_price');
+        const editSkuInput = document.getElementById('edit_sku');
+        const editProductCategoryIdInput = document.getElementById('edit_product_category_id');
+        const editEstimasiWaktuInput = document.getElementById('edit_estimasi_waktu');
+
+        const editNameError = document.getElementById('edit_name_error');
+        const editDescriptionError = document.getElementById('edit_description_error');
+        const editPriceError = document.getElementById('edit_price_error');
+        const editOldPriceError = document.getElementById('edit_old_price_error');
+        const editSkuError = document.getElementById('edit_sku_error');
+        const editProductCategoryIdError = document.getElementById('edit_product_category_id_error');
+        const editEstimasiWaktuError = document.getElementById('edit_estimasi_waktu_error');
+
+        if (editProductForm) {
+            editProductForm.addEventListener('submit', function(event) {
+                let formIsValid = true;
+
+                formIsValid = validateField(editNameInput, editNameError, {
+                    required: true,
+                    maxLength: 255
+                }) && formIsValid;
+                formIsValid = validateField(editDescriptionInput, editDescriptionError, {
+                    maxLength: 1000
+                }) && formIsValid;
+                formIsValid = validateField(editPriceInput, editPriceError, {
+                    required: true,
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+                formIsValid = validateField(editOldPriceInput, editOldPriceError, {
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+                formIsValid = validateField(editSkuInput, editSkuError, {
+                    maxLength: 30
+                }) && formIsValid;
+                // product_category_id is nullable in backend, so not required client-side unless changed
+                // formIsValid = validateField(editProductCategoryIdInput, editProductCategoryIdError, { selectRequired: true }) && formIsValid;
+                formIsValid = validateField(editEstimasiWaktuInput, editEstimasiWaktuError, {
+                    numeric: true,
+                    min: 0
+                }) && formIsValid;
+
+                if (!formIsValid) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+
+            // Real-time validation on input
+            editNameInput.addEventListener('input', () => validateField(editNameInput, editNameError, {
+                required: true,
+                maxLength: 255
+            }));
+            editDescriptionInput.addEventListener('input', () => validateField(editDescriptionInput, editDescriptionError, {
+                maxLength: 1000
+            }));
+            editPriceInput.addEventListener('input', () => validateField(editPriceInput, editPriceError, {
+                required: true,
+                numeric: true,
+                min: 0
+            }));
+            editOldPriceInput.addEventListener('input', () => validateField(editOldPriceInput, editOldPriceError, {
+                numeric: true,
+                min: 0
+            }));
+            editSkuInput.addEventListener('input', () => validateField(editSkuInput, editSkuError, {
+                maxLength: 30
+            }));
+            editProductCategoryIdInput.addEventListener('change', () => validateField(editProductCategoryIdInput,
+                editProductCategoryIdError, {
+                    selectRequired: true
+                }));
+            editEstimasiWaktuInput.addEventListener('input', () => validateField(editEstimasiWaktuInput,
+                editEstimasiWaktuError, {
+                    numeric: true,
+                    min: 0
+                }));
+        }
+
+        // Clear errors when modals are hidden
+        document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('addProductForm').reset();
+            // Clear all error messages
+            [addNameError, addDescriptionError, addPriceError, addOldPriceError, addSkuError,
+                addProductCategoryIdError, addEstimasiWaktuError
+            ].forEach(el => {
+                if (el) {
+                    el.style.display = 'none';
+                    el.textContent = '';
+                }
+            });
+            const addSpecFields = document.getElementById('add_specification_fields');
+            if (addSpecFields) {
+                addSpecFields.innerHTML = ''; // Clear spec fields
+                addSpecField('add_specification_fields', 0); // Add one empty spec field
+            }
+            const addImagePreview = document.getElementById('add_image_preview_container');
+            if (addImagePreview) {
+                addImagePreview.innerHTML = ''; // Clear main image preview
+                addImagePreview.style.display = 'none';
+            }
+            const addAdditionalImages = document.getElementById('add_additional_images_fields');
+            if (addAdditionalImages) {
+                addAdditionalImages.innerHTML = ''; // Clear additional images fields
+            }
+            addAdditionalImageIndex = 0; // Reset index
+            const addIsPromo = document.getElementById('add_is_promo');
+            if (addIsPromo) {
+                addIsPromo.checked = false;
+            }
+            const addIsFeatured = document.getElementById('add_is_featured');
+            if (addIsFeatured) {
+                addIsFeatured.checked = false;
+            }
+        });
+
+        document.getElementById('editProductModal').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('editProductForm').reset();
+            // Clear all error messages
+            [editNameError, editDescriptionError, editPriceError, editOldPriceError, editSkuError,
+                editProductCategoryIdError, editEstimasiWaktuError
+            ].forEach(el => {
+                if (el) {
+                    el.style.display = 'none';
+                    el.textContent = '';
+                }
+            });
+
+            // Spesifikasi
+            const editSpecFields = document.getElementById('edit_specification_fields');
+            if (editSpecFields) {
+                editSpecFields.innerHTML = '';
+            }
+
+            // Gambar tambahan
+            const editAdditionalExisting = document.getElementById('edit_additional_images_fields_existing');
+            if (editAdditionalExisting) {
+                editAdditionalExisting.innerHTML = '';
+            }
+            const editAdditionalNew = document.getElementById('edit_additional_images_fields_new');
+            if (editAdditionalNew) {
+                editAdditionalNew.innerHTML = '';
+            }
+
+            // Preview gambar utama – JANGAN kosongkan innerHTML karena menghapus <img id="current_image">
+            const currentImagePreview = document.getElementById('currentImagePreview');
+            const currentImg = document.getElementById('current_image');
+            if (currentImg) currentImg.src = '';
+            if (currentImagePreview) {
+                currentImagePreview.style.display = 'none';
+            }
+
+            // Preview gambar baru
+            const editImagePreview = document.getElementById('edit_image_preview_container');
+            if (editImagePreview) {
+                editImagePreview.innerHTML = '';
+                editImagePreview.style.display = 'none';
+            }
+            const editIsPromo = document.getElementById('edit_is_promo');
+            if (editIsPromo) {
+                editIsPromo.checked = false;
+            }
+            const editIsFeatured = document.getElementById('edit_is_featured');
+            if (editIsFeatured) {
+                editIsFeatured.checked = false;
+            }
+        });
     </script>
 @endpush
