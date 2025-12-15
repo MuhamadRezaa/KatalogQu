@@ -512,7 +512,8 @@ class StoreProductController extends Controller
             return $product;
         });
 
-        Log::info('SUBCATEGORY_FILTER_DEBUG', DB::getQueryLog());
+        // Log the query for debugging purposes using the default channel
+        Log::debug('Query Log for Product Filter', DB::getQueryLog());
 
         $endTime = microtime(true);
         $executionTime = ($endTime - $startTime) * 1000;
